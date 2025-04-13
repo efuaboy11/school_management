@@ -341,7 +341,7 @@ class SubjectsView(generics.ListCreateAPIView):
     
 class SubjectsRetriveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SubjectsSerializer
-    permission_classes = [IsAdminOrHR]
+    permission_classes = [IsAdminOrAcademicOfficer]
     queryset = Subjects.objects.all()
     lookup_field = 'pk'
     
@@ -354,7 +354,7 @@ class StudentClassView(generics.ListCreateAPIView):
 
 class StudentClassRetriveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = StudentClassSerializer
-    permission_classes = [IsAdminOrHR]
+    permission_classes = [IsAdminOrAcademicOfficer]
     queryset = StudentClass.objects.all()
     lookup_field = 'pk'                
  
@@ -368,7 +368,7 @@ class TermView(generics.ListCreateAPIView):
 
 class TermRetriveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TermSerializer
-    permission_classes = [IsAdminOrHR]
+    permission_classes = [IsAdminOrAcademicOfficer]
     queryset = Term.objects.all()
     lookup_field = 'pk'                
  
@@ -381,7 +381,7 @@ class SessionView(generics.ListCreateAPIView):
 
 class SessionRetriveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SessionSerializer
-    permission_classes = [IsAdminOrHR]
+    permission_classes = [IsAdminOrAcademicOfficer]
     queryset = Session.objects.all()
     lookup_field = 'pk'                
  
@@ -491,7 +491,7 @@ class SchoolEventRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
 # Generator of scratch Card 
 class GenerateScratchCardView(generics.GenericAPIView):
     serializer_class =  GenerateScratchCardSerializer
-    permission_classes = [IsAdminOrHR]
+    permission_classes = [IsAdminOrExamOfficer]
     
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -511,4 +511,88 @@ class GenerateScratchCardView(generics.GenericAPIView):
             "message": f"{amount} scratch cards generated successfully.",
             "pins": cards
         }, status=status.HTTP_201_CREATED)
+        
+        
+class StudentResultListCreateApiView(generics.ListCreateAPIView):
+    queryset = StudentResult.objects.all()
+    serializer_class = StudentResultSerializer
+    permission_classes = [IsAdminOrAcademicOfficerOrStudent]
+    
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        
+        if(user.role == "admin" or user.role == "academic_officer"):
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"error": "You do not have permission to create a result."}, status=status.HTTP_403_FORBIDDEN)
+    
+class StudentResultRetrieveUpdateDestroyApiView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = StudentResult.objects.all()
+    serializer_class = StudentResultSerializer
+    permission_classes = [IsAdminOrAcademicOfficer]
+    lookup_field = 'pk'
+    
+    
+class SubjectResultListCreateApiView(generics.ListCreateAPIView):
+    queryset = SubjectResult.objects.all()
+    serializer_class = SubjectResultSerializer
+    permission_classes = [IsAdminOrAcademicOfficerOrStudent]
+    def get_serializer(self, *args, **kwargs):
+        if isinstance(data := kwargs.get("data", {}), list):
+            kwargs["many"] = True
+        return super().get_serializer(*args, **kwargs)
+    
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        
+        if(user.role == "admin" or user.role == "academic_officer"):
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"error": "You do not have permission to create a subject."}, status=status.HTTP_403_FORBIDDEN)
+
+
+class SubjectResultRetrieveUpdateDestroyApiView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = SubjectResult.objects.all()
+    serializer_class = SubjectResultSerializer
+    lookup_field = "pk"
+    permission_classes = [IsAdminOrAcademicOfficer]
+
          
+         
+class CheckStudentResultView(generics.ListCreateAPIView):
+    queryset = StudentResult.objects.all()
+    serializer_class = StudentResultSerializer
+    permission_classes = [IsAdminOrAcademicOfficerOrStudent]
+    
+    
+    def post(self, request, *args, **kwargs):
+        student_id = request.data.get('student_id')
+        pin = request.data.get('pin')
+        class_id = request.data.get('class_id')
+        term_id = request.data.get('term_id')
+        session_id = request.data.get('session_id')
+
+        try:
+            scratch_card = ScratchCard.objects.get(pin=pin)
+        except ScratchCard.DoesNotExist:
+            return Response({"error": "Invalid Scratch Card Pin."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not scratch_card.use(student_id):
+            return Response({"error": "Scratch card has expired or has been used."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            result = StudentResult.objects.get(
+                student_id=student_id,
+                student_class_id=class_id,
+                term_id=term_id,
+                session_id=session_id
+            )
+            return Response(StudentResultSerializer(result).data)
+        except StudentResult.DoesNotExist:
+            return Response({"error": "Result not found for the provided details."}, status=status.HTTP_404_NOT_FOUND)

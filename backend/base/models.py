@@ -12,6 +12,8 @@ class Role(models.TextChoices):
     TEACHERS = 'teacher', 'Teacher'
     BURSARY = 'bursary', 'Bursary'
     STORE_KEEPER = 'store_keeper', 'Store Keeper'
+    EXAM_OFFICER = 'exam_officer', "Exam Officer"
+    ACADEMIC_OFFICER = 'academic_officer', "Academic officer"
     OTHER_STAFF = 'other_staff', 'Other_staff'
     
 class CustomAccountManager(BaseUserManager):
@@ -90,6 +92,7 @@ class Users(AbstractUser):
             "bursary": "bur",
             "store_keeper": "skp",
             "hr": "hmr",
+            'exam_officer': "exf",
             "other_staff": "oth",
         }
         
@@ -351,7 +354,7 @@ class StudentResult(models.Model):
     principal_comment = models.TextField(null=True, blank=True)
     next_term_begins = models.TextField(null=True, blank=True)
 
-    subjects = models.ManyToManyField('Subject', through='SubjectResult')
+    subjects = models.ManyToManyField('Subjects', through='SubjectResult')
 
     created_at = models.DateTimeField(auto_now_add=True)
 

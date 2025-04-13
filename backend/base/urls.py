@@ -40,4 +40,15 @@ urlpatterns = [
     path('school-event/', views.SchoolEventView.as_view(), name='school_event' ),
     path('school-event/<str:pk>/', views.SchoolEventRetrieveUpdateDestroy.as_view(), name='indiviual_school_event' ),
     path('scratch-cards/generate/', views.GenerateScratchCardView.as_view(), name='generate-scratch-cards'),
+    
+    # ---------------------- Results -------------------------- #
+    path('student-result/', views.StudentResultListCreateApiView.as_view(), name='student_result'),
+    path('student-result/<str:pk>/', views.StudentResultRetrieveUpdateDestroyApiView.as_view(), name='result-details'),
+    path('check-result/', views.CheckStudentResultView.as_view(), name='check_result'),
+    path('subject-result/', views.SubjectResultListCreateApiView.as_view(), name='subject_result'),
+    path('subject-result/<str:pk>/', views.SubjectResultRetrieveUpdateDestroyApiView.as_view(), name='subject_result_details'),
+    
+
+
+    
 ]

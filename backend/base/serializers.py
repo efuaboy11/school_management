@@ -15,6 +15,7 @@ class UsersSerializer(serializers.ModelSerializer):
             'first_name',
             'last_name',
             'date_of_birth',
+            'role',
         ]
         
 class StaffSerializer(serializers.ModelSerializer):
@@ -362,11 +363,12 @@ class SubjectResultSerializer(serializers.ModelSerializer):
             'id',
             'student_result',
             'subject',
+            'subject_name',
             'total_ca',
             'exam',
             'total',
             'grade',
-            'position'
+            'position',
             'cgpa'
         ]
     
@@ -389,7 +391,7 @@ class StudentResultSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'student',
-            'stuent_name',
+            'student_name',
             'student_class',
             'class_name',
             'term',
@@ -421,7 +423,100 @@ class StudentResultSerializer(serializers.ModelSerializer):
             'teacher_comment',
             'principal_comment',
             'next_term_begins',
-            'subject_results',
-            
-            
+            'subject_result',   
         ]
+        
+    def get_class_name(self, obj):
+        student_class = obj.student_class
+        serializer = StudentClassSerializer(
+            instance=student_class, many=False)
+        return serializer.data
+    
+    def get_term_name(self, obj):
+        term = obj.term
+        serializer = TermSerializer(
+            instance=term, many=False)
+        return serializer.data
+    
+    def get_session_name(self, obj):
+        session = obj.session
+        serializer = SessionSerializer(
+            instance=session, many=False)
+        return serializer.data
+    
+    def get_student_name(self, obj):
+        student = obj.student
+        serializer = StudentSerializer(instance=student, many=False)
+        return serializer.data
+    
+    def get_subject_result(self, obj):
+        subject_result = SubjectResult.objects.filter(student_result=obj)
+        serializer = SubjectResultSerializer(
+            instance=subject_result, many=True)
+        return serializer.data
+    
+    def to_representation(self, instance):
+        representation = super().to_representation(instance)
+        representation['subject_result'] = self.get_subject_result(instance)
+        return representation
+    
+    def validate(self, data):
+        student = data.get('student')
+        student_class = data.get('student_class')
+        term = data.get('term')
+        session = data.get('session')
+        
+        if self.instance:
+            if StudentResult.objects.filter(
+                student=student,
+                student_class=student_class,
+                term=term,
+                session=session,
+            ).exclude(id=self.instance.id).exists():
+                raise serializers.ValidationError(
+                    "A result for this student, class, term, and session already exists."
+                )               
+        else:
+            if StudentResult.objects.filter(
+                student=student,
+                student_class=student_class,
+                term=term,
+                session=session
+            ).exists():
+                raise serializers.ValidationError(
+                    "A result for this student, class, term, and session already exists.")
+                    
+    def update(self, instance, validated_data):
+        subject_result_data = validated_data.pop('subject_result', [])         
+        
+        # Update the Student Result instance
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+        
+        # Handling SubjectResult updates
+        existing_subject_result = {
+            sr.id: sr for sr in instance.subjectresult_set.all()
+        }
+        
+        for subject_result_data in subject_result_data:
+            subject_result_id = subject_result_data.get('id')
+            if subject_result_id and subject_result_id in existing_subject_result:
+                subject_result = existing_subject_result.pop(
+                    subject_result_id
+                )
+                for attr, value in subject_result_data.items():
+                    setattr(subject_result, attr, value)
+                subject_result.save()
+            else:
+                subject_result_data['result'] = instance
+                SubjectResult.objects.create(**subject_result_data)
+        
+        # # Delete SubjectResults that are no longer present
+        for subject_result in existing_subject_result.values():
+            subject_result.delete()
+        return instance
+        
+        
+        
+    
