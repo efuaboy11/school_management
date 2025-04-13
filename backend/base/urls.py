@@ -1,0 +1,43 @@
+from django.urls import path
+from . import views
+
+app_name = 'base'
+
+urlpatterns = [
+    path('', views.endpoints, name='endpoints'),
+    path('users/', views.UsersView.as_view(), name='users'),
+    path('students/', views.StudentView.as_view(), name='students'),
+    path('staff/', views.StaffView.as_view(), name='staff'),
+    path('hr/', views.HRView.as_view(), name='hr'),
+    path('bursary/', views.BursaryView.as_view(), name='bursary'),
+    path('store_keeper/', views.StoreKeeperView.as_view(), name='store_keeper'),
+    path('other_staff/', views.OtherStaffView.as_view(), name='other_staff'),
+    path('teachers/', views.TeachersView.as_view(), name='teachers'),
+    path('parents/', views.ParentViews.as_view(), name='parents'),
+    path('login/', views.LoginView.as_view(), name='login'),
+    path('request-to-change-password-form/', views.RequestToChangePasswordFormView.as_view(), name='request_to_change_password_form'),
+    path('request-to-change-password/', views.RequestToChangePasswordView.as_view(), name='request_to_change_password'),
+    path('request-to-change-password/<str:pk>/update-status/', views.RequestToChangePasswordStatusView.as_view(), name='request_to_change_password-update-status'),
+    path('change-password/', views.ChangePasswordFormSerializer.as_view(), name='change_password'),
+    path('logout/', views.LogoutView.as_view(), name='logout'),
+    path('email/', views.EmailView.as_view(), name='Email' ),
+    path('email/<str:pk>/', views.EmailRetrieveDestory.as_view(), name='indivicual_email' ),
+    path('subjects/', views.SubjectsView.as_view(), name='subjects' ),
+    path('subjects/<str:pk>/', views.SubjectsRetriveUpdateDestory.as_view(), name='indiviual_subjects' ),
+    path('student-class/', views.StudentClassView.as_view(), name='student_class' ),
+    path('student-class/<str:pk>/', views.StudentClassRetriveUpdateDestory.as_view(), name='indiviual_student_class' ),
+    path('term/', views.TermView.as_view(), name='term' ),
+    path('term/<str:pk>/', views.TermRetriveUpdateDestory.as_view(), name='indiviual_term' ),
+    path('session/', views.SessionView.as_view(), name='session' ),
+    path('session/<str:pk>/', views.SessionRetriveUpdateDestory.as_view(), name='indiviual_session' ),
+    path('admin-or-hr-notification/', views.AdminorHRNotificationView.as_view(), name='admin_or_hr_notification' ),
+    path('admin-or-hr-notification/<str:pk>/', views.AdminorHRNotificationRetrieveUpdateDestroy.as_view(), name='indiviual_admin_or_hr_notification' ),
+    path('school-notification/', views.SchoolNotificationView.as_view(), name='school_notification' ),
+    path('school-notification/<str:pk>/', views.SchoolNotificationRetrieveUpdateDestroy.as_view(), name='indiviual_school_notification' ),
+    path('class-notification/', views.ClassNotificationView.as_view(), name='class_notification' ),
+    path('class-notification/<str:pk>/', views.ClassNotificationRetrieveUpdateDestroy.as_view(), name='indiviual_class_notification' ),
+    path('filtered-class-notification/', views.FilteredClassNotification.as_view(), name='filtered_class_notification' ),
+    path('school-event/', views.SchoolEventView.as_view(), name='school_event' ),
+    path('school-event/<str:pk>/', views.SchoolEventRetrieveUpdateDestroy.as_view(), name='indiviual_school_event' ),
+    path('scratch-cards/generate/', views.GenerateScratchCardView.as_view(), name='generate-scratch-cards'),
+]
