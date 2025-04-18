@@ -48,8 +48,35 @@ class StudentView(generics.ListCreateAPIView):
         
         return Response(reg_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         
+
+class StudentRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAdminOrHrOrStudent]
+    queryset = Student.objects.all()
+    serializer_class = StudentSerializer
+    lookup_field = 'pk'
+    
         
-        
+    def delete(self, request, *args, **kwargs):
+        user = request.user
+        if(user.role == "admin" or user.role == "hr"):
+            return super().delete(request, *args, **kwargs)
+        else:
+            return Response({"error": "You do not have permission to delete this student."}, status=status.HTTP_403_FORBIDDEN)
+          
+
+class DeleteMultipleStudentsView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrHR]
+    serializer_class = DeleteMultipleUUIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = Student.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} students deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+    
+
+   
 class StaffView(generics.ListCreateAPIView):
     permission_classes = [IsAdminOrHR]
     queryset = Staff.objects.all()
@@ -69,8 +96,33 @@ class StaffView(generics.ListCreateAPIView):
                 return Response(reg_serializer.data, status=status.HTTP_201_CREATED)
         
         return Response(reg_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+
+class DeleteMultipleStaffView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrHR]
+    serializer_class = DeleteMultipleUUIDSerializer
     
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = Staff.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+    
+
+
+class StaffRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAdminOrHrOrTeacher]
+    queryset = Staff.objects.all()
+    serializer_class = StaffSerializer
+    lookup_field = 'pk'
+    
+        
+    def delete(self, request, *args, **kwargs):
+        user = request.user
+        if(user.role == "admin" or user.role == "hr"):
+            return super().delete(request, *args, **kwargs)
+        else:
+            return Response({"error": "You do not have permission to delete this staff."}, status=status.HTTP_403_FORBIDDEN)
     
 class HRView(generics.ListCreateAPIView):
     permission_classes = [IsAdminUser]
@@ -93,6 +145,34 @@ class HRView(generics.ListCreateAPIView):
         
         return Response(reg_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
  
+class HRRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAdminOrHR]
+    queryset = HR.objects.all()
+    serializer_class = HRSerializer
+    lookup_field = 'pk'
+    
+        
+    def delete(self, request, *args, **kwargs):
+        user = request.user
+        if(user.role == "admin" or user.role == "hr"):
+            return super().delete(request, *args, **kwargs)
+        else:
+            return Response({"error": "You do not have permission to delete this staff."}, status=status.HTTP_403_FORBIDDEN)
+        
+
+class DeleteMultipleHRView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrHR]
+    serializer_class = DeleteMultipleUUIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = HR.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+    
+      
+
 class TeachersView(generics.ListAPIView):
     serializer_class = StaffSerializer
     permission_classes = [IsAdminOrHR]
@@ -126,7 +206,19 @@ class ParentViews(generics.ListCreateAPIView):
     serializer_class = ParentSerializer
     permission_classes = [IsAdminOrHR]
     queryset = Parent.objects.all()
+ 
+class DeleteMultipleParentsView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrHR]
+    serializer_class = DeleteMultipleIDSerializer
     
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = Parent.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+    
+   
     
 class LoginView(generics.GenericAPIView):
     serializer_class = LoginSerializer
@@ -332,7 +424,17 @@ class EmailRetrieveDestory(generics.RetrieveDestroyAPIView):
     queryset =   Email.objects.all()
     lookup_field = 'pk'
     
-
+class DeleteMultipleEmailsView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrHR]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = Email.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+    
 #Subjects
 class SubjectsView(generics.ListCreateAPIView):
     serializer_class = SubjectsSerializer
@@ -345,7 +447,17 @@ class SubjectsRetriveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     queryset = Subjects.objects.all()
     lookup_field = 'pk'
     
-
+class DeleteMultipleSubjectsView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrHR]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = Email.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+    
 # Students Classes
 class StudentClassView(generics.ListCreateAPIView):
     serializer_class = StudentClassSerializer
@@ -354,10 +466,38 @@ class StudentClassView(generics.ListCreateAPIView):
 
 class StudentClassRetriveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = StudentClassSerializer
-    permission_classes = [IsAdminOrAcademicOfficer]
+    permission_classes = [IsAuthenticated]
     queryset = StudentClass.objects.all()
-    lookup_field = 'pk'                
- 
+    lookup_field = 'pk'   
+    
+    def put(self, request, *args, **kwargs):
+        user = request.user
+        
+        if(user.role == "admin" or user.role == "academic_officer"):
+            return super().put(request, *args, **kwargs)
+        else:
+            return Response({"error": "You do not have permission to update this class."}, status=status.HTTP_403_FORBIDDEN)
+        
+    def delete(self, request, *args, **kwargs):
+        user = request.user
+        if(user.role == "admin" or user.role == "academic_officer"):
+            return super().delete(request, *args, **kwargs)
+        else:
+            return Response({"error": "You do not have permission to delete this class."}, status=status.HTTP_403_FORBIDDEN)
+    
+    
+class DeleteMultipleStudentClassView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrHR]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = StudentClass.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+     
+
 
 # Terms
 
@@ -372,7 +512,19 @@ class TermRetriveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     queryset = Term.objects.all()
     lookup_field = 'pk'                
  
- 
+class DeleteMultipleTermView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrHR]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = Term.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+     
+
+
 # Session
 class SessionView(generics.ListCreateAPIView):
     serializer_class = SessionSerializer
@@ -384,7 +536,17 @@ class SessionRetriveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAdminOrAcademicOfficer]
     queryset = Session.objects.all()
     lookup_field = 'pk'                
- 
+
+class DeleteMultipleSessionView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrHR]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = Session.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
  
 class AdminorHRNotificationView(generics.ListCreateAPIView):
     serializer_class = AdminorHRNotificationSerializer
@@ -397,7 +559,19 @@ class AdminorHRNotificationRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyA
     permission_classes = [IsAdminOrHR]
     queryset = AdminorHRNotification.objects.all()
     lookup_field = 'pk'
+
+class DeleteMultipleAdminorHRNotificationView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrHR]
+    serializer_class = DeleteMultipleIDSerializer
     
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = AdminorHRNotification.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+     
+   
 class SchoolNotificationView(generics.ListCreateAPIView):
     serializer_class = SchoolNotificationSerializer
     permission_classes = [IsAuthenticated]
@@ -420,47 +594,105 @@ class SchoolNotificationRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIV
     queryset = SchoolNotification.objects.all()
     lookup_field = 'pk'
     
+class DeleteMultipleSchoolNotificationView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrHR]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = SchoolNotification.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+    
 class ClassNotificationView(generics.ListCreateAPIView):
     serializer_class = ClassNotificationSerializer
     permission_classes = [IsAdminOrTeacherorStudent]
-    queryset = ClassNotification.objects.all()
     
-    def post(self, request, *args, **kwargs):
-        user = request.user
+    
         
-        if(user.role == "admin" or user.role == "teacher"):
-            serializer = self.get_serializer(data=request.data)
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        else:
-            return Response({"error": "You do not have permission to create a notification."}, status=status.HTTP_403_FORBIDDEN)
+    def get_queryset(self):
+        user = self.request.user
+        if user.role == 'admin':
+            return ClassNotification.objects.all()
+        elif user.role == 'teacher':
+            return ClassNotification.objects.filter(teacher=user.id)
+        elif user.role == 'student':
+            
+            try:
+                student = Student.objects.get(id=user.id)
+                student_class = student.student_class
+            except Student.DoesNotExist:
+                return Response({"error": "Student profile not found."}, status=status.HTTP_404_NOT_FOUND)
+            
+            return ClassNotification.objects.filter(student_class=student_class)
+
+    
+    # def post(self, request, *args, **kwargs):
+    #     user = request.user
+    #     teacher = request.data.get('teacher')  # Assuming 'teacher' is passed in the request data
+    #     try:
+    #         teacher = Staff.objects.get(id=teacher)  # Use .get() since it's one-to-one
+    #     except Staff.DoesNotExist:
+    #         return Response({"error": "Teacher profile not found."}, status=status.HTTP_404_NOT_FOUND)
+
+    #     # Now get the assigned class ID
+    #     teacher_class_id = teacher.assigned_class.id if teacher.assigned_class else None
+    #     requested_class_id = request.data.get('student_class')  # Make sure this comes from the request
+
+    #     # Check if teacher is allowed to post to this class
+    #     if str(teacher_class_id) == str(requested_class_id):  # Cast to string to avoid type mismatch
+    #         if user.role in ["admin", "teacher"]:
+    #             serializer = self.get_serializer(data=request.data)
+    #             serializer.is_valid(raise_exception=True)
+    #             serializer.save()
+    #             return Response(serializer.data, status=status.HTTP_201_CREATED)
+    #         else:
+    #             return Response({"error": "You do not have permission to create a notification."}, status=status.HTTP_403_FORBIDDEN)
+    #     else:
+    #         return Response({"error": "You do not have permission to create a notification for this class."}, status=status.HTTP_403_FORBIDDEN)
 
 class ClassNotificationRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ClassNotificationSerializer
     permission_classes = [IsAdminOrTeacher]
     queryset = ClassNotification.objects.all()
     lookup_field = 'pk'
-    
-class FilteredClassNotification(generics.ListAPIView):
-    permission_classes = [IsAdminOrTeacherorStudent]
-    serializer_class = ClassNotificationSerializer
-    
-    def get_queryset(self):
-        student_class = self.request.query_params.get('student_class')
         
-        if student_class:
-            return ClassNotification.objects.filter(student_class=student_class)    
-        return ClassNotification.objects.none()
+class DeleteMultipleClassNotificationView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrTeacher]
+    serializer_class = DeleteMultipleIDSerializer
     
-    def list(self, request, *args, **kwargs):
-        queryset = self.get_queryset()
-        if not queryset.exists():
-            return Response({"message": "No notifications found for this class."}, status=status.HTTP_404_NOT_FOUND)
-        serializer = self.get_serializer(queryset, many=True)
-        return Response(serializer.data)
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = ClassNotification.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+    
+      
+# class FilteredClassNotification(generics.ListAPIView):
+#     permission_classes = [IsAdminOrTeacherorStudent]
+#     serializer_class = ClassNotificationSerializer
+    
+#     def get_queryset(self):
+#         query = self.request.query_params.get('query')
+#         user = self.request.user
         
-        
+#         if user.role == 'teacher':
+#             return ClassNotification.objects.filter(teacher=user.id)
+#         elif user.role == 'student':
+#             return ClassNotification.objects.filter
+#         if student_class:
+#             return ClassNotification.objects.filter(student_class=student_class)    
+#         return ClassNotification.objects.none()
+    
+#     def list(self, request, *args, **kwargs):
+#         queryset = self.get_queryset()
+#         if not queryset.exists():
+#             return Response({"message": "No notifications found for this class."}, status=status.HTTP_404_NOT_FOUND)
+#         serializer = self.get_serializer(queryset, many=True)
+#         return Response(serializer.data)
+                      
 
 class SchoolEventView(generics.ListCreateAPIView):
     serializer_class = SchoolEventSerializer
@@ -485,6 +717,17 @@ class SchoolEventRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     permission_classes = [IsAdminOrTeacher]
     queryset = SchoolEvent.objects.all()
     lookup_field = 'pk'
+    
+class DeleteMultipleSchoolEventView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrTeacher]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = SchoolEvent.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
     
 # --------------------------------------------- Result ---------------------- #
 
@@ -596,3 +839,217 @@ class CheckStudentResultView(generics.ListCreateAPIView):
             return Response(StudentResultSerializer(result).data)
         except StudentResult.DoesNotExist:
             return Response({"error": "Result not found for the provided details."}, status=status.HTTP_404_NOT_FOUND)
+        
+        
+        
+class SchemeOfWorkView(generics.ListCreateAPIView):
+    serializer_class = SchemeOfWorkSerializer
+    permission_classes = [IsAdminOrTeacherorStudent]
+    queryset = SchemeOfWork.objects.all()
+    
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        
+        if(user.role == "admin" or user.role == "teacher"):
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"error": "You do not have permission to create a scheme of work."}, status=status.HTTP_403_FORBIDDEN)
+        
+        
+class SchemeOfWorkRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = SchemeOfWorkSerializer
+    permission_classes = [IsAdminOrTeacher]
+    queryset = SchemeOfWork.objects.all()
+    lookup_field = 'pk'
+    
+class DeleteMultipleSchemeOfWorkView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrHR]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = SchemeOfWork.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+     
+    
+# class Assignment
+class AssignmentView(generics.ListCreateAPIView):
+    serializer_class = AssignmentSerializer
+    permission_classes = [IsAdminOrTeacherorStudent]
+    
+    def get_queryset(self):
+        user = self.request.user
+        
+        if user.role == 'admin':
+            return Assignment.objects.all()
+        elif user.role == 'teacher':
+            return Assignment.objects.filter(teacher=user.id)
+        elif user.role == 'student':
+            try:
+                student = Student.objects.get(id=user.id)
+                student_class = student.student_class
+            except Student.DoesNotExist:
+                return Response({"error": "Student profile not found."}, status=status.HTTP_404_NOT_FOUND)
+            
+            return Assignment.objects.filter(student_class=student_class)
+        
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        if(user.role == "admin" or user.role == "teacher"):
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"error": "You do not have permission to create an assignment."}, status=status.HTTP_403_FORBIDDEN)
+        
+  
+class AssignmentRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = AssignmentSerializer
+    permission_classes = [IsAdminOrTeacher]
+    queryset = Assignment.objects.all()
+    lookup_field = 'pk'
+    
+class DeleteMultipleAssignmentView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrHR]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = Assignment.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+     
+
+class AssignmentSubmissionView(generics.ListCreateAPIView):
+    serializer_class = AssignmentSubmissionSeralizer
+    permission_classes = [IsAdminOrTeacherorStudent]
+    
+    def get_queryset(self):
+        user = self.request.user
+        teacher_assignment = self.request.data.get('teacher_assignment')
+        student = self.request.data.get('student')
+        if user.role == 'admin':
+            return AssignmentSubmission.objects.all()
+        elif user.role == 'teacher':
+            return AssignmentSubmission.objects.filter(teacher_assignment=teacher_assignment)
+        elif user.role == 'student':
+            return AssignmentSubmission.objects.filter(student=student)
+
+class AssignmentSubmissionRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = AssignmentSubmissionSeralizer
+    permission_classes = [IsAdminOrTeacher]
+    queryset = AssignmentSubmission.objects.all()
+    lookup_field = 'pk'
+    
+    
+class UpdateAssignmentSubmissionView(generics.UpdateAPIView):
+    serializer_class = UpdateAssignmentSubmissionSeralizer
+    permission_classes = [IsAdminOrTeacher]
+    
+    def get_queryset(self):
+        return AssignmentSubmission.objects.filter(pk=self.kwargs['pk'])
+    
+    def put(self, request, *args, **kwargs):   
+        student_id = request.data.get('student') 
+        student = Student.objects.get(id=student_id)
+        student_email = student.email
+        student_name = student.first_name + " " + student.last_name
+        subject =  "Assigment Submission Feedback"
+        grade = request.data.get('grade')
+        feedback = request.data.get('feedback')
+        
+        instance = self.get_object()
+        instance.grade = grade
+        instance.feedback = feedback
+        instance.save()
+        
+        
+        
+        try: 
+            html_content = render_to_string('email/assignment_feedback.html', {
+                'student_name': student_name,
+                'grade': grade,
+                'feedback': feedback,
+                'year': datetime.now().year
+            })
+            
+            send_email(to_email=student_email, message=html_content, subject=subject)
+            return Response({"message": "Feedback email sent successfully."}, status=status.HTTP_200_OK)
+        except Student.DoesNotExist:
+            return Response({"error": "Student not found."}, status=status.HTTP_404_NOT_FOUND)
+  
+class DeleteMultipleAssignmentSubmssionView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrHR]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = AssignmentSubmission.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+         
+
+class ClassTimetableView(generics.ListCreateAPIView):
+    serializer_class = ClassTimetableSerializer
+    permission_classes = [IsAdminOrTeacherorStudent]
+    
+    def get_queryset(self):
+        user = self.request.user
+        
+        if user.role == 'admin':
+            return ClassTimetable.objects.all()
+        elif user.role == 'teacher':
+            return ClassTimetable.objects.filter(teacher=user.id)
+        elif user.role == 'student':
+            try:
+                student = Student.objects.get(id=user.id)
+                student_class = student.student_class
+            except Student.DoesNotExist:
+                return Response({"error": "Student profile not found."}, status=status.HTTP_404_NOT_FOUND)
+            
+            return ClassTimetable.objects.filter(student_class=student_class)
+    
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        if(user.role == "admin" or user.role == "teacher"):
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"error": "You do not have permission to create a timetable."}, status=status.HTTP_403_FORBIDDEN)
+              
+            
+class ClassTimetableRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ClassTimetableSerializer
+    permission_classes = [IsAdminOrTeacher]
+    queryset = ClassTimetable.objects.all()
+    lookup_field = 'pk'
+    
+class DeleteMultipleClassTimetableView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrHR]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = ClassTimetable.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+    
+
+        
+       
+            
+            
+            
+            
+            

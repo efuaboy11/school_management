@@ -122,12 +122,13 @@ class Staff(Users):
     maritial_status = models.CharField(max_length=20,  blank=True, null=True, choices=MARITIAL_STATUS)
     years_of_experience = models.CharField(max_length=50, null=True, blank=True)
     computer_skills = models.CharField(max_length=20,  blank=True, null=True, choices=COMPUTER_SKILLS)
+    assigned_class = models.ForeignKey('StudentClass', on_delete=models.CASCADE, related_name="assigned_class", null=True, blank=True)
     passport = models.ImageField(upload_to="staff_passport", null=True)
     flsc = models.FileField(upload_to="staff_flsc", null=True)
     waec_neco_nabteb_gce = models.FileField(upload_to="staff_waec_neco_nabteb_gce", null=True)
     degree = models.FileField(upload_to="staff_degree", null=True)
     other_certificates = models.FileField(upload_to="staff_other_certificates", null=True)
-    teacher_speech = models.TextField(null=True, blank=True)
+    staff_speech = models.TextField(null=True, blank=True)
     
     class Meta:
         verbose_name_plural = "Staffs"
@@ -402,7 +403,55 @@ class ScratchCard(models.Model):
     
     def __str__(self):
         return f"{self.pin} - {self.trials_left} trials"
+    
+   
+   
+# Scheme work 
+class SchemeOfWork(models.Model):
+    term = models.ForeignKey(Term, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subjects, on_delete=models.CASCADE)
+    student_class = models.ForeignKey(StudentClass, on_delete=models.CASCADE)
+    scheme = models.FileField(upload_to="scheme_of_work", null=True, blank=True)
+    date = models.DateTimeField(default=timezone.now) 
+    
+    def __str__(self):
+        return f"{self.subject} - {self.student_class} - {self.term}"
 
+
+class Assignment(models.Model):
+    teacher = models.ForeignKey(Staff, on_delete=models.CASCADE, limit_choices_to={'role': 'teacher'})
+    subject = models.ForeignKey(Subjects, on_delete=models.CASCADE)
+    student_class = models.ForeignKey(StudentClass, on_delete=models.CASCADE)
+    assignment_name = models.CharField(max_length=100, null=True, blank=True)
+    assignment_code = models.CharField(unique=True, max_length=20,  blank=True)
+    instructions = models.TextField(null= True, blank=True)
+    due_date = models.DateTimeField(default=timezone.now)
+    points = models.CharField(max_length=20, null=True, blank=True)
+    assignment_file = models.FileField(upload_to="assignment_file", null=True, blank=True)
+    assignment_photo = models.ImageField(upload_to="assignment_photo", null=True, blank=True)
+    
+
+class AssignmentSubmission(models.Model):
+    teacher_assignment = models.ForeignKey(Staff, on_delete=models.CASCADE, limit_choices_to={'role': 'teacher'}, null=True, blank=True)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    assignment_code = models.CharField(unique=True, max_length=20,  blank=True)
+    submission_file = models.FileField(upload_to="assignment_submission", null=True, blank=True)
+    submission_photo = models.ImageField(upload_to="assignment_submission_photo", null=True, blank=True)
+    date_submitted = models.DateTimeField(default=timezone.now)
+    grade = models.CharField(max_length=20, null=True, blank=True)
+    feedback = models.TextField(null=True, blank=True)
+    
+    def __str__(self):
+        return f"{self.student} - {self.assignment}"
+
+class ClassTimetable(models.Model):
+    student_class = models.OneToOneField(StudentClass, on_delete=models.CASCADE,)
+    teacher = models.ForeignKey(Staff, on_delete=models.CASCADE, limit_choices_to={'role': 'teacher'})
+    class_timetable = models.FileField(upload_to="class_timetable", null=True, blank=True)  
+    created_at = models.DateTimeField(default=timezone.now) 
+    
+    def __str__(self):
+        return f"{self.student_class} - {self.subject} - {self.teacher}"
 # user profile 
 class UserProfile(models.Model):
     user = models.ForeignKey(Users, on_delete=models.CASCADE,)

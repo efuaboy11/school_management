@@ -20,6 +20,7 @@ class UsersSerializer(serializers.ModelSerializer):
         
 class StaffSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
+    userID = serializers.CharField(read_only=True)
     class Meta:
         model = Staff
         
@@ -47,8 +48,9 @@ class StaffSerializer(serializers.ModelSerializer):
             'waec_neco_nabteb_gce',
             'degree',
             'other_certificates',
-            'teacher_speech',
+            'staff_speech',
             'passport',
+            'assigned_class',
             'password'
         ]
     
@@ -61,9 +63,19 @@ class StaffSerializer(serializers.ModelSerializer):
         return staff  
         
         
-
+class ShortStaffSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Staff
+        fields = [
+            'userID',
+            'first_name',
+            'last_name',
+            'role'
+        ]
+        
 class HRSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
+    userID = serializers.CharField(read_only=True)
     class Meta:
         model = HR
         
@@ -101,6 +113,7 @@ class HRSerializer(serializers.ModelSerializer):
         
 class StudentSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
+    userID = serializers.CharField(read_only=True)
     class Meta:
         model = Student
         fields = [
@@ -135,6 +148,17 @@ class StudentSerializer(serializers.ModelSerializer):
             student.set_password(password)
         student.save()
         return student  
+        
+class ShortStudentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Student
+        fields = [
+            'userID',
+            'first_name',
+            'last_name',
+            'email',
+            'role'
+        ]   
         
         
 class ParentSerializer(serializers.ModelSerializer):
@@ -281,16 +305,38 @@ class SubjectsSerializer(serializers.ModelSerializer):
             'created_at'
         ]
     
+class ShortSubjectsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Subjects
+        fields = [
+            'name',
+        ]
+    
     
 #Student Classes    
 class StudentClassSerializer(serializers.ModelSerializer):
+    subject_name = serializers.SerializerMethodField()
     class Meta:
         model = StudentClass
         fields = [
             'id',
             'name',
             'subjects',
+            'subject_name'
         ]
+        
+        
+    def get_subject_name(self, obj):
+        subjects = obj.subjects.all()
+        serializer = ShortStudentClassSerializer(subjects, many=True)
+        return serializer.data
+   
+class ShortStudentClassSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StudentClass
+        fields = [      
+            'name',
+        ] 
   
 # Terms      
 class TermSerializer(serializers.ModelSerializer):
@@ -324,15 +370,30 @@ class SchoolNotificationSerializer(serializers.ModelSerializer):
         
 # class Notifcation
 class ClassNotificationSerializer(serializers.ModelSerializer):
+    teacher_name =  serializers.SerializerMethodField()
+    student_class_name = serializers.SerializerMethodField()
     class Meta:
         model = ClassNotification
         fields = [
             'id',
             'teacher',
+            'teacher_name',
             'student_class',
+            'student_class_name',
             'text',
             'date',
         ]
+    def get_student_class_name(self, obj):
+        student_class = obj.student_class
+        serializer = ShortStudentClassSerializer(
+            instance=student_class, many=False)
+        return serializer.data
+        
+    def get_teacher_name(self, obj):
+        teacher = obj.teacher
+        serializer = ShortStaffSerializer(
+            instance=teacher, many=False)
+        return serializer.data   
         
 # School Events
 class SchoolEventSerializer(serializers.ModelSerializer):
@@ -374,7 +435,7 @@ class SubjectResultSerializer(serializers.ModelSerializer):
     
     def get_subject_name(self, obj):
         subject = obj.subject
-        serializer = SubjectsSerializer(instance=subject, many=False)
+        serializer = ShortSubjectsSerializer(instance=subject, many=False)
         return serializer.data
     
     
@@ -428,7 +489,7 @@ class StudentResultSerializer(serializers.ModelSerializer):
         
     def get_class_name(self, obj):
         student_class = obj.student_class
-        serializer = StudentClassSerializer(
+        serializer = ShortStudentClassSerializer(
             instance=student_class, many=False)
         return serializer.data
     
@@ -451,7 +512,7 @@ class StudentResultSerializer(serializers.ModelSerializer):
     
     def get_subject_result(self, obj):
         subject_result = SubjectResult.objects.filter(student_result=obj)
-        serializer = SubjectResultSerializer(
+        serializer = ShortSubjectsSerializer(
             instance=subject_result, many=True)
         return serializer.data
     
@@ -518,5 +579,167 @@ class StudentResultSerializer(serializers.ModelSerializer):
         return instance
         
         
+class SchemeOfWorkSerializer(serializers.ModelSerializer):
+    subject_name = serializers.SerializerMethodField()
+    term_name = serializers.SerializerMethodField()
+    student_class_name = serializers.SerializerMethodField()
+    class Meta:
+        model = SchemeOfWork
+        fields = [
+            'id',
+            'subject',
+            'subject_name',
+            'term',
+            'term_name',
+            'student_class', 
+            'student_class_name',
+            'scheme',
+            'date',
+        ]
+        
+    def get_subject_name(self, obj):
+        subject = obj.subject
+        serializer = ShortSubjectsSerializer(subject, many=False)
+        return serializer.data
+    
+    def get_term_name(self, obj):
+        term = obj.term
+        serializer = TermSerializer(
+            instance=term, many=False)
+        return serializer.data
+    
+    def get_student_class_name(self, obj):
+        student_class = obj.student_class
+        serializer = ShortStudentClassSerializer(
+            instance=student_class, many=False)
+        return serializer.data
+    
+    
+
+class AssignmentSerializer(serializers.ModelSerializer):
+    teacher_name =  serializers.SerializerMethodField()
+    subject_name = serializers.SerializerMethodField()
+    class Meta:
+        model = Assignment
+        fields = [
+            "id",
+            'teacher',
+            'teacher_name',
+            'student_class',
+            'subject_name',
+            'subject',
+            'assignment_name',
+            'assignment_code',
+            'instructions',
+            'due_date',
+            'points',
+            'assignment_file',
+            'assignment_photo'
+        ] 
+        
+        
+    def get_subject_name(self, obj):
+        subject = obj.subject
+        serializer = ShortSubjectsSerializer(subject, many=False)
+        return serializer.data
+    
+    
+    def get_teacher_name(self, obj):
+        teacher = obj.teacher
+        serializer = ShortStaffSerializer(
+            instance=teacher, many=False)
+        return serializer.data   
+        
+
+class AssignmentSubmissionSeralizer(serializers.ModelSerializer):
+    teacher_name = serializers.SerializerMethodField()
+    student_name = serializers.SerializerMethodField()
+    class Meta:
+        model = AssignmentSubmission
+        fields = [
+            'id',
+            'teacher_assignment',
+            'teacher_name',
+            'assignment_code',
+            'student',
+            'student_name',
+            'date_submitted',
+            'submission_file',
+            'submission_photo',
+            'grade',
+            'feedback'
+        ]
+        
+    def get_teacher_name(self, obj):
+        teacher = obj.teacher_assignment
+        serializer = ShortStaffSerializer(
+            instance=teacher, many=False)
+        return serializer.data 
         
     
+    def get_student_name(self, obj):
+        student = obj.student
+        serializer = ShortStudentSerializer(
+            instance=student, many=False)
+        return serializer.data
+    
+
+class UpdateAssignmentSubmissionSeralizer(serializers.ModelSerializer):
+    class Meta:
+        model = AssignmentSubmission
+        fields = [
+            'student',
+            'grade',
+            'feedback',
+        ]
+        
+
+class ClassTimetableSerializer(serializers.ModelSerializer):
+    teacher_name = serializers.SerializerMethodField()
+    student_class_name = serializers.SerializerMethodField()    
+    
+    class Meta:
+        model = ClassTimetable
+        fields = [
+            'student_class',
+            'student_class_name',
+            'teacher',
+            'teacher_name',
+            'class_timetable',
+            'created_at',
+        ]
+    def get_teacher_name(self, obj):
+        teacher = obj.teacher
+        serializer = ShortStaffSerializer(
+            instance=teacher, many=False)
+        return serializer.data 
+        
+    def get_student_class_name(self, obj):
+        student_class = obj.student_class
+        serializer = ShortStudentClassSerializer(
+            instance=student_class, many=False)
+        return serializer.data
+
+
+class DeleteMultipleIDSerializer(serializers.Serializer):
+    ids = serializers.ListField(
+        child=serializers.IntegerField(), 
+        allow_empty=False
+    )
+    
+    def validate_ids(self, value):
+        if not value:
+            raise serializers.ValidationError("This field may not be empty.")
+        return value
+    
+    
+class DeleteMultipleUUIDSerializer(serializers.Serializer):
+    ids = serializers.ListField(
+        child=serializers.UUIDField(),  # Use UUIDField if your ID is UUID
+        allow_empty=False
+    )
+    
+    def validate_ids(self, value):
+        if not value:
+            raise serializers.ValidationError("This field may not be empty.")
+        return value
