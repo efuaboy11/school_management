@@ -116,3 +116,10 @@ class IsAdminOrAcademicOfficerOrStudent(permissions.BasePermission):
     def has_permission(self, request, view):
         return request.user.is_authenticated and (request.user.role in ["admin", "academic_officer", 'student'])
     
+class IsAdminOrExamOfficerOrStudent(permissions.BasePermission):
+    """
+    Custom permission to only allow admins or  exam officer to access the view.
+    """
+
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and (request.user.role in ["admin", "exam_officer", 'student'])

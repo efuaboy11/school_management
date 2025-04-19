@@ -357,6 +357,13 @@ class SessionSerializer(serializers.ModelSerializer):
             'term',
         ]
         
+class ShortSessionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Session
+        fields = [
+            'name',
+        ]
+        
 # School Notification
 class SchoolNotificationSerializer(serializers.ModelSerializer):
     class Meta:
@@ -578,7 +585,54 @@ class StudentResultSerializer(serializers.ModelSerializer):
             subject_result.delete()
         return instance
         
+# E-result
+class EResultSerializer(serializers.ModelSerializer):
+    student_name = serializers.SerializerMethodField()
+    student_class_name = serializers.SerializerMethodField()
+    term_name = serializers.SerializerMethodField()
+    session_name = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = EResult
+        fields = [
+            'id',
+            'student',
+            'student_name',
+            'student_class', 
+            'student_class_name',
+            'term',
+            'term_name',
+            'session',
+            'session_name',
+            'result',
+            'date'
+        ]
         
+    def get_student_name(self, obj):
+        student = obj.student
+        serializer = ShortStudentClassSerializer(instance=student, many=False)
+        return serializer.data
+    
+    def get_student_class_name(self, obj):
+        student_class = obj.student_class
+        serializer = ShortStudentClassSerializer(
+            instance=student_class, many=False)
+        return serializer.data
+    
+    def get_term_name(self, obj):
+        term = obj.term
+        serializer = TermSerializer(
+            instance=term, many=False)
+        return serializer.data
+    
+    def get_session_name(self, obj):
+        session = obj.session
+        serializer = ShortSessionSerializer(
+            instance=session, many=False)
+        return serializer.data
+
+
+       
 class SchemeOfWorkSerializer(serializers.ModelSerializer):
     subject_name = serializers.SerializerMethodField()
     term_name = serializers.SerializerMethodField()
@@ -743,3 +797,5 @@ class DeleteMultipleUUIDSerializer(serializers.Serializer):
         if not value:
             raise serializers.ValidationError("This field may not be empty.")
         return value
+    
+    

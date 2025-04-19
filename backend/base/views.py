@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
-from rest_framework import generics, status, permissions
+from rest_framework import generics, status, permissions, filters
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
 from .models import *
@@ -30,6 +30,8 @@ class StudentView(generics.ListCreateAPIView):
     permission_classes = [IsAdminOrHR]
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
     
     def post(self, request):
         reg_serializer = self.get_serializer(data=request.data)
@@ -81,6 +83,8 @@ class StaffView(generics.ListCreateAPIView):
     permission_classes = [IsAdminOrHR]
     queryset = Staff.objects.all()
     serializer_class = StaffSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
     
     def post(self, request):
         reg_serializer = self.get_serializer(data=request.data)
@@ -128,6 +132,8 @@ class HRView(generics.ListCreateAPIView):
     permission_classes = [IsAdminUser]
     queryset = HR.objects.all()
     serializer_class = HRSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
     
     def post(self, request):
         reg_serializer = self.get_serializer(data=request.data)
@@ -176,6 +182,8 @@ class DeleteMultipleHRView(generics.GenericAPIView):
 class TeachersView(generics.ListAPIView):
     serializer_class = StaffSerializer
     permission_classes = [IsAdminOrHR]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
     
     def get_queryset(self):
         return Staff.objects.filter(role="teacher")       
@@ -183,6 +191,8 @@ class TeachersView(generics.ListAPIView):
 class BursaryView(generics.ListAPIView):
     serializer_class = StaffSerializer
     permission_classes = [IsAdminOrHR]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
     
     def get_queryset(self):
         return Staff.objects.filter(role="bursary")
@@ -190,6 +200,8 @@ class BursaryView(generics.ListAPIView):
 class StoreKeeperView(generics.ListAPIView):
     serializer_class = StaffSerializer
     permission_classes = [IsAdminOrHR]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
     
     def get_queryset(self):
         return Staff.objects.filter(role="store_keeper")
@@ -197,6 +209,8 @@ class StoreKeeperView(generics.ListAPIView):
 class OtherStaffView(generics.ListAPIView):
     serializer_class = StaffSerializer
     permission_classes = [IsAdminOrHR]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
     
     def get_queryset(self):
         return Staff.objects.filter(role="other_staff")  
@@ -206,6 +220,8 @@ class ParentViews(generics.ListCreateAPIView):
     serializer_class = ParentSerializer
     permission_classes = [IsAdminOrHR]
     queryset = Parent.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name',  'email', 'phone_number',]
  
 class DeleteMultipleParentsView(generics.GenericAPIView):
     permission_classes = [IsAdminOrHR]
@@ -390,6 +406,8 @@ class EmailView(generics.ListCreateAPIView):
     serializer_class = EmailSerializer
     permission_classes = [IsAdminOrHR]
     queryset =   Email.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['to', 'subject', 'delivery_status', 'date']
     
     def post(self, request, *args, **kwargs):
        try:
@@ -440,6 +458,8 @@ class SubjectsView(generics.ListCreateAPIView):
     serializer_class = SubjectsSerializer
     permission_classes = [IsAuthenticated]
     queryset = Subjects.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', 'sections']
     
 class SubjectsRetriveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SubjectsSerializer
@@ -448,7 +468,7 @@ class SubjectsRetriveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
     
 class DeleteMultipleSubjectsView(generics.GenericAPIView):
-    permission_classes = [IsAdminOrHR]
+    permission_classes = [IsAdminOrAcademicOfficer]
     serializer_class = DeleteMultipleIDSerializer
     
     def post(self, request, *args, **kwargs):
@@ -463,6 +483,9 @@ class StudentClassView(generics.ListCreateAPIView):
     serializer_class = StudentClassSerializer
     permission_classes = [IsAuthenticated]
     queryset = StudentClass.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name']
+    
 
 class StudentClassRetriveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = StudentClassSerializer
@@ -487,7 +510,7 @@ class StudentClassRetriveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     
     
 class DeleteMultipleStudentClassView(generics.GenericAPIView):
-    permission_classes = [IsAdminOrHR]
+    permission_classes = [IsAdminOrAcademicOfficer]
     serializer_class = DeleteMultipleIDSerializer
     
     def post(self, request, *args, **kwargs):
@@ -505,6 +528,10 @@ class TermView(generics.ListCreateAPIView):
     serializer_class = TermSerializer
     permission_classes = [IsAuthenticated]
     queryset = Term.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name']
+    
+    
 
 class TermRetriveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TermSerializer
@@ -513,7 +540,7 @@ class TermRetriveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'                
  
 class DeleteMultipleTermView(generics.GenericAPIView):
-    permission_classes = [IsAdminOrHR]
+    permission_classes = [IsAdminOrAcademicOfficer]
     serializer_class = DeleteMultipleIDSerializer
     
     def post(self, request, *args, **kwargs):
@@ -530,6 +557,8 @@ class SessionView(generics.ListCreateAPIView):
     serializer_class = SessionSerializer
     permission_classes = [IsAuthenticated]
     queryset = Session.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name']
 
 class SessionRetriveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SessionSerializer
@@ -538,7 +567,7 @@ class SessionRetriveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'                
 
 class DeleteMultipleSessionView(generics.GenericAPIView):
-    permission_classes = [IsAdminOrHR]
+    permission_classes = [IsAdminOrAcademicOfficer]
     serializer_class = DeleteMultipleIDSerializer
     
     def post(self, request, *args, **kwargs):
@@ -552,6 +581,8 @@ class AdminorHRNotificationView(generics.ListCreateAPIView):
     serializer_class = AdminorHRNotificationSerializer
     permission_classes = [IsAdminOrHR]
     queryset = AdminorHRNotification.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['text', 'date']
     
     
 class AdminorHRNotificationRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
@@ -576,6 +607,9 @@ class SchoolNotificationView(generics.ListCreateAPIView):
     serializer_class = SchoolNotificationSerializer
     permission_classes = [IsAuthenticated]
     queryset = SchoolNotification.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['text', 'date']
+    
     
     def post(self, request, *args, **kwargs):
         user = request.user
@@ -608,6 +642,8 @@ class DeleteMultipleSchoolNotificationView(generics.GenericAPIView):
 class ClassNotificationView(generics.ListCreateAPIView):
     serializer_class = ClassNotificationSerializer
     permission_classes = [IsAdminOrTeacherorStudent]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['teacher__first_name', 'teacher__last_name', 'date']
     
     
         
@@ -698,6 +734,10 @@ class SchoolEventView(generics.ListCreateAPIView):
     serializer_class = SchoolEventSerializer
     permission_classes = [IsAuthenticated]
     queryset = SchoolEvent.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title', 'description', 'date']
+    
+    
     
     
     def post(self, request, *args, **kwargs):
@@ -714,12 +754,12 @@ class SchoolEventView(generics.ListCreateAPIView):
         
 class SchoolEventRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SchoolEventSerializer
-    permission_classes = [IsAdminOrTeacher]
+    permission_classes = [IsAdminOrHR]
     queryset = SchoolEvent.objects.all()
     lookup_field = 'pk'
     
 class DeleteMultipleSchoolEventView(generics.GenericAPIView):
-    permission_classes = [IsAdminOrTeacher]
+    permission_classes = [IsAdminOrHR]
     serializer_class = DeleteMultipleIDSerializer
     
     def post(self, request, *args, **kwargs):
@@ -800,6 +840,76 @@ class SubjectResultListCreateApiView(generics.ListCreateAPIView):
             return Response({"error": "You do not have permission to create a subject."}, status=status.HTTP_403_FORBIDDEN)
 
 
+# E-result
+class EResultView(generics.ListCreateAPIView):
+    serializer_class = EResultSerializer
+    permission_classes = [IsAdminOrExamOfficer]
+    queryset = EResult.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['student__first_name', 'student__last_name', 'student_class__name', 'term__name', 'session__name']
+    
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        
+        if(user.role == "admin" or user.role == "exam_officer"):
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"error": "You do not have permission to create a result."}, status=status.HTTP_403_FORBIDDEN)
+
+
+class EResultRetrieveUpdateDestroyApiView(generics.RetrieveUpdateDestroyAPIView):
+    queryset = EResult.objects.all()
+    serializer_class = EResultSerializer
+    lookup_field = "pk"
+    permission_classes = [IsAdminOrExamOfficer]
+    
+class CheckEResultView(generics.ListCreateAPIView):
+    permission_classes = [IsAdminOrExamOfficerOrStudent] 
+    serializer_class = EResultSerializer
+    
+    def get_queryset(self):
+        queryset = EResult.objects.all()
+        student = self.request.query_params.get('student')
+        student_class = self.request.query_params.get('student_class')
+        term = self.request.query_params.get('term')
+        session = self.request.query_params.get('session')
+
+        if not any([student, student_class, term, session]):
+            return EResult.objects.none()  # Return nothing if no filters are provided
+
+        if student:
+            queryset = queryset.filter(student=student)
+        if student_class:
+            queryset = queryset.filter(student_class=student_class)
+        if term:
+            queryset = queryset.filter(term=term)
+        if session:
+            queryset = queryset.filter(session=session)
+
+        return queryset
+    
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        if not queryset.exists():
+            return Response({"message": "No result found for this student."}, status=status.HTTP_404_NOT_FOUND)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+        
+
+class DeleteMultipleEResultView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrExamOfficer]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = EResult.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
 class SubjectResultRetrieveUpdateDestroyApiView(generics.RetrieveUpdateDestroyAPIView):
     queryset = SubjectResult.objects.all()
     serializer_class = SubjectResultSerializer
@@ -846,9 +956,19 @@ class SchemeOfWorkView(generics.ListCreateAPIView):
     serializer_class = SchemeOfWorkSerializer
     permission_classes = [IsAdminOrTeacherorStudent]
     queryset = SchemeOfWork.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['term__name', 'student_class__name', 'subject__name', 'date']
     
     def post(self, request, *args, **kwargs):
         user = request.user
+        term = request.data.get('term')  # Assuming 'term' is passed in the request data
+        student_class = request.data.get('student_class')
+        if SchemeOfWork.objects.filter(term=term, student_class=student_class).exists():
+            return Response(
+                {"error": "Scheme of work already exists for this term and class."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+            
         
         if(user.role == "admin" or user.role == "teacher"):
             serializer = self.get_serializer(data=request.data)
@@ -865,8 +985,33 @@ class SchemeOfWorkRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     queryset = SchemeOfWork.objects.all()
     lookup_field = 'pk'
     
+class FilteredSchemeOfWorkView(generics.ListAPIView):
+    permission_classes = [IsAdminOrTeacherorStudent]
+    serializer_class = SchemeOfWorkSerializer
+    
+    def get_queryset(self):
+        term = self.request.query_params.get('term')    
+        subject = self.request.query_params.get('subject')
+        student_class = self.request.query_params.get('student_class')
+        
+        if term and subject and student_class:
+            return SchemeOfWork.objects.filter(
+                term=term,
+                subject=subject,
+                student_class=student_class
+            )
+        return SchemeOfWork.objects.none()
+    
+    def list(self, request, *args, **kwargs):
+        queryset = self.get_queryset()
+        if not queryset.exists():
+            return Response({"message": "No scheme of work found for this term and class."}, status=status.HTTP_404_NOT_FOUND)
+        serializer = self.get_serializer(queryset, many=True)
+        return Response(serializer.data)
+    
+    
 class DeleteMultipleSchemeOfWorkView(generics.GenericAPIView):
-    permission_classes = [IsAdminOrHR]
+    permission_classes = [IsAdminOrTeacher]
     serializer_class = DeleteMultipleIDSerializer
     
     def post(self, request, *args, **kwargs):
@@ -881,6 +1026,9 @@ class DeleteMultipleSchemeOfWorkView(generics.GenericAPIView):
 class AssignmentView(generics.ListCreateAPIView):
     serializer_class = AssignmentSerializer
     permission_classes = [IsAdminOrTeacherorStudent]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['teacher__first_name', 'teacher__last_name', 'subject__name', 'student_class__name', 'assignment_name', 'assignment_code' 'due_date']
+    
     
     def get_queryset(self):
         user = self.request.user
@@ -916,7 +1064,7 @@ class AssignmentRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     lookup_field = 'pk'
     
 class DeleteMultipleAssignmentView(generics.GenericAPIView):
-    permission_classes = [IsAdminOrHR]
+    permission_classes = [IsAdminOrTeacher]
     serializer_class = DeleteMultipleIDSerializer
     
     def post(self, request, *args, **kwargs):
@@ -930,6 +1078,9 @@ class DeleteMultipleAssignmentView(generics.GenericAPIView):
 class AssignmentSubmissionView(generics.ListCreateAPIView):
     serializer_class = AssignmentSubmissionSeralizer
     permission_classes = [IsAdminOrTeacherorStudent]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['teacher_assignment__first_name', 'teacher_assignment__last_name', 'student__first_name', 'student__last_name', 'assignment_code', 'grade']
+    
     
     def get_queryset(self):
         user = self.request.user
@@ -986,7 +1137,7 @@ class UpdateAssignmentSubmissionView(generics.UpdateAPIView):
             return Response({"error": "Student not found."}, status=status.HTTP_404_NOT_FOUND)
   
 class DeleteMultipleAssignmentSubmssionView(generics.GenericAPIView):
-    permission_classes = [IsAdminOrHR]
+    permission_classes = [IsAdminOrTeacher]
     serializer_class = DeleteMultipleIDSerializer
     
     def post(self, request, *args, **kwargs):
@@ -1000,6 +1151,9 @@ class DeleteMultipleAssignmentSubmssionView(generics.GenericAPIView):
 class ClassTimetableView(generics.ListCreateAPIView):
     serializer_class = ClassTimetableSerializer
     permission_classes = [IsAdminOrTeacherorStudent]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['student_class__name','teacher__first_name', 'teacher__last_name']
+    
     
     def get_queryset(self):
         user = self.request.user
@@ -1035,7 +1189,7 @@ class ClassTimetableRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView)
     lookup_field = 'pk'
     
 class DeleteMultipleClassTimetableView(generics.GenericAPIView):
-    permission_classes = [IsAdminOrHR]
+    permission_classes = [IsAdminOrTeacher]
     serializer_class = DeleteMultipleIDSerializer
     
     def post(self, request, *args, **kwargs):

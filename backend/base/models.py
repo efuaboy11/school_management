@@ -404,10 +404,19 @@ class ScratchCard(models.Model):
     def __str__(self):
         return f"{self.pin} - {self.trials_left} trials"
     
-   
+
+# E-result
+class EResult(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    student_class = models.ForeignKey(StudentClass, on_delete=models.CASCADE)
+    term = models.ForeignKey(Term, on_delete=models.CASCADE)
+    session = models.ForeignKey(Session, on_delete=models.CASCADE)
+    result = models.FileField(upload_to="e_result", null=True, blank=True)
+    date = models.DateTimeField(default=timezone.now) 
    
 # Scheme work 
 class SchemeOfWork(models.Model):
+    teacher = models.ForeignKey(Staff, on_delete=models.CASCADE, limit_choices_to={'role': 'teacher'}, null=True, blank=True)
     term = models.ForeignKey(Term, on_delete=models.CASCADE)
     subject = models.ForeignKey(Subjects, on_delete=models.CASCADE)
     student_class = models.ForeignKey(StudentClass, on_delete=models.CASCADE)

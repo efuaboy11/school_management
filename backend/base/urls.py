@@ -62,6 +62,11 @@ urlpatterns = [
     path('check-result/', views.CheckStudentResultView.as_view(), name='check_result'),
     path('subject-result/', views.SubjectResultListCreateApiView.as_view(), name='subject_result'),
     path('subject-result/<str:pk>/', views.SubjectResultRetrieveUpdateDestroyApiView.as_view(), name='subject_result_details'),
+    
+    path('e-result/', views.EResultView.as_view(), name='e_result'),
+    path('e-result/<str:pk>/', views.EResultRetrieveUpdateDestroyApiView.as_view(), name='indiviual_e_result'),
+    path('delete-multiple-e-result/', views.DeleteMultipleEResultView.as_view(), name='delete_multiple_e_result'),
+    path('check-e-result/', views.CheckEResultView.as_view(), name='check_e_result'),
     # ---------------------- End -------------------------- #
         
     path('scheme-of-work/', views.SchemeOfWorkView.as_view(), name='scheme_of_work' ),
