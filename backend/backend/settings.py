@@ -176,7 +176,8 @@ EMAIL_HOST_USER = 'iseghohimhene@gmail.com'  # Your Gmail account
 EMAIL_HOST_PASSWORD = 'jebb eiik scdn rrjl'  # Your Gmail password or app-specific password
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
-
+PAYSTACK_SECRET_KEY = 'sk_test_511bdb056b1b1a109cc26e84531872c78d689ad1'
+PAYSTACK_PUBLIC_KEY = 'pk_test_2d74cfaa987ef3c33faa55144a77c169c697a02c'
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(minutes=10),

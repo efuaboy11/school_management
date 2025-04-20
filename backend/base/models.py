@@ -4,6 +4,7 @@ import string
 from django.contrib.auth.models import AbstractUser, BaseUserManager, Group, Permission
 from django.utils import timezone
 import uuid
+import secrets
 
 class Role(models.TextChoices):
     ADMIN = 'admin', "Admin"
@@ -467,4 +468,96 @@ class UserProfile(models.Model):
     
     def __str__(self):
         return f"{self.user.full_name} Profile"
-   
+    
+    
+    
+    
+
+# ------------------------------------ Account --------------------------------------#
+class PaymentMethod(models.Model):
+    name = models.CharField(max_length=100, null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(default=timezone.now) 
+    
+    def __str__(self):
+        return self.name
+    
+ 
+class SchoolFees(models.Model):
+    FEES_CHOICES = [
+        ('school fees', 'School Fees'),
+        ('P.T.A', 'P.T.A'),
+        ('acceptance fees', 'Acceptance Fees'),
+    ]
+    fee_choice = models.CharField(max_length=100, choices=FEES_CHOICES, null=True, blank=True)
+    amount = models.FloatField(null=True, blank=True)
+    session = models.ForeignKey(Session, on_delete=models.CASCADE)
+    term = models.ForeignKey(Term, on_delete=models.CASCADE)
+    student_class = models.ForeignKey(StudentClass, on_delete=models.CASCADE)
+    description = models.TextField(null=True, blank=True)
+    date = models.DateTimeField(default=timezone.now)
+    def __str__(self):
+        return f"{self.student_class} - {self.session} - {self.term}"
+    
+
+class PaymentSchoolFees(models.Model):
+    STATUS_CHOICES = [
+        ('Pending', 'Pending'),
+        ('Approved', 'Approved'),
+        ('Declined', 'Declined'),
+    ]
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    transaction_id = models.CharField(max_length=100, null=True, blank=True)
+    fee_type = models.ForeignKey(SchoolFees, on_delete=models.CASCADE)
+    payment_method = models.ForeignKey(PaymentMethod, on_delete=models.CASCADE)
+    fee_receipt = models.FileField(upload_to="bill_receipt", null=True, blank=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
+    date = models.DateTimeField(default=timezone.now) 
+    
+    def generate_transaction_id(self):
+        return secrets.token_hex(8).upper()
+    
+    def save(self, *args, **kwargs):
+        if not self.transaction_id:
+            self.transaction_id = self.generate_transaction_id()
+        super(PaymentSchoolFees, self).save(*args, **kwargs)    
+            
+
+    
+              
+class Bills(models.Model):
+    bill_name = models.CharField(max_length=100, null=True, blank=True)
+    amount = models.FloatField(null=True, blank=True)
+    description = models.TextField(null=True, blank=True)
+    created_at = models.DateTimeField(default=timezone.now) 
+    
+    def __str__(self):
+        return f"{self.bill_name}"
+    
+    
+class BillPayment(models.Model):
+    STATUS_CHOICES = [
+        ('Pending', 'Pending'),
+        ('Approved', 'Approved'),
+        ('Declined', 'Declined'),
+    ]
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    transaction_id = models.CharField(max_length=100, null=True, blank=True)
+    bill = models.ForeignKey(Bills, on_delete=models.CASCADE)
+    payment_method = models.ForeignKey(PaymentMethod, on_delete=models.CASCADE)
+    bill_receipt = models.FileField(upload_to="bill_receipt", null=True, blank=True)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
+    date = models.DateTimeField(default=timezone.now) 
+    
+    def generate_transaction_id(self):
+        return secrets.token_hex(8).upper()
+    
+    def save(self, *args, **kwargs):
+        if not self.transaction_id:
+            self.transaction_id = self.generate_transaction_id()
+        super(BillPayment, self).save(*args, **kwargs)
+       
+    
+    def __str__(self):
+        return f"{self.user} - {self.bill}"
+    

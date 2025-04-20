@@ -12,6 +12,7 @@ from datetime import datetime
 from django.template.loader import render_to_string
 from django.utils.crypto import get_random_string
 from .smpt import *
+from .paystack import *
 # Create your views here.
 @api_view(['GET'])
 def endpoints(request):
@@ -205,6 +206,24 @@ class StoreKeeperView(generics.ListAPIView):
     
     def get_queryset(self):
         return Staff.objects.filter(role="store_keeper")
+
+class ExamOfficerView(generics.ListAPIView):
+    serializer_class = StaffSerializer
+    permission_classes = [IsAdminOrHR]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
+    
+    def get_queryset(self):
+        return Staff.objects.filter(role="exam_officer")
+    
+class AcademicOfficerView(generics.ListAPIView):
+    serializer_class = StaffSerializer
+    permission_classes = [IsAdminOrHR]
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
+    
+    def get_queryset(self):
+        return Staff.objects.filter(role="academic_officer")
     
 class OtherStaffView(generics.ListAPIView):
     serializer_class = StaffSerializer
@@ -877,9 +896,6 @@ class CheckEResultView(generics.ListCreateAPIView):
         term = self.request.query_params.get('term')
         session = self.request.query_params.get('session')
 
-        if not any([student, student_class, term, session]):
-            return EResult.objects.none()  # Return nothing if no filters are provided
-
         if student:
             queryset = queryset.filter(student=student)
         if student_class:
@@ -1200,10 +1216,290 @@ class DeleteMultipleClassTimetableView(generics.GenericAPIView):
         return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
     
 
+# ------------------------------- Account ----------------------------#
+
+class InitializePaymentView(generics.GenericAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = InitializePaymentSerializer
+    
+    def post(self, request, *args, **kwargs):
+        email = request.data.get('email')
+        amount = request.data.get('amount')
+        reference = str(uuid.uuid4())
+        response = Paystack.initialize_payment(
+            email=email,
+            amount=amount,
+            reference=reference
+        )
         
+        return Response({
+            'payment_url': response['data']['authorization_url'],
+            'reference': reference,
+            'public_key': settings.PAYSTACK_PUBLIC_KEY
+        })
+
+class PaymentMethodView(generics.ListCreateAPIView):
+    serializer_class = PaymentMethodSerializer
+    permission_classes = [IsAdminOrBursaryOrStudent]
+    queryset = PaymentMethod.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', 'description']
+    
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        
+        if(user.role == "admin" or user.role == "bursary"):
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+
+class PaymentMethodRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):   
+    serializer_class = PaymentMethodSerializer
+    permission_classes = [IsAdminorBursary]
+    queryset = PaymentMethod.objects.all()
+    lookup_field = 'pk'
+    
+class DeleteMultiplePaymentMethodView(generics.GenericAPIView):
+    permission_classes = [IsAdminorBursary]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = PaymentMethod.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+        
+
+
+
+class SchoolFeesView(generics.ListCreateAPIView):
+    permission_classes = [IsAdminOrBursaryOrStudent]
+    serializer_class = SchoolFeesSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['student_class__name', 'session__name', 'term__name', 'description']
+    
+    
+    def get_queryset(self):
+        queryset = SchoolFees.objects.all()
+        student_class = self.request.query_params.get('student_class')
+        term = self.request.query_params.get('term')
+        session = self.request.query_params.get('session')
+
+
+        if student_class:
+            queryset = queryset.filter(student_class=student_class)
+        if term:
+            queryset = queryset.filter(term=term)
+        if session:
+            queryset = queryset.filter(session=session)
+
+        return queryset
+    
+    def post(self, request, *args, **kwargs):
+        fee_choice = request.data.get('fee_choice')
+        student_class = request.data.get('student_class')
+        term = request.data.get('term')
+        session = request.data.get('session')
+        
+        if SchoolFees.objects.filter(fee_choice=fee_choice, student_class=student_class, term=term, session=session).exists():
+            return Response(
+                {"error": "School fee already exists for this term and class."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
        
+
+class SchoolFeesRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = SchoolFeesSerializer
+    permission_classes = [IsAdminorBursary]
+    queryset = SchoolFees.objects.all()
+    lookup_field = 'pk'
+    
+    
+class DeleteMultipleSchoolFeesView(generics.GenericAPIView):
+    permission_classes = [IsAdminorBursary]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = SchoolFees.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)     
             
+class GetSchoolFeesAmountView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrBursaryOrStudent]
+    serializer_class = GetSchoolFeesAmountSerializer
+    
+    def post(self, request, *args, **kwargs):
+        student_class = request.data.get('student_class')
+        term = request.data.get('term')
+        session = request.data.get('session')
+        fee_type = request.data.get('fee_type')
+        
+        try:
+            school_fee = SchoolFees.objects.get(student_class=student_class, term=term, session=session, fee_choice=fee_type)
+            return Response({'id': school_fee.id, "amount": school_fee.amount}, status=status.HTTP_200_OK)
+        except SchoolFees.DoesNotExist:
+            return Response({"error": "School fee not found for the provided details."}, status=status.HTTP_404_NOT_FOUND)
+        
+        
+
+class PaymentSchoolFeesView(generics.ListCreateAPIView):
+    permission_classes = [IsAdminOrBursaryOrStudent]
+    serializer_class = PaymentSchoolFeesSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['student__first_name', 'student__last_name', 'payment_method__name', 'fee_type__fee_choice', 'fee_type__session__name', 'fee_type__term__name', 'fee_type__student_class__name' 'amount', 'date']
+    
+    def get_queryset(self):
+        queryset = PaymentSchoolFees.objects.all()
+        student = self.request.query_params.get('student')
+        payment_method = self.request.query_params.get('payment_method')
+
+        if student:
+            queryset = queryset.filter(student=student)
+        if payment_method:
+            queryset = queryset.filter(payment_method=payment_method)
+
+        return queryset
+    
+
+class PaymentSchoolFeesRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = PaymentSchoolFeesSerializer
+    permission_classes = [IsAdminorBursary]
+    queryset = PaymentSchoolFees.objects.all()
+    lookup_field = 'pk'
+    
+class DeleteMultiplePaymentSchoolFeesView(generics.GenericAPIView):
+    permission_classes = [IsAdminorBursary]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = PaymentSchoolFees.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+    
+    
+
+
+
+class PaymentSchoolFeesUpdateView(generics.RetrieveUpdateAPIView):
+    permission_classes = [IsAdminOrBursaryOrStudent]
+    serializer_class = PaymentSchoolFeesUpdateStatusSerializer
+    
+    def get_queryset(self):
+        return PaymentSchoolFees.objects.filter(pk=self.kwargs['pk'])
+    
+    def put(self, request, *args, **kwargs):
+        payment_status = request.data.get('status')
+        
+        instance = self.get_object()
+        instance.status = payment_status
+        instance.save()
+        
+        return Response({"message": "Payment status updated successfully."}, status=status.HTTP_200_OK)
+    
+    
+class BillsView(generics.ListAPIView):
+    serializer_class = BillsSerializer
+    permission_classes = [IsAdminOrBursaryOrStudent]
+    queryset = Bills.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['bill_name', 'amount']
+    
+    def post(self, request, *args, **kwargs):
+        bill_name = request.data.get('bill_name')
+        
+        if Bills.objects.filter(bill_name=bill_name).exists():
+            return Response(
+                {"error": "Bill already exists with this bill name"},
+                status=status.HTTP_400_BAD_REQUEST 
+            )
             
-            
-            
-            
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save()
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+class BillsRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = BillsSerializer
+    permission_classes = [IsAdminorBursary]
+    queryset = Bills.objects.all()
+    lookup_field = 'pk'
+    
+    
+class DeleteMultipleBillsView(generics.GenericAPIView):
+    permission_classes = [IsAdminorBursary]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = Bills.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+    
+    
+class GetBillsAmountView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrBursaryOrStudent]
+    serializer_class = GetBillsAmountSerializer
+    
+    def post(self, request, *args, **kwargs):
+        bill_name = request.data.get('bill_name')
+        
+        try:
+            bill = Bills.objects.get(bill_name=bill_name)
+            return Response({'id': bill.id, "amount": bill.amount}, status=status.HTTP_200_OK)
+        except Bills.DoesNotExist:
+            return Response({"error": "Bill not found for the provided details."}, status=status.HTTP_404_NOT_FOUND)       
+        
+
+class BillsPaymentView(generics.ListCreateAPIView):
+    serializer_class = BillPaymentSerializer
+    permission_classes = [IsAdminOrBursaryOrStudent]
+    filter_backends = [filters.SearchFilter]
+    queryset = BillPayment.objects.all()
+    search_fields = ['student__first_name', 'student__last_name', 'bill_type__bill_name', 'amount', 'status' 'date']
+    
+    
+class BillsPaymentRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = BillPaymentSerializer
+    permission_classes = [IsAdminorBursary]
+    queryset = BillPayment.objects.all()
+    lookup_field = 'pk'
+    
+class DeleteMultipleBillsPaymentView(generics.GenericAPIView):
+    permission_classes = [IsAdminorBursary]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = BillPayment.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+    
+    
+class BillsPaymentUpdateView(generics.RetrieveUpdateAPIView):
+    permission_classes = [IsAdminOrBursaryOrStudent]
+    serializer_class = BillPaymentUpdateStatusSerializer
+    
+    def get_queryset(self):
+        return BillPayment.objects.filter(pk=self.kwargs['pk'])
+    
+    def put(self, request, *args, **kwargs):
+        payment_status = request.data.get('status')
+        
+        instance = self.get_object()
+        instance.status = payment_status
+        instance.save()
+        
+        return Response({"message": "Payment status updated successfully."}, status=status.HTTP_200_OK)

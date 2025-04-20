@@ -799,3 +799,159 @@ class DeleteMultipleUUIDSerializer(serializers.Serializer):
         return value
     
     
+# ------------------------------------ Account --------------------------------------#
+class InitializePaymentSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    amount = serializers.DecimalField(max_digits=10, decimal_places=2)
+
+
+class PaymentMethodSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PaymentMethod
+        fields = [
+            'id',
+            'name',
+            'description'
+        ]
+
+
+class SchoolFeesSerializer(serializers.ModelSerializer):
+    session_name = serializers.SerializerMethodField()
+    term_name = serializers.SerializerMethodField()
+    student_class_name = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = SchoolFees
+        fields = [
+            'id',
+            'fee_choice',
+            'amount',
+            'student_class',
+            'student_class_name',
+            'session',
+            'session_name',
+            'term',
+            'term_name',
+            'description',
+            'date'
+        ]
+    
+    def get_student_class_name(self, obj):
+        student_class = obj.student_class
+        serializer = ShortStudentClassSerializer(
+            instance=student_class, many=False)
+        return serializer.data
+    
+    def get_term_name(self, obj):
+        term = obj.term
+        serializer = TermSerializer(
+            instance=term, many=False)
+        return serializer.data
+    
+    def get_session_name(self, obj):
+        session = obj.session
+        serializer = ShortSessionSerializer(
+            instance=session, many=False)
+        return serializer.data
+    
+class GetSchoolFeesAmountSerializer(serializers.Serializer):
+    fee_type = serializers.CharField()
+    session = serializers.CharField()
+    term = serializers.CharField()
+    student_class = serializers.CharField()
+
+
+class PaymentSchoolFeesSerializer(serializers.ModelSerializer):
+    student_name = serializers.SerializerMethodField()
+    fee_type_name = serializers.SerializerMethodField()
+    payment_method_name = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = PaymentSchoolFees
+        fields = [
+            'id',
+            'student',
+            'student_name',
+            'transaction_id',
+            'fee_type',
+            'fee_type_name',
+            'payment_method',
+            'payment_method_name',
+            'fee_receipt',
+            'status',
+            'date'
+        ]
+    def get_student_name(self, obj):
+        student = obj.student
+        serializer = ShortStudentSerializer(instance=student, many=False)
+        return serializer.data
+    
+    def get_fee_type_name(self, obj):
+        fee_type = obj.fee_type
+        serializer = SchoolFeesSerializer(instance=fee_type, many=False)
+        return serializer.data
+    
+    def get_payment_method_name(self, obj):
+        payment_method = obj.payment_method
+        serializer = PaymentMethodSerializer(instance=payment_method, many=False)
+        return serializer.data
+    
+class PaymentSchoolFeesUpdateStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = PaymentSchoolFees
+        fields = [
+            'status'
+        ]
+        
+        
+        
+class BillsSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Bills
+        fields = [
+            'id',
+            'bill_name',
+            'amount',
+            'description',
+            'created_at'
+        ]
+        
+        
+class GetBillsAmountSerializer(serializers.Serializer):
+    bill_type = serializers.CharField()
+
+
+class BillPaymentSerializer(serializers.ModelSerializer):
+    bill_name = serializers.SerializerMethodField()
+    student_name = serializers.SerializerMethodField()
+    class Meta:
+        model = BillPayment
+        fields = [
+            'id',
+            'student',
+            'student_name',
+            'transaction_id',
+            'bill',
+            'bill_name',
+            'payment_method',
+            'status',
+            'bill_receipt',
+            'date'
+        ]
+    
+    def get_bill_name(self, obj):  
+        bill = obj.bill
+        serializer = BillsSerializer(instance=bill, many=False)
+        return serializer.data
+    
+    def get_student_name(self, obj):
+        student = obj.student
+        serializer = ShortStudentSerializer(instance=student, many=False)
+        return serializer.data
+    
+class BillPaymentUpdateStatusSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BillPayment
+        fields = [
+            'status'
+        ]
