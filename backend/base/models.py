@@ -561,3 +561,94 @@ class BillPayment(models.Model):
     def __str__(self):
         return f"{self.user} - {self.bill}"
     
+
+
+# ------------------------------------------------- E - commerce ----------------------------------- #
+
+class ProductCategories(models.Model):
+    category_id = models.CharField(max_length=100, null=True, blank=True)
+    name = models.CharField(max_length=100, unique=True)
+    description = models.TextField(blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.name
+    
+    def generate_category_id(self):
+        return secrets.token_hex(8).upper()
+    
+    def save(self, *args, **kwargs):
+        if not self.category_id:
+            self.category_id = self.generate_category_id()
+        super(ProductCategories, self).save(*args, **kwargs)    
+            
+    
+    
+class Product(models.Model):
+    product_id = models.CharField(max_length=100, null=True, blank=True)
+    category = models.ForeignKey(ProductCategories, on_delete=models.CASCADE, related_name='products')
+    name = models.CharField(max_length=200)
+    description = models.TextField(blank=True, null=True)
+    price = models.DecimalField(max_digits=10, decimal_places=2)
+    discount_price = models.DecimalField(max_digits=10, decimal_places=2, blank=True, null=True)
+    rating = models.FloatField(default=0)
+    image = models.ImageField(upload_to='product_images/', blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return self.name
+    
+    def generate_product_id(self):
+        return secrets.token_hex(8).upper()
+    
+    def save(self, *args, **kwargs):
+        if not self.product_id:
+            self.product_id = self.generate_product_id()
+        super(Product, self).save(*args, **kwargs)    
+            
+
+  
+class FavouriteProduct(models.Model):
+    user = models.OneToOneField(Users,on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE) 
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+class Cart(models.Model):
+    user = models.ForeignKey(Users,on_delete=models.CASCADE)
+    product = models.ForeignKey(Product, on_delete=models.CASCADE)
+    quantity = models.PositiveIntegerField(default=1)
+    total_price = models.DecimalField(max_digits=10, decimal_places=2, null=True, blank=True)
+    date = models.DateTimeField(auto_now_add=True)
+    
+    def __str__(self):
+        return f"{self.quantity} of {self.product.name} in {self.user.userID}'s cart"
+    
+    def get_total_price(self):
+        price = self.product.discount_price if self.product.discount_price is not None else self.product.price
+        return self.quantity * price
+    
+    def save(self, *args, **kwargs):
+        self.total_price = self.get_total_price()
+        super(Cart, self).save(*args, **kwargs)
+    
+   
+
+class Order(models.Model):
+    STATUS_CHOICES = [
+        ('pending', 'Pending'),
+        ('processing', 'Processing'),
+        ('completed', 'Completed'),
+        ('cancelled', 'Cancelled'),
+    ]
+    
+    user =models.ForeignKey(Users, on_delete=models.CASCADE)
+    products = models.JSONField(default=list)
+    total_amount = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    created_at = models.DateTimeField(default=timezone.now)
+    
+    def __str__(self):
+        return f"Order #{self.id} - {self.user.userID}"
+    

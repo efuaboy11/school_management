@@ -169,4 +169,32 @@ urlpatterns = [
     path('bills-payment/<str:pk>/', views.BillsPaymentRetrieveUpdateDestroy.as_view(), name='indiviual_bills_payment' ),
     path('delete-multiple-bills-payment/', views.DeleteMultipleBillsPaymentView.as_view(), name='delete_multiple_bills_payment' ),
     path('bills-payment/<str:pk>/update-status/', views.BillsPaymentUpdateView.as_view(), name='update_bills_payment_status' ),
+    
+    # ------------------------------------------ E commerce ------------------------------------------ 
+    
+    # Product Categories
+    path('product-categories/', views.ProductCategoriesView.as_view(), name='product-categories'),
+    path('product-categories/<str:pk>/', views.ProductCategoriesRetrieveUpdateDestroy.as_view(), name='individual-product-categories'),
+    path('delete-multiple-product-categories/', views.DeleteMultipleProductCategoriesView.as_view(), name='delete-multiple-product-categories'),
+    
+    # Products
+    path('product/', views.ProductView.as_view(), name='product'),
+    path('product/<str:pk>/', views.ProductRetrieveUpdateDestroy.as_view(), name='individual-product'),
+    path('delete-multiple-product/', views.DeleteMultipleProductView.as_view(), name='delete-multiple-product'),
+    
+    #Favorite Products
+    path('favorite-products/', views.FavoriteProductsView.as_view(), name='favorite-products'),
+    path('favorite-products/<str:pk>/', views.FavoriteProductsRetrieveUpdateDestroy.as_view(), name='individual-favorite-products'),
+    
+    
+    
+    #Cart
+    path('cart/', views.CartView.as_view(), name='cart'),
+    path('cart/<str:pk>/', views.CartRetrieveUpdateDestroy.as_view(), name='individual-cart'),
+    path('increase-cart-product-quantity/', views.IncreaseCartProductQuantityView.as_view(), name='increase-cart-product-quantity'),
+    path('decrease-cart-product-quantity/', views.DecreaseCartProductQuantityView.as_view(), name='decrease-cart-product-quantity'),
+    path('remove-cart-product/', views.RemoveCartProductView.as_view(), name='remove-cart-product'),
+    
+    #Order
+    path('create-order/', views.CreateOrderView.as_view(), name='create-order'),
 ]

@@ -15,6 +15,7 @@ class UsersSerializer(serializers.ModelSerializer):
             'first_name',
             'last_name',
             'date_of_birth',
+            'email',
             'role',
         ]
         
@@ -775,29 +776,7 @@ class ClassTimetableSerializer(serializers.ModelSerializer):
         return serializer.data
 
 
-class DeleteMultipleIDSerializer(serializers.Serializer):
-    ids = serializers.ListField(
-        child=serializers.IntegerField(), 
-        allow_empty=False
-    )
-    
-    def validate_ids(self, value):
-        if not value:
-            raise serializers.ValidationError("This field may not be empty.")
-        return value
-    
-    
-class DeleteMultipleUUIDSerializer(serializers.Serializer):
-    ids = serializers.ListField(
-        child=serializers.UUIDField(),  # Use UUIDField if your ID is UUID
-        allow_empty=False
-    )
-    
-    def validate_ids(self, value):
-        if not value:
-            raise serializers.ValidationError("This field may not be empty.")
-        return value
-    
+
     
 # ------------------------------------ Account --------------------------------------#
 class InitializePaymentSerializer(serializers.Serializer):
@@ -955,3 +934,145 @@ class BillPaymentUpdateStatusSerializer(serializers.ModelSerializer):
         fields = [
             'status'
         ]
+        
+        
+# --------------------------------------------- E commerce ------------------------------------ #
+
+
+class ProductCategoriesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductCategories
+        fields = [
+            'id',
+            'category_id',
+            'name',
+            'description',
+            'is_active',
+            'created_at'
+        ]
+        
+class ShortProductCategoriesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductCategories
+        fields = [
+            'name',
+            'is_active'
+        ]
+        
+        
+class ProductSerializer(serializers.ModelSerializer):
+    category_name = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Product
+        fields = [
+            'id',
+            'product_id',
+            'category',
+            'category_name',
+            'name',
+            'description',
+            'price',
+            'discount_price',
+            'rating',
+            'image',
+            'is_active',
+            'created_at',
+        ]
+        
+    def get_category_name(self, obj):  
+        category = obj.category
+        serializer = ShortProductCategoriesSerializer(instance=category, many=False)
+        return serializer.data
+
+
+class FavouriteProductSerializer(serializers.ModelSerializer):
+    product_name = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = FavouriteProduct
+        fields = [
+            'id',
+            'user',
+            'product',
+            'product_name',
+            'created_at'
+        ]
+    def get_product_name(self, obj):  
+        product = obj.product
+        serializer = ProductSerializer(instance=product, many=False)
+        return serializer.data
+        
+        
+class CartSerializer(serializers.ModelSerializer):
+    product_name = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = Cart
+        fields = [
+            'id',
+            'user',
+            'product',
+            'product_name',
+            'quantity',
+            'total_price',
+        ]
+        
+        
+    def get_product_name(self, obj):  
+        product = obj.product
+        serializer = ProductSerializer(instance=product, many=False)
+        return serializer.data
+    
+    
+
+class EditingCartItemSerializer(serializers.Serializer):
+    product = serializers.IntegerField()
+    
+    
+    
+        
+        
+        
+
+
+
+class CreateOrderSerializer(serializers.Serializer):
+    ids = serializers.ListField(
+        child=serializers.IntegerField(),  # Use UUIDField if your ID is UUID
+        allow_empty=False
+    )
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+class DeleteMultipleIDSerializer(serializers.Serializer):
+    ids = serializers.ListField(
+        child=serializers.IntegerField(), 
+        allow_empty=False
+    )
+    
+    def validate_ids(self, value):
+        if not value:
+            raise serializers.ValidationError("This field may not be empty.")
+        return value
+    
+    
+class DeleteMultipleUUIDSerializer(serializers.Serializer):
+    ids = serializers.ListField(
+        child=serializers.UUIDField(),  # Use UUIDField if your ID is UUID
+        allow_empty=False
+    )
+    
+    def validate_ids(self, value):
+        if not value:
+            raise serializers.ValidationError("This field may not be empty.")
+        return value
+    

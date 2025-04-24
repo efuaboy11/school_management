@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from rest_framework.response import Response
 from rest_framework.decorators import api_view
+from rest_framework.views import APIView
 from rest_framework import generics, status, permissions, filters
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
@@ -1503,3 +1504,264 @@ class BillsPaymentUpdateView(generics.RetrieveUpdateAPIView):
         instance.save()
         
         return Response({"message": "Payment status updated successfully."}, status=status.HTTP_200_OK)
+    
+    
+
+# --------------------------------------------- E commerce ------------------------------------ #
+class ProductCategoriesView(generics.ListCreateAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = ProductCategoriesSerializer
+    queryset = ProductCategories.objects.all()
+    
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        if(user.role == "admin" or user.role == "store_keeper"):
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"error": "You do not have permission to create a notification."}, status=status.HTTP_403_FORBIDDEN)
+        
+        
+class ProductCategoriesRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ProductCategoriesSerializer
+    permission_classes = [IsAdminOrStoreKeeper]
+    queryset = ProductCategories.objects.all()
+    lookup_field = 'pk'
+    
+class DeleteMultipleProductCategoriesView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrStoreKeeper]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = ProductCategories.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+    
+    
+class ProductView(generics.ListCreateAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = ProductSerializer
+    queryset = Product.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['name', 'product_id', 'category__name', 'price', 'discount_price', 'price']
+    
+    
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        if(user.role == "admin" or user.role == "store_keeper"):
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"error": "You do not have permission to create a notification."}, status=status.HTTP_403_FORBIDDEN)
+   
+   
+class ProductRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ProductSerializer
+    permission_classes = [IsAdminOrStoreKeeper]
+    queryset = Product.objects.all()
+    lookup_field = 'pk'
+    
+    
+class DeleteMultipleProductView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrStoreKeeper]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = Product.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
+
+class FavoriteProductsView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = FavouriteProductSerializer
+    queryset = FavouriteProduct.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['product__name']
+    
+    def get_queryset(self):
+        user = self.request.user
+        return FavouriteProduct.objects.filter(user=user)
+    
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        product_id = request.data.get('product')
+        
+        if FavouriteProduct.objects.filter(user=user, product=product_id).exists():
+            return Response({"error": "Product already in favorites."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(user=user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+    
+class FavoriteProductsRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated] 
+    serializer_class = FavouriteProduct
+    queryset = FavouriteProduct.objects.all()
+    lookup_field = 'pk'        
+    
+class CartView(generics.ListCreateAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = CartSerializer
+    queryset = Cart.objects.all()
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['product__name']
+    
+    def get_queryset(self):
+        user = self.request.user
+        return Cart.objects.filter(user=user)
+    
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        product_id = request.data.get('product') 
+        
+        if Cart.objects.filter(user=user, product=product_id).exists():
+            return Response({"error": "Product already in cart."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        serializer.save(user=user)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+    
+         
+         
+class CartRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAuthenticated] 
+    serializer_class = CartSerializer
+    queryset = Cart.objects.all()
+    lookup_field = 'pk' 
+    
+class IncreaseCartProductQuantityView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]       
+    serializer_class = EditingCartItemSerializer
+    
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        product_id = request.data.get('product') 
+        
+        try:  
+            cart = Cart.objects.get(user=user, product=product_id)
+            cart.quantity += 1
+            cart.save()
+            return Response({"message": "Product quantity increased successfully."}, status=status.HTTP_200_OK)
+        except Cart.DoesNotExist:
+            Cart.objects.create(user=user, product=product_id, quantity=1)
+            return Response({"error": "Product added to cart"}, status=status.HTTP_200_OK)
+             
+    
+class DecreaseCartProductQuantityView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]       
+    serializer_class = EditingCartItemSerializer
+    
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        product_id = request.data.get('product') 
+        
+        try:
+            cart = Cart.objects.get(user=user,  product=product_id)
+        except Cart.DoesNotExist:
+            return Response({"error": "Cart item not found."}, status=status.HTTP_404_NOT_FOUND)
+        
+        if cart.quantity > 1:
+            cart.quantity -= 1
+            cart.save()
+        else:
+            cart.delete()
+            
+        return Response({"message": "Product quantity decreased successfully."}, status=status.HTTP_200_OK)
+                                                                                                                                                                                      
+class RemoveCartProductView(generics.GenericAPIView):
+    permission_classes = [IsAuthenticated]       
+    serializer_class = EditingCartItemSerializer
+    
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        product_id = request.data.get('product') 
+        
+        try:
+            cart = Cart.objects.get(user=user,  product=product_id)
+        except Cart.DoesNotExist:
+            return Response({"error": "Cart item not found."}, status=status.HTTP_404_NOT_FOUND)
+        
+        cart.delete()
+        
+        return Response({"message": "Product removed from cart successfully."}, status=status.HTTP_200_OK)                                                                                                                                                                                                                                
+                                                                                                                                                                                                                                         
+                                                                                                                                                                                                                                    
+                                                                                                                                                                                                                                         
+                                                                                                                                                                                                                                         
+                                                                                                                                                                                                                                         
+                                                                                                                                                                                                                                         
+                                                                                                                                                                                                                                         
+
+
+
+
+class CreateOrderView(APIView):
+    # serializer_class = CreateOrderSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+        user = request.user
+        cart_items = Cart.objects.filter(user=user)
+        
+        if not cart_items.exists():
+            return  Response({"error": "Cart is empty"}, status=status.HTTP_400_BAD_REQUEST)
+        
+        product_data = []
+        total_amount = 0
+        
+        for item in cart_items:
+            price = item.product.discount_price if item.product.discount_price is not None else item.product.price
+            total = item.total_price
+            
+            product_data.append({
+                "product_id": item.product.product_id,
+                "name": item.product.name,
+                "quantity": item.quantity,
+                "price": float(price),
+                "total_price" : float(total)
+            })
+            
+            total_amount += total
+            
+        reference = str(uuid.uuid4())
+        email = user.email
+        amount_in_kobo = int(total_amount * 1000)
+        
+        try:
+            paystack_response = Paystack.initialize_payment(
+                email=email,
+                amount=amount_in_kobo,
+                reference=reference    
+            )
+        except Exception as e:
+            return Response({"error": "Payment initialization failed", "details": str(e)},
+                            status=status.HTTP_502_BAD_GATEWAY)
+
+        order = Order.objects.create(
+            user=user,
+            products=product_data,
+            total_amount = total_amount,
+            status='processing'
+        )
+        cart_items.delete()
+        return Response({
+            "message": "Order created successfully",
+            "order_id": order.id,
+            "payment_url": paystack_response['data']['authorization_url'],
+            "reference": reference,
+            "public_key": settings.PAYSTACK_PUBLIC_KEY
+        }, status=status.HTTP_201_CREATED)
+            
+        
