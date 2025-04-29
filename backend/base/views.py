@@ -289,6 +289,36 @@ class LoginView(generics.GenericAPIView):
             
             token_serializer = CustomTokenObtainSerializer(data={'username': username, 'password': password})
             token_serializer.is_valid(raise_exception=True)
+            access_token = token_serializer.validated_data['access']
+            refresh_token = token_serializer.validated_data['refresh']
+            role = token_serializer.validated_data['role']
+            user_id = token_serializer.validated_data['user_id']
+            
+            response = Response({
+                "message": "Login successful",
+                "role": role,
+                "user_id": user_id
+            })
+            
+            response.set_cookie(
+                key='access_token',
+                value=access_token,
+                httponly=True,
+                secure=True,
+                samesite='Lax',
+                max_age=300  # 5 minutes
+            )
+
+            response.set_cookie(
+                key='refresh_token',
+                value=refresh_token,
+                httponly=True,
+                secure=True,
+                samesite='Lax',
+                max_age=86400  # 1 day
+            )
+
+            
             return Response(token_serializer.validated_data, status=status.HTTP_200_OK)
         except Users.DoesNotExist:
             return Response({"error": "User does not exist."}, status=status.HTTP_404_NOT_FOUND)

@@ -197,4 +197,6 @@ urlpatterns = [
     
     #Order
     path('create-order/', views.CreateOrderView.as_view(), name='create-order'),
+    
+    #
 ]

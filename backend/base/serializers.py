@@ -216,6 +216,8 @@ class CustomTokenRefreshSerializer(TokenObtainPairSerializer):
         data['access'] = str(access)
         user_id = refresh.get('user_id')
         
+        
+        
         if not user_id:
             raise AuthenticationFailed('Invalid token')
         
@@ -1075,4 +1077,7 @@ class DeleteMultipleUUIDSerializer(serializers.Serializer):
         if not value:
             raise serializers.ValidationError("This field may not be empty.")
         return value
+    
+    
+# class UserProfileSerializer(serializers.)
     

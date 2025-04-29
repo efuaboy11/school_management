@@ -469,10 +469,6 @@ class UserProfile(models.Model):
     def __str__(self):
         return f"{self.user.full_name} Profile"
     
-    
-    
-    
-
 # ------------------------------------ Account --------------------------------------#
 class PaymentMethod(models.Model):
     name = models.CharField(max_length=100, null=True, blank=True)
