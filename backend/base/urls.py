@@ -28,7 +28,7 @@ urlpatterns = [
     #store keeper
     path('store_keeper/', views.StoreKeeperView.as_view(), name='store_keeper'),
     #other staff
-    path('other_staff/', views.OtherStaffView.as_view(), name='other_staff'),
+    path('other-staff/', views.OtherStaffView.as_view(), name='other_staff'),
     #teacher
     path('teachers/', views.TeachersView.as_view(), name='teachers'),
     #academic officer
@@ -198,5 +198,7 @@ urlpatterns = [
     #Order
     path('create-order/', views.CreateOrderView.as_view(), name='create-order'),
     
-    #
+    #current User
+    path('me/', views.CurrentUserView.as_view(), name='current-user'),
+    
 ]

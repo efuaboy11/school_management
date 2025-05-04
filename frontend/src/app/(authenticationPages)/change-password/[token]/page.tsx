@@ -1,33 +1,30 @@
 'use client';
 import { useForm } from "react-hook-form";
-import React, { useContext, useState } from 'react'
+import { use } from 'react';
+import React, { useContext, useEffect, useState } from 'react'
 import Image from 'next/image';
-import "../../../css/authCss/auth.css"
+import "../../../../css/authCss/auth.css"
 import Link from 'next/link';
 import AuthContext from "@/context/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
-const Login = () => {
+const ChangePassword = ({ params }: { params: Promise<{ token: string }> }) => {
+  const { token } = use(params);
   
   const { 
     username,
-    setUsername,
     password,
-    setPassword,
+    setChangePasswordToken,
+
 
     disableButton,
-    setDisableButton,
-    loader,
-    setLoader,
 
-    alertVisible,
-    setAlertVisible,
-    isSuccess,
+    loader,
 
     usernameValidation,
     passwordValidation,
 
-    LoginUser,
+    ChangePassword,
     handlePasswordChange,
     handleUsernameChange,
 
@@ -48,16 +45,13 @@ const Login = () => {
   const {register, handleSubmit, formState: { errors, isValid }} = useForm<FormData>();
 
   const onSubmit = (data: FormData, e:any) => {
-    // if(isValid){
-    //   console.log(data)
-    //   LoginUser(e)
-    // }else{
-    //   console.log('error')
-    //   setDisableButton(false)
-    // }
-
-    LoginUser(e)
+    ChangePassword(e)
   }
+
+  useEffect(() =>{
+    setChangePasswordToken(token)
+    console.log(token)
+  }, [])
 
   return (
     <div className='container-lg py-5'>
@@ -70,19 +64,13 @@ const Login = () => {
                   <div className="d-flex align-center">
                     <div>
                       <Image  className='logo' src="/img/logo.png" alt="Logo" width={100} height={100} />
-                      <p className='pt-4 lg-text font-bold auth-header'>My School Management System</p>
-                      <p className='light-text'>"Easily manage student records, attendance, grades, and more — all in one place."</p>
-                      <p className="light-text xsm-text italic-text">"Education is the passport to the future, for tomorrow belongs to those who prepare for it today." — Malcolm X</p>
+                      <p className='pt-4 lg-text font-bold auth-header'>Modern Tools for Modern Schools</p>
+                      <p className='light-text'>"Bring teachers, students, and parents together with seamless digital solutions."</p>
+                      <p className="light-text xsm-text italic-text">"Intelligence plus character — that is the goal of true education." — Martin Luther King Jr.</p>
                     </div>
                   </div>
                 </div>
               </div>
-
-              {/* <div className="col-6 ">
-                <div style={{ position: 'relative', width: '100%', height: '580px' }}> 
-                  <Image className='border-radius-5px' src="/img/auth/login.jpg" alt="Logo" fill priority style={{ objectFit: 'cover' }} />
-                </div>
-              </div> */}
 
               <div className="col-md-6">
                 <div>
@@ -93,11 +81,11 @@ const Login = () => {
                       </div>
                     </div>
                   </div>
-                  <p className='lg-text font-bold auth-header pb-4 primary-text'>Login</p>
+                  <p className='lg-text font-bold auth-header pb-4 primary-text'>Change  Details</p>
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row g-3">
                       <div className="col-12">
-                        <label className="form-label">Username</label>
+                        <label className="form-label">New Username</label>
                         <input 
                           type="text"
                           className={`${errors.username ? 'error-input' : ''} site-input`}
@@ -115,6 +103,9 @@ const Login = () => {
                           value={username}
                           onChange={handleUsernameChange}
                           placeholder="Enter your username"
+                          autoComplete="off"
+                          autoCorrect="off"
+                          
                         />
                         {username &&(
                           <div>
@@ -140,7 +131,7 @@ const Login = () => {
                       </div>
 
                       <div className="col-12">
-                        <label className="form-label">Password</label>
+                        <label className="form-label">New Password</label>
                         <div className="password-container">
                           <input 
                             type={showPassword ? "text" : "password"}
@@ -159,6 +150,8 @@ const Login = () => {
                             value={password}
                             onChange={handlePasswordChange}
                             placeholder="Enter your password"
+                            autoComplete="off"
+                            autoCorrect="off"
                           />
                           <span className="password-icon">
                             <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} onClick={toogleShowPassword} />
@@ -224,4 +217,4 @@ const Login = () => {
   )
 }
 
-export default Login
+export default ChangePassword

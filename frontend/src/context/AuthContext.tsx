@@ -8,6 +8,8 @@ import { useRouter } from 'next/navigation';
 import validator from 'validator';
 
 interface AuthContextType {
+  authTokens: AuthTokens | null;
+  setAuthToken: (token: AuthTokens | null) => void;
   captchaToken: string | null;
   setCaptchaToken: (token: string | null) => void;  
   activateCaptcha: boolean;
@@ -18,6 +20,8 @@ interface AuthContextType {
   setUsername: (username: string) => void;
   password: string;
   setPassword: (password: string) => void;
+  changePasswordToken: string;
+  setChangePasswordToken: (token: string) => void;
   disableButton: boolean;
   setDisableButton: (disable: boolean) => void;
   loader: boolean;
@@ -40,6 +44,12 @@ interface AuthContextType {
   setIsSuccess: (success: boolean) => void;
   errorMessages: string;
   setErrorMessage: (error: string) => void;
+  forgotPasswordSuccess: boolean;
+  setForgotPasswordSuccess: (success: boolean) => void;
+  usernameValidation: { minLength: boolean; hasUppercase: boolean };
+  setUsernameValidation: (validation: { minLength: boolean; hasUppercase: boolean }) => void;
+  passwordValidation: { minLength: boolean; hasUppercase: boolean; hasSpecialChar: boolean };
+  setPasswordValidation: (validation: { minLength: boolean; hasUppercase: boolean; hasSpecialChar: boolean }) => void;
   formatDate: (dateString: string) => string;
   formateDateTime: (dateString: string) => string;
   formatCurrency: (amount: number) => string;
@@ -54,10 +64,34 @@ interface AuthContextType {
   updateDateTime: () => void;
   currentDateTime: string;
   ImageHandler: (event: any) => void; 
-  userDetails: () => void;
+  handleUsernameChange: (event:any) =>void;
+  handlePasswordChange: (event:any) =>void;
+  userDetails: (profileId: any) => Promise<void>;
   LoginUser: (e: any) => Promise<void>;
+  forgotPassword: (e: any) => Promise<void>;
+  ChangePassword: (e:any) => Promise<void>
+
 
 }
+
+type AuthTokens = {
+  access: string;
+  refresh: string;
+  role: string;
+  user_id: string
+};
+
+type DecodedUser = {
+  token_type: number;
+  exp: number;
+  iat: number;
+  jti: string;
+  user_id: string
+  profile_id: string
+  role: string
+
+  // Add more fields as needed from your JWT
+};
 
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -66,10 +100,25 @@ export default AuthContext
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [captchaToken, setCaptchaToken] = useState<any>(null);
   const [activateCaptcha, setActivateCaptcha] = useState(false)
+  const [authTokens, setAuthToken] = useState<AuthTokens | null>(() => {
+    const tokenString = typeof window !== "undefined" ?  localStorage.getItem('authTokens') : null;
+    return tokenString ? JSON.parse(tokenString) : null;
+  });
 
+
+  const [user, setUser] = useState<DecodedUser | null>(() => {
+    const tokenString = typeof window !== "undefined" ?  localStorage.getItem('authTokens') : null;
+    try {
+      return tokenString ? jwtDecode<DecodedUser>(JSON.parse(tokenString).access) : null;
+    } catch (err) {
+      return null;
+    }
+  });
+ 
   const [userProfile, setUserProfile] = useState<any>(null)
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
+  const [changePasswordToken, setChangePasswordToken] = useState('')
 
   const [disableButton, setDisableButton] = useState(false)
   const [loader, setLoader] = useState(false)
@@ -83,8 +132,22 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [isSuccess, setIsSuccess] = useState(true)
   const [errorMessages, setErrorMessage] = useState('')
 
+  const [forgotPasswordSuccess, setForgotPasswordSuccess] = useState(false)
+
   const [currentDateTime, setCurrentDateTime] = useState<string>("");
 
+  
+  const [usernameValidation, setUsernameValidation] = useState({
+    minLength: false,
+    hasUppercase: false,
+  });
+  
+  const [passwordValidation, setPasswordValidation] = useState({
+    minLength: false,
+    hasUppercase: false,
+    hasSpecialChar: false,
+  });
+  
   const router = useRouter();
 
   const formatDate = (dateString: string) => {
@@ -243,11 +306,33 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return false;
   }
 
+  const handleUsernameChange = (e:any) => {
+    const value = e.target.value;
+    setUsername(value);
+  
+    setUsernameValidation({
+      minLength: value.length >= 8,
+      hasUppercase: /[A-Z]/.test(value),
+    });
+  };
+  
+  const handlePasswordChange = (e:any) => {
+    const value = e.target.value;
+    setPassword(value);
+  
+    setPasswordValidation({
+      minLength: value.length >= 8,
+      hasUppercase: /[A-Z]/.test(value),
+      hasSpecialChar: /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(value),
+    });
+  };
+  
 
-  const userDetails = async()=>{
+
+  const userDetails = async(profileId:any)=>{
     try{
       const response = await fetch(
-        `http://127.0.0.1:8000/api/user-profile/`,
+        `http://127.0.0.1:8000/api/user-profile/${profileId ?? user?.profile_id ?? ''}/`,
         {
           method: "GET",
           credentials: "include",
@@ -284,6 +369,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     other_staff: '/other-staff/home',
   };
   console.log(disableButton)
+
+
   const LoginUser = async (e:any) => {
     e.preventDefault();
     setLoader(true)
@@ -293,7 +380,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const sanitizedPassword = validator.escape(password); 
 
     try{
-      let response = await fetch('http://127.0.0.1:8000/api/login/', {
+      let response = await fetch('http://localhost:8000/api/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -307,17 +394,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const data = await response.json();
       if(response.status === 200){
         console.log(data);
-        setMessage("Login Sucessfull")
-        showAlert()
-        setIsSuccess(true)
-        setDisableButton(false)
-        setLoader(false)
+
+        const decodedUser = jwtDecode<DecodedUser>(data.access);
+        setUser(decodedUser);
+        if(typeof window !== undefined){
+          localStorage.setItem("authTokens", JSON.stringify(data));
+        }
+       
 
         
         const route = roleRoutes[data.role];
         if (route) {
           // await userDetails()
-          // router.push(route);
+          router.push(route);
+          setMessage("Login Sucessfull")
+          showAlert()
+          setIsSuccess(true)
+          setDisableButton(false)
+          setLoader(false)
+          setUsername('')
+          setPassword('')
         } else {
           console.error('Unknown role:', data.role);
           // Maybe navigate to a default page or show an error
@@ -331,6 +427,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setDisableButton(false)
         setIsSuccess(false)
         showAlert()
+        console.log(errorMessages)
+        setLoader(false)
       }
 
 
@@ -340,13 +438,179 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       setMessage('An unexpected error occurred. Please check your email and password or contact support');
       setDisableButton(false)
       setIsSuccess(false)
+      setLoader(false)
 
     }
 
   }
 
+  const forgotPassword = async (e:any) => { 
+    e.preventDefault()
+    setLoader(true)
+    setDisableButton(true)
+
+    const sanitizedUsername = validator.escape(username);
+    
+    try{
+      let response = await fetch('http://127.0.0.1:8000/api/request-to-change-password-form/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          username: sanitizedUsername,
+        })
+      })
+
+      if(response.status === 200){
+        const data = await response.json()
+        console.log(data)
+        setMessage("success")
+        showAlert()
+        setForgotPasswordSuccess(true)
+        setIsSuccess(true)
+        setDisableButton(false)
+        setLoader(false)
+        setUsername('')
+      }else{
+        const errorData = await response.json()
+          const errorMessages = Object.values(errorData)
+          .flat()
+          .join(', ');
+        setMessage(errorMessages)
+        setDisableButton(false)
+        setIsSuccess(false)
+        setLoader(false)
+        showAlert()
+      }
+    }catch(error){
+      console.log(error)
+      showAlert()
+      setMessage('An unexpected error occurred. Please check your email and password or contact support');
+      setDisableButton(false)
+      setIsSuccess(false)
+      setLoader(false)
+    }
+  }
+
+  const ChangePassword = async(e:any) =>{
+    e.preventDefault()
+    setLoader(true)
+    setDisableButton(true)
+
+    const sanitizedUsername = validator.escape(username);
+    const sanitizedPassword = validator.escape(password); 
+    const sanitizedChangePasswordToken = validator.escape(changePasswordToken)
+
+    try{
+      let response = await fetch('http://127.0.0.1:8000/api/change-password/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          new_username: sanitizedUsername,
+          new_password: sanitizedPassword,
+          token: sanitizedChangePasswordToken,
+        })
+      })
+
+      const data = await response.json();
+      if(response.status === 200){
+        console.log(data);
+        setMessage("New login credential saved Sucessfully")
+        showAlert()
+        setIsSuccess(true)
+        setDisableButton(false)
+        setLoader(false)
+        setUsername('')
+        setPassword('')
+      }else{
+        const errorData = await response.json()
+          const errorMessages = Object.values(errorData)
+          .flat()
+          .join(', ');
+        setMessage(errorMessages)
+        setDisableButton(false)
+        setIsSuccess(false)
+        showAlert()
+        console.log(errorMessages)
+        setLoader(false)
+      }
+
+
+    }catch(error){
+      console.log(error)
+      showAlert()
+      setMessage('An unexpected error occurred. Please check your email and password or contact support');
+      setDisableButton(false)
+      setIsSuccess(false)
+      setLoader(false)
+
+    }
+  }
+
+  const LogoutUser = async() =>{
+    setLoader(true)
+    setDisableButton(true)
+
+    try{
+      let response = await fetch('http://127.0.0.1:8000/api/change-password/', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          refresh_token: authTokens?.refresh,
+        })
+      })
+
+      const data = await response.json();
+      if(response.status === 200){
+        console.log(data);
+        setMessage("Logout Successful. Hope to see you again")
+        showAlert()
+        setIsSuccess(true)
+        setDisableButton(false)
+        setLoader(false)
+        router.push('/login')
+        sessionStorage.removeItem("authTokens")
+      }else{
+        const errorData = await response.json()
+          const errorMessages = Object.values(errorData)
+          .flat()
+          .join(', ');
+        setMessage(errorMessages)
+        setDisableButton(false)
+        setIsSuccess(false)
+        showAlert()
+        console.log(errorMessages)
+        setLoader(false)
+      }
+
+
+    }catch(error){
+      console.log(error)
+      showAlert()
+      setMessage('An unexpected error occurred. Contact support');
+      setDisableButton(false)
+      setIsSuccess(false)
+      setLoader(false)
+
+    }
+  }
+
+  // useEffect(() =>{
+  //   const decoded_exp = user?.exp;
+  //   if (decoded_exp && typeof decoded_exp === 'number' && decoded_exp * 1000 < Date.now()) {
+  //     LogoutUser()
+  //   }
+  // })
+
 
   const contextData = {
+    authTokens,
+    setAuthToken,
     captchaToken,
     setCaptchaToken,
     activateCaptcha,
@@ -357,6 +621,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setUsername,
     password,
     setPassword,
+    changePasswordToken,
+    setChangePasswordToken,
     disableButton,
     setDisableButton,
     loader,
@@ -379,6 +645,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setIsSuccess,
     errorMessages,
     setErrorMessage,
+    forgotPasswordSuccess,
+    setForgotPasswordSuccess,
+    usernameValidation,
+    setUsernameValidation,
+    passwordValidation,
+    setPasswordValidation,
     formatDate,
     formateDateTime,
     formatCurrency,
@@ -393,8 +665,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     updateDateTime,
     currentDateTime,
     ImageHandler,
+    handlePasswordChange,
+    handleUsernameChange,
     userDetails,
     LoginUser,
+    forgotPassword,
+    ChangePassword,
 
     
 

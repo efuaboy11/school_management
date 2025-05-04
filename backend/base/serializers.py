@@ -279,6 +279,7 @@ class AdminorHRNotificationSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'text',
+            'seen'
             'date'
         ]
         
@@ -413,7 +414,8 @@ class SchoolEventSerializer(serializers.ModelSerializer):
             'id',
             'title',
             'description',
-            'date',
+            'start_date',
+            'end_date',
             'created_at',
         ]
         
