@@ -39,6 +39,11 @@ class CustomAccountManager(BaseUserManager):
 
 # users model
 class Users(AbstractUser):
+    
+    ACCOUNT_STATUS = [
+        ('active', 'ACTIVE'),
+        ('disabled', 'DISABLED')
+    ]
     SEX = [
         ("male", "MALE"),
         ("female", "FEMALE")
@@ -70,6 +75,7 @@ class Users(AbstractUser):
     city_or_town = models.CharField(max_length=255, blank=True, null=True)
     failed_login_attempts = models.IntegerField(default=0)
     role = models.CharField(max_length=20, choices=Role.choices, default=Role.OTHER_STAFF)
+    account_status = models.CharField(max_length=20, choices=ACCOUNT_STATUS, default='active')
     date_joined = models.DateTimeField(default=timezone.now)
     groups = models.ManyToManyField(Group, related_name="custom_user_groups", blank=True)
     user_permissions = models.ManyToManyField(Permission, related_name="custom_user_permissions", blank=True)
@@ -182,6 +188,13 @@ class DisableAccount(models.Model):
     user = models.ForeignKey(Users, on_delete=models.CASCADE,)
     reason = models.TextField(max_length=200, null=True, blank=True)
     disabled_at = models.DateTimeField(default=timezone.now) 
+    
+    def save(self, *args, **kwargs):
+        user = Users.objects.get(id=self.user.id)
+        user.account_status = 'disabled'
+        user.save()
+        super(DisableAccount, self).save(*args, **kwargs)
+        
     
 
 class RequestToChangePassword(models.Model):
@@ -499,9 +512,9 @@ class SchoolFees(models.Model):
 
 class PaymentSchoolFees(models.Model):
     STATUS_CHOICES = [
-        ('Pending', 'Pending'),
-        ('Approved', 'Approved'),
-        ('Declined', 'Declined'),
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('declined', 'Declined'),
     ]
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     transaction_id = models.CharField(max_length=100, null=True, blank=True)
@@ -534,9 +547,9 @@ class Bills(models.Model):
     
 class BillPayment(models.Model):
     STATUS_CHOICES = [
-        ('Pending', 'Pending'),
-        ('Approved', 'Approved'),
-        ('Declined', 'Declined'),
+        ('pending', 'Pending'),
+        ('approved', 'Approved'),
+        ('declined', 'Declined'),
     ]
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     transaction_id = models.CharField(max_length=100, null=True, blank=True)
@@ -648,4 +661,5 @@ class Order(models.Model):
     
     def __str__(self):
         return f"Order #{self.id} - {self.user.userID}"
+    
     

@@ -9,6 +9,8 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@emotion/react": "11.14.0",
+    "@emotion/styled": "11.14.0",
     "@fortawesome/fontawesome-svg-core": "6.7.2",
     "@fortawesome/free-solid-svg-icons": "6.7.2",
     "@fortawesome/react-fontawesome": "0.2.2",
@@ -16,11 +18,13 @@
     "@fullcalendar/interaction": "6.1.17",
     "@fullcalendar/react": "6.1.17",
     "@fullcalendar/timegrid": "6.1.17",
+    "@mui/material": "7.1.0",
     "@popperjs/core": "2.11.8",
     "axios": "1.9.0",
     "bootstrap": "5.3.5",
     "chart.js": "4.4.9",
     "jwt-decode": "4.0.0",
+    "lodash": "4.17.21",
     "next": "15.3.1",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
@@ -30,6 +34,7 @@
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3",
+    "@types/lodash": "4.17.16",
     "@types/node": "^20",
     "@types/react": "19.1.2",
     "@types/react-big-calendar": "1.16.1",

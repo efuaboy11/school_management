@@ -17,11 +17,13 @@ class UsersSerializer(serializers.ModelSerializer):
             'date_of_birth',
             'email',
             'role',
+            'account_status',
         ]
         
 class StaffSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     userID = serializers.CharField(read_only=True)
+    account_status = serializers.CharField(read_only=True)
     class Meta:
         model = Staff
         
@@ -39,6 +41,7 @@ class StaffSerializer(serializers.ModelSerializer):
             'disability',
             'disability_note',
             'city_or_town',
+            'home_address',
             'role',
             'department',
             'employment_type',
@@ -52,7 +55,9 @@ class StaffSerializer(serializers.ModelSerializer):
             'staff_speech',
             'passport',
             'assigned_class',
-            'password'
+            'password',
+            'account_status',
+            'date_joined'
         ]
     
     def create(self, validated_data):
@@ -71,12 +76,15 @@ class ShortStaffSerializer(serializers.ModelSerializer):
             'userID',
             'first_name',
             'last_name',
-            'role'
+            'role',
+            'account_status',
+            
         ]
         
 class HRSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     userID = serializers.CharField(read_only=True)
+    account_status = serializers.CharField(read_only=True)
     class Meta:
         model = HR
         
@@ -94,11 +102,14 @@ class HRSerializer(serializers.ModelSerializer):
             'disability',
             'disability_note',
             'city_or_town',
+            'home_address',
             'role',
             'office_location',
             'qualification',
             'passport',
-            'password'
+            'password',
+            'account_status',
+            'date_joined'
         ]
     
     def create(self, validated_data):
@@ -115,6 +126,8 @@ class HRSerializer(serializers.ModelSerializer):
 class StudentSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     userID = serializers.CharField(read_only=True)
+    account_status = serializers.CharField(read_only=True)
+    student_class_name = serializers.SerializerMethodField()
     class Meta:
         model = Student
         fields = [
@@ -134,12 +147,22 @@ class StudentSerializer(serializers.ModelSerializer):
             'disability',
             'disability_note',
             'city_or_town',
+            'home_address',
             'role',
             'admission_number',
             'student_class',
+            'student_class_name',
             'passport',
-            'password'
+            'password',
+            'account_status',
+            'date_joined'
         ]
+        
+    def get_student_class_name(self, obj):
+        student_class = obj.student_class
+        serializer = ShortStudentClassSerializer(
+            instance=student_class, many=False)
+        return serializer.data
         
         
     def create(self, validated_data):
@@ -158,7 +181,8 @@ class ShortStudentSerializer(serializers.ModelSerializer):
             'first_name',
             'last_name',
             'email',
-            'role'
+            'role',
+            'account_status',
         ]   
         
         
@@ -206,7 +230,7 @@ class CustomTokenObtainSerializer(TokenObtainPairSerializer):
         return token
     
     
-class CustomTokenRefreshSerializer(TokenObtainPairSerializer):
+class CustomTokenRefreshSerializer(TokenRefreshSerializer):
     def validate(self, attrs):
         data = super().validate(attrs)
         refresh = RefreshToken(attrs['refresh'])
@@ -270,6 +294,22 @@ class ChangePasswordFormSerializer(serializers.Serializer):
 class LogoutSerializer(serializers.Serializer):
     refresh_token  = serializers.CharField()
     
+class DisableAccountSerializer(serializers.ModelSerializer):
+    user_details = serializers.SerializerMethodField()
+    class Meta:
+        model = DisableAccount
+        fields = [
+            'id',
+            'user',
+            'reason',
+            'disabled_at',
+        ]
+        
+    def get_user_details(self, obj):
+        user = obj.user
+        serializer = UsersSerializer(instance=user, many=False)
+        return serializer.data
+    
     
             
 # Admin or HR Notification
@@ -279,7 +319,7 @@ class AdminorHRNotificationSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'text',
-            'seen'
+            'seen',
             'date'
         ]
         
@@ -907,6 +947,7 @@ class GetBillsAmountSerializer(serializers.Serializer):
 class BillPaymentSerializer(serializers.ModelSerializer):
     bill_name = serializers.SerializerMethodField()
     student_name = serializers.SerializerMethodField()
+    payment_method_name = serializers.SerializerMethodField()
     class Meta:
         model = BillPayment
         fields = [
@@ -917,11 +958,16 @@ class BillPaymentSerializer(serializers.ModelSerializer):
             'bill',
             'bill_name',
             'payment_method',
+            'payment_method_name',
             'status',
             'bill_receipt',
             'date'
         ]
     
+    def get_payment_method_name(self, obj):
+        payment_method = obj.payment_method
+        serializer = PaymentMethodSerializer(instance=payment_method, many=False)
+        return serializer.data
     def get_bill_name(self, obj):  
         bill = obj.bill
         serializer = BillsSerializer(instance=bill, many=False)
@@ -1079,7 +1125,4 @@ class DeleteMultipleUUIDSerializer(serializers.Serializer):
         if not value:
             raise serializers.ValidationError("This field may not be empty.")
         return value
-    
-    
-# class UserProfileSerializer(serializers.)
     

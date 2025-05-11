@@ -5,6 +5,7 @@ import FloatingAlert from "@/components/alert";
 import { useContext } from "react";
 import AuthContext from "@/context/AuthContext";
 import AdminFrame from "@/components/dashboardFrames/adminFrame";
+import { DashboardFooter } from "@/components/dashFooter";
 
 
 
@@ -15,6 +16,7 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
     isSuccess,
     messages,
     showSidebar,
+    OnbodyClick,
   } = useContext(AuthContext)!
   
   
@@ -34,9 +36,19 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
 
 
       
-      <div className={`dashboard-main-content ${showSidebar ? 'dash-sidebar-overlay': ''}`}>
-        <div className="mt-4">
-          {children}
+      <div className={`dashboard-main-content `}>
+        <div className="mt-4" onClick={OnbodyClick}>
+
+          <div>
+            {children}
+
+              {/* <DashboardFooter /> */}
+           
+
+          </div>
+  
+
+
         </div>
         
       </div>

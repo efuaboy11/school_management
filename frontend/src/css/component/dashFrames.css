@@ -23,18 +23,22 @@
   background: var(--dashboard-dropdown-link-hover);
 }
 
-.dash-sidebar-overlay{
+.dash-sidebar-overlay {
   position: fixed;
   top: 68px;
   left: 0;
   width: 100%;
   height: 100%;
-  /* background-color: rgba(225, 225, 225, 0.5); */
-  backdrop-filter: blur(4px);
-  z-index: 100;
-  transition: all 0.5s;
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px); 
+  z-index: 10000;
+  transition: all 0.3s ease-in-out;
+  background-color: rgba(255, 255, 255, 0.3); 
 }
-
+.hj{
+  position: relative;
+  z-index: -1;
+}
 .dashboard-link{
   color: var(--light-color);
   text-decoration: none;
@@ -93,8 +97,8 @@
 }
 .dashboard-main-content{
   margin-left: 300px;
-  padding-left: 20px;
-  padding-right: 20px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .dashboard-nav{
@@ -102,6 +106,24 @@
   z-index: 1000;
   padding-left: 20px;
   height: 60px;
+
+}
+.dashboard-footer {
+  position: absolute;
+  bottom: 0;
+  width: calc(100% - 315px);
+}
+
+
+
+.dahboard-table th, .dahboard-table td {
+  padding:0px 30px; /* Adjust the value for desired space */
+}
+.dahboard-table tr{
+  border-bottom: 1px solid var(--site-border-color);
+}
+.dahboard-table tbody tr:last-child{
+  border-bottom: none;
 }
 
 .nav-box-shadow{
@@ -113,6 +135,12 @@
     margin-left: 0px;
     padding-left: 0px;
     padding-right: 0px;
+  }
+
+  .dashboard-footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
   }
 
   .dashboard-sidebar {

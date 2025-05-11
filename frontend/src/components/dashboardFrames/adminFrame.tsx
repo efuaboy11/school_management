@@ -986,19 +986,22 @@ const AdminFrame = () => {
         </div>
 
         <div className={`dashboard-nav`}>
-          <div className="site-boxes border-radius-10px nav-box-shadow">
+          <div className="site-boxes border-bottom-dark border-radius-10px nav-box-shadow">
             <nav className="text-light d-flex align-items-center justify-content-between position-sticky">
               <div className="mx-3 text-light"><FontAwesomeIcon icon={faBars} onClick={toggleShowSidebar} className=" dashboard-menu-bar cursor-pointer"/></div>
               <div className="d-flex align-items-center">
-                <Link href='/' className='site-link dashboard-content-site-link'>
-                  <div className='d-flex pe-5 me-5'>
-                    <div>
-                      <FontAwesomeIcon icon={faLock}/>
+
+                <div className="d-none d-md-block">
+                  <Link href='/' className='site-link dashboard-content-site-link'>
+                    <div className='d-flex pe-5 me-5'>
+                      <div>
+                        <FontAwesomeIcon icon={faLock}/>
+                      </div>
+                      <p className='mx-2'>Visit website</p>
+                      <i className="bi bi-box-arrow-in-up-right"></i>
                     </div>
-                    <p className='mx-2'>Visit website</p>
-                    <i className="bi bi-box-arrow-in-up-right"></i>
-                  </div>
-                </Link>
+                  </Link>
+                </div>
                 <div className="dashboard-content-user-link cursor-pointer">
                   <div className="d-flex dashboard-content-user-link-hover" onClick={toggleNavDropdown}>
                     {/* <img src={userIco} width='35px' alt="" /> */}
@@ -1006,7 +1009,7 @@ const AdminFrame = () => {
                     <p className='pt-1'><FontAwesomeIcon className='xsm-text' icon={faAngleDown}/></p>
                   </div>
                   {navDropdown &&
-                    <div className="dashboard-content-user-drop-down border-radius-10px site-boxes">
+                    <div className="border-bottom-dark dashboard-content-user-drop-down border-radius-10px site-boxes">
                       <ul className=''>
                         <li className='pb-2'>
                           <Link href='/admin/change-password/step-1/' className='light-link'>

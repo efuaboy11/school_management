@@ -9,6 +9,7 @@ import AuthContext, { AuthProvider } from "@/context/AuthContext";
 import '@fortawesome/fontawesome-svg-core/styles.css'; // Prevents auto-adding CSS
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '../libs/fontawesome';
+import { AllDataProvider } from "@/context/AllData";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,14 +48,16 @@ export default function RootLayout({
       </head>
       <body className={inter.className}>
         <AuthProvider>
-          <ThemeProvider>
-            <div>
+          <AllDataProvider>
+            <ThemeProvider>
               <div>
-                <ThemeToggleButton />
+                <div>
+                  <ThemeToggleButton />
+                </div>
               </div>
-            </div>
-            {children}
-          </ThemeProvider>
+              {children}
+            </ThemeProvider>
+          </AllDataProvider>
         </AuthProvider>
 
 

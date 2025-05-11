@@ -5,6 +5,7 @@ from rest_framework.views import APIView
 from rest_framework import generics, status, permissions, filters
 from rest_framework.permissions import IsAdminUser, IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken, TokenError
+from rest_framework_simplejwt.views import TokenObtainPairView, TokenRefreshView
 from .models import *
 from .serializers import *
 from .permission import *
@@ -14,6 +15,7 @@ from django.template.loader import render_to_string
 from django.utils.crypto import get_random_string
 from .smpt import *
 from .paystack import *
+from rest_framework.filters import SearchFilter
 # Create your views here.
 @api_view(['GET'])
 def endpoints(request):
@@ -22,6 +24,13 @@ def endpoints(request):
     ]
     return Response(data)
 
+class ExactSearchFilter(SearchFilter):
+    def get_search_terms(self, request):
+        # Do not split the query by whitespace
+        params = request.query_params.get(self.search_param, '')
+        return [params]
+    
+    
 class UsersView(generics.ListAPIView):
     permission_classes = [IsAdminUser]
     queryset = Users.objects.all()
@@ -32,8 +41,8 @@ class StudentView(generics.ListCreateAPIView):
     permission_classes = [IsAdminOrHR]
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
+    filter_backends = [ExactSearchFilter]
+    search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID', 'student_class__name']
     
     def post(self, request):
         reg_serializer = self.get_serializer(data=request.data)
@@ -85,7 +94,7 @@ class StaffView(generics.ListCreateAPIView):
     permission_classes = [IsAdminOrHR]
     queryset = Staff.objects.all()
     serializer_class = StaffSerializer
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
     
     def post(self, request):
@@ -134,7 +143,7 @@ class HRView(generics.ListCreateAPIView):
     permission_classes = [IsAdminUser]
     queryset = HR.objects.all()
     serializer_class = HRSerializer
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
     
     def post(self, request):
@@ -184,7 +193,7 @@ class DeleteMultipleHRView(generics.GenericAPIView):
 class TeachersView(generics.ListAPIView):
     serializer_class = StaffSerializer
     permission_classes = [IsAdminOrHR]
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
     
     def get_queryset(self):
@@ -193,7 +202,7 @@ class TeachersView(generics.ListAPIView):
 class BursaryView(generics.ListAPIView):
     serializer_class = StaffSerializer
     permission_classes = [IsAdminOrHR]
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
     
     def get_queryset(self):
@@ -202,7 +211,7 @@ class BursaryView(generics.ListAPIView):
 class StoreKeeperView(generics.ListAPIView):
     serializer_class = StaffSerializer
     permission_classes = [IsAdminOrHR]
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
     
     def get_queryset(self):
@@ -211,7 +220,7 @@ class StoreKeeperView(generics.ListAPIView):
 class ExamOfficerView(generics.ListAPIView):
     serializer_class = StaffSerializer
     permission_classes = [IsAdminOrHR]
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
     
     def get_queryset(self):
@@ -220,7 +229,7 @@ class ExamOfficerView(generics.ListAPIView):
 class AcademicOfficerView(generics.ListAPIView):
     serializer_class = StaffSerializer
     permission_classes = [IsAdminOrHR]
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
     
     def get_queryset(self):
@@ -229,7 +238,7 @@ class AcademicOfficerView(generics.ListAPIView):
 class OtherStaffView(generics.ListAPIView):
     serializer_class = StaffSerializer
     permission_classes = [IsAdminOrHR]
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
     
     def get_queryset(self):
@@ -240,7 +249,7 @@ class ParentViews(generics.ListCreateAPIView):
     serializer_class = ParentSerializer
     permission_classes = [IsAdminOrHR]
     queryset = Parent.objects.all()
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['name',  'email', 'phone_number',]
  
 class DeleteMultipleParentsView(generics.GenericAPIView):
@@ -289,17 +298,12 @@ class LoginView(generics.GenericAPIView):
             
             token_serializer = CustomTokenObtainSerializer(data={'username': username, 'password': password})
             token_serializer.is_valid(raise_exception=True)
-            access_token = token_serializer.validated_data['access']
-            refresh_token = token_serializer.validated_data['refresh']
-            role = token_serializer.validated_data['role']
-            user_id = token_serializer.validated_data['user_id']
-            
             return Response(token_serializer.validated_data, status=status.HTTP_200_OK)
         except Users.DoesNotExist:
             return Response({"error": "User does not exist."}, status=status.HTTP_404_NOT_FOUND)
             
-class CustomRefreshTokenView(TokenRefreshSerializer):
-    serializers_class = CustomTokenRefreshSerializer
+class CustomRefreshTokenView(TokenRefreshView):
+    serializer_class = CustomTokenRefreshSerializer
     
     
 class RequestToChangePasswordFormView(generics.GenericAPIView):
@@ -425,13 +429,32 @@ class LogoutView(generics.GenericAPIView):
         except TokenError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
    
-   
+class DisableAccountView(generics.ListCreateAPIView):
+    serializer_class = DisableAccountSerializer
+    permission_classes = [IsAdminOrHR]
+    filter_backends = [ExactSearchFilter]
+    search_fields = ['user__first_name', 'user__last_name', 'reason', 'date']
+    
+    def get_queryset(self):
+        queryset = DisableAccount.objects.all()
+        user_role = self.request.query_params.get('user_role')
+        if user_role:
+            queryset = queryset.filter(user__role=user_role)
+        return queryset
+    
+class DisableAccountRetrieveDestory(generics.RetrieveDestroyAPIView):
+    serializer_class = DisableAccountSerializer
+    permission_classes = [IsAdminOrHR]
+    queryset =   DisableAccount.objects.all()
+    lookup_field = 'pk'
+    
+
 # Email         
 class EmailView(generics.ListCreateAPIView):
     serializer_class = EmailSerializer
     permission_classes = [IsAdminOrHR]
     queryset =   Email.objects.all()
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['to', 'subject', 'delivery_status', 'date']
     
     def post(self, request, *args, **kwargs):
@@ -483,7 +506,7 @@ class SubjectsView(generics.ListCreateAPIView):
     serializer_class = SubjectsSerializer
     permission_classes = [IsAuthenticated]
     queryset = Subjects.objects.all()
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['name', 'sections']
     
 class SubjectsRetriveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
@@ -508,7 +531,7 @@ class StudentClassView(generics.ListCreateAPIView):
     serializer_class = StudentClassSerializer
     permission_classes = [IsAuthenticated]
     queryset = StudentClass.objects.all()
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['name']
     
 
@@ -553,7 +576,7 @@ class TermView(generics.ListCreateAPIView):
     serializer_class = TermSerializer
     permission_classes = [IsAuthenticated]
     queryset = Term.objects.all()
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['name']
     
     
@@ -582,7 +605,7 @@ class SessionView(generics.ListCreateAPIView):
     serializer_class = SessionSerializer
     permission_classes = [IsAuthenticated]
     queryset = Session.objects.all()
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['name']
 
 class SessionRetriveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
@@ -606,7 +629,7 @@ class AdminorHRNotificationView(generics.ListCreateAPIView):
     serializer_class = AdminorHRNotificationSerializer
     permission_classes = [IsAdminOrHR]
     queryset = AdminorHRNotification.objects.all()
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['text', 'date']
     
     
@@ -632,7 +655,7 @@ class SchoolNotificationView(generics.ListCreateAPIView):
     serializer_class = SchoolNotificationSerializer
     permission_classes = [IsAuthenticated]
     queryset = SchoolNotification.objects.all()
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['text', 'date']
     
     
@@ -667,7 +690,7 @@ class DeleteMultipleSchoolNotificationView(generics.GenericAPIView):
 class ClassNotificationView(generics.ListCreateAPIView):
     serializer_class = ClassNotificationSerializer
     permission_classes = [IsAdminOrTeacherorStudent]
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['teacher__first_name', 'teacher__last_name', 'date']
     
     
@@ -759,7 +782,7 @@ class SchoolEventView(generics.ListCreateAPIView):
     serializer_class = SchoolEventSerializer
     permission_classes = [IsAuthenticated]
     queryset = SchoolEvent.objects.all()
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['title', 'description', 'date']
     
     
@@ -870,7 +893,7 @@ class EResultView(generics.ListCreateAPIView):
     serializer_class = EResultSerializer
     permission_classes = [IsAdminOrExamOfficer]
     queryset = EResult.objects.all()
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['student__first_name', 'student__last_name', 'student_class__name', 'term__name', 'session__name']
     
     def post(self, request, *args, **kwargs):
@@ -978,7 +1001,7 @@ class SchemeOfWorkView(generics.ListCreateAPIView):
     serializer_class = SchemeOfWorkSerializer
     permission_classes = [IsAdminOrTeacherorStudent]
     queryset = SchemeOfWork.objects.all()
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['term__name', 'student_class__name', 'subject__name', 'date']
     
     def post(self, request, *args, **kwargs):
@@ -1048,7 +1071,7 @@ class DeleteMultipleSchemeOfWorkView(generics.GenericAPIView):
 class AssignmentView(generics.ListCreateAPIView):
     serializer_class = AssignmentSerializer
     permission_classes = [IsAdminOrTeacherorStudent]
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['teacher__first_name', 'teacher__last_name', 'subject__name', 'student_class__name', 'assignment_name', 'assignment_code' 'due_date']
     
     
@@ -1100,7 +1123,7 @@ class DeleteMultipleAssignmentView(generics.GenericAPIView):
 class AssignmentSubmissionView(generics.ListCreateAPIView):
     serializer_class = AssignmentSubmissionSeralizer
     permission_classes = [IsAdminOrTeacherorStudent]
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['teacher_assignment__first_name', 'teacher_assignment__last_name', 'student__first_name', 'student__last_name', 'assignment_code', 'grade']
     
     
@@ -1173,7 +1196,7 @@ class DeleteMultipleAssignmentSubmssionView(generics.GenericAPIView):
 class ClassTimetableView(generics.ListCreateAPIView):
     serializer_class = ClassTimetableSerializer
     permission_classes = [IsAdminOrTeacherorStudent]
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['student_class__name','teacher__first_name', 'teacher__last_name']
     
     
@@ -1248,7 +1271,7 @@ class PaymentMethodView(generics.ListCreateAPIView):
     serializer_class = PaymentMethodSerializer
     permission_classes = [IsAdminOrBursaryOrStudent]
     queryset = PaymentMethod.objects.all()
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['name', 'description']
     
     def post(self, request, *args, **kwargs):
@@ -1284,7 +1307,7 @@ class DeleteMultiplePaymentMethodView(generics.GenericAPIView):
 class SchoolFeesView(generics.ListCreateAPIView):
     permission_classes = [IsAdminOrBursaryOrStudent]
     serializer_class = SchoolFeesSerializer
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['student_class__name', 'session__name', 'term__name', 'description']
     
     
@@ -1360,21 +1383,94 @@ class GetSchoolFeesAmountView(generics.GenericAPIView):
 class PaymentSchoolFeesView(generics.ListCreateAPIView):
     permission_classes = [IsAdminOrBursaryOrStudent]
     serializer_class = PaymentSchoolFeesSerializer
-    filter_backends = [filters.SearchFilter]
-    search_fields = ['student__first_name', 'student__last_name', 'payment_method__name', 'fee_type__fee_choice', 'fee_type__session__name', 'fee_type__term__name', 'fee_type__student_class__name' 'amount', 'date']
+    filter_backends = [ExactSearchFilter]
+    search_fields =['student__first_name', 'student__last_name', 'payment_method__name', 'fee_type__fee_choice', 'fee_type__session__name', 'fee_type__term__name', 'fee_type__student_class__name', 'fee_type__amount', 'date']
     
     def get_queryset(self):
-        queryset = PaymentSchoolFees.objects.all()
-        student = self.request.query_params.get('student')
-        payment_method = self.request.query_params.get('payment_method')
+        user = self.request.user
+        student_id = user.id
+        if user.role == 'admin' or user.role == 'bursary':
+            queryset = PaymentSchoolFees.objects.all()
+            student = self.request.query_params.get('student')
+            payment_method = self.request.query_params.get('payment_method')
 
-        if student:
-            queryset = queryset.filter(student=student)
-        if payment_method:
-            queryset = queryset.filter(payment_method=payment_method)
+            if student:
+                queryset = queryset.filter(student=student)
+            if payment_method:
+                queryset = queryset.filter(payment_method=payment_method)
 
-        return queryset
+            return queryset
+        return PaymentSchoolFees.objects.filter(student=student_id)
+        
+     
+class PendingPaymentSchoolFeesView(generics.ListAPIView):
+    permission_classes = [IsAdminOrBursaryOrStudent]
+    serializer_class = PaymentSchoolFeesSerializer
+    filter_backends = [ExactSearchFilter]
+    search_fields =['student__first_name', 'student__last_name', 'payment_method__name', 'fee_type__fee_choice', 'fee_type__session__name', 'fee_type__term__name', 'fee_type__student_class__name', 'fee_type__amount', 'date']
     
+    def get_queryset(self):
+        user = self.request.user
+        student_id = user.id
+        if user.role == 'admin' or user.role == 'bursary':
+            queryset = PaymentSchoolFees.objects.filter(status='pending')
+            student = self.request.query_params.get('student')
+            payment_method = self.request.query_params.get('payment_method')
+
+            if student:
+                queryset = queryset.filter(student=student, status='pending')
+            if payment_method:
+                queryset = queryset.filter(payment_method=payment_method, status='pending')
+
+            return queryset 
+        return PaymentSchoolFees.objects.filter(student=student_id, status='pending')
+    
+        
+class DeclinedPaymentSchoolFeesView(generics.ListAPIView):
+    permission_classes = [IsAdminOrBursaryOrStudent]
+    serializer_class = PaymentSchoolFeesSerializer
+    filter_backends = [ExactSearchFilter]
+    search_fields =['student__first_name', 'student__last_name', 'payment_method__name', 'fee_type__fee_choice', 'fee_type__session__name', 'fee_type__term__name', 'fee_type__student_class__name', 'fee_type__amount', 'date']
+    
+    def get_queryset(self):
+        user = self.request.user
+        student_id = user.id
+        if user.role == 'admin' or user.role == 'bursary':
+            queryset = PaymentSchoolFees.objects.filter(status='declined')
+            student = self.request.query_params.get('student')
+            payment_method = self.request.query_params.get('payment_method')
+
+            if student:
+                queryset = queryset.filter(student=student, status='declined')
+            if payment_method:
+                queryset = queryset.filter(payment_method=payment_method, status='declined')
+
+            return queryset 
+        return PaymentSchoolFees.objects.filter(student=student_id, status='declined')   
+    
+    
+    
+class ApprovedPaymentSchoolFeesView(generics.ListAPIView):
+    permission_classes = [IsAdminOrBursaryOrStudent]
+    serializer_class = PaymentSchoolFeesSerializer
+    filter_backends = [ExactSearchFilter]
+    search_fields =['student__first_name', 'student__last_name', 'payment_method__name', 'fee_type__fee_choice', 'fee_type__session__name', 'fee_type__term__name', 'fee_type__student_class__name', 'fee_type__amount', 'date']
+    
+    def get_queryset(self):
+        user = self.request.user
+        student_id = user.id
+        if user.role == 'admin' or user.role == 'bursary':
+            queryset = PaymentSchoolFees.objects.filter(status='approved')
+            student = self.request.query_params.get('student')
+            payment_method = self.request.query_params.get('payment_method')
+
+            if student:
+                queryset = queryset.filter(student=student, status='approved')
+            if payment_method:
+                queryset = queryset.filter(payment_method=payment_method, status='approved')
+
+            return queryset
+        return PaymentSchoolFees.objects.filter(student=student_id, status='approved')         
 
 class PaymentSchoolFeesRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PaymentSchoolFeesSerializer
@@ -1418,7 +1514,7 @@ class BillsView(generics.ListAPIView):
     serializer_class = BillsSerializer
     permission_classes = [IsAdminOrBursaryOrStudent]
     queryset = Bills.objects.all()
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['bill_name', 'amount']
     
     def post(self, request, *args, **kwargs):
@@ -1471,11 +1567,95 @@ class GetBillsAmountView(generics.GenericAPIView):
 class BillsPaymentView(generics.ListCreateAPIView):
     serializer_class = BillPaymentSerializer
     permission_classes = [IsAdminOrBursaryOrStudent]
-    filter_backends = [filters.SearchFilter]
-    queryset = BillPayment.objects.all()
+    filter_backends = [ExactSearchFilter]
+    search_fields = ['student__first_name', 'student__last_name', 'bill__bill_name', 'bill__amount', 'status', 'date']
+    
+    def get_queryset(self):
+        user = self.request.user
+        
+        if user.role == 'admin' or user.role == 'bursary':
+            queryset = BillPayment.objects.all()
+            student = self.request.query_params.get('student')
+            bill_type = self.request.query_params.get('bill_type')
+
+            if student:
+                queryset = queryset.filter(student=student)
+            if bill_type:
+                queryset = queryset.filter(bill_type=bill_type)
+
+            return queryset
+        return BillPayment.objects.filter(student=user.id)
+    
+    
+class PendingBillsPaymentView(generics.ListAPIView):
+    permission_classes = [IsAdminOrBursaryOrStudent]
+    serializer_class = BillPaymentSerializer
+    filter_backends = [ExactSearchFilter]
     search_fields = ['student__first_name', 'student__last_name', 'bill_type__bill_name', 'amount', 'status' 'date']
     
+    def get_queryset(self):
+        user = self.request.user
+        
+        if user.role == 'admin' or user.role == 'bursary':
+            queryset = BillPayment.objects.filter(status='pending')
+            student = self.request.query_params.get('student')
+            bill_type = self.request.query_params.get('bill_type')
+
+            if student:
+                queryset = queryset.filter(student=student, status='pending')
+            if bill_type:
+                queryset = queryset.filter(bill_type=bill_type, status='pending')
+
+            return queryset 
+        return BillPayment.objects.filter(student=user.id, status='pending')
     
+    
+class DeclinedBillsPaymentView(generics.ListAPIView):
+    permission_classes = [IsAdminOrBursaryOrStudent]
+    serializer_class = BillPaymentSerializer
+    filter_backends = [ExactSearchFilter]
+    search_fields = ['student__first_name', 'student__last_name', 'bill_type__bill_name', 'amount', 'status' 'date']
+    
+    def get_queryset(self):
+        user = self.request.user
+        
+        if user.role == 'admin' or user.role == 'bursary':
+            queryset = BillPayment.objects.filter(status='declined')
+            student = self.request.query_params.get('student')
+            bill_type = self.request.query_params.get('bill_type')
+
+            if student:
+                queryset = queryset.filter(student=student, status='declined')
+            if bill_type:
+                queryset = queryset.filter(bill_type=bill_type, status='declined')
+
+            return queryset 
+        return BillPayment.objects.filter(student=user.id, status='declined')
+    
+
+class ApprovedBillsPaymentView(generics.ListAPIView):
+    permission_classes = [IsAdminOrBursaryOrStudent]
+    serializer_class = BillPaymentSerializer
+    filter_backends = [ExactSearchFilter]
+    search_fields = ['student__first_name', 'student__last_name', 'bill_type__bill_name', 'amount', 'status' 'date']
+    
+    def get_queryset(self):
+        user = self.request.user
+        
+        if user.role == 'admin' or user.role == 'bursary':
+            queryset = BillPayment.objects.filter(status='approved')
+            student = self.request.query_params.get('student')
+            bill_type = self.request.query_params.get('bill_type')
+
+            if student:
+                queryset = queryset.filter(student=student, status='approved')
+            if bill_type:
+                queryset = queryset.filter(bill_type=bill_type, status='approved')
+
+            return queryset 
+        return BillPayment.objects.filter(student=user.id, status='approved')
+    
+
 class BillsPaymentRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BillPaymentSerializer
     permission_classes = [IsAdminorBursary]
@@ -1551,7 +1731,7 @@ class ProductView(generics.ListCreateAPIView):
     permission_classes = [AllowAny]
     serializer_class = ProductSerializer
     queryset = Product.objects.all()
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['name', 'product_id', 'category__name', 'price', 'discount_price', 'price']
     
     
@@ -1589,7 +1769,7 @@ class FavoriteProductsView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = FavouriteProductSerializer
     queryset = FavouriteProduct.objects.all()
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['product__name']
     
     def get_queryset(self):
@@ -1619,7 +1799,7 @@ class CartView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = CartSerializer
     queryset = Cart.objects.all()
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [ExactSearchFilter]
     search_fields = ['product__name']
     
     def get_queryset(self):

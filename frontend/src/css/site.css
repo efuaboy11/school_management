@@ -12,13 +12,28 @@ ul,  li{
 p, h1, h2, h3, h4, h5, h6{
   padding: 0px;
   margin: 0px;
+  font-weight: normal;
 }
 
+table{
+  width: 100%;
+}
+
+
+th {
+  font-weight: normal;
+}
 .site-boxes{
     background-color:  var(--box-bg);
     color: var(--text-color);
     transition: background-color 0.3s, color 0.3s;
 
+}
+
+.site-light-boxes{
+  background-color:  var(--dashboard-dropdown);
+  color: var(--text-color);
+  transition: background-color 0.3s, color 0.3s;
 }
 
 /* Stylish Input */
@@ -39,6 +54,66 @@ p, h1, h2, h3, h4, h5, h6{
   border-color: var(--primary-color);
   box-shadow: 0 0 0 4px rgba(120, 62, 188, 0.2); /* nice glowing focus effect */
 }
+
+
+.site-search-input {
+  width: 100%;
+  padding: 5px 10px;
+  border: 1px solid var(--input-border-color);
+  border-radius: 5px;
+  background-color: var(--box-bg);
+  color: var(--text-color); 
+  transition: border-color 0.3s, background-color 0.3s, color 0.3s;
+  outline: none;
+}
+
+/* Focus state */
+.site-search-input:focus {
+  
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 4px rgba(120, 62, 188, 0.2); /* nice glowing focus effect */
+}
+
+.custom-checkbox input {
+  display: none; /* Hide native checkbox */
+}
+
+.custom-checkbox .checkmark {
+  width: 20px;
+  height: 20px;
+  display: inline-block;
+  background-color: var(--box-bg); /* Your desired background */
+  border: 1px solid var(--input-border-color);
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  position: relative;
+}
+
+/* When checked */
+.custom-checkbox input:checked + .checkmark {
+  background-color: var(--your-checked-color); /* Color when checked */
+}
+
+/* Optional: Add a tick or visual cue */
+.custom-checkbox .checkmark::after {
+  content: '';
+  position: absolute;
+  display: none;
+  left: 6px;
+  top: 2px;
+  width: 5px;
+  height: 10px;
+  border: solid var(--text-color);
+  border-width: 0 2px 2px 0;
+  transform: rotate(45deg);
+}
+
+/* Show tick when checked */
+.custom-checkbox input:checked + .checkmark::after {
+  display: block;
+}
+
+
 
 .form-label {
     font-weight: 600;
@@ -68,6 +143,53 @@ p, h1, h2, h3, h4, h5, h6{
   color: var(--primary-color);
   border-color: var(--primary-color);
 }
+
+
+.site-inverse-btn {
+  display: flex;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  border-radius: 8px;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s, transform 0.3s;
+  
+}
+
+.site-inverse-btn:hover {
+  background-color: var(--primary-color);
+  border: 1px solid var(--primary-color);
+  color: #fff
+
+}
+
+
+.site-delete-btn {
+  display: flex;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--error-color);
+  border: 1px solid var(--error-color);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s, transform 0.3s;
+}
+
+.site-delete-btn:hover {
+  background-color: transparent;
+  color: var(--error-color);
+  border-color: var(--error-color);
+}
+
 
 .site-submit-btn-visiblity {
   visibility: hidden;
@@ -105,6 +227,150 @@ p, h1, h2, h3, h4, h5, h6{
   align-items: center;
 }
 
+.site-content-loader{
+  width: 50px; 
+  height: 50px; 
+  border: 5px solid var(--light-color); 
+  border-top-color: #333;
+  border-radius: 50%;
+  animation: spin 1s infinite linear;
+}
+
+.site-border{
+  border: 1px solid var(--site-border-color);
+}
+
+.site-successful-dot{
+  width: 8px;
+  height: 8px;
+  background-color: var(--sucessful-color);
+  border-radius: 50%;
+}
+
+.site-pending-dot{
+  width: 8px;
+  height: 8px;
+  background-color: var(--pending-color);
+  border-radius: 50%;
+}
+
+.site-declined-dot{
+  width: 8px;
+  height: 8px;
+  background-color: var(--declined-color);
+  border-radius: 50%;
+}
+
+
+.site-completed-dot{
+  width: 8px;
+  height: 8px;
+  background-color: var(--completed-color);
+  border-radius: 50%;
+}
+
+
+
+
+.site-successful-border{
+  border: 1px solid var(--sucessful-color);
+}
+
+.site-pending-border{
+  border: 1px solid var(--pending-color);
+}
+
+.site-declined-border{
+  border: 1px solid var(--declined-color);
+}
+
+
+.site-completed-border{
+  border: 1px solid var(--completed-color);
+}
+
+
+.site-modal-content
+{
+  padding: 20px;
+  background-color: var(--box-bg);
+  border-radius: 10px;
+  width:100%;
+  max-height: 90vh;
+  color: inherit;
+  transition: all 0.5s ease-in-out;
+  transform: translateY(-50px);
+}
+
+.site-modal-conatiner{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+/* Show modal - fade in and slide from above slightly */
+.show-modal {
+  transform: translateY(0);;
+
+}
+
+/* Hide modal - fade out and slide back up */
+.hide-modal {
+  pointer-events: none;
+  transform: translateY(-50px);
+}
+
+
+/* site loader */
+.book-loader {
+  display: flex;
+  justify-content: center; 
+  gap: 20px;
+}
+
+.book {
+  width: 30px;
+  height: 60px;
+  border-radius: 4px;
+  animation: bounce 1.2s infinite ease-in-out;
+  transform-origin: bottom center;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+/* Book Colors */
+.book.red {
+  background-color: #e63946;
+  animation-delay: 0s;
+}
+.book.blue {
+  background-color: #457b9d;
+  animation-delay: 0.2s;
+}
+.book.green {
+  background-color: #2a9d8f;
+  animation-delay: 0.4s;
+}
+
+
+@keyframes bounce {
+  0%, 100% {
+    transform: translateY(0) rotate(0deg);
+  }
+  50% {
+    transform: translateY(-30px) rotate(-10deg);
+  }
+}
+
+
+@keyframes spin {
+  0% {
+      transform: rotate(0deg);
+  }
+  100% {
+      transform: rotate(360deg);
+  }
+}
 @keyframes submitspin {
   from {
     transform: rotate(0deg);
@@ -112,5 +378,10 @@ p, h1, h2, h3, h4, h5, h6{
   to {
     transform: rotate(360deg);
   }
+}
+
+
+@media screen and (max-width: 700px){
+
 }
 

@@ -1,6 +1,10 @@
-import { createContext, useContext, useEffect, useState } from "react";
+"use client"
+
+import {useCallback, createContext, useContext, useEffect, useState } from "react";
+import { debounce } from "lodash";
 import AuthContext from "./AuthContext";
 import { ReactNode } from "react";
+import { set } from "react-hook-form";
 
 interface AllDataContextTye{
 
@@ -15,6 +19,32 @@ interface AllDataContextTye{
   setStudentLoader: (loader: boolean) => void
   studentSearch: string
   setStudentSearch: (loader: string) => void
+
+  // teacher
+  teacherCount: number
+  setTeacherCount: (count: number) => void
+  recentTeacher: any[]
+  setRecentTeacher: (data: any[]) => void
+  teacherData: any[]
+  setTeacherData:(data: any[]) => void
+  teacherLoader: boolean
+  setTeacherLoader: (loader: boolean) => void
+  teacherSearch: string
+  setTeacherSearch: (loader: string) => void
+
+
+  // parent
+  parentCount: number
+  setParentCount: (count: number) => void
+  recentParent: any[]
+  setRecentParent: (data: any[]) => void
+  parentData: any[]
+  setParentData:(data: any[]) => void
+  parentLoader: boolean
+  setParentLoader: (loader: boolean) => void
+  parentSearch: string
+  setParentSearch: (loader: string) => void
+
 
   // Staff
   staffCount: number
@@ -127,14 +157,27 @@ interface AllDataContextTye{
   // session
   sessionCount: number
   setSessionCount: (count: number) => void
-  currentsession: any[]
-  setCurentSession: (data: any[]) => void
+  currentsession: any
+  setCurentSession: (data: any) => void
   sessionData: any[]
   setSessionData:(data: any[]) => void
   sessionLoader: boolean
   setSessionLoader: (loader: boolean) => void
   sessionSearch: string
   setSessionSearch: (loader: string) => void
+
+  // student class
+  studentClassCount: number
+  setStudentClassCount: (count: number) => void
+  recentStudentClass: any[]
+  setRecentStudentClass: (data: any[]) => void
+  studentClassData: any[]
+  setStudentClassData:(data: any[]) => void
+  studentClassLoader: boolean
+  setStudentClassLoader: (loader: boolean) => void
+  studentClassSearch: string
+  setStudentClassSearch: (loader: string) => void
+
 
   // admin or hr notifcation
   adminHrNotificationCount: number
@@ -283,6 +326,8 @@ interface AllDataContextTye{
   // sucess school fees payment
   sucessSchoolFeesPaymentCount: number
   setSucessSchoolFeesPaymentCount: (count: number) => void
+  totalSucessSchoolFeesPayment: number
+  setTotalSucessSchoolFeesPayment: (count: number) => void
   recentSucessSchoolFeesPayment: any[]
   setRecentSucessSchoolFeesPayment: (data: any[]) => void
   sucessSchoolFeesPaymentData: any[]
@@ -317,41 +362,56 @@ interface AllDataContextTye{
   billsSearch: string
   setBillsSearch: (loader: string) => void
 
+  // bills payment
+  billsPaymentCount: number
+  setBillsPaymentCount: (count: number) => void
+  recentBillsPayment: any[]
+  setRecentBillsPayment: (data: any[]) => void
+  billsPaymentData: any[]
+  setBillsPaymentData:(data: any[]) => void
+  billsPaymentLoader: boolean
+  setBillsPaymentLoader: (loader: boolean) => void
+  billsPaymentSearch: string
+  setBillsPaymentSearch: (loader: string) => void
+
+
   // pending bills
-  pendingBillsCount: number
-  setPendingBillsCount: (count: number) => void
-  recentPendingBills: any[]
-  setRecentPendingBills: (data: any[]) => void
-  pendingBillsData: any[]
-  setPendingBillsData:(data: any[]) => void
-  pendingBillsLoader: boolean
-  setPendingBillsLoader: (loader: boolean) => void
-  pendingBillsSearch: string
-  setPendingBillsSearch: (loader: string) => void
+  pendingBillsPaymentCount: number
+  setPendingBillsPaymentCount: (count: number) => void
+  recentPendingBillsPayment: any[]
+  setRecentPendingBillsPayment: (data: any[]) => void
+  pendingBillsPaymentData: any[]
+  setPendingBillsPaymentData:(data: any[]) => void
+  pendingBillsPaymentLoader: boolean
+  setPendingBillsPaymentLoader: (loader: boolean) => void
+  pendingBillsPaymentSearch: string
+  setPendingBillsPaymentSearch: (loader: string) => void
 
   // sucess bills
-  sucessBillsCount: number
-  setSucessBillsCount: (count: number) => void
-  recentSucessBills: any[]
-  setRecentSucessBills: (data: any[]) => void
-  sucessBillsData: any[]
-  setSucessBillsData:(data: any[]) => void
-  sucessBillsLoader: boolean
-  setSucessBillsLoader: (loader: boolean) => void
-  sucessBillsSearch: string
-  setSucessBillsSearch: (loader: string) => void
+  sucessBillsPaymentCount: number
+  setSucessBillsPaymentCount: (count: number) => void
+  totalSucessBillsPayment: number
+  setTotalSucessBillsPayment: (count: number) => void
+  recentSucessBillsPayment: any[]
+  setRecentSucessBillsPayment: (data: any[]) => void
+  sucessBillsPaymentData: any[]
+  setSucessBillsPaymentData:(data: any[]) => void
+  sucessBillsPaymentLoader: boolean
+  setSucessBillsPaymentLoader: (loader: boolean) => void
+  sucessBillsPaymentSearch: string
+  setSucessBillsPaymentSearch: (loader: string) => void
 
   // declned bills
-  declinedBillsCount: number
-  setDeclinedBillsCount: (count: number) => void
-  recentDeclinedBills: any[]
-  setRecentDeclinedBills: (data: any[]) => void
-  declinedBillsData: any[]
-  setDeclinedBillsData:(data: any[]) => void
-  declinedBillsLoader: boolean
-  setDeclinedBillsLoader: (loader: boolean) => void
-  declinedBillsSearch: string
-  setDeclinedBillsSearch: (loader: string) => void
+  declinedBillsPaymentCount: number
+  setDeclinedBillsPaymentCount: (count: number) => void
+  recentDeclinedBillsPayment: any[]
+  setRecentDeclinedBillsPayment: (data: any[]) => void
+  declinedBillsPaymentData: any[]
+  setDeclinedBillsPaymentData:(data: any[]) => void
+  declinedBillsPaymentLoader: boolean
+  setDeclinedBillsPaymentLoader: (loader: boolean) => void
+  declinedBillsPaymentSearch: string
+  setDeclinedBillsPaymentSearch: (loader: string) => void
 
   // product categories
   productCatergoriesCount: number
@@ -407,6 +467,14 @@ interface AllDataContextTye{
   StudentFunction: () => Promise<void>;
   FilterStudent: () => Promise<void>;
 
+  // teacher
+  TeacherFunction: () => Promise<void>;
+  FilterTeacher: () => Promise<void>;
+
+  // parent
+  ParentFunction: () => Promise<void>;
+  FilterParent: () => Promise<void>;
+
   // staff
   StaffFunction: () => Promise<void>;
   FilterStaff: () => Promise<void>;
@@ -450,6 +518,10 @@ interface AllDataContextTye{
   // Session
   SessionFunction: () => Promise<void>;
   FilterSession: () => Promise<void>;
+
+  // Student Class
+  StudentClassFunction: () => Promise<void>;
+  FilterStudentClass: () => Promise<void>;
 
   // Admin or hr Notification
   AdminHrNotificationFunction: () => Promise<void>;
@@ -511,17 +583,22 @@ interface AllDataContextTye{
   BillsFunction: () => Promise<void>
   FilterBills: () => Promise<void>
 
+  // bill payment
+  BillsPaymentFunction: () => Promise<void>
+  FilterBillsPayment: () => Promise<void>
+  
+
   // pending Bills
-  PendingBillsFunction: () => Promise<void>
-  FilterPendingBills: () => Promise<void>
+  PendingBillsPaymentFunction: () => Promise<void>
+  FilterPendingBillsPayment: () => Promise<void>
 
   // success Bills
-  SucessBillsFunction: () => Promise<void>
-  FilterSucessBills: () => Promise<void>
+  SucessBillsPaymentFunction: () => Promise<void>
+  FilterSucessBillsPayment: () => Promise<void>
 
   // declined Bills'
-  DeclinedBillsFunction: () => Promise<void>
-  FilterDeclinedBills: () => Promise<void>
+  DeclinedBillsPaymentFunction: () => Promise<void>
+  FilterDeclinedBillsPayment: () => Promise<void>
 
   //product categories
   ProductCatergoriesFunction: () => Promise<void>
@@ -553,209 +630,236 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   const [studentCount, setStudentCount] = useState(0)
   const [recentStudent, setRecentStudent] = useState<any[]>([])
   const [studentData, setStudentData] = useState<any>([])
-  const [studentLoader, setStudentLoader] = useState(false)
+  const [studentLoader, setStudentLoader] = useState(true)
   const [studentSearch, setStudentSearch] = useState('')
+
+
+  const [teacherCount, setTeacherCount] = useState(0)
+  const [recentTeacher, setRecentTeacher] = useState<any[]>([])
+  const [teacherData, setTeacherData] = useState<any>([])
+  const [teacherLoader, setTeacherLoader] = useState(true)
+  const [teacherSearch, setTeacherSearch] = useState('')
+
+  const [parentCount, setParentCount] = useState(0)
+  const [recentParent, setRecentParent] = useState<any[]>([])
+  const [parentData, setParentData] = useState<any>([])
+  const [parentLoader, setParentLoader] = useState(true)
+  const [parentSearch, setParentSearch] = useState('')
 
   const [staffCount, setStaffCount] = useState(0)
   const [recentStaff, setRecentStaff] = useState<any>([])
   const [staffData, setStaffData] = useState<any>([])
-  const [staffLoader, setStaffLoader] = useState(false)
+  const [staffLoader, setStaffLoader] = useState(true)
   const [staffSearch, setStaffSearch] = useState('')
   
 
   const [hrCount, setHrCount] = useState(0)
   const [hrData, setHrData] = useState<any>([])
-  const [hrLoader, setHrLoader] = useState(false)
+  const [hrLoader, setHrLoader] = useState(true)
   const [hrSearch, setHrSearch] = useState('')
 
 
   const [bursaryCount, setBursaryCount] = useState(0)
   const [bursaryData, setBursaryData] = useState<any>([])
-  const [bursaryLoader, setBursaryLoader] = useState(false)
+  const [bursaryLoader, setBursaryLoader] = useState(true)
   const [bursarySearch, setBursarySearch] = useState('')
 
 
   const [storeKeeperCount, setStoreKeeperCount] = useState(0)
   const [storeKeeperData, setStoreKeeperData] = useState<any>([])
-  const [storeKeeperLoader, setStoreKeeperLoader] = useState(false)
+  const [storeKeeperLoader, setStoreKeeperLoader] = useState(true)
   const [storeKeeperSearch, setStoreKeeperSearch] = useState('')
 
 
   const [examOfficerCount, setExamOfficerCount] = useState(0)
   const [examOfficerData, setExamOfficerData] = useState<any>([])
-  const [examOfficerLoader, setExamOfficerLoader] = useState(false)
+  const [examOfficerLoader, setExamOfficerLoader] = useState(true)
   const [examOfficerSearch, setExamOfficerSearch] = useState('')
 
   const [academicOfficerCount, setAcademicOfficerCount] = useState(0)
   const [academicOfficerData, setAcademicOfficerData] = useState<any>([])
-  const [academicOfficerLoader, setAcademicOfficerLoader] = useState(false)
+  const [academicOfficerLoader, setAcademicOfficerLoader] = useState(true)
   const [academicOfficerSearch, setAcademicOfficerSearch] = useState('')
 
 
   const [otherStaffCount, setOtherStaffCount] = useState(0)
   const [otherStaffData, setOtherStaffData] = useState<any>([])
-  const [otherStaffLoader, setOtherStaffLoader] = useState(false)
+  const [otherStaffLoader, setOtherStaffLoader] = useState(true)
   const [otherStaffSearch, setOtherStaffSearch] = useState('')
 
   const [emailCount, setEmailCount] = useState(0)
   const [emailData, setEmailData] = useState<any>([])
   const [recentEmail, setRecentEmail] = useState<any>([])
-  const [emailLoader, setEmailLoader] = useState(false)
+  const [emailLoader, setEmailLoader] = useState(true)
   const [emailSearch, setEmailSearch] = useState('')
 
   const [subjectCount, setSubjectCount] = useState(0)
   const [subjectData, setSubjectData] = useState<any>([])
   const [recentSubject, setRecentSubject] = useState<any>([])
-  const [subjectLoader, setSubjectLoader] = useState(false)
+  const [subjectLoader, setSubjectLoader] = useState(true)
   const [subjectSearch, setSubjectSearch] = useState('')
 
   const [termCount, setTermCount] = useState(0)
   const [termData, setTermData] = useState<any>([])
-  const [termLoader, setTermLoader] = useState(false)
+  const [termLoader, setTermLoader] = useState(true)
   const [termSearch, setTermSearch] = useState('')
 
   const [sessionCount, setSessionCount] = useState(0)
-  const [sessionData, setSessionData] = useState<any>([])
+  const [sessionData, setSessionData] = useState<any>(null)
   const [currentsession, setCurentSession] = useState<any>([])
-  const [sessionLoader, setSessionLoader] = useState(false)
+  const [sessionLoader, setSessionLoader] = useState(true)
   const [sessionSearch, setSessionSearch] = useState('')
+
+  const [studentClassCount, setStudentClassCount] = useState(0)
+  const [studentClassData, setStudentClassData] = useState<any>([])
+  const [recentStudentClass, setRecentStudentClass] = useState<any>([])
+  const [studentClassLoader, setStudentClassLoader] = useState(true)
+  const [studentClassSearch, setStudentClassSearch] = useState('')
 
   const [adminHrNotificationCount, setAdminHrNotificationCount] = useState(0)
   const [adminHrNotificationData, setAdminHrNotificationData] = useState<any>([])
   const [recentAdminHrNotification, setRecentAdminHrNotification] = useState<any>([])
-  const [adminHrNotificationLoader, setAdminHrNotificationLoader] = useState(false)
+  const [adminHrNotificationLoader, setAdminHrNotificationLoader] = useState(true)
   const [adminHrNotificationSearch, setAdminHrNotificationSearch] = useState('')
 
 
   const [schoolNotificationCount, setSchoolNotificationCount] = useState(0)
   const [schoolNotificationData, setSchoolNotificationData] = useState<any>([])
   const [recentSchoolNotification, setRecentSchoolNotification] = useState<any>([])
-  const [schoolNotificationLoader, setSchoolNotificationLoader] = useState(false)
+  const [schoolNotificationLoader, setSchoolNotificationLoader] = useState(true)
   const [schoolNotificationSearch, setSchoolNotificationSearch] =   useState('')
 
   const [classNotificationCount, setClassNotificationCount] = useState(0)
   const [classNotificationData, setClassNotificationData] = useState<any>([])
   const [recentClassNotification, setRecentClassNotification] = useState<any>([])
-  const [classNotificationLoader, setClassNotificationLoader] = useState(false)
+  const [classNotificationLoader, setClassNotificationLoader] = useState(true)
   const [classNotificationSearch, setClassNotificationSearch] = useState('')
 
   const [staffNotificationCount, setStaffNotificationCount] = useState(0)
   const [staffNotificationData, setStaffNotificationData] = useState<any>([])
   const [recentStaffNotification, setRecentStaffNotification] = useState<any>([])
-  const [staffNotificationLoader, setStaffNotificationLoader] = useState(false)
+  const [staffNotificationLoader, setStaffNotificationLoader] = useState(true)
   const [staffNotificationSearch, setStaffNotificationSearch] = useState('')
 
   const [schoolEventCount, setSchoolEventCount] = useState(0)
   const [schoolEventData, setSchoolEventData] = useState<any>([])
   const [recentSchoolEvent, setRecentSchoolEvent] = useState<any>([])
-  const [schoolEventLoader, setSchoolEventLoader] = useState(false)
+  const [schoolEventLoader, setSchoolEventLoader] = useState(true)
   const [schoolEventSearch, setSchoolEventSearch] = useState('')
 
   const [assignmentCount, setAssignmentCount] = useState(0)
   const [assignmentData, setAssignmentData] = useState<any>([])
   const [recentAssignment, setRecentAssignment] = useState<any>([])
-  const [assignmentLoader, setAssignmentLoader] = useState(false)
+  const [assignmentLoader, setAssignmentLoader] = useState(true)
   const [assignmentSearch, setAssignmentSearch] = useState('')
 
 
   const [assignmentSubmissionCount, setAssignmentSubmissionCount] = useState(0)
   const [assignmentSubmissionData, setAssignmentSubmissionData] = useState<any>([])
   const [recentAssignmentSubmission, setRecentAssignmentSubmission] = useState<any>([])
-  const [assignmentSubmissionLoader, setAssignmentSubmissionLoader] = useState(false)
+  const [assignmentSubmissionLoader, setAssignmentSubmissionLoader] = useState(true)
   const [assignmentSubmissionSearch, setAssignmentSubmissionSearch] = useState('')
 
   const [classTimetableCount, setClassTimetableCount] = useState(0)
   const [classTimetableData, setClassTimetableData] = useState<any>([])
   const [recentClassTimetable, setRecentClassTimetable] = useState<any>([])
-  const [classTimetableLoader, setClassTimetableLoader] = useState(false)
+  const [classTimetableLoader, setClassTimetableLoader] = useState(true)
   const [classTimetableSearch, setClassTimetableSearch] = useState('')
 
 
   const [paymentMethodCount, setPaymentMethodCount] = useState(0)
   const [paymentMethodData, setPaymentMethodData] = useState<any>([])
   const [recentPaymentMethod, setRecentPaymentMethod] = useState<any>([])
-  const [paymentMethodLoader, setPaymentMethodLoader] = useState(false)
+  const [paymentMethodLoader, setPaymentMethodLoader] = useState(true)
   const [paymentMethodSearch, setPaymentMethodSearch] = useState('')
 
 
   const [schoolFeesCount, setSchoolFeesCount] = useState(0)
   const [schoolFeesData, setSchoolFeesData] = useState<any>([])
-  const [schoolFeesLoader, setSchoolFeesLoader] = useState(false)
+  const [schoolFeesLoader, setSchoolFeesLoader] = useState(true)
   const [schoolFeesSearch, setSchoolFeesSearch] = useState('')
 
   const [allSchoolFeesPaymentCount, setAllSchoolFeesPaymentCount] = useState(0)
   const [recentAllSchoolFeesPayment, setRecentAllSchoolFeesPayment] = useState<any>([])
   const [allSchoolFeesPaymentData, setAllSchoolFeesPaymentData] = useState<any>([])
-  const [allSchoolFeesPaymentLoader, setAllSchoolFeesPaymentLoader] = useState(false)
+  const [allSchoolFeesPaymentLoader, setAllSchoolFeesPaymentLoader] = useState(true)
   const [allSchoolFeesPaymentSearch, setAllSchoolFeesPaymentSearch] = useState('')
 
   const [pendingSchoolFeesPaymentCount, setPendingSchoolFeesPaymentCount] = useState(0)
   const [recentPendingSchoolFeesPayment, setRecentPendingSchoolFeesPayment] = useState<any>([])
   const [pendingSchoolFeesPaymentData, setPendingSchoolFeesPaymentData] = useState<any>([])
-  const [pendingSchoolFeesPaymentLoader, setPendingSchoolFeesPaymentLoader] = useState(false)
+  const [pendingSchoolFeesPaymentLoader, setPendingSchoolFeesPaymentLoader] = useState(true)
   const [pendingSchoolFeesPaymentSearch, setPendingSchoolFeesPaymentSearch] = useState('')
   
 
   const [sucessSchoolFeesPaymentCount, setSucessSchoolFeesPaymentCount] = useState(0)
+  const [totalSucessSchoolFeesPayment,setTotalSucessSchoolFeesPayment] = useState(0)
   const [recentSucessSchoolFeesPayment, setRecentSucessSchoolFeesPayment] = useState<any>([])
   const [sucessSchoolFeesPaymentData, setSucessSchoolFeesPaymentData] = useState<any>([])
-  const [sucessSchoolFeesPaymentLoader, setSucessSchoolFeesPaymentLoader] = useState(false)
+  const [sucessSchoolFeesPaymentLoader, setSucessSchoolFeesPaymentLoader] = useState(true)
   const [sucessSchoolFeesPaymentSearch, setSucessSchoolFeesPaymentSearch] = useState('')
   
   const [declinedSchoolFeesPaymentCount, setDeclinedSchoolFeesPaymentCount] = useState(0)
   const [recentDeclinedSchoolFeesPayment, setRecentDeclinedSchoolFeesPayment] = useState<any>([])
   const [declinedSchoolFeesPaymentData, setDeclinedSchoolFeesPaymentData] = useState<any>([])
-  const [declinedSchoolFeesPaymentLoader, setDeclinedSchoolFeesPaymentLoader] = useState(false)
+  const [declinedSchoolFeesPaymentLoader, setDeclinedSchoolFeesPaymentLoader] = useState(true)
   const [declinedSchoolFeesPaymentSearch, setDeclinedSchoolFeesPaymentSearch] = useState('')
 
   const [billsCount, setBillsCount] = useState(0)
   const [billsData, setBillsData] = useState<any>([])
   const [recentBills, setRecentBills] = useState<any[]>([])
-  const [billsLoader, setBillsLoader] = useState(false)
+  const [billsLoader, setBillsLoader] = useState(true)
   const [billsSearch, setBillsSearch] = useState('')
 
+  const [billsPaymentCount, setBillsPaymentCount] = useState(0)
+  const [recentBillsPayment, setRecentBillsPayment] = useState<any>([])
+  const [billsPaymentData, setBillsPaymentData] = useState<any>([])
+  const [billsPaymentLoader, setBillsPaymentLoader] = useState(true)
+  const [billsPaymentSearch, setBillsPaymentSearch] = useState('')
 
-  const [pendingBillsCount, setPendingBillsCount] = useState(0)
-  const [recentPendingBills, setRecentPendingBills] = useState<any>([])
-  const [pendingBillsData, setPendingBillsData] = useState<any>([])
-  const [pendingBillsLoader, setPendingBillsLoader] = useState(false)
-  const [pendingBillsSearch, setPendingBillsSearch] = useState('')
+
+  const [pendingBillsPaymentCount, setPendingBillsPaymentCount] = useState(0)
+  const [recentPendingBillsPayment, setRecentPendingBillsPayment] = useState<any>([])
+  const [pendingBillsPaymentData, setPendingBillsPaymentData] = useState<any>([])
+  const [pendingBillsPaymentLoader, setPendingBillsPaymentLoader] = useState(true)
+  const [pendingBillsPaymentSearch, setPendingBillsPaymentSearch] = useState('')
   
 
-  const [sucessBillsCount, setSucessBillsCount] = useState(0)
-  const [recentSucessBills, setRecentSucessBills] = useState<any>([])
-  const [sucessBillsData, setSucessBillsData] = useState<any>([])
-  const [sucessBillsLoader, setSucessBillsLoader] = useState(false)
-  const [sucessBillsSearch, setSucessBillsSearch] = useState('')
+  const [sucessBillsPaymentCount, setSucessBillsPaymentCount] = useState(0)
+  const [totalSucessBillsPayment, setTotalSucessBillsPayment] = useState(0)
+  const [recentSucessBillsPayment, setRecentSucessBillsPayment] = useState<any>([])
+  const [sucessBillsPaymentData, setSucessBillsPaymentData] = useState<any>([])
+  const [sucessBillsPaymentLoader, setSucessBillsPaymentLoader] = useState(true)
+  const [sucessBillsPaymentSearch, setSucessBillsPaymentSearch] = useState('')
   
-  const [declinedBillsCount, setDeclinedBillsCount] = useState(0)
-  const [recentDeclinedBills, setRecentDeclinedBills] = useState<any>([])
-  const [declinedBillsData, setDeclinedBillsData] = useState<any>([])
-  const [declinedBillsLoader, setDeclinedBillsLoader] = useState(false)
-  const [declinedBillsSearch, setDeclinedBillsSearch] = useState('')
+  const [declinedBillsPaymentCount, setDeclinedBillsPaymentCount] = useState(0)
+  const [recentDeclinedBillsPayment, setRecentDeclinedBillsPayment] = useState<any>([])
+  const [declinedBillsPaymentData, setDeclinedBillsPaymentData] = useState<any>([])
+  const [declinedBillsPaymentLoader, setDeclinedBillsPaymentLoader] = useState(true)
+  const [declinedBillsPaymentSearch, setDeclinedBillsPaymentSearch] = useState('')
 
   const [productCatergoriesCount, setProductCatergoriesCount] = useState(0)
   const [productCatergoriesData, setProductCatergoriesData] = useState<any>([])
-  const [productCatergoriesLoader, setProductCatergoriesLoader] = useState(false)
+  const [productCatergoriesLoader, setProductCatergoriesLoader] = useState(true)
   const [productCatergoriesSearch, setProductCatergoriesSearch] = useState('')
 
 
   const [productCount, setProductCount] = useState(0)
   const [productData, setProductData] = useState<any>([])
   const [recentProduct, setRecentProduct] = useState<any>([])
-  const [productLoader, setProductLoader] = useState(false)
+  const [productLoader, setProductLoader] = useState(true)
   const [productSearch, setProductSearch] = useState('')
 
   const [favouriteProductCount, setFavouriteProductCount] = useState(0)
   const [favouriteProductData, setFavouriteProductData] = useState<any>([])
   const [recentFavouriteProduct, setRecentFavouriteProduct] = useState<any>([])
-  const [favouriteProductLoader, setFavouriteProductLoader] = useState(false)
+  const [favouriteProductLoader, setFavouriteProductLoader] = useState(true)
   const [favouriteProductSearch, setFavouriteProductSearch] = useState("")
 
   const [orderProductCount, setOrderProductCount] = useState(0)
   const [orderProductData, setOrderProductData] = useState<any>([])
   const [recentOrderProduct, setRecentOrderProduct] = useState<any>([])
-  const [orderProductLoader, setOrderProductLoader] = useState(false)
+  const [orderProductLoader, setOrderProductLoader] = useState(true)
   const [orderProductSearch, setOrderProductSearch] =  useState('')
 
 
@@ -774,12 +878,15 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       if(Array.isArray(data) && data.length > 0){
         setStudentCount(data.length)
       }
-      // sorting from A to Z
-      const sortedData = data.sort((a: {first_name: string}, b: {first_name:string}) => a.first_name.localeCompare(b.first_name));
+      const sortedData = [...data].sort((a, b) =>
+        a.first_name.localeCompare(b.first_name)
+      );
       
-      // sort by latest 5
-      const RecentsortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-      const recentData = RecentsortedData.slice(0, 4);
+      const RecentsortedData = [...data].sort((a, b) =>
+        new Date(b.date_joined).getTime() - new Date(a.date_joined).getTime()
+      );
+      
+      const recentData = RecentsortedData.slice(0, 5);
       setRecentStudent(recentData)
       setStudentData(sortedData)
       setStudentLoader(false)
@@ -824,9 +931,148 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     }
   }
 
+
+
+  // Teacher
+  const TeacherFunction = async() =>{
+    let response = await fetch('http://127.0.0.1:8000/api/teachers/', {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authTokens?.access}`
+      },
+    })
+
+    const data = await response.json()
+    if(response.ok){
+      if(Array.isArray(data) && data.length > 0){
+        setTeacherCount(data.length)
+      }
+      const sortedData = [...data].sort((a, b) =>
+        a.first_name.localeCompare(b.first_name)
+      );
+      
+      const RecentsortedData = [...data].sort((a, b) =>
+        new Date(b.date_joined).getTime() - new Date(a.date_joined).getTime()
+      );
+      const recentData = RecentsortedData.slice(0, 4);
+      setRecentTeacher(recentData)
+      setTeacherData(sortedData)
+      setTeacherLoader(false)
+
+
+    }else{
+      setTeacherLoader(false)
+    }
+
+
+
+  }
+
+
+  const FilterTeacher = async() =>{
+    let url;
+
+    if(teacherSearch.length !== 0){
+      url = `http://127.0.0.1:8000/api/teachers/?search=${teacherSearch}`
+    }
+
+
+    if (!url) {
+      console.error("URL is undefined");
+      return;
+    }
+
+    let response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type":"application/json",
+        Authorization: `Bearer ${authTokens?.access}`
+      }
+    });
+
+    const data = await response.json()
+
+    if(response.ok){
+       // sorting from A to Z
+       const sortedData = data.sort((a: {first_name: string}, b: {first_name:string}) => a.first_name.localeCompare(b.first_name));
+      setStudentData(sortedData)
+    }
+  }
+
+
+  const ParentFunction = async() =>{
+    let response = await fetch('http://127.0.0.1:8000/api/parents/', {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authTokens?.access}`
+      },
+    })
+
+    const data = await response.json()
+    if(response.ok){
+      if(Array.isArray(data) && data.length > 0){
+        setParentCount(data.length)
+      }
+      const sortedData = [...data].sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
+      
+      const RecentsortedData = [...data].sort((a, b) =>
+        new Date(b.date_joined).getTime() - new Date(a.date_joined).getTime()
+      );
+
+      const recentData = RecentsortedData.slice(0, 4);
+      setRecentParent(recentData)
+      setParentData(sortedData)
+      setParentLoader(false)
+
+
+    }else{
+      setParentLoader(false)
+    }
+
+
+
+  }
+
+
+  const FilterParent = async() =>{
+    let url;
+
+    if(parentSearch.length !== 0){
+      url = `http://127.0.0.1:8000/api/parents/?search=${parentSearch}`
+    }
+
+
+    if (!url) {
+      console.error("URL is undefined");
+      return;
+    }
+
+    let response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type":"application/json",
+        Authorization: `Bearer ${authTokens?.access}`
+      }
+    });
+
+    const data = await response.json()
+
+    if(response.ok){
+       // sorting from A to Z
+       const sortedData = data.sort((a: {name: string}, b: {name:string}) => a.name.localeCompare(b.name));
+      setParentData(sortedData)
+    }
+  }
+  
+
   // Staff
   const StaffFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/staff/', {
+    console.log('lpadign')
+    let response = await fetch('http://127.0.0.1:8000/api/staff/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -839,11 +1085,14 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       if(Array.isArray(data) && data.length > 0){
         setStaffCount(data.length)
       }
-      // sorting from A to Z
-      const sortedData = data.sort((a: {first_name: string}, b: {first_name:string}) => a.first_name.localeCompare(b.first_name));
+      const sortedData = [...data].sort((a, b) =>
+        a.first_name.localeCompare(b.first_name)
+      );
+      
+      const RecentsortedData = [...data].sort((a, b) =>
+        new Date(b.date_joined).getTime() - new Date(a.date_joined).getTime()
+      );
 
-      // sort by latest 5
-      const RecentsortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       const recentData = RecentsortedData.slice(0, 4);
       setRecentStaff(recentData)
       setStaffData(sortedData)
@@ -905,11 +1154,13 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       if(Array.isArray(data) && data.length > 0){
         setHrCount(data.length)
       }
-      // sorting from A to Z
-      const sortedData = data.sort((a: {first_name: string}, b: {first_name:string}) => a.first_name.localeCompare(b.first_name));
-
-      // sort by latest 5
-      const RecentsortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      const sortedData = [...data].sort((a, b) =>
+        a.first_name.localeCompare(b.first_name)
+      );
+      
+      const RecentsortedData = [...data].sort((a, b) =>
+        new Date(b.date_joined).getTime() - new Date(a.date_joined).getTime()
+      );
            
       const recentData = RecentsortedData.slice(0, 4);
       setHrData(sortedData)
@@ -1339,12 +1590,13 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       
       
 
-      // sorting from A to Z
-      const sortedData = data.sort((a: {name: string}, b: {name:string}) => a.name.localeCompare(b.name));
-
-      // sort by latest 5
-      const RecentsortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-
+      const sortedData = [...data].sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
+      
+      const RecentsortedData = [...data].sort((a, b) =>
+        new b.id - a.id
+      );
       const recentData = RecentsortedData.slice(0, 4);
       setRecentSubject(recentData)
       setSubjectData(sortedData)
@@ -1473,7 +1725,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-      const recentData = sortedData[-1];
+      const recentData = sortedData[0];
       setCurentSession(recentData)
       setSessionData(sortedData)
       setSessionLoader(false)
@@ -1515,6 +1767,77 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
        // sorting from A to Z
        const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
        setSessionData(sortedData)
+    }
+  }
+
+
+
+   // Student Class
+   const StudentClassFunction = async() =>{
+    let response = await fetch('http://127.0.0.1:8000/api/student-class/', {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authTokens?.access}`
+      },
+    })
+
+    const data = await response.json()
+    if(response.ok){
+      if(Array.isArray(data) && data.length > 0){
+        setStudentClassCount(data.length)
+      }
+      
+      
+
+      const sortedData = [...data].sort((a, b) =>
+        a.name.localeCompare(b.name)
+      );
+      
+      const RecentsortedData = [...data].sort((a, b) =>
+        b.id - a.id
+      );
+      setRecentStudentClass(RecentsortedData)
+      setStudentClassData(sortedData)
+      setStudentClassLoader(false)
+
+
+    }else{
+      setStudentClassLoader(false)
+    }
+
+
+
+  }
+
+
+  const FilterStudentClass = async() =>{
+    let url;
+
+    if(studentClassSearch.length !== 0){
+      url = `http://127.0.0.1:8000/api/student-class/?search=${studentClassSearch}`
+    }
+
+
+    if (!url) {
+      console.error("URL is undefined");
+      return;
+    }
+
+    let response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type":"application/json",
+        Authorization: `Bearer ${authTokens?.access}`
+      }
+    });
+
+    const data = await response.json()
+
+    if(response.ok){
+       // sorting from A to Z
+       const sortedData = data.sort((a: {first_name: string}, b: {first_name:string}) => a.first_name.localeCompare(b.first_name));
+       setStudentClassData(sortedData)
     }
   }
 
@@ -2306,7 +2629,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // success school Fees payment
   const SucessSchoolFeesPaymentFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/payment-school-fees/successful/', {
+    let response = await fetch('http://127.0.0.1:8000/api/payment-school-fees/approved/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2325,6 +2648,8 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       const recentData = sortedData.slice(0, 4);
+      const totalAmount = data.reduce((acc: number, item: any) => acc + (item.fee_type_name?.amount || 0), 0);
+      setTotalSucessSchoolFeesPayment(totalAmount)
       setRecentSucessSchoolFeesPayment(recentData)
       setSucessSchoolFeesPaymentData(sortedData)
       setSucessSchoolFeesPaymentLoader(false)
@@ -2343,7 +2668,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(sucessSchoolFeesPaymentSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/payment-school-fees/successful/?search=${sucessSchoolFeesPaymentSearch}`
+      url = `http://127.0.0.1:8000/api/payment-school-fees/approved/?search=${sucessSchoolFeesPaymentSearch}`
     }
 
 
@@ -2500,10 +2825,65 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     }
   }
 
+  const BillsPaymentFunction = async() =>{
+      let response = await fetch('http://127.0.0.1:8000/api/bills-payment/', {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${authTokens?.access}`
+        },
+      })
+
+      const data = await response.json()
+      if(response.ok){
+        if(Array.isArray(data) && data.length > 0){
+          setBillsPaymentCount(data.length)
+        }
+        
+        
+
+        // sorting from A to Z
+        const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+        const recentData = sortedData.slice(0, 4);
+        setRecentBillsPayment(recentData)
+        setBillsPaymentData(sortedData)
+        setBillsPaymentLoader(false)
+
+    }
+  } 
+  
+  const FilterBillsPayment = async() =>{
+    let url;
+
+    if(billsPaymentSearch.length !== 0){
+      url = `http://127.0.0.1:8000/api/bills-payment/?search=${billsPaymentSearch}`
+    }
+    
+    if (!url) {
+      console.error("URL is undefined");
+      return;
+    }
+
+    let response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type":"application/json",
+        Authorization: `Bearer ${authTokens?.access}`
+      }
+    });
+
+    const data = await response.json()
+    if(response.ok){
+        // sorting from A to Z
+        const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+        setBillsPaymentData(sortedData)
+    }
+  }
+
 
   // pending Bills
-  const PendingBillsFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/bills/pending/', {
+  const PendingBillsPaymentFunction = async() =>{
+    let response = await fetch('http://127.0.0.1:8000/api/bills-payment/pending/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2514,7 +2894,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const data = await response.json()
     if(response.ok){
       if(Array.isArray(data) && data.length > 0){
-        setPendingBillsCount(data.length)
+        setPendingBillsPaymentCount(data.length)
       }
       
       
@@ -2522,13 +2902,13 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       const recentData = sortedData.slice(0, 4);
-      setRecentPendingBills(recentData)
-      setPendingBillsData(sortedData)
-      setPendingBillsLoader(false)
+      setRecentPendingBillsPayment(recentData)
+      setPendingBillsPaymentData(sortedData)
+      setPendingBillsPaymentLoader(false)
 
 
     }else{
-      setPendingBillsLoader(false)
+      setPendingBillsPaymentLoader(false)
     }
 
 
@@ -2536,11 +2916,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterPendingBills = async() =>{
+  const FilterPendingBillsPayment = async() =>{
     let url;
 
-    if(pendingBillsSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/bills/pending/?search=${pendingBillsSearch}`
+    if(pendingBillsPaymentSearch.length !== 0){
+      url = `http://127.0.0.1:8000/api/bills-payment/pending/?search=${pendingBillsPaymentSearch}`
     }
 
 
@@ -2562,14 +2942,14 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     if(response.ok){
        // sorting from A to Z
        const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setPendingBillsData(sortedData)
+       setPendingBillsPaymentData(sortedData)
     }
   }
 
 
   // success Bills
-  const SucessBillsFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/bills/successful/', {
+  const SucessBillsPaymentFunction = async() =>{
+    let response = await fetch('http://127.0.0.1:8000/api/bills-payment/approved/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2580,7 +2960,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const data = await response.json()
     if(response.ok){
       if(Array.isArray(data) && data.length > 0){
-        setSucessBillsCount(data.length)
+        setSucessBillsPaymentCount(data.length)
       }
       
       
@@ -2588,13 +2968,16 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       const recentData = sortedData.slice(0, 4);
-      setRecentSucessBills(recentData)
-      setSucessBillsData(sortedData)
-      setSucessBillsLoader(false)
+      const totalAmount = data.reduce((acc: number, item: any) => acc + (item.bill_name?.amount || 0), 0);
+      setTotalSucessBillsPayment(totalAmount)
+      console.log('total amount', totalAmount)
+      setRecentSucessBillsPayment(recentData)
+      setSucessBillsPaymentData(sortedData)
+      setSucessBillsPaymentLoader(false)
 
 
     }else{
-      setSucessBillsLoader(false)
+      setSucessBillsPaymentLoader(false)
     }
 
 
@@ -2602,11 +2985,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterSucessBills = async() =>{
+  const FilterSucessBillsPayment = async() =>{
     let url;
 
-    if(sucessBillsSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/bills/successful/?search=${sucessBillsSearch}`
+    if(sucessBillsPaymentSearch.length !== 0){
+      url = `http://127.0.0.1:8000/api/bills-payment/approved/?search=${sucessBillsPaymentSearch}`
     }
 
 
@@ -2628,13 +3011,13 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     if(response.ok){
        // sorting from A to Z
        const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setSucessBillsData(sortedData)
+       setSucessBillsPaymentData(sortedData)
     }
   }
 
 // declined Bills'
-  const DeclinedBillsFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/bills/declined/', {
+  const DeclinedBillsPaymentFunction = async() =>{
+    let response = await fetch('http://127.0.0.1:8000/api/bills-payment/declined/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2645,7 +3028,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const data = await response.json()
     if(response.ok){
       if(Array.isArray(data) && data.length > 0){
-        setDeclinedBillsCount(data.length)
+        setDeclinedBillsPaymentCount(data.length)
       }
       
       
@@ -2653,13 +3036,13 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       const recentData = sortedData.slice(0, 4);
-      setRecentDeclinedBills(recentData)
-      setDeclinedBillsData(sortedData)
-      setDeclinedBillsLoader(false)
+      setRecentDeclinedBillsPayment(recentData)
+      setDeclinedBillsPaymentData(sortedData)
+      setDeclinedBillsPaymentLoader(false)
 
 
     }else{
-      setDeclinedBillsLoader(false)
+      setDeclinedBillsPaymentLoader(false)
     }
 
 
@@ -2667,11 +3050,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterDeclinedBills = async() =>{
+  const FilterDeclinedBillsPayment = async() =>{
     let url;
 
-    if(declinedBillsSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/bills/declined/?search=${declinedBillsSearch}`
+    if(declinedBillsPaymentSearch.length !== 0){
+      url = `http://127.0.0.1:8000/api/bills-payment/declined/?search=${declinedBillsPaymentSearch}`
     }
 
 
@@ -2693,7 +3076,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     if(response.ok){
        // sorting from A to Z
        const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setDeclinedBillsData(sortedData)
+       setDeclinedBillsPaymentData(sortedData)
     }
   }
 
@@ -2976,6 +3359,21 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     studentLoader, setStudentLoader,
     studentSearch, setStudentSearch,
 
+    teacherCount, setTeacherCount,
+    recentTeacher, setRecentTeacher,
+    teacherData, setTeacherData,
+    teacherLoader, setTeacherLoader,
+    teacherSearch, setTeacherSearch,
+
+    parentCount, setParentCount,
+    recentParent, setRecentParent,
+    parentData, setParentData,
+    parentLoader, setParentLoader,
+    parentSearch, setParentSearch,
+
+
+
+
     staffCount, setStaffCount,
     recentStaff, setRecentStaff,
     staffData, setStaffData,
@@ -3037,6 +3435,13 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     currentsession, setCurentSession,
     sessionLoader, setSessionLoader,
     sessionSearch, setSessionSearch,
+
+    studentClassCount, setStudentClassCount,
+    studentClassData, setStudentClassData,
+    recentStudentClass, setRecentStudentClass,
+    studentClassLoader, setStudentClassLoader,
+    studentClassSearch, setStudentClassSearch,
+
 
 
     adminHrNotificationCount, setAdminHrNotificationCount,
@@ -3117,6 +3522,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
     sucessSchoolFeesPaymentCount, setSucessSchoolFeesPaymentCount,
     recentSucessSchoolFeesPayment, setRecentSucessSchoolFeesPayment,
+    totalSucessSchoolFeesPayment, setTotalSucessSchoolFeesPayment,
     sucessSchoolFeesPaymentData, setSucessSchoolFeesPaymentData,
     sucessSchoolFeesPaymentLoader, setSucessSchoolFeesPaymentLoader,
     sucessSchoolFeesPaymentSearch, setSucessSchoolFeesPaymentSearch,
@@ -3135,24 +3541,32 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     billsLoader, setBillsLoader,
     billsSearch, setBillsSearch,
 
-    pendingBillsCount, setPendingBillsCount,
-    recentPendingBills, setRecentPendingBills,
-    pendingBillsData, setPendingBillsData,
-    pendingBillsLoader, setPendingBillsLoader,
-    pendingBillsSearch, setPendingBillsSearch,
+    billsPaymentCount, setBillsPaymentCount,
+    recentBillsPayment, setRecentBillsPayment,
+    billsPaymentData, setBillsPaymentData,
+    billsPaymentLoader, setBillsPaymentLoader,
+    billsPaymentSearch, setBillsPaymentSearch,
 
 
-    sucessBillsCount, setSucessBillsCount,
-    recentSucessBills, setRecentSucessBills,
-    sucessBillsData, setSucessBillsData,
-    sucessBillsLoader, setSucessBillsLoader,
-    sucessBillsSearch, setSucessBillsSearch,
+    pendingBillsPaymentCount, setPendingBillsPaymentCount,
+    recentPendingBillsPayment, setRecentPendingBillsPayment,
+    pendingBillsPaymentData, setPendingBillsPaymentData,
+    pendingBillsPaymentLoader, setPendingBillsPaymentLoader,
+    pendingBillsPaymentSearch, setPendingBillsPaymentSearch,
 
-    declinedBillsCount, setDeclinedBillsCount,
-    recentDeclinedBills, setRecentDeclinedBills,
-    declinedBillsData, setDeclinedBillsData,
-    declinedBillsLoader, setDeclinedBillsLoader,
-    declinedBillsSearch, setDeclinedBillsSearch,
+
+    sucessBillsPaymentCount, setSucessBillsPaymentCount,
+    totalSucessBillsPayment, setTotalSucessBillsPayment,
+    recentSucessBillsPayment, setRecentSucessBillsPayment,
+    sucessBillsPaymentData, setSucessBillsPaymentData,
+    sucessBillsPaymentLoader, setSucessBillsPaymentLoader,
+    sucessBillsPaymentSearch, setSucessBillsPaymentSearch,
+
+    declinedBillsPaymentCount, setDeclinedBillsPaymentCount,
+    recentDeclinedBillsPayment, setRecentDeclinedBillsPayment,
+    declinedBillsPaymentData, setDeclinedBillsPaymentData,
+    declinedBillsPaymentLoader, setDeclinedBillsPaymentLoader,
+    declinedBillsPaymentSearch, setDeclinedBillsPaymentSearch,
 
     productCatergoriesCount, setProductCatergoriesCount,
     productCatergoriesData, setProductCatergoriesData,
@@ -3181,6 +3595,8 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
     //  ----------------------------------------------- Function -----------------------------------------------//
     StudentFunction, FilterStudent,
+    TeacherFunction, FilterTeacher,
+    ParentFunction, FilterParent,
     StaffFunction,  FilterStaff,
     HrFunction, FilterHr,
     BursaryFunction, FilterBursary,
@@ -3192,6 +3608,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     SubjectFunction, FilterSubject,
     TermFunction,  FilterTerm,
     SessionFunction, FilterSession,
+    StudentClassFunction, FilterStudentClass,
     AdminHrNotificationFunction, FilteradminHrNotification,
     SchoolNotificationFunction, FilterSchoolNotification,
     ClassNotificationFunction,  FilterClassNotification,
@@ -3209,14 +3626,17 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     DeclinedSchoolFeesPaymentFunction, FilterDeclinedSchoolFeesPayment,
 
     BillsFunction, FilterBills,
-    PendingBillsFunction, FilterPendingBills,
-    SucessBillsFunction, FilterSucessBills,
-    DeclinedBillsFunction, FilterDeclinedBills,
+    BillsPaymentFunction, FilterBillsPayment,
+    PendingBillsPaymentFunction, FilterPendingBillsPayment,
+    SucessBillsPaymentFunction, FilterSucessBillsPayment,
+    DeclinedBillsPaymentFunction, FilterDeclinedBillsPayment,
 
     ProductCatergoriesFunction, FilterProductCatergories,
     ProductFunction, FilterProduct,
     FavouriteProductFunction, FilterFavouriteProduct,
     OrderProductFunction, FilterOrderProduct,
+
+
     
 
 

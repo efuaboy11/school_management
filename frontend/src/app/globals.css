@@ -1,25 +1,40 @@
 
 
+
 :root {
   --background-color: #eeeff3;
   --box-bg: #fff;
   --text-color: #000000;
   --primary-color: #783ebc;
+  --light-primary-color: rgba(120, 62, 188, 0.6);
   --secondary-color: #414aca;
+  --light-secondary-color: rgba(65, 74, 202, 0.6);
   --support-color: #268ec0;
+  --light-support-color: rgb(38, 142, 192, 0.6);  
   --light-color: #737b7d;
   --input-border-color: #ccc;
-  --success-color: #4CAF50;
+  --success-color: hsl(122, 39%, 49%);
   --error-color: #F44336;
   --dashboard-link-hover-color: #a0a0a0;
   --dashboard-dropdown: #f9f9f9;
   --dashboard-dropdown-link-hover: #eaeaea;
   --scroll-bar-color: #b3b3b3;
+  --chart-grid-color: rgba(0, 0, 0, 0.1);
+  --site-border-color: rgba(0, 0, 0, 0.1);
+  --sucessful-color: #2e8b57 ;
+  --pending-color: #d6a300 ;
+  --declined-color: #8b2e2e;
+  --completed-color: #4db8ff;
+  --light-red-color: #ffe4e4;
+  --light-white-color: #dee2e6;
 
 }
 
 /* Dark mode */
 [data-theme='dark'] {
+  --light-primary-color: rgba(120, 62, 188, 0.2);
+  --light-secondary-color: rgba(65, 74, 202, 0.2);
+  --light-support-color: rgb(38, 142, 192, 0.2);
   --background-color: #000;
   --box-bg: #0d0d0d;
   --border-color: #404040;
@@ -30,6 +45,14 @@
   --dashboard-dropdown: #1a1a1a;
   --dashboard-dropdown-link-hover: #2c2c2c;
   --scroll-bar-color: #fff5;
+  --chart-grid-color: #000;
+  --site-border-color: #404040;
+  --sucessful-color: #3cb371 ;
+  --pending-color: #e0b347;
+  --declined-color: #ff6b6b;
+  --completed-color: #66ccff ;
+  --light-white-color: #1a1a1a;
+
 }
 
 /* Apply background and text color */
@@ -107,21 +130,43 @@ a {
 .primary-link:hover{
   text-decoration: underline;
 }
+.overlay-background{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  z-index: 100000;
+  transition: all 0.5s;
+}
+
 
 .primary-bg{
   background-color: var(--primary-color);
 }
 
-.primary-bg{
-  background-color: var(--primary-color);
+.light-primary-bg {
+  background-color: var(--light-primary-color);
 }
+
 
 .secondary-bg{
   background-color: var(--secondary-color);
 }
 
+.light-secondary-bg {
+  background-color: var(--light-secondary-color);
+}
+
+
 .support-bg{
   background-color: var(--support-color);
+}
+
+.light-support-bg {
+  background-color: var(--light-support-color);
 }
 
 .primary-text{
@@ -130,7 +175,9 @@ a {
 .secondary-text{
   color: var(--secondary-color);
 }
-
+.flex-wrap{
+  flex-wrap: wrap;
+}
 .support-text{
   color: var(--support-color);
 }
@@ -146,7 +193,9 @@ a {
 .height-100{
   height: 100%;
 }
-
+.height-90vh{
+  height: 90vh;
+}
 .xsm-text{
   font-size: 12px;
 }
@@ -206,6 +255,9 @@ p, h1, h2, h3, h4, h5, h6{
   height: 100%;
   align-items: center;
 }
+.align-center2{
+  align-items: center;
+}
 .uppercase{
   text-transform: uppercase;
 }
@@ -213,7 +265,9 @@ p, h1, h2, h3, h4, h5, h6{
 .non-wrap-text {
   white-space: nowrap; /* Prevent text from wrapping */
 }
-
+.wrap-text{
+  white-space: wrap; /* Allow text to wrap */
+}
 .cursor-pointer{
   cursor: pointer;
 }
@@ -246,7 +300,7 @@ p, h1, h2, h3, h4, h5, h6{
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
+  background-color: rgba(0, 0, 0, 0.3);
   backdrop-filter: blur(4px);
   z-index: 100000;
   transition: all 0.5s;
@@ -275,6 +329,7 @@ p, h1, h2, h3, h4, h5, h6{
   background-color: #d3d3d3; 
 }
 
+
 input:-webkit-autofill {
   -webkit-box-shadow: 0 0 0px 1000px var(--border-color) inset !important; /* e.g., Tailwind's gray-800 */
   box-shadow: 0 0 0px 1000px var(--border-color) inset !important;
@@ -288,7 +343,13 @@ input:-webkit-autofill {
 .overflow-auto{
   overflow: auto;
 }
-
+.width-120px{
+  width: 120px;
+}
+.box-50px{
+  width: 30px;
+  height: 30px;
+}
 .Link{
   text-decoration: none;
   color: inherit;
@@ -305,6 +366,25 @@ input:-webkit-autofill {
 
 .border-radius-10px{
   border-radius: 10px;
+}
+
+.border-radius-20px{
+  border-radius: 20px;
+}
+
+.border-raidus-top-10px{
+  border-radius: 10px 10px 0px 0px;
+}
+
+.border-top-dark{
+  border-top: 1px solid var(--border-color);
+}
+
+.border-bottom1{
+  border-bottom: 1px solid var(--light-white-color);
+}
+.border-bottom-dark{
+  border-bottom: 1px solid var(--border-color);
 }
 
 

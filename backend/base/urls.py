@@ -43,6 +43,9 @@ urlpatterns = [
     #login
     path('login/', views.LoginView.as_view(), name='login'),
     
+    # Resfresh
+    path('token/refresh/', views.CustomRefreshTokenView.as_view(), name='refresh token'),
+    
     # Change password
     path('request-to-change-password-form/', views.RequestToChangePasswordFormView.as_view(), name='request_to_change_password_form'),
     path('request-to-change-password/', views.RequestToChangePasswordView.as_view(), name='request_to_change_password'),
@@ -51,6 +54,10 @@ urlpatterns = [
     
     #login
     path('logout/', views.LogoutView.as_view(), name='logout'),
+    
+    # Disable Account
+    # path('disable-account/', views.DisableAccountView.as_view(), 'disable-account'),
+    # path('disable-account/<str:pk>/', views.DisableAccountRetrieveDestory.as_view(), 'individual-disable-account'),
     
     #Email
     path('email/', views.EmailView.as_view(), name='Email' ),
@@ -155,6 +162,9 @@ urlpatterns = [
     
     #payment school fees 
     path('payment-school-fees/', views.PaymentSchoolFeesView.as_view(), name='payment_school_fees' ),
+    path('payment-school-fees/pending/', views.PendingPaymentSchoolFeesView.as_view(), name='pending_payment_school_fees' ),
+    path('payment-school-fees/declined/', views.DeclinedPaymentSchoolFeesView.as_view(), name='declined_pending_payment_school_fees' ),
+    path('payment-school-fees/approved/', views.ApprovedPaymentSchoolFeesView.as_view(), name='declined_pending_payment_school_fees' ),
     path('payment-school-fees/<str:pk>/', views.PaymentSchoolFeesRetrieveUpdateDestroy.as_view(), name='indiviual_payment_school_fees' ),
     path('delete-multiple-payment-school-fees/', views.DeleteMultiplePaymentSchoolFeesView.as_view(), name='delete_multiple_payment_school_fees' ),
     path('payment-school-fees/<str:pk>/update-status/', views.PaymentSchoolFeesUpdateView.as_view(), name='update_payment_school_fees_status' ), 
@@ -166,6 +176,9 @@ urlpatterns = [
 
     #bills payment
     path('bills-payment/', views.BillsPaymentView.as_view(), name='bills_payment' ),
+    path('bills-payment/pending/', views.PendingBillsPaymentView.as_view(), name='pending_bills_payment' ),
+    path('bills-payment/declined/', views.DeclinedBillsPaymentView.as_view(), name='declined_bills_payment' ),
+    path('bills-payment/approved/', views.ApprovedBillsPaymentView.as_view(), name='approved_bills_payment' ),
     path('bills-payment/<str:pk>/', views.BillsPaymentRetrieveUpdateDestroy.as_view(), name='indiviual_bills_payment' ),
     path('delete-multiple-bills-payment/', views.DeleteMultipleBillsPaymentView.as_view(), name='delete_multiple_bills_payment' ),
     path('bills-payment/<str:pk>/update-status/', views.BillsPaymentUpdateView.as_view(), name='update_bills_payment_status' ),

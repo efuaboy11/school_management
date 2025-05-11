@@ -114,6 +114,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return null;
     }
   });
+
+  console.log(authTokens)
  
   const [userProfile, setUserProfile] = useState<any>(null)
   const [username, setUsername] = useState<string>('')
@@ -326,7 +328,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       hasSpecialChar: /[!@#$%^&*()_+\-=[\]{};':"\\|,.<>/?]/.test(value),
     });
   };
-  
+
+
+  const isTokenExpired = (token:any) => {
+    if (!token) return true;
+    const decoded = jwtDecode<DecodedUser>(token); // Decode the token using jwt_decode
+    const currentTime = Date.now() / 1000; // Current time in seconds
+    return decoded.exp < currentTime;
+  };
+
+  const handleTokenExpiry = () => {
+    localStorage.setItem('tokenActive', JSON.stringify(false))
+    localStorage.removeItem('authTokens')
+    console.log('Token is either empty or expired. Executing function...');
+    // Perform necessary actions, e.g., refreshing the token or logging out the user
+  };
+
+
+  useEffect(() =>{
+    if(!authTokens || isTokenExpired(authTokens?.access)){
+      handleTokenExpiry()
+    }else{
+      localStorage.setItem('tokenActive', JSON.stringify(false))
+    }
+  }, [authTokens])
 
 
   const userDetails = async(profileId:any)=>{
@@ -397,12 +422,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
         const decodedUser = jwtDecode<DecodedUser>(data.access);
         setUser(decodedUser);
-        if(typeof window !== undefined){
-          localStorage.setItem("authTokens", JSON.stringify(data));
-        }
-       
 
-        
+        localStorage.setItem("authTokens", JSON.stringify(data));
+        setAuthToken(data)
+      
         const route = roleRoutes[data.role];
         if (route) {
           // await userDetails()
@@ -555,7 +578,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setDisableButton(true)
 
     try{
-      let response = await fetch('http://127.0.0.1:8000/api/change-password/', {
+      let response = await fetch('http://127.0.0.1:8000/api/logout/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -599,6 +622,36 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
     }
   }
+
+  const updateToken = async () =>{
+    let response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
+        method: 'POST',
+        headers: {
+            "Content-Type": "application/json",
+        },
+        body: JSON.stringify({refresh: authTokens?.refresh})
+    })
+    const data = await response.json()
+
+    if(response.status === 200){
+        console.log("token updated")
+        setAuthToken(data)
+        localStorage.setItem("authTokens", JSON.stringify(data))
+    }
+
+  }
+
+
+  useEffect(() => {
+    const mins = 1000 * 60 * 3
+    const interval = setInterval(() => {
+        if(authTokens){
+            updateToken()
+        }
+    }, mins)
+
+    return () => clearInterval(interval)
+  }, [authTokens])
 
   // useEffect(() =>{
   //   const decoded_exp = user?.exp;

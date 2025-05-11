@@ -1,4 +1,5 @@
-import React, { useEffect, useRef } from 'react';
+"use client"
+import React, { useContext, useEffect, useRef, useState } from 'react';
 import Chart from 'chart.js/auto';
 import {
   PolarAreaController,
@@ -7,6 +8,7 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
+import ThemeContext from '@/context/ThemeContext';
 
 Chart.register(PolarAreaController, RadialLinearScale, ArcElement, Tooltip, Legend);
 
@@ -25,10 +27,16 @@ interface SchoolFees{
   declinedCount: number;
 }
 
+
+
 export const UsersChart = ({studentCount, teacherCount, parentCount, staffCount}:UserCounts) =>{
+
+
   const chartRef = useRef<HTMLCanvasElement | null>(null)
   const myChartRef = useRef<Chart | null>(null)
 
+  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  
 
   useEffect(() =>{
     if(myChartRef.current){
@@ -65,8 +73,16 @@ export const UsersChart = ({studentCount, teacherCount, parentCount, staffCount}
       responsive: true,
       maintainAspectRatio: false,
       scales: {
+        x: {
+          grid: {
+            color: theme === 'light' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.1)' // ⬅️ default light gray for grid lines on light recentThemes
+          }
+        },
         y: {
           beginAtZero: true,
+          grid: {  
+            color: theme === 'light' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.1)' // ⬅️ same here
+          }
         },
       },
     };
@@ -106,25 +122,28 @@ export const SchoolFeesChart = ({
   const chartRef = useRef<HTMLCanvasElement | null>(null);
   const myChartRef = useRef<Chart | null>(null);
 
+  const { theme} = useContext(ThemeContext)!;
+
+
   useEffect(() => {
     if (myChartRef.current) {
       myChartRef.current.destroy();
     }
 
     const data = {
-      labels: ['Pending', 'Successful', 'Declined'],
+      labels: ['all', 'Pending', 'Successful', 'Declined'],
       datasets: [
         {
           label: 'Status Counts',
           data: [allCount, pendingCount, successfulCount, declinedCount],
           backgroundColor: [
-            'rgb(201, 203, 207)',
+            'rgba(120, 62, 188, 0.6)',
             'rgba(255, 206, 86, 0.6)',  // Yellowish for pending
             'rgba(75, 192, 192, 0.6)',  // Greenish for success
             'rgba(255, 99, 132, 0.6)',  // Reddish for declined
           ],
           borderColor: [
-            'rgb(160, 160, 160)',
+            'rgba(120, 62, 188, 1)',
             'rgba(255, 206, 86, 1)',
             'rgba(75, 192, 192, 1)',
             'rgba(255, 99, 132, 1)',
@@ -142,6 +161,31 @@ export const SchoolFeesChart = ({
           position: 'top' as const,
         },
       },
+
+      scales: {
+        r: {
+          grid: {
+            color: theme === 'light' 
+              ? 'rgba(0, 0, 0, 0.1)' 
+              : 'rgba(255, 255, 255, 0.1)',
+          },
+          angleLines: {
+            color: theme === 'light' 
+              ? 'rgba(0, 0, 0, 0.1)' 
+              : 'rgba(255, 255, 255, 0.1)',
+          },
+          pointLabels: {
+            color: theme === 'light' 
+              ? '#000' 
+              : '#fff',
+          },
+          ticks: {
+            color: theme === 'light' 
+              ? '#000' 
+              : '#fff',
+          }
+        }
+      }
     };
 
     if (chartRef.current) {
@@ -161,6 +205,105 @@ export const SchoolFeesChart = ({
 
   return (
     <div style={{ width: '100%', height: '300px' }}>
+      <canvas ref={chartRef} />
+    </div>
+  );
+};
+
+
+
+
+export const BillsChart = ({
+  billsCount,
+  pendingBillsCount,
+  successfulBillsCount,
+  declinedBillsCount,
+}: {
+  billsCount: number;
+  pendingBillsCount: number;
+  successfulBillsCount: number;
+  declinedBillsCount: number;
+}) => {
+  const chartRef = useRef<HTMLCanvasElement | null>(null);
+  const myChartRef = useRef<Chart | null>(null);
+
+  const { theme } = useContext(ThemeContext)!;
+
+  useEffect(() => {
+    if (myChartRef.current) {
+      myChartRef.current.destroy();
+    }
+
+    const data = {
+      labels: ['All', 'Pending', 'Successful', 'Declined'],
+      datasets: [
+        {
+          label: 'School Fees Status',
+          data: [billsCount, pendingBillsCount, successfulBillsCount, declinedBillsCount],
+          borderColor: 'rgba(120, 62, 188, 1)',
+          backgroundColor: 'rgba(120, 62, 188, 0.3)',
+          tension: 0.3,
+          fill: true,
+          pointBackgroundColor: [
+            'rgba(120, 62, 188, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(255, 99, 132, 1)',
+          ],
+        },
+      ],
+    };
+
+    const options = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top' as const,
+        },
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: theme === 'light' ? '#000' : '#fff',
+          },
+          grid: {
+            color: theme === 'light'
+              ? 'rgba(0, 0, 0, 0.1)'
+              : 'rgba(255, 255, 255, 0.1)',
+          },
+        },
+        y: {
+          beginAtZero: true,
+          ticks: {
+            color: theme === 'light' ? '#000' : '#fff',
+          },
+          grid: {
+            color: theme === 'light'
+              ? 'rgba(0, 0, 0, 0.1)'
+              : 'rgba(255, 255, 255, 0.1)',
+          },
+        },
+      },
+    };
+
+    if (chartRef.current) {
+      myChartRef.current = new Chart(chartRef.current, {
+        type: 'line',
+        data: data,
+        options: options,
+      });
+    }
+
+    return () => {
+      if (myChartRef.current) {
+        myChartRef.current.destroy();
+      }
+    };
+  }, [billsCount, pendingBillsCount, successfulBillsCount, declinedBillsCount, theme]);
+
+  return (
+    <div style={{ width: '100%', height: '280px' }}>
       <canvas ref={chartRef} />
     </div>
   );

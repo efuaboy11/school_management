@@ -8,6 +8,7 @@ import Link from 'next/link';
 import AuthContext from "@/context/AuthContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+
 const ChangePassword = ({ params }: { params: Promise<{ token: string }> }) => {
   const { token } = use(params);
   
