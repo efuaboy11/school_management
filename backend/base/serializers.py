@@ -7,6 +7,7 @@ from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.contenttypes.models import ContentType
 
 class UsersSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = Users
         fields = [
@@ -19,11 +20,14 @@ class UsersSerializer(serializers.ModelSerializer):
             'role',
             'account_status',
         ]
-        
+
+    
+     
 class StaffSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
     userID = serializers.CharField(read_only=True)
     account_status = serializers.CharField(read_only=True)
+    assigend_class_name = serializers.SerializerMethodField()
     class Meta:
         model = Staff
         
@@ -51,14 +55,23 @@ class StaffSerializer(serializers.ModelSerializer):
             'flsc',
             'waec_neco_nabteb_gce',
             'degree',
+            'cv',
             'other_certificates',
             'staff_speech',
             'passport',
             'assigned_class',
+            'assigend_class_name',
             'password',
             'account_status',
             'date_joined'
         ]
+        
+            
+    def get_assigend_class_name(self, obj):
+        assigned_class = obj.assigned_class
+        serializer = ShortStudentClassSerializer(
+            instance=assigned_class, many=False)
+        return serializer.data
     
     def create(self, validated_data):
         password = validated_data.pop('password', None)
@@ -301,6 +314,7 @@ class DisableAccountSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'user',
+            'user_details',
             'reason',
             'disabled_at',
         ]

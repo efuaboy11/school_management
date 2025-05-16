@@ -27,6 +27,7 @@
   --completed-color: #4db8ff;
   --light-red-color: #ffe4e4;
   --light-white-color: #dee2e6;
+  --k: #999;
 
 }
 
@@ -382,6 +383,11 @@ input:-webkit-autofill {
 
 .border-bottom1{
   border-bottom: 1px solid var(--light-white-color);
+}
+
+.border-y{
+  border-bottom: 1px solid var(--light-white-color);
+  border-top: 1px solid var(--light-white-color);
 }
 .border-bottom-dark{
   border-bottom: 1px solid var(--border-color);

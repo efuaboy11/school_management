@@ -37,6 +37,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
   const [fatherName, setFatherName] = useState('')
   const [motherName, setMotherName] = useState('')
   const [disability, setDisability] = useState('')
+  const [disabilityNote, setDisabilityNote] = useState('')
   const [religion, setReligion] = useState('')
   const [stateOfOrigin, setStateOfOrigin] = useState('')
   const [cityOrTown, setCityOrTown] = useState('')
@@ -213,6 +214,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
         setFatherName(data?.father_name || '')
         setMotherName(data?.mother_name || '')
         setDisability(data?.disability || '')
+        setDisabilityNote(data?.disability_note || '')
         setReligion(data?.religion || '')
         setStateOfOrigin(data?.state_of_origin || '')
         setCityOrTown(data?.city_or_town || '')
@@ -410,7 +412,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
         setUserDeleteModal(false)
         showAlert()
         setIsSuccess(true)
-        setMessage('Payment Method deleted')
+        setMessage('Student  deleted')
       } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
@@ -547,6 +549,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
     formData.append('father_name', fatherName)
     formData.append('mother_name', motherName)
     formData.append('disability', disability)
+    formData.append('disability_note', disabilityNote)
     formData.append('religion', religion)
     if (passport) {
       formData.append('passport', passport);
@@ -795,6 +798,11 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
                                 </select>
                                 {errorsPersonalInformation.religion && <p className="error-text">This field is required</p>}                 
 
+                              </div>
+
+                              <div className="col-12">
+                                <label htmlFor="lastName" className="form-label">Diasbility Note </label>
+                                <textarea rows={6}  className={`site-input ${errorsPersonalInformation.disablityNote ? 'error-input' : ''}`} {...registerPersonalInformation('disablityNote')}  value={disabilityNote}  onChange={(e) => setDisabilityNote(e.target.value)} placeholder='...'></textarea>
                               </div>
 
                               <div className="col-md-6">
@@ -1293,6 +1301,15 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
                 </div>
               )}
 
+              {userData.disability_note && (
+                <div className="col-12">
+                  <div className="site-boxes  border-radius-10px">
+                    <p className='p-3 border-bottom1'>Diability Note</p>
+                    <p className="light-text p-3">{userData.disability_note}</p>
+                  </div>
+                </div>
+              )}
+
 
               <div className="col-12">
                 <div className="site-boxes border-radius-10px p-3">
@@ -1516,7 +1533,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
                                   <Pagination
                                     count={Math.ceil(billsPaymentData.length / itemsPerPageBills)}
                                     page={billsPage}
-                                    onChange={handleSchoolFeesChange}
+                                    onChange={handleBillsChange}
                                     sx={{
                                       '& .MuiPaginationItem-root': {
                                         color: '#737b7d', // color of all numbers

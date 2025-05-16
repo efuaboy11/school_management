@@ -51,13 +51,13 @@ class IsAdminOrStoreKeeper(permissions.BasePermission):
         return request.user.is_authenticated and (request.user.role in ["admin", "store_keeper"])
 
 
-class IsAdminOrExamOfficer(permissions.BasePermission):
+class IsAdminOrResultOfficer(permissions.BasePermission):
     """
     Custom permission to only allow admins or  exam officer to access the view.
     """
 
     def has_permission(self, request, view):
-        return request.user.is_authenticated and (request.user.role in ["admin", "exam_officer",])
+        return request.user.is_authenticated and (request.user.role in ["admin", "result_officer",])
     
     
 class IsAdminOrAcademicOfficer(permissions.BasePermission):
@@ -116,13 +116,13 @@ class IsAdminOrAcademicOfficerOrStudent(permissions.BasePermission):
     def has_permission(self, request, view):
         return request.user.is_authenticated and (request.user.role in ["admin", "academic_officer", 'student'])
     
-class IsAdminOrExamOfficerOrStudent(permissions.BasePermission):
+class IsAdminOrResultOfficerOrStudent(permissions.BasePermission):
     """
     Custom permission to only allow admins or  exam officer to access the view.
     """
 
     def has_permission(self, request, view):
-        return request.user.is_authenticated and (request.user.role in ["admin", "exam_officer", 'student'])
+        return request.user.is_authenticated and (request.user.role in ["admin", "result_officer", 'student'])
 
 
 class IsAdminOrBursaryOrStudent(permissions.BasePermission):

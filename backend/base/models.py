@@ -13,7 +13,7 @@ class Role(models.TextChoices):
     TEACHERS = 'teacher', 'Teacher'
     BURSARY = 'bursary', 'Bursary'
     STORE_KEEPER = 'store_keeper', 'Store Keeper'
-    EXAM_OFFICER = 'exam_officer', "Exam Officer"
+    RESULT_OFFICER = 'result_officer', "Result Officer"
     ACADEMIC_OFFICER = 'academic_officer', "Academic officer"
     OTHER_STAFF = 'other_staff', 'Other_staff'
     
@@ -135,6 +135,7 @@ class Staff(Users):
     waec_neco_nabteb_gce = models.FileField(upload_to="staff_waec_neco_nabteb_gce", null=True)
     degree = models.FileField(upload_to="staff_degree", null=True)
     other_certificates = models.FileField(upload_to="staff_other_certificates", null=True)
+    cv = models.FileField(upload_to="staff_cv", null=True, blank=True)
     staff_speech = models.TextField(null=True, blank=True)
     
     class Meta:
@@ -146,7 +147,6 @@ class Staff(Users):
 
 # HR model
 class HR(Users):
-    
     office_location = models.CharField(max_length=100, blank=True, null=True)
     passport = models.ImageField(upload_to="hr_passport", null=True)
     qualification = models.FileField(upload_to="hr_qualification", null=True)

@@ -290,24 +290,24 @@ const AdminFrame = () => {
 
               <div>
                 <ul className={`dashboard-dropdown-bg ${studentDropdown ? "slide-in" : "slide-out"}`}>
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/plan/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/plan/" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/all-student") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/all-student" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
                         <p>All Students</p> 
                       </div>
                     </Link>
                   </li>
 
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/history/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/history/" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/add-student") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/add-student" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
                         <p>Add Students</p> 
                       </div>
                     </Link>
                   </li>
 
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/history/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/history/" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/disable-student-account") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/disable-student-account" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
                         <p>Disable Student Account</p> 
                       </div>
@@ -337,63 +337,63 @@ const AdminFrame = () => {
 
               <div>
                 <ul className={`dashboard-dropdown-bg ${staffDropdown ? "slide-in" : "slide-out"}`}>
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/plan/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/plan/" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/teachers") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/teachers" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
                         <p>Teachers Dept</p> 
                       </div>
                     </Link>
                   </li>
 
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/history/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/history/" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/bursary-dept") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/bursary-dept" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
                         <p>Bursary Dept</p> 
                       </div>
                     </Link>
                   </li>
 
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/history/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/history/" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/staffs") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/staffs" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
                         <p>All Staff</p> 
                       </div>
                     </Link>
                   </li>
 
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/history/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/history/" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/hr-dept") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/hr-dept" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
                         <p>HR Dept</p> 
                       </div>
                     </Link>
                   </li>
 
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/history/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/history/" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/store-dept") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/store-dept" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
                         <p>STORE Dept</p> 
                       </div>
                     </Link>
                   </li>
 
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/history/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/history/" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/result-dept") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/result-dept" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
-                        <p>Exam Dept</p> 
+                        <p>Result Dept</p> 
                       </div>
                     </Link>
                   </li>
 
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/history/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/history/" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/academic-dept") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/academic-dept" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
                         <p>Academic Dept</p> 
                       </div>
                     </Link>
                   </li>
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/history/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/history/" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/other-staff") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/other-staff" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
                         <p>Other Staff</p> 
                       </div>
@@ -422,26 +422,18 @@ const AdminFrame = () => {
 
               <div>
                 <ul className={`dashboard-dropdown-bg ${parentDropdown ? "slide-in" : "slide-out"}`}>
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/plan/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/plan/" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/all-parents/") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/all-parents/" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
                         <p>All Parent</p> 
                       </div>
                     </Link>
                   </li>
 
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/history/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/history/" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/add-parent") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/add-parent" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
                         <p>Add Parents</p> 
-                      </div>
-                    </Link>
-                  </li>
-
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/history/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/history/" onClick={OnbodyClick}>
-                      <div className="d-flex ps-5 py-2">
-                        <p>Disable Parent Account</p> 
                       </div>
                     </Link>
                   </li>

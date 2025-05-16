@@ -217,14 +217,14 @@ class StoreKeeperView(generics.ListAPIView):
     def get_queryset(self):
         return Staff.objects.filter(role="store_keeper")
 
-class ExamOfficerView(generics.ListAPIView):
+class ResultOfficerView(generics.ListAPIView):
     serializer_class = StaffSerializer
     permission_classes = [IsAdminOrHR]
     filter_backends = [ExactSearchFilter]
     search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
     
     def get_queryset(self):
-        return Staff.objects.filter(role="exam_officer")
+        return Staff.objects.filter(role="result_officer")
     
 class AcademicOfficerView(generics.ListAPIView):
     serializer_class = StaffSerializer
@@ -251,7 +251,12 @@ class ParentViews(generics.ListCreateAPIView):
     queryset = Parent.objects.all()
     filter_backends = [ExactSearchFilter]
     search_fields = ['name',  'email', 'phone_number',]
- 
+
+class ParentRetrieveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ParentSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = Parent.objects.all()
+    lookup_field = 'pk'
 class DeleteMultipleParentsView(generics.GenericAPIView):
     permission_classes = [IsAdminOrHR]
     serializer_class = DeleteMultipleIDSerializer
@@ -433,13 +438,16 @@ class DisableAccountView(generics.ListCreateAPIView):
     serializer_class = DisableAccountSerializer
     permission_classes = [IsAdminOrHR]
     filter_backends = [ExactSearchFilter]
-    search_fields = ['user__first_name', 'user__last_name', 'reason', 'date']
+    search_fields = ['user__first_name', 'user__last_name', 'reason', 'disabled_at']
     
     def get_queryset(self):
         queryset = DisableAccount.objects.all()
         user_role = self.request.query_params.get('user_role')
-        if user_role:
-            queryset = queryset.filter(user__role=user_role)
+        if(user_role):
+            if(user_role == 'staff'):
+                queryset = queryset.exclude(user__role__in=['student', 'hr'])
+            else:
+                queryset = queryset.filter(user__role=user_role)
         return queryset
     
 class DisableAccountRetrieveDestory(generics.RetrieveDestroyAPIView):
@@ -822,7 +830,7 @@ class DeleteMultipleSchoolEventView(generics.GenericAPIView):
 # Generator of scratch Card 
 class GenerateScratchCardView(generics.GenericAPIView):
     serializer_class =  GenerateScratchCardSerializer
-    permission_classes = [IsAdminOrExamOfficer]
+    permission_classes = [IsAdminOrResultOfficer]
     
     def post(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -891,7 +899,7 @@ class SubjectResultListCreateApiView(generics.ListCreateAPIView):
 # E-result
 class EResultView(generics.ListCreateAPIView):
     serializer_class = EResultSerializer
-    permission_classes = [IsAdminOrExamOfficer]
+    permission_classes = [IsAdminOrResultOfficer]
     queryset = EResult.objects.all()
     filter_backends = [ExactSearchFilter]
     search_fields = ['student__first_name', 'student__last_name', 'student_class__name', 'term__name', 'session__name']
@@ -899,7 +907,7 @@ class EResultView(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         user = request.user
         
-        if(user.role == "admin" or user.role == "exam_officer"):
+        if(user.role == "admin" or user.role == "result_officer"):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -911,11 +919,9 @@ class EResultView(generics.ListCreateAPIView):
 class EResultRetrieveUpdateDestroyApiView(generics.RetrieveUpdateDestroyAPIView):
     queryset = EResult.objects.all()
     serializer_class = EResultSerializer
-    lookup_field = "pk"
-    permission_classes = [IsAdminOrExamOfficer]
-    
+    permission_classes = [IsAdminOrResultOfficer]
 class CheckEResultView(generics.ListCreateAPIView):
-    permission_classes = [IsAdminOrExamOfficerOrStudent] 
+    permission_classes = [IsAdminOrResultOfficerOrStudent] 
     serializer_class = EResultSerializer
     
     def get_queryset(self):
@@ -945,7 +951,7 @@ class CheckEResultView(generics.ListCreateAPIView):
         
 
 class DeleteMultipleEResultView(generics.GenericAPIView):
-    permission_classes = [IsAdminOrExamOfficer]
+    permission_classes = [IsAdminOrResultOfficer]
     serializer_class = DeleteMultipleIDSerializer
     
     def post(self, request, *args, **kwargs):

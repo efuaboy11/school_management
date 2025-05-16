@@ -325,7 +325,7 @@ const AllStudents = () => {
                         <div className="d-flex justify-content-between light-text">
                           <p>Joined at: {formatDate(data.date_joined)}</p>
 
-                          <Link href='' className='Link light-link'>View details</Link>
+                          <Link href={`/admin/all-student/${data.id}`} className='Link light-link'>View details</Link>
                         </div>
 
                       </div>

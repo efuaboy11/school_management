@@ -15,6 +15,7 @@ p, h1, h2, h3, h4, h5, h6{
   font-weight: normal;
 }
 
+
 table{
   width: 100%;
 }
@@ -55,6 +56,11 @@ th {
   box-shadow: 0 0 0 4px rgba(120, 62, 188, 0.2); /* nice glowing focus effect */
 }
 
+
+.site-select__control {
+  padding: 4px 10px;
+
+}
 
 .site-search-input {
   width: 100%;
@@ -167,6 +173,30 @@ th {
   color: #fff
 
 }
+
+.site-sucecssful-inverse-btn{
+  display: flex;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  background-color: transparent;
+  color: var( --sucessful-color);
+  border: 1px solid var( --sucessful-color);
+  border-radius: 8px;
+  font-size: 16px;
+  text-align: center;
+  cursor: pointer;
+  transition: background-color 0.3s, border-color 0.3s, color 0.3s, transform 0.3s;
+  
+}
+
+.site-sucecssful-inverse-btn:hover{
+  background-color: var( --sucessful-color);
+  border: 1px solid var( --sucessful-color);
+  color: #fff
+}
+
+
 
 
 .site-delete-btn {
@@ -320,6 +350,43 @@ th {
   pointer-events: none;
   transform: translateY(-50px);
 }
+
+
+
+.dropzone-box {
+  padding: 20px;
+  border: 1px solid var(--input-border-color);
+  border-radius: 6px;
+  text-align: center;
+  color: #555;
+  cursor: pointer;
+  background-color: var(--dashboard-dropdown);
+  transition: background-color 0.3s;
+}
+
+.preview-box {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.preview-image {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+  border-radius: 10px;
+  margin-bottom: 5px;
+}
+
+.file-name {
+  font-size: 0.875rem;
+  color: var(--text-muted, #666);
+}
+
+
+
+
 
 
 /* site loader */

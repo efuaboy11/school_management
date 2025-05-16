@@ -89,15 +89,15 @@ interface AllDataContextTye{
   storeKeeperSearch: string
   setStoreKeeperSearch: (loader: string) => void
 
-  // exam officer
-  examOfficerCount: number
-  setExamOfficerCount: (count: number) => void
-  examOfficerData: any[]
-  setExamOfficerData:(data: any[]) => void
-  examOfficerLoader: boolean
-  setExamOfficerLoader: (loader: boolean) => void
-  examOfficerSearch: string
-  setExamOfficerSearch: (loader: string) => void
+  // result officer
+  resultOfficerCount: number
+  setResultOfficerCount: (count: number) => void
+  resultOfficerData: any[]
+  setResultOfficerData:(data: any[]) => void
+  resultOfficerLoader: boolean
+  setResultOfficerLoader: (loader: boolean) => void
+  resultOfficerSearch: string
+  setResultOfficerSearch: (loader: string) => void
  
   // academic officer
   academicOfficerCount: number
@@ -491,9 +491,9 @@ interface AllDataContextTye{
   StoreKeeperFunction: () => Promise<void>;
   FilterStoreKeeper: () => Promise<void>;
 
-  // exam officer
-  ExamOfficerFunction: () => Promise<void>;
-  FilterExamOfficer: () => Promise<void>;
+  // result officer
+  ResultOfficerFunction: () => Promise<void>;
+  FilterResultOfficer: () => Promise<void>;
 
   // academic officer
   AcademicOfficerFunction: () => Promise<void>;
@@ -671,10 +671,10 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   const [storeKeeperSearch, setStoreKeeperSearch] = useState('')
 
 
-  const [examOfficerCount, setExamOfficerCount] = useState(0)
-  const [examOfficerData, setExamOfficerData] = useState<any>([])
-  const [examOfficerLoader, setExamOfficerLoader] = useState(true)
-  const [examOfficerSearch, setExamOfficerSearch] = useState('')
+  const [resultOfficerCount, setResultOfficerCount] = useState(0)
+  const [resultOfficerData, setResultOfficerData] = useState<any>([])
+  const [resultOfficerLoader, setResultOfficerLoader] = useState(true)
+  const [resultOfficerSearch, setResultOfficerSearch] = useState('')
 
   const [academicOfficerCount, setAcademicOfficerCount] = useState(0)
   const [academicOfficerData, setAcademicOfficerData] = useState<any>([])
@@ -996,7 +996,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     if(response.ok){
        // sorting from A to Z
        const sortedData = data.sort((a: {first_name: string}, b: {first_name:string}) => a.first_name.localeCompare(b.first_name));
-      setStudentData(sortedData)
+      setTeacherData(sortedData)
     }
   }
 
@@ -1328,8 +1328,8 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
   // Exam Officer
-  const ExamOfficerFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/exam-officer/', {
+  const ResultOfficerFunction = async() =>{
+    let response = await fetch('http://127.0.0.1:8000/api/result_officer/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1340,16 +1340,16 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const data = await response.json()
     if(response.ok){
       if(Array.isArray(data) && data.length > 0){
-        setExamOfficerCount(data.length)
+        setResultOfficerCount(data.length)
       }
       // sorting from A to Z
       const sortedData = data.sort((a: {first_name: string}, b: {first_name:string}) => a.first_name.localeCompare(b.first_name));
-      setExamOfficerData(sortedData)
-      setExamOfficerLoader(false)
+      setResultOfficerData(sortedData)
+      setResultOfficerLoader(false)
 
 
     }else{
-      setExamOfficerLoader(false)
+      setResultOfficerLoader(false)
     }
 
 
@@ -1357,11 +1357,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterExamOfficer = async() =>{
+  const FilterResultOfficer = async() =>{
     let url;
 
-    if(examOfficerSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/exam-officer/?search=${examOfficerSearch}`
+    if(resultOfficerSearch.length !== 0){
+      url = `http://127.0.0.1:8000/api/result_officer/?search=${resultOfficerSearch}`
     }
 
 
@@ -1383,7 +1383,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     if(response.ok){
         // sorting from A to Z
         const sortedData = data.sort((a: {first_name: string}, b: {first_name:string}) => a.first_name.localeCompare(b.first_name));
-        setExamOfficerData(sortedData)
+        setResultOfficerData(sortedData)
     }
   }
 
@@ -3396,10 +3396,10 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     storeKeeperSearch, setStoreKeeperSearch,
 
 
-    examOfficerCount, setExamOfficerCount,
-    examOfficerData, setExamOfficerData,
-    examOfficerLoader,setExamOfficerLoader,
-    examOfficerSearch, setExamOfficerSearch,
+    resultOfficerCount, setResultOfficerCount,
+    resultOfficerData, setResultOfficerData,
+    resultOfficerLoader,setResultOfficerLoader,
+    resultOfficerSearch, setResultOfficerSearch,
 
 
     academicOfficerCount, setAcademicOfficerCount,
@@ -3601,7 +3601,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     HrFunction, FilterHr,
     BursaryFunction, FilterBursary,
     StoreKeeperFunction, FilterStoreKeeper,
-    ExamOfficerFunction,  FilterExamOfficer,
+    ResultOfficerFunction,  FilterResultOfficer,
     AcademicOfficerFunction, FilterAcademicOfficer,
     OtherStaffFunction , FilterOtherStaff,
     EmailFunction,  FilterEmail,

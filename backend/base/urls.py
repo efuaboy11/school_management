@@ -21,6 +21,7 @@ urlpatterns = [
     
     #Hr
     path('hr/', views.HRView.as_view(), name='hr'),
+    path('hr/<str:pk>/', views.HRRetrieveUpdateDestroy.as_view(), name='hr'),
     path('delete-multiple-hr/', views.DeleteMultipleHRView.as_view(), name='delete_multiple_hr'),
     
     #Bursary
@@ -34,9 +35,10 @@ urlpatterns = [
     #academic officer
     path('academic-officer/', views.AcademicOfficerView.as_view(), name='academic_officer'),
     #exam officer
-    path('exam-officer/', views.ExamOfficerView.as_view(), name='exam_officer'),
+    path('result_officer/', views.ResultOfficerView.as_view(), name='exam_officer'),
     #parents
     path('parents/', views.ParentViews.as_view(), name='parents'),
+    path('parents/<str:pk>/', views.ParentRetrieveUpdateDestory.as_view(), name='parents'),
     path('delete-multiple-parents/', views.DeleteMultipleParentsView.as_view(), name='delete_multiple_parents'),
     
     #-------------------------- Authentication -------------------------- #
@@ -56,9 +58,9 @@ urlpatterns = [
     path('logout/', views.LogoutView.as_view(), name='logout'),
     
     # Disable Account
-    # path('disable-account/', views.DisableAccountView.as_view(), 'disable-account'),
-    # path('disable-account/<str:pk>/', views.DisableAccountRetrieveDestory.as_view(), 'individual-disable-account'),
-    
+    path('disable-account/', views.DisableAccountView.as_view(), name='disable-account'), 
+    path('disable-account/<str:pk>/', views.DisableAccountRetrieveDestory.as_view(), name='individual-disable-account'),
+
     #Email
     path('email/', views.EmailView.as_view(), name='Email' ),
     path('email/<str:pk>/', views.EmailRetrieveDestory.as_view(), name='indivicual_email' ),
