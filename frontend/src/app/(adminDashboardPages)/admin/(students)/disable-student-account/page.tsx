@@ -12,7 +12,7 @@ const DisableStudentAccount = () => {
 
   const [Loading, setLoading] = useState(true)
   const [datas, setDatas] = useState<any[]>([])
-    const [dataCount, setDataCount] = useState(0)
+  const [dataCount, setDataCount] = useState(0)
   const [deleteModal, setDeleteModal] = useState(false)
   const [animateModal, setAnimateModal] = useState(false);
   const [selectedDataId, setSelectedDataId] = useState(null);

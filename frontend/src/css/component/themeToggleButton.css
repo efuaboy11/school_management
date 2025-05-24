@@ -1,7 +1,7 @@
 .theme-btn{
     position: fixed;
     bottom: 40%;
-    right: 1rem;
+    right: 0rem;
     z-index: 100000000;
     color: var(--text-color);
     border: none;

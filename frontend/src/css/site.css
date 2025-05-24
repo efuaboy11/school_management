@@ -24,6 +24,10 @@ table{
 th {
   font-weight: normal;
 }
+
+td{
+  font-weight: normal;
+}
 .site-boxes{
     background-color:  var(--box-bg);
     color: var(--text-color);
@@ -118,6 +122,53 @@ th {
 .custom-checkbox input:checked + .checkmark::after {
   display: block;
 }
+
+
+.site-switch {
+  position: relative;
+  display: inline-block;
+  width: 50px;
+  height: 24px;
+}
+
+.site-switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.site-switch-slider {
+  position: absolute;
+  cursor: pointer;
+  background-color: var(--input-border-color);
+  border-radius: 34px;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  transition: 0.4s;
+}
+
+.site-switch-slider::before {
+  position: absolute;
+  content: "";
+  height: 18px;
+  width: 18px;
+  border-radius: 50%;
+  background-color: white;
+  left: 3px;
+  bottom: 3px;
+  transition: 0.4s;
+}
+
+input:checked + .site-switch-slider {
+  background-color: var(--secondary-color);
+}
+
+input:checked + .site-switch-slider::before {
+  transform: translateX(26px);
+}
+
 
 
 
@@ -318,6 +369,28 @@ th {
 .site-completed-border{
   border: 1px solid var(--completed-color);
 }
+
+.site-successful{
+  background-color: var(--light-green-color);
+  color: var(--sucessful-color);
+  border: 1px solid var(--sucessful-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.site-pending{
+  background-color: var(--light-yellow-color);
+  color: var(--pending-color);
+  border: 1px solid var(--pending-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
+.site-declined{
+  background-color: var(--light-red-color);
+  color: var(--declined-color);
+  border: 1px solid var(--declined-color);
+  transition: background-color 0.3s, color 0.3s;
+}
+
 
 
 .site-modal-content

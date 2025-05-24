@@ -8,6 +8,16 @@ import { set } from "react-hook-form";
 
 interface AllDataContextTye{
 
+  //queryset
+  studentClassQuery: string
+  setStudentClassQuery: (data: string) => void
+  termQuery: string
+  setTermQuery: (data: string) => void
+  sessionQuery: string
+  setSessionQuery: (data: string) => void
+  feeTypeQuery: string
+  setFeeTypeQuery: (data: string) => void
+
   //Student
   studentCount: number
   setStudentCount: (count: number) => void
@@ -301,6 +311,8 @@ interface AllDataContextTye{
   // all school fees payment
   allSchoolFeesPaymentCount: number
   setAllSchoolFeesPaymentCount: (count: number) => void
+  totalAllSchoolFeesPayment : number
+  setTotalAllSchoolFeesPayment : (total: number) => void
   recentAllSchoolFeesPayment: any[]
   setRecentAllSchoolFeesPayment: (data: any[]) => void
   allSchoolFeesPaymentData: any[]
@@ -314,6 +326,8 @@ interface AllDataContextTye{
   // pending school fees payment
   pendingSchoolFeesPaymentCount: number
   setPendingSchoolFeesPaymentCount: (count: number) => void
+  totalPendingSchoolFeesPayment : number
+  setTotalPendingSchoolFeesPayment : (total: number) => void
   recentPendingSchoolFeesPayment: any[]
   setRecentPendingSchoolFeesPayment: (data: any[]) => void
   pendingSchoolFeesPaymentData: any[]
@@ -327,7 +341,7 @@ interface AllDataContextTye{
   sucessSchoolFeesPaymentCount: number
   setSucessSchoolFeesPaymentCount: (count: number) => void
   totalSucessSchoolFeesPayment: number
-  setTotalSucessSchoolFeesPayment: (count: number) => void
+  setTotalSucessSchoolFeesPayment: (total: number) => void
   recentSucessSchoolFeesPayment: any[]
   setRecentSucessSchoolFeesPayment: (data: any[]) => void
   sucessSchoolFeesPaymentData: any[]
@@ -340,6 +354,8 @@ interface AllDataContextTye{
   // declined school fees payment
   declinedSchoolFeesPaymentCount: number
   setDeclinedSchoolFeesPaymentCount: (count: number) => void
+  totalDeclinedSchoolFeesPayment: number
+  setTotalDeclinedSchoolFeesPayment : (total: number) => void
   recentDeclinedSchoolFeesPayment: any[]
   setRecentDeclinedSchoolFeesPayment: (data: any[]) => void
   declinedSchoolFeesPaymentData: any[]
@@ -365,6 +381,8 @@ interface AllDataContextTye{
   // bills payment
   billsPaymentCount: number
   setBillsPaymentCount: (count: number) => void
+  totalBillsPayment: number
+  setTotalBillsPayment: (total: number) => void
   recentBillsPayment: any[]
   setRecentBillsPayment: (data: any[]) => void
   billsPaymentData: any[]
@@ -378,6 +396,8 @@ interface AllDataContextTye{
   // pending bills
   pendingBillsPaymentCount: number
   setPendingBillsPaymentCount: (count: number) => void
+  totalPendingBillsPayment: number
+  setTotalPendingBillsPayment : (total: number) => void
   recentPendingBillsPayment: any[]
   setRecentPendingBillsPayment: (data: any[]) => void
   pendingBillsPaymentData: any[]
@@ -404,6 +424,8 @@ interface AllDataContextTye{
   // declned bills
   declinedBillsPaymentCount: number
   setDeclinedBillsPaymentCount: (count: number) => void
+  totalDeclinedBillsPayment: number
+  setTotalDeclinedBillsPayment: (total: number) => void
   recentDeclinedBillsPayment: any[]
   setRecentDeclinedBillsPayment: (data: any[]) => void
   declinedBillsPaymentData: any[]
@@ -626,6 +648,12 @@ export default AllDataContext
 
 export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   const {authTokens} = useContext(AuthContext)!
+
+  const [studentClassQuery, setStudentClassQuery] = useState('')
+  const [termQuery,setTermQuery] = useState('')
+  const [sessionQuery, setSessionQuery] = useState('')
+  const [feeTypeQuery, setFeeTypeQuery] = useState('')
+
   
   const [studentCount, setStudentCount] = useState(0)
   const [recentStudent, setRecentStudent] = useState<any[]>([])
@@ -780,12 +808,14 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   const [schoolFeesSearch, setSchoolFeesSearch] = useState('')
 
   const [allSchoolFeesPaymentCount, setAllSchoolFeesPaymentCount] = useState(0)
+  const [totalAllSchoolFeesPayment, setTotalAllSchoolFeesPayment] = useState(0)
   const [recentAllSchoolFeesPayment, setRecentAllSchoolFeesPayment] = useState<any>([])
   const [allSchoolFeesPaymentData, setAllSchoolFeesPaymentData] = useState<any>([])
   const [allSchoolFeesPaymentLoader, setAllSchoolFeesPaymentLoader] = useState(true)
   const [allSchoolFeesPaymentSearch, setAllSchoolFeesPaymentSearch] = useState('')
 
   const [pendingSchoolFeesPaymentCount, setPendingSchoolFeesPaymentCount] = useState(0)
+  const [totalPendingSchoolFeesPayment, setTotalPendingSchoolFeesPayment] = useState(0)
   const [recentPendingSchoolFeesPayment, setRecentPendingSchoolFeesPayment] = useState<any>([])
   const [pendingSchoolFeesPaymentData, setPendingSchoolFeesPaymentData] = useState<any>([])
   const [pendingSchoolFeesPaymentLoader, setPendingSchoolFeesPaymentLoader] = useState(true)
@@ -800,6 +830,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   const [sucessSchoolFeesPaymentSearch, setSucessSchoolFeesPaymentSearch] = useState('')
   
   const [declinedSchoolFeesPaymentCount, setDeclinedSchoolFeesPaymentCount] = useState(0)
+  const [totalDeclinedSchoolFeesPayment, setTotalDeclinedSchoolFeesPayment] = useState(0)
   const [recentDeclinedSchoolFeesPayment, setRecentDeclinedSchoolFeesPayment] = useState<any>([])
   const [declinedSchoolFeesPaymentData, setDeclinedSchoolFeesPaymentData] = useState<any>([])
   const [declinedSchoolFeesPaymentLoader, setDeclinedSchoolFeesPaymentLoader] = useState(true)
@@ -812,6 +843,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   const [billsSearch, setBillsSearch] = useState('')
 
   const [billsPaymentCount, setBillsPaymentCount] = useState(0)
+  const [totalBillsPayment, setTotalBillsPayment] = useState(0)
   const [recentBillsPayment, setRecentBillsPayment] = useState<any>([])
   const [billsPaymentData, setBillsPaymentData] = useState<any>([])
   const [billsPaymentLoader, setBillsPaymentLoader] = useState(true)
@@ -819,6 +851,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
 
   const [pendingBillsPaymentCount, setPendingBillsPaymentCount] = useState(0)
+  const [totalPendingBillsPayment, setTotalPendingBillsPayment] = useState(0)
   const [recentPendingBillsPayment, setRecentPendingBillsPayment] = useState<any>([])
   const [pendingBillsPaymentData, setPendingBillsPaymentData] = useState<any>([])
   const [pendingBillsPaymentLoader, setPendingBillsPaymentLoader] = useState(true)
@@ -833,6 +866,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   const [sucessBillsPaymentSearch, setSucessBillsPaymentSearch] = useState('')
   
   const [declinedBillsPaymentCount, setDeclinedBillsPaymentCount] = useState(0)
+  const [totalDeclinedBillsPayment, setTotalDeclinedBillsPayment] = useState(0)
   const [recentDeclinedBillsPayment, setRecentDeclinedBillsPayment] = useState<any>([])
   const [declinedBillsPaymentData, setDeclinedBillsPaymentData] = useState<any>([])
   const [declinedBillsPaymentLoader, setDeclinedBillsPaymentLoader] = useState(true)
@@ -886,7 +920,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
         new Date(b.date_joined).getTime() - new Date(a.date_joined).getTime()
       );
       
-      const recentData = RecentsortedData.slice(0, 5);
+      const recentData = RecentsortedData.slice(0, 7);
       setRecentStudent(recentData)
       setStudentData(sortedData)
       setStudentLoader(false)
@@ -2435,7 +2469,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // school fees
   const SchoolFeesFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/school-fees/', {
+    let response = await fetch(`http://127.0.0.1:8000/api/school-fees/?student_class=${studentClassQuery}&term=${termQuery}&session=${sessionQuery}&fee_type=${feeTypeQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2518,6 +2552,8 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       const recentData = sortedData.slice(0, 4);
+      const totalAmount = data.reduce((acc: number, item: any) => acc + (item.fee_type_name?.amount || 0), 0);
+      setTotalAllSchoolFeesPayment(totalAmount)
       setRecentAllSchoolFeesPayment(recentData)
       setAllSchoolFeesPaymentData(sortedData)
       setAllSchoolFeesPaymentLoader(false)
@@ -2583,6 +2619,8 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       const recentData = sortedData.slice(0, 4);
+      const totalAmount = data.reduce((acc: number, item: any) => acc + (item.fee_type_name?.amount || 0), 0);
+      setTotalPendingSchoolFeesPayment(totalAmount)
       setRecentPendingSchoolFeesPayment(recentData)
       setPendingSchoolFeesPaymentData(sortedData)
       setPendingSchoolFeesPaymentLoader(false)
@@ -2715,6 +2753,8 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       const recentData = sortedData.slice(0, 4);
+      const totalAmount = data.reduce((acc: number, item: any) => acc + (item.fee_type_name?.amount || 0), 0);
+      setTotalDeclinedSchoolFeesPayment(totalAmount)
       setRecentDeclinedSchoolFeesPayment(recentData)
       setDeclinedSchoolFeesPaymentData(sortedData)
       setDeclinedSchoolFeesPaymentLoader(false)
@@ -2845,6 +2885,8 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
         // sorting from A to Z
         const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
         const recentData = sortedData.slice(0, 4);
+        const totalAmount = data.reduce((acc: number, item: any) => acc + (item.bill_name?.amount || 0), 0);
+        setTotalBillsPayment(totalAmount)
         setRecentBillsPayment(recentData)
         setBillsPaymentData(sortedData)
         setBillsPaymentLoader(false)
@@ -2902,6 +2944,8 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       const recentData = sortedData.slice(0, 4);
+      const totalAmount = data.reduce((acc: number, item: any) => acc + (item.bill_name?.amount || 0), 0);
+      setTotalPendingBillsPayment(totalAmount)
       setRecentPendingBillsPayment(recentData)
       setPendingBillsPaymentData(sortedData)
       setPendingBillsPaymentLoader(false)
@@ -3036,6 +3080,8 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       const recentData = sortedData.slice(0, 4);
+      const totalAmount = data.reduce((acc: number, item: any) => acc + (item.bill_name?.amount || 0), 0);
+      setTotalDeclinedBillsPayment(totalAmount)
       setRecentDeclinedBillsPayment(recentData)
       setDeclinedBillsPaymentData(sortedData)
       setDeclinedBillsPaymentLoader(false)
@@ -3353,6 +3399,10 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
 
   const contextData ={
+    studentClassQuery, setStudentClassQuery,
+    termQuery, setTermQuery,
+    sessionQuery,setSessionQuery,
+    feeTypeQuery, setFeeTypeQuery,
     studentCount, setStudentCount,
     recentStudent, setRecentStudent,
     studentData, setStudentData,
@@ -3508,6 +3558,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     schoolFeesSearch, setSchoolFeesSearch,
 
     allSchoolFeesPaymentCount, setAllSchoolFeesPaymentCount,
+    totalAllSchoolFeesPayment, setTotalAllSchoolFeesPayment,
     recentAllSchoolFeesPayment, setRecentAllSchoolFeesPayment,
     allSchoolFeesPaymentData, setAllSchoolFeesPaymentData,
     allSchoolFeesPaymentLoader, setAllSchoolFeesPaymentLoader,
@@ -3515,6 +3566,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
     pendingSchoolFeesPaymentCount, setPendingSchoolFeesPaymentCount,
     recentPendingSchoolFeesPayment, setRecentPendingSchoolFeesPayment,
+    totalPendingSchoolFeesPayment, setTotalPendingSchoolFeesPayment,
     pendingSchoolFeesPaymentData, setPendingSchoolFeesPaymentData,
     pendingSchoolFeesPaymentLoader, setPendingSchoolFeesPaymentLoader,
     pendingSchoolFeesPaymentSearch, setPendingSchoolFeesPaymentSearch,
@@ -3528,6 +3580,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     sucessSchoolFeesPaymentSearch, setSucessSchoolFeesPaymentSearch,
 
     declinedSchoolFeesPaymentCount, setDeclinedSchoolFeesPaymentCount,
+    totalDeclinedSchoolFeesPayment, setTotalDeclinedSchoolFeesPayment,
     recentDeclinedSchoolFeesPayment, setRecentDeclinedSchoolFeesPayment,
     declinedSchoolFeesPaymentData, setDeclinedSchoolFeesPaymentData,
     declinedSchoolFeesPaymentLoader, setDeclinedSchoolFeesPaymentLoader,
@@ -3542,6 +3595,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     billsSearch, setBillsSearch,
 
     billsPaymentCount, setBillsPaymentCount,
+    totalBillsPayment, setTotalBillsPayment,
     recentBillsPayment, setRecentBillsPayment,
     billsPaymentData, setBillsPaymentData,
     billsPaymentLoader, setBillsPaymentLoader,
@@ -3549,6 +3603,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
 
     pendingBillsPaymentCount, setPendingBillsPaymentCount,
+    totalPendingBillsPayment, setTotalPendingBillsPayment,
     recentPendingBillsPayment, setRecentPendingBillsPayment,
     pendingBillsPaymentData, setPendingBillsPaymentData,
     pendingBillsPaymentLoader, setPendingBillsPaymentLoader,
@@ -3563,6 +3618,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     sucessBillsPaymentSearch, setSucessBillsPaymentSearch,
 
     declinedBillsPaymentCount, setDeclinedBillsPaymentCount,
+    totalDeclinedBillsPayment, setTotalDeclinedBillsPayment,
     recentDeclinedBillsPayment, setRecentDeclinedBillsPayment,
     declinedBillsPaymentData, setDeclinedBillsPaymentData,
     declinedBillsPaymentLoader, setDeclinedBillsPaymentLoader,

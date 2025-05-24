@@ -26,8 +26,9 @@
   --declined-color: #8b2e2e;
   --completed-color: #4db8ff;
   --light-red-color: #ffe4e4;
+  --light-green-color: rgb(228, 255, 233);
+  --light-yellow-color: rgb(255, 251, 228);
   --light-white-color: #dee2e6;
-  --k: #999;
 
 }
 
@@ -53,6 +54,9 @@
   --declined-color: #ff6b6b;
   --completed-color: #66ccff ;
   --light-white-color: #1a1a1a;
+  --light-yellow-color: rgb(58, 51, 0);
+  --light-green-color: rgb(30, 58, 47);
+  --light-red-color: rgb(58, 31, 31);
 
 }
 

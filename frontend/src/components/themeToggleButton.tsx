@@ -1,5 +1,5 @@
 'use client';
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import ThemeContext from "@/context/ThemeContext";
 import '../css/component/themeToggleButton.css'; // Import your CSS file here
 export const ThemeToggleButton = () => {

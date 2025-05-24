@@ -26,11 +26,7 @@ const AllParents = () => {
     const {
       truncateText,
       authTokens,
-      formateDateTime,
-      formatDate,
       formatName,
-      formatCurrency,
-      showSidebar,
       loader,
       setLoader,
       disableButton,
@@ -245,7 +241,7 @@ const AllParents = () => {
                       <div></div>
                     )
                   }
-                  <div className=' light-text site-border border-radius-5px dahboard-table non-wrap-text scroll-bar'>
+                  <div className='site-boxes light-text site-border border-radius-5px dahboard-table non-wrap-text scroll-bar'>
                     <table className='overflow-auto'>
                       <thead className='sm-text'>
                         <tr>
@@ -311,9 +307,12 @@ const AllParents = () => {
                       </tbody>
 
                     </table>
-                    {parentData.length > 10 && (
-                      <div className="col-12 mb-4">
-                        <Stack spacing={2} alignItems="center">
+
+                  </div>
+
+                  {parentData.length > 10 && (
+                      <div className="col-12 mb-4 mt-3">
+                        <Stack spacing={2} alignItems="end">
                           <Pagination
                             count={Math.ceil(parentData.length / itemsPerPage)}
                             page={page}
@@ -331,7 +330,6 @@ const AllParents = () => {
                         </Stack>
                       </div>
                     )}
-                  </div>
                 </div>
 
               

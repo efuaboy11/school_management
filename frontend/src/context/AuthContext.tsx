@@ -416,8 +416,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         })
       })
 
-      const data = await response.json();
+
       if(response.status === 200){
+        const data = await response.json();
         console.log(data);
 
         const decodedUser = jwtDecode<DecodedUser>(data.access);
@@ -597,7 +598,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setDisableButton(false)
         setLoader(false)
         router.push('/login')
-        sessionStorage.removeItem("authTokens")
+        localStorage.removeItem("authTokens")
       }else{
         const errorData = await response.json()
           const errorMessages = Object.values(errorData)

@@ -1314,7 +1314,7 @@ class SchoolFeesView(generics.ListCreateAPIView):
     permission_classes = [IsAdminOrBursaryOrStudent]
     serializer_class = SchoolFeesSerializer
     filter_backends = [ExactSearchFilter]
-    search_fields = ['student_class__name', 'session__name', 'term__name', 'description']
+    search_fields = ['student_class__name', 'session__name', 'term__name', 'fee_choice']
     
     
     def get_queryset(self):
@@ -1322,14 +1322,16 @@ class SchoolFeesView(generics.ListCreateAPIView):
         student_class = self.request.query_params.get('student_class')
         term = self.request.query_params.get('term')
         session = self.request.query_params.get('session')
-
-
+        fee_type = self.request.query_params.get('fee_type')
+ 
         if student_class:
             queryset = queryset.filter(student_class=student_class)
         if term:
             queryset = queryset.filter(term=term)
         if session:
             queryset = queryset.filter(session=session)
+        if fee_type:
+            queryset = queryset.filter(fee_choice=fee_type)
 
         return queryset
     
@@ -1367,7 +1369,62 @@ class DeleteMultipleSchoolFeesView(generics.GenericAPIView):
         ids = serializer.validated_data['ids']
         deleted_count, _ = SchoolFees.objects.filter(id__in=ids).delete()
         return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)     
+   
+# class FilteredSchoolFees(generics.ListAPIView):
+#     permission_classes = [IsAdminOrBursaryOrStudent]
+#     serializer_class = SchoolFeesSerializer
+#     filter_backends = [ExactSearchFilter]
+#     search_fields = ['session__name', 'student_class__name', 'term__name']
+    
+#     def get_queryset(self):
+#         return SchoolFees.objects.filter(fee_choice='school fees')
+    
+#     def list(self, request, *args, **kwargs):
+#         queryset = self.get_queryset()
+        
+#         if not queryset.exists():
+#             return Response({"detail": "No records found."},
+#                 status=status.HTTP_404_NOT_FOUND)
+#         serializer = self.get_serializer(queryset, many=True)
+#         return Response(serializer.data)
             
+# class FilteredSchoolFeesPTA(generics.ListAPIView):
+#     permission_classes = [IsAdminOrBursaryOrStudent]
+#     serializer_class = SchoolFeesSerializer
+#     filter_backends = [ExactSearchFilter]
+#     search_fields = ['session__name', 'student_class__name', 'term__name']
+    
+#     def get_queryset(self):
+#         return SchoolFees.objects.filter(fee_choice='P.T.A')
+    
+#     def list(self, request, *args, **kwargs):
+#         queryset = self.get_queryset()
+        
+#         if not queryset.exists():
+#             return Response({"detail": "No records found."},
+#                 status=status.HTTP_404_NOT_FOUND)
+#         serializer = self.get_serializer(queryset, many=True)
+#         return Response(serializer.data)
+    
+# class FilteredSchoolFeesAcceptance(generics.ListAPIView):
+    # permission_classes = [IsAdminOrBursaryOrStudent]
+    # serializer_class = SchoolFeesSerializer
+    # filter_backends = [ExactSearchFilter]
+    # search_fields = ['session__name', 'student_class__name', 'term__name']
+    
+    # def get_queryset(self):
+    #     return SchoolFees.objects.filter(fee_choice='acceptance fees')
+    
+    # def list(self, request, *args, **kwargs):
+    #     queryset = self.get_queryset()
+        
+    #     if not queryset.exists():
+    #         return Response({"detail": "No records found."},
+    #             status=status.HTTP_404_NOT_FOUND)
+    #     serializer = self.get_serializer(queryset, many=True)
+    #     return Response(serializer.data)
+# class FilteredSchool  
+       
 class GetSchoolFeesAmountView(generics.GenericAPIView):
     permission_classes = [IsAdminOrBursaryOrStudent]
     serializer_class = GetSchoolFeesAmountSerializer
@@ -1380,7 +1437,13 @@ class GetSchoolFeesAmountView(generics.GenericAPIView):
         
         try:
             school_fee = SchoolFees.objects.get(student_class=student_class, term=term, session=session, fee_choice=fee_type)
-            return Response({'id': school_fee.id, "amount": school_fee.amount}, status=status.HTTP_200_OK)
+            return Response({'id': school_fee.id, 
+                            "amount": school_fee.amount, 
+                            'fee_choice': school_fee.fee_choice, 
+                            'term': school_fee.term.name,  
+                            'session': school_fee.session.name,
+                            'student_class': school_fee.student_class.name,
+                            'description': school_fee.description}, status=status.HTTP_200_OK)
         except SchoolFees.DoesNotExist:
             return Response({"error": "School fee not found for the provided details."}, status=status.HTTP_404_NOT_FOUND)
         
@@ -1597,7 +1660,7 @@ class PendingBillsPaymentView(generics.ListAPIView):
     permission_classes = [IsAdminOrBursaryOrStudent]
     serializer_class = BillPaymentSerializer
     filter_backends = [ExactSearchFilter]
-    search_fields = ['student__first_name', 'student__last_name', 'bill_type__bill_name', 'amount', 'status' 'date']
+    search_fields = ['student__first_name', 'student__last_name', 'bill__bill_name'  , 'bill__amount', 'status', 'date']
     
     def get_queryset(self):
         user = self.request.user
@@ -1620,7 +1683,7 @@ class DeclinedBillsPaymentView(generics.ListAPIView):
     permission_classes = [IsAdminOrBursaryOrStudent]
     serializer_class = BillPaymentSerializer
     filter_backends = [ExactSearchFilter]
-    search_fields = ['student__first_name', 'student__last_name', 'bill_type__bill_name', 'amount', 'status' 'date']
+    search_fields = ['student__first_name', 'student__last_name', 'bill__bill_name'  , 'bill__amount', 'status', 'date']
     
     def get_queryset(self):
         user = self.request.user
@@ -1643,7 +1706,7 @@ class ApprovedBillsPaymentView(generics.ListAPIView):
     permission_classes = [IsAdminOrBursaryOrStudent]
     serializer_class = BillPaymentSerializer
     filter_backends = [ExactSearchFilter]
-    search_fields = ['student__first_name', 'student__last_name', 'bill_type__bill_name', 'amount', 'status' 'date']
+    search_fields = ['student__first_name', 'student__last_name', 'bill__bill_name'  , 'bill__amount', 'status', 'date']
     
     def get_queryset(self):
         user = self.request.user

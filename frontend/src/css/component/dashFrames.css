@@ -101,6 +101,26 @@
   padding-right: 10px;
 }
 
+.dahboard-table-arrow-icon{
+  background-color: var(--dashboard-dropdown-link-hover);
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 13px;
+
+
+}
+
+.dashboard-update-status-container{
+  position: fixed;
+  transform: translateY(-650%);
+  width: 100%;
+
+}
+
 .dashboard-nav{
   margin-left: 300px;
   z-index: 1000;

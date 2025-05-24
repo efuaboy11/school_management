@@ -461,7 +461,7 @@ const IndivivdualParent = ({ params }: { params: Promise<{ id: string }> }) => {
                         
                       </div>
                       <div className='p-3'>
-                        <p>{userData.children_name}</p>
+                        <p className='light-text'>{userData.children_name}</p>
                       </div>
                     </div>
                   </div>

@@ -156,8 +156,12 @@ urlpatterns = [
     
     #school fees
     path('school-fees/', views.SchoolFeesView.as_view(), name='school_fees' ),
+    # path('school-fees/filter/', views.FilteredSchoolFees.as_view(), name='filter_school_fees' ),
+    # path('school-fees/pta/filter/', views.FilteredSchoolFeesPTA.as_view(), name='filter_school_fees' ),
+    # path('school-fees/acceptance/filter/', views.FilteredSchoolFeesAcceptance.as_view(), name='filter_school_fees' ),
     path('school-fees/<str:pk>/', views.SchoolFeesRetrieveUpdateDestroy.as_view(), name='indiviual_school_fees' ),
     path('delete-multiple-school-fees/', views.DeleteMultipleSchoolFeesView.as_view(), name='delete_multiple_school_fees' ),
+   
     
     #Get School Fees Amount
     path('get-school-fees-amount/', views.GetSchoolFeesAmountView.as_view(), name='get_school_fees_amount' ),

@@ -51,37 +51,32 @@ const AddStudent = () => {
     studentClassData
   } = useContext(AllDataContext)!;
 
-    const { 
-      username,
-      password,
-      setUsername,  
-      setPassword,
-  
-      usernameValidation,
-      passwordValidation,
-      handlePasswordChange,
-      handleUsernameChange,
+  const { 
+    username,
+    password,
+    setUsername,  
+    setPassword,
 
-      truncateText,
-    authTokens,
-    formateDateTime,
-    formatDate,
-    formatName,
-    formatCurrency,
-    showSidebar,
-    loader,
-    setLoader,
-    disableButton,
-    setDisableButton,
+    usernameValidation,
+    passwordValidation,
+    handlePasswordChange,
+    handleUsernameChange,
 
-    setMessage,
-    showAlert,
-    setIsSuccess,
+  authTokens,
 
-    
+  loader,
+  setLoader,
+  disableButton,
+  setDisableButton,
+
+  setMessage,
+  showAlert,
+  setIsSuccess,
 
   
-    } = useContext(AuthContext)!
+
+
+  } = useContext(AuthContext)!
 
   useEffect(() =>{
     StudentClassFunction()

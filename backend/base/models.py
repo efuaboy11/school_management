@@ -497,7 +497,6 @@ class SchoolFees(models.Model):
     FEES_CHOICES = [
         ('school fees', 'School Fees'),
         ('P.T.A', 'P.T.A'),
-        ('acceptance fees', 'Acceptance Fees'),
     ]
     fee_choice = models.CharField(max_length=100, choices=FEES_CHOICES, null=True, blank=True)
     amount = models.FloatField(null=True, blank=True)

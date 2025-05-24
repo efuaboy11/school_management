@@ -308,3 +308,100 @@ export const BillsChart = ({
     </div>
   );
 };
+
+
+export const SchoolFeesLineChart = ({
+  schoolFeesData,
+  pendingSchoolFeesData,
+  successfulSchoolFeesData,
+  declinedSchoolFeesData,
+}: {
+  schoolFeesData: number;
+  pendingSchoolFeesData: number;
+  successfulSchoolFeesData: number;
+  declinedSchoolFeesData: number;
+}) => {
+  const chartRef = useRef<HTMLCanvasElement | null>(null);
+  const myChartRef = useRef<Chart | null>(null);
+
+  const { theme } = useContext(ThemeContext)!;
+
+  useEffect(() => {
+    if (myChartRef.current) {
+      myChartRef.current.destroy();
+    }
+
+    const data = {
+      labels: ['All', 'Pending', 'Successful', 'Declined'],
+      datasets: [
+        {
+          label: 'School Fees Status',
+          data: [schoolFeesData, pendingSchoolFeesData, successfulSchoolFeesData, declinedSchoolFeesData],
+          borderColor: 'rgba(120, 62, 188, 1)',
+          backgroundColor: 'rgba(120, 62, 188, 0.3)',
+          tension: 0.3,
+          fill: true,
+          pointBackgroundColor: [
+            'rgba(120, 62, 188, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(75, 192, 192, 1)',
+            'rgba(255, 99, 132, 1)',
+          ],
+        },
+      ],
+    };
+
+    const options = {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          position: 'top' as const,
+        },
+      },
+      scales: {
+        x: {
+          ticks: {
+            color: theme === 'light' ? '#000' : '#fff',
+          },
+          grid: {
+            color: theme === 'light'
+              ? 'rgba(0, 0, 0, 0.1)'
+              : 'rgba(255, 255, 255, 0.1)',
+          },
+        },
+        y: {
+          beginAtZero: true,
+          ticks: {
+            color: theme === 'light' ? '#000' : '#fff',
+          },
+          grid: {
+            color: theme === 'light'
+              ? 'rgba(0, 0, 0, 0.1)'
+              : 'rgba(255, 255, 255, 0.1)',
+          },
+        },
+      },
+    };
+
+    if (chartRef.current) {
+      myChartRef.current = new Chart(chartRef.current, {
+        type: 'line',
+        data: data,
+        options: options,
+      });
+    }
+
+    return () => {
+      if (myChartRef.current) {
+        myChartRef.current.destroy();
+      }
+    };
+  }, [schoolFeesData, pendingSchoolFeesData, successfulSchoolFeesData, declinedSchoolFeesData, theme]);
+
+  return (
+    <div style={{ width: '100%', height: '280px' }}>
+      <canvas ref={chartRef} />
+    </div>
+  );
+};

@@ -10,6 +10,8 @@ import '@fortawesome/fontawesome-svg-core/styles.css'; // Prevents auto-adding C
 import { config } from '@fortawesome/fontawesome-svg-core';
 import '../libs/fontawesome';
 import { AllDataProvider } from "@/context/AllData";
+import 'bootstrap-icons/font/bootstrap-icons.css';
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",

@@ -127,21 +127,20 @@ const AdminHome = () => {
     recentParent,
     parentLoader,
 
-    allSchoolFeesPaymentCount,
-    pendingSchoolFeesPaymentCount,
-    sucessSchoolFeesPaymentCount,
-    declinedSchoolFeesPaymentCount,
+    totalAllSchoolFeesPayment,
+    totalPendingSchoolFeesPayment,
+    totalDeclinedSchoolFeesPayment,
 
     recentBillsPayment,
     recentPendingBillsPayment,
     recentSucessBillsPayment,
     recentDeclinedBillsPayment,
 
-    pendingBillsPaymentCount,
-    declinedBillsPaymentCount,
+    totalPendingBillsPayment,
+    totalDeclinedBillsPayment,
     sucessBillsPaymentCount,
     totalSucessBillsPayment,
-
+    totalBillsPayment,
     billsPaymentCount,
     
 
@@ -243,7 +242,7 @@ const AdminHome = () => {
 
 
   return (
-    <div className={`container-xl`}>
+    <div className={`container-xl mb-5 pb-4`}>
       <p className='stylish-text md-text pb-4 mt-5'>{timeofDay} 👋</p>
 
       <section>
@@ -392,10 +391,10 @@ const AdminHome = () => {
               </div>
               <div className="py-3">
                 <SchoolFeesChart 
-                  allCount={allSchoolFeesPaymentCount}
-                  pendingCount={pendingSchoolFeesPaymentCount}
-                  successfulCount={sucessSchoolFeesPaymentCount}
-                  declinedCount={declinedSchoolFeesPaymentCount}
+                  allCount={totalAllSchoolFeesPayment}
+                  pendingCount={totalPendingSchoolFeesPayment}
+                  successfulCount={totalSucessSchoolFeesPayment}
+                  declinedCount={totalDeclinedSchoolFeesPayment}
                 />
               </div>
             </div>
@@ -556,7 +555,7 @@ const AdminHome = () => {
 
           
           <div className="col-md-6 col-lg-4 ">
-            <div className="mb-4 site-boxes position-relative1 recent-notification-box border-radius-10px p-4">
+            <div className="site-boxes position-relative1 recent-student-box border-radius-10px p-4">
               <div className='pb-5  d-flex justify-content-between'>
                 <h6>Recent Students</h6>
                 <Link href='' className='light-link'>View all</Link>
@@ -600,38 +599,7 @@ const AdminHome = () => {
               
             </div>
 
-            <div className="site-boxes border-radius-10px p-2 d-block d-sm-none d-xxl-block recent-session-box"> 
-              <p className="sm-text light-text pb-2">Current Session</p>
-              {sessionLoader ? (
-                <div>
-                  <div className="site-content-loader"></div>
-                </div>
-              ) : (
-                <div>
-
-                  {currentsession ? (
-                    <div>
-                      <div>
-                        <p className='md-text'>{currentsession.name}</p>
-                      </div>
-                    </div>
-
-                  ): (
-                    <div className='light-text recent-notification-spinner text-center'>
-                      <i className="ri-error-warning-line"></i>
-                      <p>No session avaliable.</p>
-                    </div>
-                  )} 
-
-
-
-                  
-                </div>
-              )}
-
-            </div>
-
-            <div className="d-block d-lg-none position-relative1 site-boxes border-radius-10px p-3 mt-4 recent-email-box">
+            <div className="mt-4 d-block d-lg-none position-relative1 site-boxes border-radius-10px p-3 mt-4 recent-email-box">
               <div>
                 <p className='pb-4'>Recent Email Sent</p>
                 <div>
@@ -701,10 +669,10 @@ const AdminHome = () => {
                     <h6>Bills Chart</h6>
                   </div>
                   <BillsChart
-                    billsCount={billsPaymentCount}
-                    pendingBillsCount={pendingBillsPaymentCount}
-                    declinedBillsCount={declinedBillsPaymentCount}
-                    successfulBillsCount={sucessBillsPaymentCount}
+                    billsCount={totalBillsPayment}
+                    pendingBillsCount={totalPendingBillsPayment}
+                    declinedBillsCount={totalDeclinedBillsPayment}
+                    successfulBillsCount={totalSucessBillsPayment}
                   />
                 </div>
               </div>
