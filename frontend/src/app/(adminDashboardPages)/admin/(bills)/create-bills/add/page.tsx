@@ -28,16 +28,7 @@ const CreateBills = () => {
   } = useContext(AuthContext)!
 
 
-  const {
-    StudentClassFunction,
-    studentClassData,
-
-    termData,
-    TermFunction,
-
-    sessionData,
-    SessionFunction
-  } = useContext(AllDataContext)!;
+ 
 
 
   const {
@@ -110,11 +101,6 @@ const CreateBills = () => {
 
 
   
-  useEffect(() => {
-    StudentClassFunction()
-    TermFunction()
-    SessionFunction()
-  }, [])
 
 
 
@@ -123,7 +109,7 @@ const CreateBills = () => {
     <div>
       <div className="container-lg my-5 pt-2">
         <div className="row justify-content-center">
-          <div className="col-8">
+          <div className="col-sm-8">
             <div className="site-boxes border-radius-10px">
               <div className="border-bottom1 text-center p-3">
                 <p>Create  bill</p>

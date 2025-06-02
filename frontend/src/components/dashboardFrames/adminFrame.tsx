@@ -604,8 +604,8 @@ const AdminFrame = () => {
 
               <div>
                 <ul className={`dashboard-dropdown-bg ${storeDropdown ? "slide-in" : "slide-out"}`}>
-                <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/plan/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/plan/" onClick={OnbodyClick}>
+                <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/product-categories") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/product-categories" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
                         <p>Product Categories </p> 
                       </div>
@@ -613,8 +613,8 @@ const AdminFrame = () => {
                   </li>
                   
 
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/plan/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/plan/" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/product") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/product" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
                         <p>Product</p> 
                       </div>
@@ -651,8 +651,8 @@ const AdminFrame = () => {
 
               <div>
                 <ul className={`dashboard-dropdown-bg ${paymentMethodDropdown ? "slide-in" : "slide-out"}`}>
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/plan/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/plan/" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/payment-method") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/payment-method" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
                         <p>All Payment Method</p> 
                       </div>
@@ -660,10 +660,18 @@ const AdminFrame = () => {
                   </li>
                   
 
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/plan/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/plan/" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/payment-method/add") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/payment-method/add" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
-                        <p>Add</p> 
+                        <p>Add Payment Method</p> 
+                      </div>
+                    </Link>
+                  </li>
+
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/bank-account") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/bank-account" onClick={OnbodyClick}>
+                      <div className="d-flex ps-5 py-2">
+                        <p>Bank Account</p> 
                       </div>
                     </Link>
                   </li>
@@ -690,8 +698,8 @@ const AdminFrame = () => {
 
               <div>
                 <ul className={`dashboard-dropdown-bg ${academicsDropdown ? "slide-in" : "slide-out"}`}>
-                <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/plan/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/plan/" onClick={OnbodyClick}>
+                <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/student-class") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/student-class" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
                         <p>Student Class</p> 
                       </div>
@@ -699,18 +707,26 @@ const AdminFrame = () => {
                   </li>
                   
 
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/plan/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/plan/" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/subject") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/subject" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
                         <p>Subjects</p> 
                       </div>
                     </Link>
                   </li>
 
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/plan/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/plan/" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/term") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/term" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
                         <p>Term</p> 
+                      </div>
+                    </Link>
+                  </li>
+
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/session") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/session" onClick={OnbodyClick}>
+                      <div className="d-flex ps-5 py-2">
+                        <p>Session</p> 
                       </div>
                     </Link>
                   </li>

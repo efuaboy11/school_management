@@ -8,6 +8,8 @@ import { set } from "react-hook-form";
 
 interface AllDataContextTye{
 
+  sectionLabels: Record<string, string>;
+
   //queryset
   studentClassQuery: string
   setStudentClassQuery: (data: string) => void
@@ -17,6 +19,11 @@ interface AllDataContextTye{
   setSessionQuery: (data: string) => void
   feeTypeQuery: string
   setFeeTypeQuery: (data: string) => void
+  productCategoriesQuery : string
+  setProductCategoriesQuery : (data: string) => void
+  statusQuery : string
+  setStatusQuery : (data: string) => void
+
 
   //Student
   studentCount: number
@@ -29,6 +36,8 @@ interface AllDataContextTye{
   setStudentLoader: (loader: boolean) => void
   studentSearch: string
   setStudentSearch: (loader: string) => void
+  studentGroupData: any[]
+  setStudentGroupData: (student: any[]) => void
 
   // teacher
   teacherCount: number
@@ -154,6 +163,8 @@ interface AllDataContextTye{
   setSubjectLoader: (loader: boolean) => void
   subjectSearch: string
   setSubjectSearch: (loader: string) => void
+  subjectGroupData : any[]
+  setSubjectGroupData: (data: any[]) => void
 
   termCount: number
   setTermCount: (count: number) => void
@@ -433,7 +444,19 @@ interface AllDataContextTye{
   declinedBillsPaymentLoader: boolean
   setDeclinedBillsPaymentLoader: (loader: boolean) => void
   declinedBillsPaymentSearch: string
-  setDeclinedBillsPaymentSearch: (loader: string) => void
+  setDeclinedBillsPaymentSearch: (search: string) => void
+
+
+  // Bank Account
+  bankAccountCount: number
+  setBankAccountCount: (count: number) => void
+  bankAccountData: any[]
+  setBankAccountData:(data: any[]) => void
+  bankAccountLoader: boolean
+  setBankAccountLoader: (loader: boolean) => void
+  bankAccountSearch: string
+  setBankAccountSearch: (search: string) => void
+
 
   // product categories
   productCatergoriesCount: number
@@ -443,7 +466,7 @@ interface AllDataContextTye{
   productCatergoriesLoader: boolean
   setProductCatergoriesLoader: (loader: boolean) => void
   productCatergoriesSearch: string
-  setProductCatergoriesSearch: (loader: string) => void
+  setProductCatergoriesSearch: (search: string) => void
 
 
   //product
@@ -456,7 +479,7 @@ interface AllDataContextTye{
   productLoader: boolean
   setProductLoader: (loader: boolean) => void
   productSearch: string
-  setProductSearch: (loader: string) => void
+  setProductSearch: (search: string) => void
 
   // favourite product
   favouriteProductCount: number
@@ -622,6 +645,10 @@ interface AllDataContextTye{
   DeclinedBillsPaymentFunction: () => Promise<void>
   FilterDeclinedBillsPayment: () => Promise<void>
 
+  // Bank Acount'
+  BankAccountFunction: () => Promise<void>
+  FilterBankAccount: () => Promise<void>
+
   //product categories
   ProductCatergoriesFunction: () => Promise<void>
   FilterProductCatergories: () => Promise<void>
@@ -649,17 +676,40 @@ export default AllDataContext
 export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   const {authTokens} = useContext(AuthContext)!
 
+
+  const sectionOrder = [
+    'general',
+    'pre_school',
+    'nursery',
+    'primary',
+    'junior_secondary',
+    'senior_secondary',
+    'others',
+  ];
+
+  const sectionLabels: Record<string, string> = {
+    general: 'General',
+    pre_school: 'Pre School',
+    nursery: 'Nursery',
+    primary: 'Primary',
+    junior_secondary: 'Junior Secondary',
+    senior_secondary: 'Senior Secondary',
+    others: 'Others',
+  };
+
   const [studentClassQuery, setStudentClassQuery] = useState('')
   const [termQuery,setTermQuery] = useState('')
   const [sessionQuery, setSessionQuery] = useState('')
   const [feeTypeQuery, setFeeTypeQuery] = useState('')
-
+  const [productCategoriesQuery, setProductCategoriesQuery] = useState('')
+  const [statusQuery, setStatusQuery] = useState('')
   
   const [studentCount, setStudentCount] = useState(0)
   const [recentStudent, setRecentStudent] = useState<any[]>([])
   const [studentData, setStudentData] = useState<any>([])
   const [studentLoader, setStudentLoader] = useState(true)
   const [studentSearch, setStudentSearch] = useState('')
+  const [studentGroupData, setStudentGroupData] = useState<any>([])
 
 
   const [teacherCount, setTeacherCount] = useState(0)
@@ -726,6 +776,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   const [recentSubject, setRecentSubject] = useState<any>([])
   const [subjectLoader, setSubjectLoader] = useState(true)
   const [subjectSearch, setSubjectSearch] = useState('')
+  const [subjectGroupData, setSubjectGroupData] = useState<any>([])
 
   const [termCount, setTermCount] = useState(0)
   const [termData, setTermData] = useState<any>([])
@@ -733,7 +784,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   const [termSearch, setTermSearch] = useState('')
 
   const [sessionCount, setSessionCount] = useState(0)
-  const [sessionData, setSessionData] = useState<any>(null)
+  const [sessionData, setSessionData] = useState<any>([])
   const [currentsession, setCurentSession] = useState<any>([])
   const [sessionLoader, setSessionLoader] = useState(true)
   const [sessionSearch, setSessionSearch] = useState('')
@@ -872,6 +923,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   const [declinedBillsPaymentLoader, setDeclinedBillsPaymentLoader] = useState(true)
   const [declinedBillsPaymentSearch, setDeclinedBillsPaymentSearch] = useState('')
 
+
+  const [bankAccountCount, setBankAccountCount] = useState(0)
+  const [bankAccountData, setBankAccountData] = useState<any>([])
+  const [bankAccountLoader, setBankAccountLoader] = useState(true)
+  const [bankAccountSearch, setBankAccountSearch] = useState('')
+
   const [productCatergoriesCount, setProductCatergoriesCount] = useState(0)
   const [productCatergoriesData, setProductCatergoriesData] = useState<any>([])
   const [productCatergoriesLoader, setProductCatergoriesLoader] = useState(true)
@@ -921,6 +978,28 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       );
       
       const recentData = RecentsortedData.slice(0, 7);
+
+
+     // Group by first letter
+      const groupedByLetter: Record<string, typeof data> = {};
+
+      sortedData.forEach(student => {
+        const firstLetter = student.first_name[0].toUpperCase();
+        if (!groupedByLetter[firstLetter]) {
+          groupedByLetter[firstLetter] = [];
+        }
+        groupedByLetter[firstLetter].push(student);
+      });
+
+      // Sort keys alphabetically
+      const sortedGroupedData = Object.keys(groupedByLetter)
+        .sort()
+        .reduce((acc, key) => {
+          acc[key] = groupedByLetter[key];
+          return acc;
+      }, {} as typeof groupedByLetter);
+
+      setStudentGroupData(sortedGroupedData);
       setRecentStudent(recentData)
       setStudentData(sortedData)
       setStudentLoader(false)
@@ -1629,9 +1708,19 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       );
       
       const RecentsortedData = [...data].sort((a, b) =>
-        new b.id - a.id
+        b.id - a.id
       );
       const recentData = RecentsortedData.slice(0, 4);
+
+      const groupedBySection: Record<string, typeof data> = {};
+
+      sectionOrder.forEach(section => {
+        groupedBySection[section] = sortedData.filter(
+          subject => subject.sections === section
+        );
+      });
+      setSubjectGroupData(groupedBySection)
+      setSubjectData(sortedData)
       setRecentSubject(recentData)
       setSubjectData(sortedData)
       setSubjectLoader(false)
@@ -1670,9 +1759,17 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const data = await response.json()
 
     if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: {name: string}, b: {name:string}) => a.name.localeCompare(b.name));
-       setSubjectData(sortedData)
+      // sorting from A to Z
+      const sortedData = data.sort((a: {name: string}, b: {name:string}) => a.name.localeCompare(b.name));
+      const groupedBySection: Record<string, typeof data> = {};
+
+      sectionOrder.forEach(section => {
+        groupedBySection[section] = sortedData.filter(
+          (subject: { sections: string }) => subject.sections === section
+        );
+      });
+      setSubjectGroupData(groupedBySection)
+      setSubjectData(sortedData)
     }
   }
 
@@ -1735,7 +1832,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     if(response.ok){
        // sorting from A to Z
        const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setTermSearch(sortedData)
+       setTermData(sortedData)
     }
   }
 
@@ -1870,7 +1967,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
     if(response.ok){
        // sorting from A to Z
-       const sortedData = data.sort((a: {first_name: string}, b: {first_name:string}) => a.first_name.localeCompare(b.first_name));
+       const sortedData = data.sort((a: {name: string}, b: {name:string}) => a.name.localeCompare(b.name));
        setStudentClassData(sortedData)
     }
   }
@@ -3059,7 +3156,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     }
   }
 
-// declined Bills'
+  // declined Bills'
   const DeclinedBillsPaymentFunction = async() =>{
     let response = await fetch('http://127.0.0.1:8000/api/bills-payment/declined/', {
       method: "GET",
@@ -3096,6 +3193,73 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
+  // Bank Account'
+  const BankAccountFunction = async() =>{
+    let response = await fetch('http://127.0.0.1:8000/api/bank-account/', {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authTokens?.access}`
+      },
+    })
+
+    const data = await response.json()
+    if(response.ok){
+      if(Array.isArray(data) && data.length > 0){
+        setBankAccountCount(data.length)
+      }
+      
+      
+
+      // sorting from A to Z
+       const sortedData = [...data].sort((a, b) =>
+        a.bank_name.localeCompare(b.bank_name)
+      );
+      setBankAccountData(sortedData)
+      setBankAccountLoader(false)
+
+
+    }else{
+      setBankAccountLoader(false)
+    }
+
+
+
+  }
+
+
+    const FilterBankAccount = async() =>{
+    let url;
+
+    if(bankAccountSearch.length !== 0){
+      url = `http://127.0.0.1:8000/api/bank-account/?search=${bankAccountSearch}`
+    }
+
+
+    if (!url) {
+      console.error("URL is undefined");
+      return;
+    }
+
+    let response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type":"application/json",
+        Authorization: `Bearer ${authTokens?.access}`
+      }
+    });
+
+    const data = await response.json()
+
+    if(response.ok){
+      const sortedData = [...data].sort((a, b) =>
+        a.bank_name.localeCompare(b.bank_name)
+      );
+      setBankAccountData(sortedData)
+    }
+  }
+
+
   const FilterDeclinedBillsPayment = async() =>{
     let url;
 
@@ -3129,7 +3293,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   //product categories
   const ProductCatergoriesFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/product-categories/', {
+    let response = await fetch(`http://127.0.0.1:8000/api/product-categories/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3193,7 +3357,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // product
   const ProductFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/product/', {
+    let response = await fetch(`http://127.0.0.1:8000/api/product/?product_category=${productCategoriesQuery}&status=${statusQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3399,15 +3563,23 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
 
   const contextData ={
+   sectionLabels,
+
     studentClassQuery, setStudentClassQuery,
     termQuery, setTermQuery,
     sessionQuery,setSessionQuery,
     feeTypeQuery, setFeeTypeQuery,
+    productCategoriesQuery, setProductCategoriesQuery,
+    statusQuery, setStatusQuery,
+
+
+
     studentCount, setStudentCount,
     recentStudent, setRecentStudent,
     studentData, setStudentData,
     studentLoader, setStudentLoader,
     studentSearch, setStudentSearch,
+    studentGroupData, setStudentGroupData,
 
     teacherCount, setTeacherCount,
     recentTeacher, setRecentTeacher,
@@ -3474,6 +3646,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     recentSubject, setRecentSubject,
     subjectLoader, setSubjectLoader,
     subjectSearch, setSubjectSearch,
+    subjectGroupData, setSubjectGroupData,
 
     termCount, setTermCount,
     termData, setTermData,
@@ -3624,6 +3797,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     declinedBillsPaymentLoader, setDeclinedBillsPaymentLoader,
     declinedBillsPaymentSearch, setDeclinedBillsPaymentSearch,
 
+    bankAccountCount, setBankAccountCount,
+    bankAccountData, setBankAccountData,
+    bankAccountLoader, setBankAccountLoader,
+    bankAccountSearch, setBankAccountSearch,
+
     productCatergoriesCount, setProductCatergoriesCount,
     productCatergoriesData, setProductCatergoriesData,
     productCatergoriesLoader, setProductCatergoriesLoader,
@@ -3686,6 +3864,8 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     PendingBillsPaymentFunction, FilterPendingBillsPayment,
     SucessBillsPaymentFunction, FilterSucessBillsPayment,
     DeclinedBillsPaymentFunction, FilterDeclinedBillsPayment,
+
+    BankAccountFunction, FilterBankAccount,
 
     ProductCatergoriesFunction, FilterProductCatergories,
     ProductFunction, FilterProduct,

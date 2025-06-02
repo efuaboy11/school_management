@@ -1,13 +1,14 @@
 "use client"
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons'
+import { faEllipsis, faX } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Pagination, Stack } from '@mui/material';
 import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
 import { debounce } from "lodash";
+import { useForm } from 'react-hook-form'
 
 const ProductCategories = () => {
 
@@ -75,9 +76,18 @@ const ProductCategories = () => {
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
 
+  const [status, setStatus] = useState('')
+  const [statusLoader, setStatusLoader] = useState(false)
+  const statusModal = useRef<any>(null)
+  const [statusOverlay, setStatusOverlay] = useState(false)
+  const [isProductActive, setIsProductActive] = useState(true)
+
   const [selectedIDs, setSelectedIDs] = useState<number[]>([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [animateModal, setAnimateModal] = useState(false);
+  const [selectedDataId, setSelectedDataId] = useState(null);
+
+
 
   const handleCloseDeleteModal = () => {
     setShowDeleteModal(false);
@@ -85,6 +95,28 @@ const ProductCategories = () => {
   const handleShowDeleteModal = () => {
     setShowDeleteModal(true);
   };
+
+
+  const showStatusModal = (id:any, status:boolean) =>{
+    setIsProductActive(status)
+    if(statusModal.current){
+      statusModal.current.style.transform = `translateY(${0}px)`
+      statusModal.current.style.transition = `all ${1.5}s ease`
+    }
+    setStatusOverlay(true)
+    setSelectedDataId(id)
+  }
+
+  const hideStatusModal = () => {
+    if(statusModal.current){
+      statusModal.current.style.transform = `translateY(${-650}%)`
+      statusModal.current.style.transition = `all ${5}s ease`
+    }
+    setSelectedDataId(null)
+
+  }
+
+
   const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
       const allIDs = productCatergoriesData.map((data) => data.id);
@@ -106,6 +138,11 @@ const ProductCategories = () => {
     setPage(value);
   };
 
+    const {
+      register,
+      handleSubmit,
+      formState: { errors, isValid },
+    } = useForm();
   // const productCatergoriesData = [...Array(100).keys()];
   const startIndex = (page - 1) * itemsPerPage;
   const currentItems = productCatergoriesData.slice(startIndex, startIndex + itemsPerPage);
@@ -162,6 +199,56 @@ const ProductCategories = () => {
     }
   }
 
+
+  const UpdateStatus = async(e:any) =>{
+    setStatusLoader(true)
+    setDisableButton(true)
+
+    try{
+      const response = await fetch(`http://127.0.0.1:8000/api/product-categories/${selectedDataId}/`, {
+        method: 'PATCH',
+        body: JSON.stringify({
+          is_active: !isProductActive,
+        }),
+        headers:{
+          Authorization: `Bearer ${authTokens?.access}`,
+          "Content-Type": "application/json"
+        }
+      })
+
+      if(response.ok){
+        showAlert()
+        setMessage("Status updated sucessfully")
+        setDisableButton(false)
+        setStatus('')
+        setIsSuccess(true)
+        setStatusLoader(false)
+        hideStatusModal()
+        ProductCatergoriesFunction()
+      }else{
+        const errorData = await response.json()
+        const errorMessages = Object.values(errorData)
+        .flat()
+        .join(', ');
+        setMessage(errorMessages)
+        setDisableButton(false)
+        setStatusLoader(false)
+        setIsSuccess(false)
+        showAlert()
+
+      }
+    }catch(error){
+      console.log(error)
+      showAlert()
+      setMessage('An unexpected error occurred.');
+      setDisableButton(false)
+      setIsSuccess(false)
+      setStatusLoader(false)
+
+    } 
+  }
+
+
  
 
   useEffect(() => {
@@ -171,6 +258,18 @@ const ProductCategories = () => {
       setAnimateModal(false);
     }
   }, [showDeleteModal]);
+
+    useEffect(() => {
+      let timer: any;
+      if (selectedDataId == null) {
+        timer = setTimeout(() => {
+          setStatusOverlay(false);
+        }, 1000);
+      }
+  
+    
+      return () => clearTimeout(timer);
+    }, [selectedDataId]);
 
 
 
@@ -210,6 +309,53 @@ const ProductCategories = () => {
           </div>
         </section>
       )}
+
+
+      <div className={`${statusOverlay ? 'overlay-background pt-5 ': ''}`}>
+        <div className="dashboard-update-status-container" ref={statusModal}>
+          <div className="row justify-content-center">
+            <div className="col-lg-5 col-md-6 col-sm-9 col-11">
+              <div className="site-boxes px-4 py-3 border-radius-10px">
+                <div className="d-flex justify-content-end">
+                  <FontAwesomeIcon className='sm-text cursor-pointer' icon={faX} onClick={hideStatusModal}/>
+                </div>
+                {isProductActive ? (
+                  <div className="d-flex justify-content-center">
+                    <div className="text-center">
+                      <h5 className='pb-2'>This Product Categories is <span className="success-text">Active</span></h5>
+                      <p className="light-text">This product categories is currently active, would you like to disable the product category.</p>
+                      <p className="sm-text light-text italic-text">Note: THis action will make products under the categories not purchasable</p>
+
+                      <button onClick={UpdateStatus} disabled={disableButton} type="submit" className={`mt-4 mb-3 Button width-100 site-btn px-3`}>
+                        <span className={`${statusLoader ? 'site-submit-spinner': ''}`}></span>
+                        <span className={`${statusLoader ? 'site-submit-btn-visiblity': ''}`}><i className="bi bi-ban me-2"></i>Disable</span>
+                      </button>
+                    </div>
+                  </div>
+                ) : (
+                  <div className="d-flex justify-content-center">
+                    <div className="text-center">
+                      <h5 className='pb-2'>This Product Categories is <span className="error-text">Disable</span></h5>
+                      <p className="light-text">This product categories is currently not active, would you like to activate the product category.</p>
+                      <p className="sm-text light-text italic-text">Note: THis action will make products under the categories  purchasable by users</p>
+
+                      <button onClick={UpdateStatus} disabled={disableButton} type="submit" className={`mt-4 mb-3 Button width-100 site-btn px-3`}>
+                        <span className={`${statusLoader ? 'site-submit-spinner': ''}`}></span>
+                        <span className={`${statusLoader ? 'site-submit-btn-visiblity': ''}`}><i className="bi bi-check2-circle me-2"></i>Activate</span>
+                      </button>
+                    </div>
+                  </div>
+                )}
+
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+
+
       <div className="container-xl pt-4">
         <div className="d-flex justify-content-between">
           <div>
@@ -218,7 +364,7 @@ const ProductCategories = () => {
           </div>
 
           <div className='d-none d-sm-block'>
-            <Link href='/admin/create-bills/add' className="site-btn px-3 Link"><i className="ri-send-plane-fill pe-2"></i> Add category</Link>
+            <Link href='/admin/product-categories/add' className="site-btn px-3 Link"><i className="ri-send-plane-fill pe-2"></i> Add category</Link>
           </div>
         </div>
 
@@ -294,15 +440,35 @@ const ProductCategories = () => {
                                   </label>
                               </td>
                               <td className='py-3'>
-                                {formatName(data.bill_name)}
+                                {formatName(truncateText(data.name, 2))}
                               </td>
-                              <td>{formatCurrency(data.amount)}</td>
+                              {data.is_active ? (
+                                <td>
+                                  <div className="d-flex align-center">
+                                    <div className="site-successful-dot me-2"></div>
+                                    <p className="success-text">Active</p>
+                                  </div>
+                                </td>
+                              ) : (
+                                <td>
+                                  <div className="d-flex align-center">
+                                    <div className="site-declined-dot me-2"></div>
+                                    <p className="error-text">Diable</p>
+                                  </div>
+                                </td>
+                              )}
                               <td>{truncateText(data.description, 2)}</td>
                               <td>{formatDate(data.created_at)}</td>
                               <td>
-                                <Link href={`/admin/create-bills/${data.id}`} className="Link site-border box-50px d-flex  align-center justify-content-center border-radius-5px cursor-pointer">
-                                  <i className="ri-eye-line"></i>
-                                </Link>
+                                <div className="d-flex align-center">
+                                  <Link href={`/admin/product-categories/individual/${data.id}`} className="Link site-border box-50px d-flex  align-center justify-content-center border-radius-5px cursor-pointer">
+                                    <i className="ri-eye-line"></i>
+                                  </Link>
+
+                                  <div onClick={() => showStatusModal(data.id, data.is_active)} className='ms-3 cursor-pointer'>
+                                    <i className="ri-edit-line"></i>
+                                  </div>
+                                </div>
                               </td>
                             </tr>
 

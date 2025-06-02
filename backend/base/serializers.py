@@ -407,14 +407,22 @@ class TermSerializer(serializers.ModelSerializer):
         
 # Session
 class SessionSerializer(serializers.ModelSerializer):
+    term_name = serializers.SerializerMethodField()
+    
     class Meta:
         model = Session
         fields = [
             'id',
             'name',
             'term',
+            'term_name'
         ]
         
+    def get_term_name(self, obj):
+        term = obj.term.all()
+        serializer = TermSerializer(term, many=True)
+        return serializer.data
+   
 class ShortSessionSerializer(serializers.ModelSerializer):
     class Meta:
         model = Session
@@ -732,6 +740,7 @@ class SchemeOfWorkSerializer(serializers.ModelSerializer):
 class AssignmentSerializer(serializers.ModelSerializer):
     teacher_name =  serializers.SerializerMethodField()
     subject_name = serializers.SerializerMethodField()
+    student_class_name = serializers.SerializerMethodField()
     class Meta:
         model = Assignment
         fields = [
@@ -739,15 +748,17 @@ class AssignmentSerializer(serializers.ModelSerializer):
             'teacher',
             'teacher_name',
             'student_class',
-            'subject_name',
+            'student_class_name',
             'subject',
+            'subject_name',
             'assignment_name',
-            'assignment_code',
+            'assignment_code', 
             'instructions',
             'due_date',
             'points',
             'assignment_file',
-            'assignment_photo'
+            'assignment_photo',
+            'date'
         ] 
         
         
@@ -761,6 +772,12 @@ class AssignmentSerializer(serializers.ModelSerializer):
         teacher = obj.teacher
         serializer = ShortStaffSerializer(
             instance=teacher, many=False)
+        return serializer.data   
+    
+    def get_student_class_name(self, obj):
+        student_class = obj.student_class
+        serializer = ShortStudentClassSerializer(
+            instance=student_class, many=False)
         return serializer.data   
         
 
@@ -997,6 +1014,19 @@ class BillPaymentUpdateStatusSerializer(serializers.ModelSerializer):
         model = BillPayment
         fields = [
             'status'
+        ]
+        
+class BankAccountSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BankAccount
+        fields = [
+            'id',
+            'bank_name',
+            'account_number',
+            'account_name',
+            'bank_img',
+            'is_active',
+            'description',
         ]
         
         

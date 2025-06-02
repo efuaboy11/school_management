@@ -16,6 +16,10 @@ from django.utils.crypto import get_random_string
 from .smpt import *
 from .paystack import *
 from rest_framework.filters import SearchFilter
+import json
+from django.views.decorators.csrf import csrf_exempt
+from django.utils.decorators import method_decorator
+
 # Create your views here.
 @api_view(['GET'])
 def endpoints(request):
@@ -531,7 +535,7 @@ class DeleteMultipleSubjectsView(generics.GenericAPIView):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         ids = serializer.validated_data['ids']
-        deleted_count, _ = Email.objects.filter(id__in=ids).delete()
+        deleted_count, _ = Subjects.objects.filter(id__in=ids).delete()
         return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
     
 # Students Classes
@@ -1078,7 +1082,7 @@ class AssignmentView(generics.ListCreateAPIView):
     serializer_class = AssignmentSerializer
     permission_classes = [IsAdminOrTeacherorStudent]
     filter_backends = [ExactSearchFilter]
-    search_fields = ['teacher__first_name', 'teacher__last_name', 'subject__name', 'student_class__name', 'assignment_name', 'assignment_code' 'due_date']
+    search_fields = ['teacher__first_name', 'teacher__last_name', 'subject__name', 'student_class__name', 'assignment_name', 'assignment_code', 'due_date']
     
     
     def get_queryset(self):
@@ -1759,13 +1763,70 @@ class BillsPaymentUpdateView(generics.RetrieveUpdateAPIView):
         
         return Response({"message": "Payment status updated successfully."}, status=status.HTTP_200_OK)
     
+
+class BankAccountView(generics.ListCreateAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = BankAccountSerializer
+    filter_backends = [ExactSearchFilter]
+    search_fields = ['bank_name', 'account_number', 'account_name']
     
+    
+    def get_queryset(self):
+        queryset = BankAccount.objects.all()
+        status = self.request.query_params.get('status')
+            
+        if status:
+            if status == 'active':
+                queryset = queryset.filter(is_active=True)
+            elif status == 'disable':
+                queryset = queryset.filter(is_active=False)
+        return queryset
+    
+    
+    
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        if(user.role == 'admin' or user.role == 'bursary'):
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"error": "You do not have permission to create a notification."}, status=status.HTTP_403_FORBIDDEN)
+ 
+class BankAccountRetrieveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = BankAccountSerializer
+    permission_classes = [IsAdminorBursary]
+    queryset = BankAccount.objects.all()
+    lookup_field = 'pk'
+    
+class DeleteMultipleBankAccountView(generics.GenericAPIView):
+    permission_classes = [IsAdminorBursary]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = BankAccount.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+     
+     
+class ActiveBankAccountView(generics.ListAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = BankAccountSerializer
+    
+    def get_queryset(self):
+        return BankAccount.objects.filter(is_active=True)        
 
 # --------------------------------------------- E commerce ------------------------------------ #
 class ProductCategoriesView(generics.ListCreateAPIView):
     permission_classes = [AllowAny]
     serializer_class = ProductCategoriesSerializer
     queryset = ProductCategories.objects.all()
+    filter_backends = [ExactSearchFilter]
+    search_fields = ['name']
+    
     
     def post(self, request, *args, **kwargs):
         user = request.user
@@ -1799,9 +1860,24 @@ class DeleteMultipleProductCategoriesView(generics.GenericAPIView):
 class ProductView(generics.ListCreateAPIView):
     permission_classes = [AllowAny]
     serializer_class = ProductSerializer
-    queryset = Product.objects.all()
     filter_backends = [ExactSearchFilter]
     search_fields = ['name', 'product_id', 'category__name', 'price', 'discount_price', 'price']
+    
+    def get_queryset(self):
+        queryset = Product.objects.all()
+        product_category = self.request.query_params.get('product_category')
+        status = self.request.query_params.get('status')
+        
+        if product_category:
+            queryset = queryset.filter(category=product_category)
+            
+        if status:
+            if status == 'active':
+                queryset = queryset.filter(is_active=True)
+            elif status == 'disable':
+                queryset = queryset.filter(is_active=False)
+        return queryset
+        
     
     
     def post(self, request, *args, **kwargs):
@@ -1953,7 +2029,39 @@ class RemoveCartProductView(generics.GenericAPIView):
                                                                                                                                                                                                                                          
                                                                                                                                                                                                                                     
                                                                                                                                                                                                                                          
-                                                                                                                                                                                                                                         
+
+@method_decorator(csrf_exempt, name='dispatch')
+class PaystackWebhookView(APIView):
+    def post(self, request, *args, **kwargs):
+        payload = json.loads(request.body)
+        event = payload.get("event")
+
+        if event == "charge.success":
+            data = payload.get("data", {})
+            reference = data.get("reference")
+
+            try:
+                order = Order.objects.get(reference=reference)
+                order.status = "successful"
+                order.save()
+                return Response({"message": "Order updated to successful"}, status=status.HTTP_200_OK)
+            except Order.DoesNotExist:
+                return Response({"error": "Order not found"}, status=status.HTTP_404_NOT_FOUND)
+
+        elif event == "charge.failed":
+            data = payload.get("data", {})
+            reference = data.get("reference")
+
+            try:
+                order = Order.objects.get(reference=reference)
+                order.status = "failed"
+                order.save()
+                return Response({"message": "Order updated to failed"}, status=status.HTTP_200_OK)
+            except Order.DoesNotExist:
+                return Response({"error": "Order not found for failed payment"}, status=status.HTTP_404_NOT_FOUND)
+
+        return Response({"message": "Unhandled event"}, status=status.HTTP_200_OK)
+                                                                                                                                                                                                                                     
                                                                                                                                                                                                                                          
                                                                                                                                                                                                                                          
                                                                                                                                                                                                                                          
@@ -2007,7 +2115,8 @@ class CreateOrderView(APIView):
             user=user,
             products=product_data,
             total_amount = total_amount,
-            status='processing'
+            status='processing',
+            reference=reference,
         )
         cart_items.delete()
         return Response({
@@ -2017,6 +2126,10 @@ class CreateOrderView(APIView):
             "reference": reference,
             "public_key": settings.PAYSTACK_PUBLIC_KEY
         }, status=status.HTTP_201_CREATED)
+        
+        
+        
+
             
   
   

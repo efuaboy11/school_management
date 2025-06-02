@@ -189,6 +189,12 @@ urlpatterns = [
     path('delete-multiple-bills-payment/', views.DeleteMultipleBillsPaymentView.as_view(), name='delete_multiple_bills_payment' ),
     path('bills-payment/<str:pk>/update-status/', views.BillsPaymentUpdateView.as_view(), name='update_bills_payment_status' ),
     
+    #Bank account
+    path('bank-account/', views.BankAccountView.as_view(), name='bank_account' ),
+    path('bank-account/active', views.ActiveBankAccountView.as_view(), name='active_bank_account' ),
+    path('bank-account/<str:pk>/', views.BankAccountRetrieveUpdateDestory.as_view(), name='indiviual_bank_account' ),
+    path('delete-multiple-bank-account/', views.DeleteMultipleBankAccountView.as_view(), name='delete_multiple_bank_account' ),
+    
     # ------------------------------------------ E commerce ------------------------------------------ 
     
     # Product Categories
@@ -215,6 +221,7 @@ urlpatterns = [
     path('remove-cart-product/', views.RemoveCartProductView.as_view(), name='remove-cart-product'),
     
     #Order
+    path('webhook/paystack/', views.PaystackWebhookView.as_view(), name='paystack-webhook'),
     path('create-order/', views.CreateOrderView.as_view(), name='create-order'),
     
     #current User

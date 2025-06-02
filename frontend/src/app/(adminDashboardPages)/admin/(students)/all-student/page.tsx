@@ -205,7 +205,7 @@ const AllStudents = () => {
           </div>
 
           <div className='d-none d-sm-block'>
-            <button className="site-btn px-3"><i className="ri-user-add-line pe-2"></i> Add  Student</button>
+            <Link href='/admin/add-student' className="site-btn px-3 Link"><i className="ri-send-plane-fill pe-2"></i> Add student</Link>
           </div>
         </div>
 
@@ -256,81 +256,81 @@ const AllStudents = () => {
                       </label>
                     </div>
                   </div>
-                  
-                  {currentItems.map((data)=>(
-                    <div className="col-lg-4 col-md-6" key={data.id}>
-                      <div className="site-boxes border-radius-10px p-3">
-                        <div className="d-flex justify-content-between">
-                          <div className="d-flex">
-                            <div className={`${data.account_status === 'active' ? 'site-successful-border': 'site-declined-border'}    border-radius-20px px-2 py-1`}>
-                              <div className="d-flex align-center">
-                                <div className={`${data.account_status === 'active' ? 'site-successful-dot' : 'site-declined-dot'}`}></div>
-                                <p className='ms-2'>{formatName(data.account_status)}</p>
-                              </div>
+                  {studentData.map((data)=>(
+                  <div className="col-lg-4 col-md-6" key={data.id}>
+                    <div className="site-boxes border-radius-10px p-3">
+                      <div className="d-flex justify-content-between">
+                        <div className="d-flex">
+                          <div className={`${data.account_status === 'active' ? 'site-successful-border': 'site-declined-border'}    border-radius-20px px-2 py-1`}>
+                            <div className="d-flex align-center">
+                              <div className={`${data.account_status === 'active' ? 'site-successful-dot' : 'site-declined-dot'}`}></div>
+                              <p className='ms-2'>{formatName(data.account_status)}</p>
                             </div>
                           </div>
+                        </div>
 
+                        <div>
                           <div>
-                            <div>
-                            <label className="custom-checkbox cursor-pointer">
-                              <input
-                                type="checkbox"
-                                checked={selectedIDs.includes(data.id)}
-                                onChange={() => handleCheckboxChange(data.id)}
-                              />
-                              <span className="checkmark"></span>
-                            </label>
+                          <label className="custom-checkbox cursor-pointer">
+                            <input
+                              type="checkbox"
+                              checked={selectedIDs.includes(data.id)}
+                              onChange={() => handleCheckboxChange(data.id)}
+                            />
+                            <span className="checkmark"></span>
+                          </label>
 
-                            </div>
                           </div>
                         </div>
-
-                        <div className="d-flex mt-4 justify-content-center text-center">
-                          <div>
-                            <Image className='border-radius-50' src={data.passport} alt="Logo" width={70} height={70} />
-                            <div className="pt-3">
-                              <p>{formatName(data.first_name)} {formatName(data.last_name)}</p>
-                              <p className='light-text'>Student</p>
-                            </div>
-                          </div>
-                        </div>
-
-                        <div className="wrap-text my-4 site-border border-radius-10px py-2 px-3 site-light-boxes ">
-                          <div className="flex-wrap d-flex justify-content-between light-text mb-2">
-                            <p>Student ID:</p>
-                            <p>{data.userID}</p>
-                          </div>
-
-                          <div className="flex-wrap d-flex justify-content-between light-text mb-2">
-                            <p>Class:</p>
-                            <p>{formatName(data.student_class_name.name)}</p>
-                          </div>
-
-                          <div className="flex-wrap  d-flex justify-content-between light-text mb-2">
-                            <p>Email:</p>
-                            <p>{data.email}</p>
-                          </div>
-
-                          <div className="flex-wrap d-flex justify-content-between light-text mb-2">
-                            <p>Phone number:</p>
-                            <p>{data.phone_number}</p>
-                          </div>
-
-                          <div className="flex-wrap d-flex justify-content-between light-text mb-2">
-                            <p>Admission number:</p>
-                            <p>{data.admission_number}</p>
-                          </div>
-                        </div>
-
-                        <div className="d-flex justify-content-between light-text">
-                          <p>Joined at: {formatDate(data.date_joined)}</p>
-
-                          <Link href={`/admin/all-student/${data.id}`} className='Link light-link'>View details</Link>
-                        </div>
-
                       </div>
+
+                      <div className="d-flex mt-4 justify-content-center text-center">
+                        <div>
+                          <Image className='border-radius-50' src={data.passport} alt="Logo" width={70} height={70} />
+                          <div className="pt-3">
+                            <p>{formatName(data.first_name)} {formatName(data.last_name)}</p>
+                            <p className='light-text'>Student</p>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div className="wrap-text my-4 site-border border-radius-10px py-2 px-3 site-light-boxes ">
+                        <div className="flex-wrap d-flex justify-content-between light-text mb-2">
+                          <p>Student ID:</p>
+                          <p>{data.userID}</p>
+                        </div>
+
+                        <div className="flex-wrap d-flex justify-content-between light-text mb-2">
+                          <p>Class:</p>
+                          <p>{formatName(data.student_class_name.name)}</p>
+                        </div>
+
+                        <div className="flex-wrap  d-flex justify-content-between light-text mb-2">
+                          <p>Email:</p>
+                          <p>{data.email}</p>
+                        </div>
+
+                        <div className="flex-wrap d-flex justify-content-between light-text mb-2">
+                          <p>Phone number:</p>
+                          <p>{data.phone_number}</p>
+                        </div>
+
+                        <div className="flex-wrap d-flex justify-content-between light-text mb-2">
+                          <p>Admission number:</p>
+                          <p>{data.admission_number}</p>
+                        </div>
+                      </div>
+
+                      <div className="d-flex justify-content-between light-text">
+                        <p>Joined at: {formatDate(data.date_joined)}</p>
+
+                        <Link href={`/admin/all-student/${data.id}`} className='Link light-link'>View details</Link>
+                      </div>
+
                     </div>
+                  </div>
                   ))}
+   
                 </div>
                
               ): (

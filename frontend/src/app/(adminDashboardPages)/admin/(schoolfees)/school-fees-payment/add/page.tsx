@@ -252,7 +252,7 @@ const CreateSchoolFees = () => {
     <div>
       <div className="container-lg my-5 pt-2">
         <div className="row justify-content-center">
-          <div className="col-8">
+          <div className="col-sm-8">
             <div className="site-boxes border-radius-10px">
               <div className="border-bottom1 text-center p-3">
                 <p>Pay school fees bill</p>

@@ -254,7 +254,6 @@ class Subjects(models.Model):
         ('primary', 'Primary'),
         ('junior_secondary', 'Junior Secondary'),
         ('senior_secondary', 'Senior Secondary'),
-        ('others', 'Others'),
     ]
     
     
@@ -283,13 +282,8 @@ class StudentClass(models.Model):
 
 
 class Term(models.Model):
-    TERMS = [
-        ("first term", "FIRST TERM"),
-        ("second term", "SECOND TERM"),
-        ("third term", "THIRD TERM")
-    ]
     name = models.CharField(max_length=50, blank=True,
-                            null=True, choices=TERMS)
+                            null=True,)
 
     def __str__(self):
         return self.name
@@ -453,6 +447,7 @@ class Assignment(models.Model):
     points = models.CharField(max_length=20, null=True, blank=True)
     assignment_file = models.FileField(upload_to="assignment_file", null=True, blank=True)
     assignment_photo = models.ImageField(upload_to="assignment_photo", null=True, blank=True)
+    date = models.DateTimeField(default=timezone.now)
     
 
 class AssignmentSubmission(models.Model):
@@ -570,6 +565,17 @@ class BillPayment(models.Model):
     def __str__(self):
         return f"{self.user} - {self.bill}"
     
+    
+class BankAccount(models.Model):
+    bank_name = models.CharField(max_length=100, null=True, blank=True)
+    account_number = models.CharField(max_length=100, unique=True)
+    account_name = models.CharField(max_length=100, null=True, blank=True)
+    bank_img = models.ImageField(
+        upload_to="bank_images", null=True, blank=True)
+    is_active = models.BooleanField(default=True)     
+    description = models.TextField(null=True, blank=True)
+    
+    
 
 
 # ------------------------------------------------- E - commerce ----------------------------------- #
@@ -649,13 +655,14 @@ class Order(models.Model):
         ('pending', 'Pending'),
         ('processing', 'Processing'),
         ('completed', 'Completed'),
-        ('cancelled', 'Cancelled'),
+        ('failed', 'Failed'),
     ]
     
     user =models.ForeignKey(Users, on_delete=models.CASCADE)
     products = models.JSONField(default=list)
     total_amount = models.DecimalField(max_digits=10, decimal_places=2)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='pending')
+    reference = models.CharField(max_length=255, unique=True, null=True, blank=True)
     created_at = models.DateTimeField(default=timezone.now)
     
     def __str__(self):

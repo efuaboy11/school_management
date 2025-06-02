@@ -300,7 +300,7 @@ const Bills = () => {
                               <td>{truncateText(data.description, 2)}</td>
                               <td>{formatDate(data.created_at)}</td>
                               <td>
-                                <Link href={`/admin/create-bills/${data.id}`} className="Link site-border box-50px d-flex  align-center justify-content-center border-radius-5px cursor-pointer">
+                                <Link href={`/admin/create-bills/individual/${data.id}`} className="Link site-border box-50px d-flex  align-center justify-content-center border-radius-5px cursor-pointer">
                                   <i className="ri-eye-line"></i>
                                 </Link>
                               </td>
