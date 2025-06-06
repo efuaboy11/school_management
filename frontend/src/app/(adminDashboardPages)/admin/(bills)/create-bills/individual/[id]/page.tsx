@@ -258,7 +258,7 @@ const IndivivdualBill = ({ params }: { params: Promise<{ id: string }> }) => {
                                 </div>
 
                                 <div className="col-md-6">
-                                  <label htmlFor="email" className="form-label">Ampunt</label>
+                                  <label htmlFor="email" className="form-label">Amount</label>
                                   <input type="text" className={`site-input ${errors.amount ? 'error-input' : ''}`} {...register('amount', {required: true})}  value={amount}  onChange={(e) => setAmount(Number(e.target.value))} placeholder='amount' />
                                   {errors.amount && <p className="error-text">This field is required</p>}
                                 </div>
@@ -266,7 +266,7 @@ const IndivivdualBill = ({ params }: { params: Promise<{ id: string }> }) => {
 
                                 <div className="col-md-12">
                                   <label htmlFor="description" className="form-label">Description</label>
-                                  <textarea rows={6}  className={`site-input ${errors.description ? 'error-input' : ''}`} {...register('description', {required: true})}   value={description}  onChange={(e) => setDescription(e.target.value)} placeholder='Offspring name'></textarea>
+                                  <textarea rows={6}  className={`site-input ${errors.description ? 'error-input' : ''}`} {...register('description', {required: true})}   value={description}  onChange={(e) => setDescription(e.target.value)} placeholder='...'></textarea>
                                   {errors.description && <p className="error-text">This field is required</p>}
                                 </div>
 
@@ -366,12 +366,12 @@ const IndivivdualBill = ({ params }: { params: Promise<{ id: string }> }) => {
                       </div>
 
                       <div className='light-text p-3'>
-                        <div className="pb-3 d-flex justify-content-between">
+                        <div className="pb-3 d-sm-flex justify-content-between">
                           <p className="pb-2 sm-text">Bill name</p>
                           <p>{formatName(details.bill_name)}</p>
                         </div>
 
-                        <div className="pb-3 d-flex justify-content-between">
+                        <div className="pb-3 d-sm-flex justify-content-between">
                           <p className="pb-2 sm-text">Amount</p>
                           <p>{formatCurrency(details.amount)}</p>
                         </div>

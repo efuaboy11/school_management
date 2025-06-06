@@ -428,22 +428,22 @@ const IndivivdualParent = ({ params }: { params: Promise<{ id: string }> }) => {
                       </div>
 
                       <div className='light-text p-3'>
-                        <div className="pb-3 d-flex justify-content-between">
+                        <div className="pb-3 d-sm-flex justify-content-between">
                           <p className="pb-2 sm-text">Full name</p>
                           <p>{userData.name}</p>
                         </div>
 
-                        <div className="pb-3 d-flex justify-content-between">
+                        <div className="pb-3 d-sm-flex justify-content-between">
                           <p className="pb-2 sm-text">Phone number</p>
                           <p>{userData.phone_number}</p>
                         </div>
 
-                        <div className="pb-3 d-flex justify-content-between">
+                        <div className="pb-3 d-sm-flex justify-content-between">
                           <p className="pb-2 sm-text">Email</p>
                           <p>{userData.email}</p>
                         </div>
 
-                        <div className="pb-3 d-flex justify-content-between">
+                        <div className="pb-3 d-sm-flex justify-content-between">
                           <p className="pb-2 sm-text">Address</p>
                           <p>{userData.address}</p>
                         </div>

@@ -278,7 +278,6 @@ const AssignmentPage = () => {
                           <th>Assignment Code</th>
                           <th>Assignment Name</th>
                           <th>Points</th>
-                          <th>Due date</th>
                           <th></th>
                         </tr>
                       </thead>
@@ -305,9 +304,8 @@ const AssignmentPage = () => {
                               <td>{data.assignment_code}</td>
                               <td>{formatName(truncateText(data.assignment_name, 1))}</td>
                               <td>{data.points}</td>
-                              <td>{formatDate(data.date)}</td>
                               <td>
-                                <Link href={`/admin/create-bills/individual/${data.id}`} className="Link site-border box-50px d-flex  align-center justify-content-center border-radius-5px cursor-pointer">
+                                <Link href={`/admin/assignment/individual/${data.id}`} className="Link site-border box-50px d-flex  align-center justify-content-center border-radius-5px cursor-pointer">
                                   <i className="ri-eye-line"></i>
                                 </Link>
                               </td>

@@ -64,6 +64,7 @@ interface AuthContextType {
   updateDateTime: () => void;
   currentDateTime: string;
   ImageHandler: (event: any) => void; 
+  handleDownload: (url:string, fileName:string) => void;
   handleUsernameChange: (event:any) =>void;
   handlePasswordChange: (event:any) =>void;
   userDetails: (profileId: any) => Promise<void>;
@@ -92,6 +93,12 @@ type DecodedUser = {
 
   // Add more fields as needed from your JWT
 };
+
+
+interface DownloadLinkProps {
+  url: string;
+  fileName: string;
+}
 
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -344,6 +351,36 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     // Perform necessary actions, e.g., refreshing the token or logging out the user
   };
 
+
+  const handleDownload = (url:string, fileName:string) => {
+    setLoader(true)
+    fetch(url, {
+      headers: {
+        Authorization: `Bearer ${authTokens?.access}`, // Add your authorization header here
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return response.blob();
+      })
+      .then((blob) => {
+        const fileURL = window.URL.createObjectURL(blob);
+        const link = document.createElement("a");
+        link.href = fileURL;
+        link.download = fileName || "downloaded-file.pdf";
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+        window.URL.revokeObjectURL(fileURL);
+        setLoader(false)
+      })
+      .catch((error) => {
+        console.error("Error fetching the file:", error);
+        setLoader(false)
+    });
+  };
 
   useEffect(() =>{
     if(!authTokens || isTokenExpired(authTokens?.access)){
@@ -719,6 +756,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     updateDateTime,
     currentDateTime,
     ImageHandler,
+    handleDownload,
     handlePasswordChange,
     handleUsernameChange,
     userDetails,

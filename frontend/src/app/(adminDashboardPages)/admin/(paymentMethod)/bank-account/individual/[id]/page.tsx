@@ -434,19 +434,19 @@ const IndivivdualBankAccount = ({ params }: { params: Promise<{ id: string }> })
                       </div>
 
                       <div className='light-text p-3'>
-                        <div className="pb-3 d-flex justify-content-between">
+                        <div className="pb-3 d-sm-flex justify-content-between">
                           <p className="pb-2 sm-text">Bank Name</p>
                           <p>{formatName(details.bank_name)}</p>
                         </div>
 
 
-                        <div className="pb-3 d-flex justify-content-between">
+                        <div className="pb-3 d-sm-flex justify-content-between">
                           <p className="pb-2 sm-text">Account name</p>
                           <p>{formatName(details.account_name)}</p>
                         </div>
 
 
-                        <div className="pb-3 d-flex justify-content-between">
+                        <div className="pb-3 d-sm-flex justify-content-between">
                           <p className="pb-2 sm-text">Account Number</p>
                           <p>{details.account_number}</p>
                         </div>
@@ -454,7 +454,7 @@ const IndivivdualBankAccount = ({ params }: { params: Promise<{ id: string }> })
                                                 
 
 
-                        <div className="pb-3 d-flex justify-content-between">
+                        <div className="pb-3 d-sm-flex justify-content-between">
                           <p className="pb-2 sm-text">Is active?</p>
                           {details.is_active ? (
                             <div className="d-flex align-center">

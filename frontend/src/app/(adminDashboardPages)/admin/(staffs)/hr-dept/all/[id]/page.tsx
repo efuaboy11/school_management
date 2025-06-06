@@ -587,30 +587,30 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
                     <div className="p-3 light-text">
                       <div className="row g-4  flex-wrap align-center">
                         <div className='col-md-6'>
-                          <div className="pb-3 d-flex justify-content-between">
+                          <div className="pb-3 d-sm-flex justify-content-between">
                             <p className="pb-2 sm-text">User ID:</p>
                             <p>{userData.userID}</p>
                           </div>
 
 
-                          <div className="pb-3 d-flex justify-content-between">
+                          <div className="pb-3 d-sm-flex justify-content-between">
                             <p className="pb-2 sm-text">Username:</p>
                             <p>{formatName(userData.username)}</p>
                           </div>
 
 
-                          <div className="pb-3 d-flex justify-content-between">
+                          <div className="pb-3 d-sm-flex justify-content-between">
                             <p className="pb-2 sm-text">DOB:</p>
                             <p>{formatDate(userData.date_of_birth)}</p>
                           </div>
 
 
-                          <div className="pb-3 d-flex justify-content-between">
+                          <div className="pb-3 d-sm-flex justify-content-between">
                             <p className="pb-2 sm-text">Religion:</p>
                             <p>{formatName(userData.religion)}</p>
                           </div>
 
-                          <div className="pb-3 d-flex justify-content-between">
+                          <div className="pb-3 d-sm-flex justify-content-between">
                             <p className="pb-2 sm-text">Disability:</p>
                             <p>{formatName(userData.disability)}</p>
                           </div>
@@ -620,30 +620,30 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
 
                         <div className='col-md-6'>
 
-                          <div className="pb-3 d-flex justify-content-between">
+                          <div className="pb-3 d-sm-flex justify-content-between">
                             <p className="pb-2 sm-text">State of Origin:</p>
                             <p>{formatName(userData.state_of_origin)}</p>
                           </div>
 
 
-                          <div className="pb-3 d-flex justify-content-between">
+                          <div className="pb-3 d-sm-flex justify-content-between">
                             <p className="pb-2 sm-text">City / Town:</p>
                             <p>{formatName(userData.city_or_town)}</p>
                           </div>
 
 
-                          <div className="pb-3 d-flex justify-content-between">
+                          <div className="pb-3 d-sm-flex justify-content-between">
                             <p className="pb-2 sm-text">Home Address:</p>
                             <p>{formatName(userData.home_address)}</p>
                           </div>
 
-                          <div className="pb-3 d-flex justify-content-between">
+                          <div className="pb-3 d-sm-flex justify-content-between">
                             <p className="pb-2 sm-text">Phone Number:</p>
                             <p>{formatName(userData.phone_number)}</p>
                           </div>
 
                           
-                          <div className="pb-3 d-flex justify-content-between">
+                          <div className="pb-3 d-sm-flex justify-content-between">
                             <p className="pb-2 sm-text">Date joined:</p>
                             <p>{formatDate(userData.date_joined)}</p>
                           </div>

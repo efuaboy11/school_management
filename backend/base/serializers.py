@@ -436,6 +436,19 @@ class SchoolNotificationSerializer(serializers.ModelSerializer):
         model = SchoolNotification
         fields = [
             'id',
+            'subject',
+            'text',
+            'date'
+        ]
+        
+        
+# Staff Notification
+class StaffNotificationSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StaffNotification
+        fields = [
+            'id',
+            'subject',
             'text',
             'date'
         ]
@@ -453,6 +466,7 @@ class ClassNotificationSerializer(serializers.ModelSerializer):
             'teacher_name',
             'student_class',
             'student_class_name',
+            'subject',
             'text',
             'date',
         ]
@@ -704,10 +718,13 @@ class SchemeOfWorkSerializer(serializers.ModelSerializer):
     subject_name = serializers.SerializerMethodField()
     term_name = serializers.SerializerMethodField()
     student_class_name = serializers.SerializerMethodField()
+    teacher_name =  serializers.SerializerMethodField()
     class Meta:
         model = SchemeOfWork
         fields = [
             'id',
+            'teacher',
+            'teacher_name',
             'subject',
             'subject_name',
             'term',
@@ -735,6 +752,11 @@ class SchemeOfWorkSerializer(serializers.ModelSerializer):
             instance=student_class, many=False)
         return serializer.data
     
+    def get_teacher_name(self, obj):
+        teacher = obj.teacher
+        serializer = ShortStaffSerializer(
+            instance=teacher, many=False)
+        return serializer.data   
     
 
 class AssignmentSerializer(serializers.ModelSerializer):
@@ -831,6 +853,7 @@ class ClassTimetableSerializer(serializers.ModelSerializer):
     class Meta:
         model = ClassTimetable
         fields = [
+            'id',
             'student_class',
             'student_class_name',
             'teacher',

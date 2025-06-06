@@ -466,35 +466,35 @@ const IndivivdualProduct = ({ params }: { params: Promise<{ id: string }> }) => 
                       </div>
 
                       <div className='light-text p-3'>
-                        <div className="pb-3 d-flex justify-content-between">
+                        <div className="pb-3 d-sm-flex justify-content-between">
                           <p className="pb-2 sm-text">Product Name</p>
                           <p>{formatName(details.name)}</p>
                         </div>
 
 
-                        <div className="pb-3 d-flex justify-content-between">
+                        <div className="pb-3 d-sm-flex justify-content-between">
                           <p className="pb-2 sm-text">Category name</p>
                           <p>{formatName(details.category_name.name)}</p>
                         </div>
 
 
-                        <div className="pb-3 d-flex justify-content-between">
+                        <div className="pb-3 d-sm-flex justify-content-between">
                           <p className="pb-2 sm-text">Price</p>
                           <p>{formatCurrency(details.price ? details.price : 0.00)}</p>
                         </div>
 
-                        <div className="pb-3 d-flex justify-content-between">
+                        <div className="pb-3 d-sm-flex justify-content-between">
                           <p className="pb-2 sm-text">Discount Price</p>
                           <p>{formatCurrency(details.discount_price ? details.discount_price : 0.00)}</p>
                         </div>  
                         
-                        <div className="pb-3 d-flex justify-content-between">
+                        <div className="pb-3 d-sm-flex justify-content-between">
                           <p className="pb-2 sm-text">Rating</p>
                           <p>{details.rating}</p>
                         </div>                          
 
 
-                        <div className="pb-3 d-flex justify-content-between">
+                        <div className="pb-3 d-sm-flex justify-content-between">
                           <p className="pb-2 sm-text">Is active?</p>
                           {details.is_active ? (
                             <div className="d-flex align-center">

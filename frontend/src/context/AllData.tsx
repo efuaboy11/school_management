@@ -23,7 +23,8 @@ interface AllDataContextTye{
   setProductCategoriesQuery : (data: string) => void
   statusQuery : string
   setStatusQuery : (data: string) => void
-
+  subjectQuery: string
+  setSubjectQuery: (data: string) => void
 
   //Student
   studentCount: number
@@ -297,6 +298,17 @@ interface AllDataContextTye{
   setClassTimetableLoader: (loader: boolean) => void
   classTimetableSearch: string
   setClassTimetableSearch: (loader: string) => void
+
+  // Scheme of work
+  schemeOfWorkCount: number
+  setSchemeOfWorkCount: (count: number) => void
+  schemeOfWorkData: any[]
+  setSchemeOfWorkData:(data: any[]) => void
+  schemeOfWorkLoader: boolean
+  setSchemeOfWorkLoader: (loader: boolean) => void
+  schemeOfWorkSearch: string
+  setSchemeOfWorkSearch: (loader: string) => void
+
 
   // payment Method
   paymentMethodCount: number
@@ -598,6 +610,10 @@ interface AllDataContextTye{
 
   // Class Timetable
   ClassTimetableFunction: () => Promise<void>;
+  FilterSchemeOFWork: () => Promise<void>; 
+
+  // Scheme of work
+  SchemeOFWorkFunction: () => Promise<void>;
   FilterClassTimetable: () => Promise<void>; 
 
   // Payment Method
@@ -703,6 +719,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   const [feeTypeQuery, setFeeTypeQuery] = useState('')
   const [productCategoriesQuery, setProductCategoriesQuery] = useState('')
   const [statusQuery, setStatusQuery] = useState('')
+  const [subjectQuery, setSubjectQuery] = useState('')
   
   const [studentCount, setStudentCount] = useState(0)
   const [recentStudent, setRecentStudent] = useState<any[]>([])
@@ -844,6 +861,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   const [recentClassTimetable, setRecentClassTimetable] = useState<any>([])
   const [classTimetableLoader, setClassTimetableLoader] = useState(true)
   const [classTimetableSearch, setClassTimetableSearch] = useState('')
+
+
+  const [schemeOfWorkCount, setSchemeOfWorkCount] = useState(0)
+  const [schemeOfWorkData, setSchemeOfWorkData] = useState<any>([])
+  const [schemeOfWorkLoader, setSchemeOfWorkLoader] = useState(true)
+  const [schemeOfWorkSearch, setSchemeOfWorkSearch] = useState('')
 
 
   const [paymentMethodCount, setPaymentMethodCount] = useState(0)
@@ -1975,7 +1998,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Admin or hr Notification
   const AdminHrNotificationFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/admin-or-hr-notification/', {
+    let response = await fetch(`http://127.0.0.1:8000/api/admin-or-hr-notification/?seen=${statusQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2099,7 +2122,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     if(response.ok){
        // sorting from A to Z
        const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setAdminHrNotificationData(sortedData)
+       setSchoolNotificationData(sortedData)
     }
   }
 
@@ -2495,6 +2518,70 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
        // sorting from A to Z
        const sortedData = data.sort((a: { student_class_name: { name: string } }, b: { student_class_name: { name: string } }) => a.student_class_name.name.localeCompare(b.student_class_name.name));
        setClassTimetableData(sortedData)
+    }
+  }
+
+
+
+
+    // Class Timetable
+  const SchemeOFWorkFunction = async() =>{
+    let response = await fetch(`http://127.0.0.1:8000/api/scheme-of-work/?student_class=${studentClassQuery}&term=${termQuery}&subject=${subjectQuery}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authTokens?.access}`
+      },
+    })
+
+    const data = await response.json()
+    if(response.ok){
+      if(Array.isArray(data) && data.length > 0){
+        setSchemeOfWorkCount(data.length)
+      }
+      
+      
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setSchemeOfWorkData(sortedData)
+      setSchemeOfWorkLoader(false)
+
+
+    }else{
+      setSchemeOfWorkLoader(false)
+    }
+
+
+
+  }
+
+
+  const FilterSchemeOFWork = async() =>{
+    let url;
+
+    if(schemeOfWorkSearch.length !== 0){
+      url = `http://127.0.0.1:8000/api/scheme-of-work/?search=${schemeOfWorkSearch}`
+    }
+
+
+    if (!url) {
+      console.error("URL is undefined");
+      return;
+    }
+
+    let response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type":"application/json",
+        Authorization: `Bearer ${authTokens?.access}`
+      }
+    });
+
+    const data = await response.json()
+
+    if(response.ok){
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setSchemeOfWorkData(sortedData)
     }
   }
 
@@ -3571,6 +3658,8 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     feeTypeQuery, setFeeTypeQuery,
     productCategoriesQuery, setProductCategoriesQuery,
     statusQuery, setStatusQuery,
+    subjectQuery, setSubjectQuery,
+
 
 
 
@@ -3718,6 +3807,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     classTimetableLoader, setClassTimetableLoader,
     classTimetableSearch, setClassTimetableSearch,
 
+    schemeOfWorkCount, setSchemeOfWorkCount,
+    schemeOfWorkData, setSchemeOfWorkData,
+    schemeOfWorkLoader, setSchemeOfWorkLoader,
+    schemeOfWorkSearch, setSchemeOfWorkSearch,
+
+
     paymentMethodCount, setPaymentMethodCount,
     paymentMethodData, setPaymentMethodData,
     recentPaymentMethod, setRecentPaymentMethod,
@@ -3846,6 +3941,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     AdminHrNotificationFunction, FilteradminHrNotification,
     SchoolNotificationFunction, FilterSchoolNotification,
     ClassNotificationFunction,  FilterClassNotification,
+    SchemeOFWorkFunction, FilterSchemeOFWork,
     StaffNotificationFunction, FilterStaffNotification,
     SchoolEventFunction, FilterSchoolEvent,
     AssignmentFunction, FilterAssignment,

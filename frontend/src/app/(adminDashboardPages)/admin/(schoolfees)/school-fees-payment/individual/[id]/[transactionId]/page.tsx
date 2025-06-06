@@ -26,7 +26,7 @@ interface DetailsInterface{
 }
 
 
-const IndividualPayment = ({ params }: { params: Promise<any> }) =>{
+const IndividualPayment =  ({ params }: { params: Promise<any> }) =>{
 
   const {
     truncateText,

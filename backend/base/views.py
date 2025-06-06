@@ -75,7 +75,7 @@ class StudentRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
         
     def delete(self, request, *args, **kwargs):
         user = request.user
-        if(user.role == "admin" or user.role == "hr"):
+        if(user.role == Role.ADMIN or user.role == Role.HR):
             return super().delete(request, *args, **kwargs)
         else:
             return Response({"error": "You do not have permission to delete this student."}, status=status.HTTP_403_FORBIDDEN)
@@ -138,7 +138,7 @@ class StaffRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
         
     def delete(self, request, *args, **kwargs):
         user = request.user
-        if(user.role == "admin" or user.role == "hr"):
+        if(user.role == Role.ADMIN or user.role == Role.HR):
             return super().delete(request, *args, **kwargs)
         else:
             return Response({"error": "You do not have permission to delete this staff."}, status=status.HTTP_403_FORBIDDEN)
@@ -175,7 +175,7 @@ class HRRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
         
     def delete(self, request, *args, **kwargs):
         user = request.user
-        if(user.role == "admin" or user.role == "hr"):
+        if(user.role == Role.ADMIN or user.role == Role.HR):
             return super().delete(request, *args, **kwargs)
         else:
             return Response({"error": "You do not have permission to delete this staff."}, status=status.HTTP_403_FORBIDDEN)
@@ -201,7 +201,7 @@ class TeachersView(generics.ListAPIView):
     search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
     
     def get_queryset(self):
-        return Staff.objects.filter(role="teacher")       
+        return Staff.objects.filter(role=Role.TEACHERS)       
     
 class BursaryView(generics.ListAPIView):
     serializer_class = StaffSerializer
@@ -210,7 +210,7 @@ class BursaryView(generics.ListAPIView):
     search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
     
     def get_queryset(self):
-        return Staff.objects.filter(role="bursary")
+        return Staff.objects.filter(role=Role.BURSARY)
   
 class StoreKeeperView(generics.ListAPIView):
     serializer_class = StaffSerializer
@@ -219,7 +219,7 @@ class StoreKeeperView(generics.ListAPIView):
     search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
     
     def get_queryset(self):
-        return Staff.objects.filter(role="store_keeper")
+        return Staff.objects.filter(role=Role.STORE_KEEPER)
 
 class ResultOfficerView(generics.ListAPIView):
     serializer_class = StaffSerializer
@@ -228,7 +228,7 @@ class ResultOfficerView(generics.ListAPIView):
     search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
     
     def get_queryset(self):
-        return Staff.objects.filter(role="result_officer")
+        return Staff.objects.filter(role=Role.RESULT_OFFICER)
     
 class AcademicOfficerView(generics.ListAPIView):
     serializer_class = StaffSerializer
@@ -237,7 +237,7 @@ class AcademicOfficerView(generics.ListAPIView):
     search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
     
     def get_queryset(self):
-        return Staff.objects.filter(role="academic_officer")
+        return Staff.objects.filter(role=Role.ACADEMIC_OFFICER)
     
 class OtherStaffView(generics.ListAPIView):
     serializer_class = StaffSerializer
@@ -246,7 +246,7 @@ class OtherStaffView(generics.ListAPIView):
     search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
     
     def get_queryset(self):
-        return Staff.objects.filter(role="other_staff")  
+        return Staff.objects.filter(role=Role.OTHER_STAFF)  
     
     
 class ParentViews(generics.ListCreateAPIView):
@@ -556,14 +556,14 @@ class StudentClassRetriveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     def put(self, request, *args, **kwargs):
         user = request.user
         
-        if(user.role == "admin" or user.role == "academic_officer"):
+        if(user.role == Role.ADMIN or user.role == Role.ACADEMIC_OFFICER):
             return super().put(request, *args, **kwargs)
         else:
             return Response({"error": "You do not have permission to update this class."}, status=status.HTTP_403_FORBIDDEN)
         
     def delete(self, request, *args, **kwargs):
         user = request.user
-        if(user.role == "admin" or user.role == "academic_officer"):
+        if(user.role == Role.ADMIN or user.role == Role.ACADEMIC_OFFICER):
             return super().delete(request, *args, **kwargs)
         else:
             return Response({"error": "You do not have permission to delete this class."}, status=status.HTTP_403_FORBIDDEN)
@@ -640,9 +640,19 @@ class DeleteMultipleSessionView(generics.GenericAPIView):
 class AdminorHRNotificationView(generics.ListCreateAPIView):
     serializer_class = AdminorHRNotificationSerializer
     permission_classes = [IsAdminOrHR]
-    queryset = AdminorHRNotification.objects.all()
     filter_backends = [ExactSearchFilter]
     search_fields = ['text', 'date']
+    
+    def get_queryset(self):
+        queryset = AdminorHRNotification.objects.all()
+        status = self.request.query_params.get('seen')
+        
+        if status:
+            if status == 'read':
+                queryset = queryset.filter(seen=True)
+            elif status == 'unread':
+                queryset = queryset.filter(seen=False)
+        return queryset
     
     
 class AdminorHRNotificationRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
@@ -668,13 +678,13 @@ class SchoolNotificationView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     queryset = SchoolNotification.objects.all()
     filter_backends = [ExactSearchFilter]
-    search_fields = ['text', 'date']
+    search_fields = ['subject', 'date']
     
     
     def post(self, request, *args, **kwargs):
         user = request.user
         
-        if(user.role == "admin" or user.role == "hr"):
+        if(user.role == Role.ADMIN or user.role == Role.HR):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -698,22 +708,66 @@ class DeleteMultipleSchoolNotificationView(generics.GenericAPIView):
         ids = serializer.validated_data['ids']
         deleted_count, _ = SchoolNotification.objects.filter(id__in=ids).delete()
         return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
+
+
+
+
+class StaffNotificationView(generics.ListCreateAPIView):
+    serializer_class = StaffNotificationSerializer
+    permission_classes = [IsAuthenticated]
+    queryset = StaffNotification.objects.all()
+    filter_backends = [ExactSearchFilter]
+    search_fields = ['subject', 'date']
+    
+    
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        
+        if(user.role == Role.ADMIN or user.role == Role.HR):
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"error": "You do not have permission to create a notification."}, status=status.HTTP_403_FORBIDDEN)
+    
+class StaffNotificationRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = StaffNotificationSerializer
+    permission_classes = [IsAdminOrHR]
+    queryset = StaffNotification.objects.all()
+    lookup_field = 'pk'
+    
+class DeleteMultipleStaffNotificationView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrHR]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = StaffNotification.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+
+
+
+
     
 class ClassNotificationView(generics.ListCreateAPIView):
     serializer_class = ClassNotificationSerializer
     permission_classes = [IsAdminOrTeacherorStudent]
     filter_backends = [ExactSearchFilter]
-    search_fields = ['teacher__first_name', 'teacher__last_name', 'date']
+    search_fields = ['teacher__first_name', 'teacher__last_name', 'subject']
     
     
         
     def get_queryset(self):
         user = self.request.user
-        if user.role == 'admin':
+        if user.role == Role.ADMIN:
             return ClassNotification.objects.all()
-        elif user.role == 'teacher':
+        elif user.role == Role.TEACHERS:
             return ClassNotification.objects.filter(teacher=user.id)
-        elif user.role == 'student':
+        elif user.role == Role.STUDENTS:
             
             try:
                 student = Student.objects.get(id=user.id)
@@ -738,7 +792,7 @@ class ClassNotificationView(generics.ListCreateAPIView):
 
     #     # Check if teacher is allowed to post to this class
     #     if str(teacher_class_id) == str(requested_class_id):  # Cast to string to avoid type mismatch
-    #         if user.role in ["admin", "teacher"]:
+    #         if user.role in [Role.ADMIN, Role.TEACHERS]:
     #             serializer = self.get_serializer(data=request.data)
     #             serializer.is_valid(raise_exception=True)
     #             serializer.save()
@@ -774,9 +828,9 @@ class DeleteMultipleClassNotificationView(generics.GenericAPIView):
 #         query = self.request.query_params.get('query')
 #         user = self.request.user
         
-#         if user.role == 'teacher':
+#         if user.role == Role.TEACHERS:
 #             return ClassNotification.objects.filter(teacher=user.id)
-#         elif user.role == 'student':
+#         elif user.role == Role.STUDENTS:
 #             return ClassNotification.objects.filter
 #         if student_class:
 #             return ClassNotification.objects.filter(student_class=student_class)    
@@ -795,7 +849,7 @@ class SchoolEventView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     queryset = SchoolEvent.objects.all()
     filter_backends = [ExactSearchFilter]
-    search_fields = ['title', 'description', 'date']
+    search_fields = ['title', 'description', 'start_date', 'end_date']
     
     
     
@@ -803,7 +857,7 @@ class SchoolEventView(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         user = request.user
         
-        if(user.role == "admin" or user.role == "hr"):
+        if(user.role == Role.ADMIN or user.role == Role.HR):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -864,7 +918,7 @@ class StudentResultListCreateApiView(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         user = request.user
         
-        if(user.role == "admin" or user.role == "academic_officer"):
+        if(user.role == Role.ADMIN or user.role == Role.ACADEMIC_OFFICER):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -891,7 +945,7 @@ class SubjectResultListCreateApiView(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         user = request.user
         
-        if(user.role == "admin" or user.role == "academic_officer"):
+        if(user.role == Role.ADMIN or user.role == Role.ACADEMIC_OFFICER):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -911,7 +965,7 @@ class EResultView(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         user = request.user
         
-        if(user.role == "admin" or user.role == "result_officer"):
+        if(user.role == Role.ADMIN or user.role == Role.RESULT_OFFICER):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -1010,22 +1064,40 @@ class CheckStudentResultView(generics.ListCreateAPIView):
 class SchemeOfWorkView(generics.ListCreateAPIView):
     serializer_class = SchemeOfWorkSerializer
     permission_classes = [IsAdminOrTeacherorStudent]
-    queryset = SchemeOfWork.objects.all()
     filter_backends = [ExactSearchFilter]
     search_fields = ['term__name', 'student_class__name', 'subject__name', 'date']
+    
+    def get_queryset(self):
+        user = self.request.user
+        term = self.request.query_params.get('term')    
+        subject = self.request.query_params.get('subject')
+        student_class = self.request.query_params.get('student_class')
+       
+        if user.role == Role.ADMIN or user.role == Role.TEACHERS:
+            queryset = SchemeOfWork.objects.all()
+            if term:
+                queryset = queryset.filter(term=term)
+            if subject:
+                queryset = queryset.filter(subject=subject)
+            if student_class:
+                queryset = queryset.filter(student_class=student_class)
+            return queryset
+        return SchemeOfWork.objects.filter(student_class=student_class)
+        
     
     def post(self, request, *args, **kwargs):
         user = request.user
         term = request.data.get('term')  # Assuming 'term' is passed in the request data
         student_class = request.data.get('student_class')
-        if SchemeOfWork.objects.filter(term=term, student_class=student_class).exists():
+        subject = request.data.get('subject')
+        if SchemeOfWork.objects.filter(term=term, student_class=student_class, subject=subject).exists():
             return Response(
                 {"error": "Scheme of work already exists for this term and class."},
                 status=status.HTTP_400_BAD_REQUEST
             )
             
         
-        if(user.role == "admin" or user.role == "teacher"):
+        if(user.role == Role.ADMIN or user.role == Role.TEACHERS):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -1043,16 +1115,17 @@ class SchemeOfWorkRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
 class FilteredSchemeOfWorkView(generics.ListAPIView):
     permission_classes = [IsAdminOrTeacherorStudent]
     serializer_class = SchemeOfWorkSerializer
+    filter_backends = [ExactSearchFilter]
+    search_fields = ['term__name', 'student_class__name', 'subject__name', 'date']
+    
     
     def get_queryset(self):
         term = self.request.query_params.get('term')    
-        subject = self.request.query_params.get('subject')
         student_class = self.request.query_params.get('student_class')
         
-        if term and subject and student_class:
+        if term  and student_class:
             return SchemeOfWork.objects.filter(
                 term=term,
-                subject=subject,
                 student_class=student_class
             )
         return SchemeOfWork.objects.none()
@@ -1087,12 +1160,11 @@ class AssignmentView(generics.ListCreateAPIView):
     
     def get_queryset(self):
         user = self.request.user
-        
-        if user.role == 'admin':
+        if user.role == Role.ADMIN:
             return Assignment.objects.all()
-        elif user.role == 'teacher':
+        elif user.role == Role.TEACHERS:
             return Assignment.objects.filter(teacher=user.id)
-        elif user.role == 'student':
+        elif user.role == Role.STUDENTS:
             try:
                 student = Student.objects.get(id=user.id)
                 student_class = student.student_class
@@ -1103,7 +1175,7 @@ class AssignmentView(generics.ListCreateAPIView):
         
     def post(self, request, *args, **kwargs):
         user = request.user
-        if(user.role == "admin" or user.role == "teacher"):
+        if(user.role == Role.ADMIN or user.role == Role.TEACHERS):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -1141,11 +1213,11 @@ class AssignmentSubmissionView(generics.ListCreateAPIView):
         user = self.request.user
         teacher_assignment = self.request.data.get('teacher_assignment')
         student = self.request.data.get('student')
-        if user.role == 'admin':
+        if user.role == Role.ADMIN:
             return AssignmentSubmission.objects.all()
-        elif user.role == 'teacher':
+        elif user.role == Role.TEACHERS:
             return AssignmentSubmission.objects.filter(teacher_assignment=teacher_assignment)
-        elif user.role == 'student':
+        elif user.role == Role.STUDENTS:
             return AssignmentSubmission.objects.filter(student=student)
 
 class AssignmentSubmissionRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
@@ -1213,11 +1285,11 @@ class ClassTimetableView(generics.ListCreateAPIView):
     def get_queryset(self):
         user = self.request.user
         
-        if user.role == 'admin':
+        if user.role == Role.ADMIN:
             return ClassTimetable.objects.all()
-        elif user.role == 'teacher':
+        elif user.role == Role.TEACHERS:
             return ClassTimetable.objects.filter(teacher=user.id)
-        elif user.role == 'student':
+        elif user.role == Role.STUDENTS:
             try:
                 student = Student.objects.get(id=user.id)
                 student_class = student.student_class
@@ -1228,7 +1300,7 @@ class ClassTimetableView(generics.ListCreateAPIView):
     
     def post(self, request, *args, **kwargs):
         user = request.user
-        if(user.role == "admin" or user.role == "teacher"):
+        if(user.role == Role.ADMIN or user.role == Role.TEACHERS):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -1287,7 +1359,7 @@ class PaymentMethodView(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         user = request.user
         
-        if(user.role == "admin" or user.role == "bursary"):
+        if(user.role == Role.ADMIN or user.role == Role.BURSARY):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -1462,7 +1534,7 @@ class PaymentSchoolFeesView(generics.ListCreateAPIView):
     def get_queryset(self):
         user = self.request.user
         student_id = user.id
-        if user.role == 'admin' or user.role == 'bursary':
+        if user.role == Role.ADMIN or user.role == Role.BURSARY:
             queryset = PaymentSchoolFees.objects.all()
             student = self.request.query_params.get('student')
             payment_method = self.request.query_params.get('payment_method')
@@ -1485,7 +1557,7 @@ class PendingPaymentSchoolFeesView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         student_id = user.id
-        if user.role == 'admin' or user.role == 'bursary':
+        if user.role == Role.ADMIN or user.role == Role.BURSARY:
             queryset = PaymentSchoolFees.objects.filter(status='pending')
             student = self.request.query_params.get('student')
             payment_method = self.request.query_params.get('payment_method')
@@ -1508,7 +1580,7 @@ class DeclinedPaymentSchoolFeesView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         student_id = user.id
-        if user.role == 'admin' or user.role == 'bursary':
+        if user.role == Role.ADMIN or user.role == Role.BURSARY:
             queryset = PaymentSchoolFees.objects.filter(status='declined')
             student = self.request.query_params.get('student')
             payment_method = self.request.query_params.get('payment_method')
@@ -1532,7 +1604,7 @@ class ApprovedPaymentSchoolFeesView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         student_id = user.id
-        if user.role == 'admin' or user.role == 'bursary':
+        if user.role == Role.ADMIN or user.role == Role.BURSARY:
             queryset = PaymentSchoolFees.objects.filter(status='approved')
             student = self.request.query_params.get('student')
             payment_method = self.request.query_params.get('payment_method')
@@ -1646,7 +1718,7 @@ class BillsPaymentView(generics.ListCreateAPIView):
     def get_queryset(self):
         user = self.request.user
         
-        if user.role == 'admin' or user.role == 'bursary':
+        if user.role == Role.ADMIN or user.role == Role.BURSARY:
             queryset = BillPayment.objects.all()
             student = self.request.query_params.get('student')
             bill_type = self.request.query_params.get('bill_type')
@@ -1669,7 +1741,7 @@ class PendingBillsPaymentView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         
-        if user.role == 'admin' or user.role == 'bursary':
+        if user.role == Role.ADMIN or user.role == Role.BURSARY:
             queryset = BillPayment.objects.filter(status='pending')
             student = self.request.query_params.get('student')
             bill_type = self.request.query_params.get('bill_type')
@@ -1692,7 +1764,7 @@ class DeclinedBillsPaymentView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         
-        if user.role == 'admin' or user.role == 'bursary':
+        if user.role == Role.ADMIN or user.role == Role.BURSARY:
             queryset = BillPayment.objects.filter(status='declined')
             student = self.request.query_params.get('student')
             bill_type = self.request.query_params.get('bill_type')
@@ -1715,7 +1787,7 @@ class ApprovedBillsPaymentView(generics.ListAPIView):
     def get_queryset(self):
         user = self.request.user
         
-        if user.role == 'admin' or user.role == 'bursary':
+        if user.role == Role.ADMIN or user.role == Role.BURSARY:
             queryset = BillPayment.objects.filter(status='approved')
             student = self.request.query_params.get('student')
             bill_type = self.request.query_params.get('bill_type')
@@ -1786,7 +1858,7 @@ class BankAccountView(generics.ListCreateAPIView):
     
     def post(self, request, *args, **kwargs):
         user = request.user
-        if(user.role == 'admin' or user.role == 'bursary'):
+        if(user.role == Role.ADMIN or user.role == Role.BURSARY):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -1830,7 +1902,7 @@ class ProductCategoriesView(generics.ListCreateAPIView):
     
     def post(self, request, *args, **kwargs):
         user = request.user
-        if(user.role == "admin" or user.role == "store_keeper"):
+        if(user.role == Role.ADMIN or user.role == Role.STORE_KEEPER):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()
@@ -1882,7 +1954,7 @@ class ProductView(generics.ListCreateAPIView):
     
     def post(self, request, *args, **kwargs):
         user = request.user
-        if(user.role == "admin" or user.role == "store_keeper"):
+        if(user.role == Role.ADMIN or user.role == Role.STORE_KEEPER):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             serializer.save()

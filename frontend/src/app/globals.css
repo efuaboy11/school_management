@@ -30,6 +30,10 @@
   --light-yellow-color: rgb(255, 251, 228);
   --light-white-color: #dee2e6;
 
+  /* Notifiaction box  */
+  --notification-text: #333333;
+  --notification-shadow: rgba(0, 0, 0, 0.05);
+
 }
 
 /* Dark mode */
@@ -57,6 +61,10 @@
   --light-yellow-color: rgb(58, 51, 0);
   --light-green-color: rgb(30, 58, 47);
   --light-red-color: rgb(58, 31, 31);
+
+  /* Notifiaction box  */
+  --notification-text: #f0f0f0;
+  --notification-shadow: rgba(0, 0, 0, 0.2);
 
 }
 

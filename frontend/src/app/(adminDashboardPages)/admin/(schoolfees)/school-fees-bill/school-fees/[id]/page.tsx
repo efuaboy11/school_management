@@ -430,27 +430,27 @@ const IndivivdualFees = ({ params }: { params: Promise<{ id: string }> }) => {
                       </div>
 
                       <div className='light-text p-3'>
-                        <div className="pb-3 d-flex justify-content-between">
+                        <div className="pb-3 d-sm-flex justify-content-between">
                           <p className="pb-2 sm-text">Fee Type</p>
                           <p>{formatName(datas.fee_choice)}</p>
                         </div>
 
-                        <div className="pb-3 d-flex justify-content-between">
+                        <div className="pb-3 d-sm-flex justify-content-between">
                           <p className="pb-2 sm-text">Amount</p>
                           <p>{formatCurrency(datas.amount)}NGN</p>
                         </div>
 
-                        <div className="pb-3 d-flex justify-content-between">
+                        <div className="pb-3 d-sm-flex justify-content-between">
                           <p className="pb-2 sm-text">Class</p>
                           <p>{formatName(datas.student_class_name.name)}</p>
                         </div>
 
-                        <div className="pb-3 d-flex justify-content-between">
+                        <div className="pb-3 d-sm-flex justify-content-between">
                           <p className="pb-2 sm-text">Session</p>
                           <p>{formatName(datas.session_name.name)}</p>
                         </div>
 
-                        <div className="pb-3 d-flex justify-content-between">
+                        <div className="pb-3 d-sm-flex justify-content-between">
                           <p className="pb-2 sm-text">Term</p>
                           <p>{formatName(datas.term_name.name)}</p>
                         </div>

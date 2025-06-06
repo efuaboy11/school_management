@@ -96,6 +96,12 @@ urlpatterns = [
     path('school-notification/<str:pk>/', views.SchoolNotificationRetrieveUpdateDestroy.as_view(), name='indiviual_school_notification' ),
     path('delete-multiple-school-notification/', views.DeleteMultipleSchoolNotificationView.as_view(), name='delete_multiple_school_notification' ),
     
+    #Staff Notification
+    path('staff-notification/', views.StaffNotificationView.as_view(), name='school_notification' ),
+    path('staff-notification/<str:pk>/', views.StaffNotificationRetrieveUpdateDestroy.as_view(), name='indiviual_school_notification' ),
+    path('delete-multiple-staff-notification/', views.DeleteMultipleStaffNotificationView.as_view(), name='delete_multiple_school_notification' ),
+    
+    
     #Class Notification
     path('class-notification/', views.ClassNotificationView.as_view(), name='class_notification' ),
     path('class-notification/<str:pk>/', views.ClassNotificationRetrieveUpdateDestroy.as_view(), name='indiviual_class_notification' ),
@@ -126,6 +132,7 @@ urlpatterns = [
     path('scheme-of-work/', views.SchemeOfWorkView.as_view(), name='scheme_of_work' ),
     path('scheme-of-work/<str:pk>/', views.SchemeOfWorkRetrieveUpdateDestroy.as_view(), name='indiviual_scheme_of_work' ),
     path('delete-multiple-scheme-of-work/', views.DeleteMultipleSchemeOfWorkView.as_view(), name='delete_multiple_scheme_of_work' ),
+    path('scheme-of-work-filter/', views.FilteredSchemeOfWorkView.as_view(), name='scheme_of_work' ),
     
     #assignment
     path('assignment/', views.AssignmentView.as_view(), name='assignment' ),

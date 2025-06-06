@@ -41,6 +41,51 @@ td{
   transition: background-color 0.3s, color 0.3s;
 }
 
+.site-notification-boxes {
+  position: relative;
+  max-width: 80%;
+  padding: 10px 14px;
+  margin: 5px 0;
+  font-family: sans-serif;
+  font-size: 14px;
+  line-height: 1.4;
+  border-radius: 18px 18px 18px 0; /* Rounded corners except bottom-left */
+  word-wrap: break-word;
+
+  background: var(--light-green-color);
+  color: var(--notification-text);
+  box-shadow: 0 2px 3px var(--notification-shadow);
+}
+
+/* Optional: Add a speech bubble pointer */
+.site-notification-boxes::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: -8px;
+  width: 0;
+  height: 0;
+  border-style: solid;
+  border-width: 0 0 8px 8px;
+  border-color: transparent transparent var(--light-green-color) transparent;
+}
+
+/* Alternate version for right-aligned messages */
+.site-notification-boxes.sent {
+  background: var(--box-bg);
+  margin-left: auto;
+  border-radius: 18px 18px 0 18px; /* Sharp bottom-right */
+}
+
+.site-notification-boxes.sent::before {
+  right: -8px;
+  left: auto;
+  border-width: 0 8px 8px 0;
+   border-color: transparent transparent var(--box-bg) transparent;
+}
+
+
+
 /* Stylish Input */
 .site-input {
   width: 100%;
@@ -101,7 +146,7 @@ td{
 
 /* When checked */
 .custom-checkbox input:checked + .checkmark {
-  background-color: var(--your-checked-color); /* Color when checked */
+  background-color: var(--box-bg); /* Color when checked */
 }
 
 /* Optional: Add a tick or visual cue */

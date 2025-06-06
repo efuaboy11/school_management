@@ -299,12 +299,21 @@ class Session(models.Model):
     
 # School Notification
 class SchoolNotification(models.Model):
-    text = models.TextField(max_length=200, null=True, blank=True)
+    subject = models.CharField(max_length=100, null=True, blank=True)
+    text = models.TextField(max_length=500, null=True, blank=True)
     date = models.DateTimeField(default=timezone.now) 
     
+    
+# Staff Notification
+class StaffNotification(models.Model):
+    subject = models.CharField(max_length=100, null=True, blank=True)
+    text = models.TextField(max_length=500, null=True, blank=True)
+    date = models.DateTimeField(default=timezone.now) 
+   
 
 # Class Notification
 class ClassNotification(models.Model):
+    subject = models.CharField(max_length=100, null=True, blank=True)
     teacher = models.ForeignKey(Staff, on_delete=models.CASCADE, limit_choices_to={'role': 'teacher'} )
     student_class = models.ForeignKey(StudentClass, on_delete=models.CASCADE, related_name="class_notification")
     text = models.TextField(max_length=200, null=True, blank=True)

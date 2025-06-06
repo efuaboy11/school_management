@@ -44,7 +44,7 @@ export const DownloadLink = ({ url, fileName }: DownloadLinkProps) => {
   };
 
   return (
-    <button className="scheme-download-link" type="button" onClick={handleDownload}>
+    <button className="site-btn px-2" type="button" onClick={handleDownload}>
       Download
     </button>
   );
