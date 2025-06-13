@@ -966,8 +966,8 @@ const AdminFrame = () => {
 
               <div>
                 <ul className={`dashboard-dropdown-bg ${emailDropdown ? "slide-in" : "slide-out"}`}>
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/plan/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/plan/" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/send-email") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/send-email" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
                         <p>send mail</p> 
                       </div>
@@ -975,16 +975,16 @@ const AdminFrame = () => {
                   </li>
                   
 
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/plan/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/plan/" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/send-bulk-email") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/send-bulk-email" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
                         <p>Send Bulk Mail</p> 
                       </div>
                     </Link>
                   </li>
 
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/dashboard/investment/plan/") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/dashboard/investment/plan/" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/admin/all-email") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/admin/all-email" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
                         <p>All Mail</p> 
                       </div>

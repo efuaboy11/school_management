@@ -512,7 +512,42 @@ class DeleteMultipleEmailsView(generics.GenericAPIView):
         ids = serializer.validated_data['ids']
         deleted_count, _ = Email.objects.filter(id__in=ids).delete()
         return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
-    
+  
+  
+class ListEmailAddressesAPIView(generics.ListAPIView):
+    def get_email_addresses(self, queryset, email_field="email"):
+        """Helper method to exclude null and blank email addresses."""
+        return (
+            queryset.exclude(**{f"{email_field}__isnull": True})
+            .exclude(**{f"{email_field}__exact" : ''})
+            .values_list(email_field, flat=True)
+            .distinct()
+        )
+        
+    def get(self, request, *args, **kwargs):
+        email_type = self.kwargs.get('email_type')
+        
+        if email_type == 'student':
+            email_addresses = self.get_email_addresses(Student.objects.all())
+        elif email_type == 'teacher':
+            email_addresses = self.get_email_addresses(Staff.objects.filter(role='teacher'))
+        elif email_type == 'bursary':
+            email_addresses = self.get_email_addresses(Staff.objects.filter(role='bursary'))
+        elif email_type == 'result-officer':
+            email_addresses = self.get_email_addresses(Staff.objects.filter(role='result_officer'))
+        elif email_type == 'staff':
+            email_addresses = self.get_email_addresses(Staff.objects.all())
+        elif email_type == 'all':
+            email_addresses = self.get_email_addresses(Users.objects.all())
+        else:
+            return Response({"error": "Invalid email type."}, status=status.HTTP_400_BAD_REQUEST)
+            
+        return Response({"email_addresses": list(email_addresses)}, status=status.HTTP_200_OK)    
+            
+            
+             
+  
+  
 #Subjects
 class SubjectsView(generics.ListCreateAPIView):
     serializer_class = SubjectsSerializer

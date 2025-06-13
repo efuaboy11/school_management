@@ -65,6 +65,8 @@ urlpatterns = [
     path('email/', views.EmailView.as_view(), name='Email' ),
     path('email/<str:pk>/', views.EmailRetrieveDestory.as_view(), name='indivicual_email' ),
     path('delete-multiple-email/', views.DeleteMultipleEmailsView.as_view(), name='delete_multiple_email' ),
+    path('list-emails/<str:email_type>/',
+         views.ListEmailAddressesAPIView.as_view(), name='list-emails'),
     
     #Subjects
     path('subjects/', views.SubjectsView.as_view(), name='subjects' ),
