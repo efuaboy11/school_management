@@ -367,6 +367,7 @@ const DisableHr = () => {
                                     classNamePrefix="site-select"
                                     styles={customStyles}  // ✅ Add this
                                     isSearchable
+                                    isClearable
                                   />
 
                                   {messageError && <p className="error-text">This field is required</p>}

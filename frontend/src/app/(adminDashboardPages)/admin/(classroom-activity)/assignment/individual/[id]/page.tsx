@@ -427,6 +427,7 @@ const IndivivdualAssignment = ({ params }: { params: Promise<{ id: string }> }) 
                                     classNamePrefix="site-select"
                                     styles={customStyles}  // ✅ Add this
                                     isSearchable
+                                    isClearable
                                   />
                                 </div>
 
@@ -441,6 +442,7 @@ const IndivivdualAssignment = ({ params }: { params: Promise<{ id: string }> }) 
                                     classNamePrefix="site-select"
                                     styles={customStyles}  // ✅ Add this
                                     isSearchable
+                                    isClearable
                                   />
                                 </div>
 
@@ -455,6 +457,7 @@ const IndivivdualAssignment = ({ params }: { params: Promise<{ id: string }> }) 
                                     classNamePrefix="site-select"
                                     styles={customStyles}  // ✅ Add this
                                     isSearchable
+                                    isClearable
                                   />
                                 </div>
 

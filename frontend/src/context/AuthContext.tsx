@@ -26,6 +26,8 @@ interface AuthContextType {
   setDisableButton: (disable: boolean) => void;
   loader: boolean;
   setLoader: (loading: boolean) => void;
+  loader2: boolean;
+  setLoader2: (loading: boolean) => void;
   copied: boolean;
   setCopied: (copied: boolean) => void;
   overlay: boolean;
@@ -131,6 +133,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const [disableButton, setDisableButton] = useState(false)
   const [loader, setLoader] = useState(false)
+  const [loader2, setLoader2] = useState(false)
   const [copied, setCopied] = useState(false)
   const [overlay, setOverlay] = useState(false)
 
@@ -718,6 +721,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setDisableButton,
     loader,
     setLoader,
+    loader2,
+    setLoader2,
     copied,
     setCopied,
     overlay,

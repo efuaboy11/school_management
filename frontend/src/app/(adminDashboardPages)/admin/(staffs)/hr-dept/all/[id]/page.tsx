@@ -32,6 +32,7 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
   const [email, setEmail] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
   const [dateOfBirth, setDateOfBirth] = useState('')
+  const [gender, setGender] = useState('')
   const [officeLocation, setOfficeLocation] = useState('')
   const [disability, setDisability] = useState('')
   const [disabilityNote, setDisabilityNote] = useState('')
@@ -130,7 +131,8 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
         setLastName(data?.last_name || '')
         setEmail(data?.email || '')
         setPhoneNumber(data?.phone_number || '')
-        setDateOfBirth(data?.date_of_birth || '')
+       setDateOfBirth(data?.date_of_birth?.split('T')[0] || '');
+        setGender(data?.gender || '')
         setOfficeLocation(data?.office_location || '')
         setDisability(data?.disability || '')
         setDisabilityNote(data?.disability_note)
@@ -294,6 +296,7 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
     formData.append('email', email)
     formData.append('phone_number', phoneNumber)
     formData.append('date_of_birth', dateOfBirth)
+    formData.append('gender', gender)
     formData.append('maritial_status', officeLocation)
     formData.append('disability', disability)
     formData.append('disability_note', disabilityNote)
@@ -397,7 +400,16 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
                                 <label htmlFor="phoneNumber" className="form-label">Date of Birth</label>
                                 <input type="date"  className={`site-input ${errorsPersonalInformation.dateOfBirth ? 'error-input' : ''}`} {...registerPersonalInformation('dateOfBirth', {required: true})}  value={dateOfBirth}  onChange={(e) => setDateOfBirth(e.target.value)}  placeholder='Date of Birth' />
                                 {errorsPersonalInformation.dateOfBirth && <p className="error-text">This field is required</p>}
+                              </div>
 
+                              <div className="col-md-6">
+                                <label htmlFor="phoneNumber" className="form-label">Gender <span className="text-danger">*</span></label>
+                                <select   className={`site-input ${errorsPersonalInformation.gender ? 'error-input' : ''}`} {...registerPersonalInformation('gender', {required: true})}  value={gender}  onChange={(e) => setGender(e.target.value)}>
+                                  <option value="">Select</option>
+                                  <option value="male">Male</option>
+                                  <option value="female">Female</option>
+                                </select>
+                                {errorsPersonalInformation.gender && <p className="error-text">This field is required</p>}                 
                               </div>
 
                               <div className="col-md-6">
@@ -614,6 +626,13 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
                             <p className="pb-2 sm-text">Disability:</p>
                             <p>{formatName(userData.disability)}</p>
                           </div>
+
+                          <div className="pb-3 d-sm-flex justify-content-between">
+                            <p className="pb-2 sm-text">Gender:</p>
+                            <p>{formatName(userData.gender)}</p>
+                          </div>
+
+
                          
                         </div>
 
@@ -646,6 +665,11 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
                           <div className="pb-3 d-sm-flex justify-content-between">
                             <p className="pb-2 sm-text">Date joined:</p>
                             <p>{formatDate(userData.date_joined)}</p>
+                          </div>
+
+                          <div className="pb-3 d-sm-flex justify-content-between">
+                            <p className="pb-2 sm-text">Department:</p>
+                            <p>{formatName(userData.role)}</p>
                           </div>
                          
                         </div>

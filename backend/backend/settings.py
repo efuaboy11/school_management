@@ -68,7 +68,7 @@ CORS_ALLOW_ALL_ORIGINS = True  # Not recommended for production
 CORS_ALLOW_CREDENTIALS = True
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:3000",  # React frontend
+    "http://localhost:3000",
 ]
 
 

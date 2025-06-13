@@ -303,6 +303,7 @@ const CreateAssignment = () => {
                           classNamePrefix="site-select"
                           styles={customStyles}  // ✅ Add this
                           isSearchable
+                          isClearable
                         />
                       </div>
 
@@ -317,6 +318,7 @@ const CreateAssignment = () => {
                           classNamePrefix="site-select"
                           styles={customStyles}  // ✅ Add this
                           isSearchable
+                          isClearable
                         />
                       </div>
 
@@ -332,6 +334,7 @@ const CreateAssignment = () => {
                           classNamePrefix="site-select"
                           styles={customStyles}  // ✅ Add this
                           isSearchable
+                          isClearable
                         />
                       </div>
 

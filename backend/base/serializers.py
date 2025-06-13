@@ -41,6 +41,7 @@ class StaffSerializer(serializers.ModelSerializer):
             'email',
             'state_of_origin',
             'religion',
+            'gender',
             'phone_number',
             'disability',
             'disability_note',
@@ -109,6 +110,7 @@ class HRSerializer(serializers.ModelSerializer):
             'last_name',
             'date_of_birth',
             'email',
+            'gender',
             'state_of_origin',
             'religion',
             'phone_number',
@@ -156,6 +158,7 @@ class StudentSerializer(serializers.ModelSerializer):
             'gurdian_name',
             'state_of_origin',
             'religion',
+            'gender',
             'phone_number',
             'disability',
             'disability_note',
@@ -195,6 +198,7 @@ class ShortStudentSerializer(serializers.ModelSerializer):
             'last_name',
             'email',
             'role',
+            'passport',
             'account_status',
         ]   
         
@@ -367,6 +371,7 @@ class ShortSubjectsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subjects
         fields = [
+            'id',
             'name',
         ]
     
@@ -386,7 +391,7 @@ class StudentClassSerializer(serializers.ModelSerializer):
         
     def get_subject_name(self, obj):
         subjects = obj.subjects.all()
-        serializer = ShortStudentClassSerializer(subjects, many=True)
+        serializer = ShortSubjectsSerializer(subjects, many=True)
         return serializer.data
    
 class ShortStudentClassSerializer(serializers.ModelSerializer):
@@ -395,8 +400,14 @@ class ShortStudentClassSerializer(serializers.ModelSerializer):
         fields = [      
             'name',
         ] 
-  
-# Terms      
+        
+
+class UpdateStudentCurrentClassSerializer(serializers.Serializer):
+    student = serializers.UUIDField()
+    student_new_class = serializers.IntegerField()
+
+
+# Terms
 class TermSerializer(serializers.ModelSerializer):
     class Meta:
         model = Term
@@ -501,7 +512,18 @@ class SchoolEventSerializer(serializers.ModelSerializer):
 # Generator of scratch Card 
 class GenerateScratchCardSerializer(serializers.Serializer):
     amount = serializers.IntegerField(min_value=1, max_value=100, help_text="How many scratch cards to generate")
-    
+
+class ScratchCardSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ScratchCard
+        fields = [
+            'id',
+            'pin',
+            'trials_left',
+            'status',
+            'is_active',
+            'created_at'
+        ]
     
 # Subject Result 
 class SubjectResultSerializer(serializers.ModelSerializer):
@@ -518,7 +540,7 @@ class SubjectResultSerializer(serializers.ModelSerializer):
             'total',
             'grade',
             'position',
-            'cgpa'
+            # 'cgpa'
         ]
     
     def get_subject_name(self, obj):
@@ -529,7 +551,7 @@ class SubjectResultSerializer(serializers.ModelSerializer):
     
 # Student Result
 class StudentResultSerializer(serializers.ModelSerializer):
-    subject_result = SubjectResultSerializer(many=True)
+    subject_result = SubjectResultSerializer(many=True, required=False)
     student_name = serializers.SerializerMethodField()
     term_name = serializers.SerializerMethodField()
     session_name = serializers.SerializerMethodField()
@@ -550,7 +572,7 @@ class StudentResultSerializer(serializers.ModelSerializer):
             'total_marks_obtain',
             'student_average',
             'class_average',
-            'students',
+            'total_students',
             'position',
             'decision',
             'agility',
@@ -589,18 +611,18 @@ class StudentResultSerializer(serializers.ModelSerializer):
     
     def get_session_name(self, obj):
         session = obj.session
-        serializer = SessionSerializer(
+        serializer = ShortSessionSerializer(
             instance=session, many=False)
         return serializer.data
     
     def get_student_name(self, obj):
         student = obj.student
-        serializer = StudentSerializer(instance=student, many=False)
+        serializer = ShortStudentSerializer(instance=student, context=self.context, many=False)
         return serializer.data
     
     def get_subject_result(self, obj):
         subject_result = SubjectResult.objects.filter(student_result=obj)
-        serializer = ShortSubjectsSerializer(
+        serializer = SubjectResultSerializer(
             instance=subject_result, many=True)
         return serializer.data
     
@@ -608,6 +630,15 @@ class StudentResultSerializer(serializers.ModelSerializer):
         representation = super().to_representation(instance)
         representation['subject_result'] = self.get_subject_result(instance)
         return representation
+    
+    def create(self, validated_data):
+        subject_result_data = validated_data.pop('subject_result', [])
+        result = StudentResult.objects.create(**validated_data)
+        for subject_result_data in subject_result_data:
+            subject_result_data['student_result_id'] = result.id
+            SubjectResult.objects.create(**subject_result_data)
+        return result
+    
     
     def validate(self, data):
         student = data.get('student')
@@ -634,38 +665,56 @@ class StudentResultSerializer(serializers.ModelSerializer):
             ).exists():
                 raise serializers.ValidationError(
                     "A result for this student, class, term, and session already exists.")
-                    
+          
+        return data
+    
+    
+              
     def update(self, instance, validated_data):
-        subject_result_data = validated_data.pop('subject_result', [])         
+        # Check if subject_result is explicitly passed
+        if 'subject_result' in validated_data:
+            subject_result_data = validated_data.pop('subject_result', [])         
+            
+            # Update the Student Result instance
+            for attr, value in validated_data.items():
+                setattr(instance, attr, value)
+            instance.save()
+            
+            # Handling SubjectResult updates
+            existing_subject_result = {
+                sr.id: sr for sr in instance.subjectresult_set.all()
+            }
+            
+            for sr_data in subject_result_data:
+                sr_id = sr_data.get('id')
+                if sr_id and sr_id in existing_subject_result:
+                    sr_instance = existing_subject_result.pop(sr_id)
+                    for attr, value in sr_data.items():
+                        setattr(sr_instance, attr, value)
+                    sr_instance.save()
+                else:
+                    sr_data['student_result'] = instance
+                    SubjectResult.objects.create(**sr_data)
+            
+            # Delete SubjectResults that were not in the update list
+            for sr in existing_subject_result.values():
+                sr.delete()
+        else:
+            # Only update the result fields, not subject results
+            for attr, value in validated_data.items():
+                setattr(instance, attr, value)
+            instance.save()
         
-        # Update the Student Result instance
-        for attr, value in validated_data.items():
-            setattr(instance, attr, value)
-        instance.save()
-        
-        # Handling SubjectResult updates
-        existing_subject_result = {
-            sr.id: sr for sr in instance.subjectresult_set.all()
-        }
-        
-        for subject_result_data in subject_result_data:
-            subject_result_id = subject_result_data.get('id')
-            if subject_result_id and subject_result_id in existing_subject_result:
-                subject_result = existing_subject_result.pop(
-                    subject_result_id
-                )
-                for attr, value in subject_result_data.items():
-                    setattr(subject_result, attr, value)
-                subject_result.save()
-            else:
-                subject_result_data['result'] = instance
-                SubjectResult.objects.create(**subject_result_data)
-        
-        # # Delete SubjectResults that are no longer present
-        for subject_result in existing_subject_result.values():
-            subject_result.delete()
         return instance
-        
+
+
+class FilterStudentResultSerializer(serializers.Serializer):
+    student_class = serializers.CharField(required=False, allow_blank=True)
+    term = serializers.CharField(required=False, allow_blank=True)
+    session = serializers.CharField(required=False, allow_blank=True)
+
+
+           
 # E-result
 class EResultSerializer(serializers.ModelSerializer):
     student_name = serializers.SerializerMethodField()
@@ -691,7 +740,7 @@ class EResultSerializer(serializers.ModelSerializer):
         
     def get_student_name(self, obj):
         student = obj.student
-        serializer = ShortStudentClassSerializer(instance=student, many=False)
+        serializer = ShortStudentSerializer(instance=student, many=False)
         return serializer.data
     
     def get_student_class_name(self, obj):

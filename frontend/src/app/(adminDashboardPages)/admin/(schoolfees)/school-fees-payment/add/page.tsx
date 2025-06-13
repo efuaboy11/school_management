@@ -273,6 +273,7 @@ const CreateSchoolFees = () => {
                           classNamePrefix="site-select"
                           styles={customStyles}
                           isSearchable
+                          isClearable
                         />
                       )}
                       {studentErrorMessage && <p className="error-text">This field is required</p>}
@@ -289,6 +290,7 @@ const CreateSchoolFees = () => {
                           classNamePrefix="site-select"
                           styles={customStyles}  // ✅ Add this
                           isSearchable
+                          isClearable
                         />
                         {feeTypeErrorMessage && <p className="error-text">This field is required</p>}
                       </div>

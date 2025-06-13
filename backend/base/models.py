@@ -66,6 +66,7 @@ class Users(AbstractUser):
     last_name = models.CharField(max_length=50, null=True, blank=True)
     date_of_birth = models.DateField(null=True, blank=True)
     home_address = models.TextField(null= True, blank=True)
+    gender = models.CharField(max_length=30,  choices=SEX, null= True, blank=True)
     email = models.EmailField(unique=True)
     state_of_origin = models.CharField(max_length=100, blank=True, null=True)
     religion = models.CharField(max_length=30,  choices=RELIGIONS)
@@ -343,11 +344,10 @@ class StudentResult(models.Model):
     term = models.ForeignKey(Term, on_delete=models.CASCADE)
     session = models.ForeignKey(Session, on_delete=models.CASCADE)
     
-    sex = models.CharField(max_length=10, null=True, blank=True)
     total_marks_obtain = models.CharField(max_length=20, null=True, blank=True)
     student_average = models.CharField(max_length=20, null=True, blank=True)
     class_average = models.CharField(max_length=20, null=True, blank=True)
-    students = models.CharField(max_length=20, null=True, blank=True)
+    total_students = models.CharField(max_length=20, null=True, blank=True)
     position = models.CharField(max_length=20, null=True, blank=True)
     decision = models.CharField(max_length=20, null=True, blank=True)
 
@@ -382,14 +382,14 @@ class StudentResult(models.Model):
 
 
 class SubjectResult(models.Model):
-    student_result = models.ForeignKey(StudentResult, on_delete=models.CASCADE)
-    subject = models.ForeignKey('Subjects', on_delete=models.CASCADE)
-    total_ca = models.FloatField(null=True, blank=True)
+    student_result = models.ForeignKey(StudentResult, on_delete=models.CASCADE, null=True)
+    subject = models.ForeignKey('Subjects', on_delete=models.CASCADE, null=True)
+    total_ca = models.FloatField(null=True, blank=True,)
     exam = models.FloatField(null=True, blank=True)
     total = models.FloatField(null=True, blank=True)
     grade = models.CharField(max_length=5, null=True, blank=True)
     position = models.CharField(max_length=10, null=True, blank=True)
-    cgpa = models.FloatField(null=True, blank=True)
+    # cgpa = models.FloatField(null=True, blank=True)
 
     def __str__(self):
         return f"{self.student_result.student} - {self.subject}"
@@ -400,9 +400,15 @@ def generate_scratch_pin():
     return ''.join(random.choices(string.digits, k=11))
 
 class ScratchCard(models.Model):
+    STATUS_CHOICES = [
+        ('active', 'Active'),
+        ('used', 'Used'),
+        ('expired', 'Expired'),
+    ]
     pin = models.CharField(max_length=20, unique=True, default=generate_scratch_pin)
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, null=True)
     trials_left = models.IntegerField(default=5)
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='active')
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
@@ -413,9 +419,14 @@ class ScratchCard(models.Model):
             self.student = student_id
         elif self.student.id != student_id:
             return False
+        
+        if self.status == 'active':
+            if self.trials_left < 5:
+                self.status = 'used'
         self.trials_left -= 1
         if self.trials_left == 0:
             self.is_active = False
+            self.status = 'expired'
         self.save()
         return True
     
@@ -524,7 +535,7 @@ class PaymentSchoolFees(models.Model):
     fee_type = models.ForeignKey(SchoolFees, on_delete=models.CASCADE)
     payment_method = models.ForeignKey(PaymentMethod, on_delete=models.CASCADE)
     fee_receipt = models.FileField(upload_to="bill_receipt", null=True, blank=True)
-    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='Pending')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='pending')
     date = models.DateTimeField(default=timezone.now) 
     
     def generate_transaction_id(self):

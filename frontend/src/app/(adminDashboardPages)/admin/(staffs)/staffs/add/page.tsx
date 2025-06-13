@@ -17,6 +17,7 @@ const AddTeacher = () => {
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
   const [dateOfBirth, setDateOfBirth] = useState('')
+  const [gender, setGender] = useState('')
   const [email, setEmail] = useState('')
   const [maritalStatus, setMartialStatus] = useState('')
   const [yearsOfExperience, setYearsOfExperience] = useState('')
@@ -163,6 +164,7 @@ const AddTeacher = () => {
     formData.append('last_name', lastName)
     formData.append('email', email) 
     formData.append('date_of_birth', dateOfBirth)
+    formData.append('gender', gender)
     formData.append('maritial_status', maritalStatus)
     formData.append('years_of_experience', yearsOfExperience)
     formData.append('home_address', homeAddress)
@@ -322,6 +324,16 @@ const AddTeacher = () => {
                     <input type="date"  className={`site-input ${errors.dateOfBirth ? 'error-input' : ''}`} {...register('dateOfBirth', {required: true})}  value={dateOfBirth}  onChange={(e) => setDateOfBirth(e.target.value)}  placeholder='Date of Birth' />
                     {errors.dateOfBirth && <p className="error-text">This field is required</p>}
 
+                  </div>
+
+                  <div className="col-md-6">
+                    <label htmlFor="phoneNumber" className="form-label">Gender <span className="text-danger">*</span></label>
+                    <select   className={`site-input ${errors.gender ? 'error-input' : ''}`} {...register('gender', {required: true})}  value={gender}  onChange={(e) => setGender(e.target.value)}>
+                      <option value="">Select</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                    </select>
+                    {errors.gender && <p className="error-text">This field is required</p>}                 
                   </div>
 
                   <div className="col-md-6">

@@ -39,6 +39,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
   const [disability, setDisability] = useState('')
   const [disabilityNote, setDisabilityNote] = useState('')
   const [religion, setReligion] = useState('')
+  const [gender, setGender] = useState('')
   const [stateOfOrigin, setStateOfOrigin] = useState('')
   const [cityOrTown, setCityOrTown] = useState('')
   const [homeAddress, setHomeAddress] = useState('')
@@ -210,12 +211,13 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
         setLastName(data?.last_name || '')
         setEmail(data?.email || '')
         setPhoneNumber(data?.phone_number || '')
-        setDateOfBirth(data?.date_of_birth || '')
+        setDateOfBirth(data?.date_of_birth?.split('T')[0] || '');
         setFatherName(data?.father_name || '')
         setMotherName(data?.mother_name || '')
         setDisability(data?.disability || '')
         setDisabilityNote(data?.disability_note || '')
         setReligion(data?.religion || '')
+        setGender(data?.gender || '')
         setStateOfOrigin(data?.state_of_origin || '')
         setCityOrTown(data?.city_or_town || '')
         setHomeAddress(data?.home_address || '')
@@ -547,6 +549,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
     formData.append('phone_number', phoneNumber)
     formData.append('date_of_birth', dateOfBirth)
     formData.append('father_name', fatherName)
+    formData.append('gender', gender)
     formData.append('mother_name', motherName)
     formData.append('disability', disability)
     formData.append('disability_note', disabilityNote)
@@ -762,6 +765,16 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
                                 <input type="date"  className={`site-input ${errorsPersonalInformation.dateOfBirth ? 'error-input' : ''}`} {...registerPersonalInformation('dateOfBirth', {required: true})}  value={dateOfBirth}  onChange={(e) => setDateOfBirth(e.target.value)}  placeholder='Date of Birth' />
                                 {errorsPersonalInformation.dateOfBirth && <p className="error-text">This field is required</p>}
 
+                              </div>
+
+                              <div className="col-md-6">
+                                <label htmlFor="phoneNumber" className="form-label">Gender <span className="text-danger">*</span></label>
+                                <select   className={`site-input ${errorsPersonalInformation.gender ? 'error-input' : ''}`} {...registerPersonalInformation('gender', {required: true})}  value={gender}  onChange={(e) => setGender(e.target.value)}>
+                                  <option value="">Select</option>
+                                  <option value="male">Male</option>
+                                  <option value="female">Female</option>
+                                </select>
+                                {errorsPersonalInformation.gender && <p className="error-text">This field is required</p>}                 
                               </div>
 
                               <div className="col-md-6">
@@ -1132,6 +1145,14 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
                           <div>
                             <p className="light-text xsm-text">D.O.B</p>
                             <p className='sm-text'>{formatDate(userData.date_of_birth)}</p>
+                          </div>
+                        </div>
+
+
+                        <div className='col-sm-3  col-lg-2 mb-3'>
+                          <div>
+                            <p className="light-text xsm-text">Gender</p>
+                            <p className='sm-text'>{formatName(userData.gender)}</p>
                           </div>
                         </div>
 

@@ -75,7 +75,9 @@ urlpatterns = [
     path('student-class/', views.StudentClassView.as_view(), name='student_class' ),
     path('student-class/<str:pk>/', views.StudentClassRetriveUpdateDestory.as_view(), name='indiviual_student_class' ),
     path('delete-multiple-student-class/', views.DeleteMultipleStudentClassView.as_view(), name='delete_multiple_student_class' ),
-    
+    path('student-in-class/', views.StudentsInClassView.as_view(), name='student_in_class' ),
+    path('update-student-current-class/', views.UpdateStudentCurrentClassView.as_view(), name='update_student_current_class' ),
+
     #terms
     path('term/', views.TermView.as_view(), name='term' ),
     path('term/<str:pk>/', views.TermRetriveUpdateDestory.as_view(), name='indiviual_term' ),
@@ -112,20 +114,28 @@ urlpatterns = [
     path('school-event/', views.SchoolEventView.as_view(), name='school_event' ),
     path('school-event/<str:pk>/', views.SchoolEventRetrieveUpdateDestroy.as_view(), name='indiviual_school_event' ),
     path('delete-multiple-school-event/', views.DeleteMultipleSchoolEventView.as_view(), name='delete_multiple_school_event' ),
-    path('scratch-cards/generate/', views.GenerateScratchCardView.as_view(), name='generate-scratch-cards'),
     
     # ---------------------- Results -------------------------- #
+    path('generate-scratch-cards/', views.GenerateScratchCardView.as_view(), name='generate-scratch-cards'),
+    path('scratch-cards/', views.ScratchCardListView.as_view(), name='scratch-cards'),
+    path('scratch-cards/<str:pk>/', views.ScratchCardRetrieveUpdateDestroy.as_view(), name='indiviual_scratch_card'),
+    path('delete-multiple-scratch-cards/', views.DeleteMultipleScratchCardView.as_view(), name='delete_multiple_scratch_cards'),
     path('student-result/', views.StudentResultListCreateApiView.as_view(), name='student_result'),
     path('student-result/<str:pk>/', views.StudentResultRetrieveUpdateDestroyApiView.as_view(), name='result-details'),
     path('check-result/', views.CheckStudentResultView.as_view(), name='check_result'),
+    path('filter-result/', views.FilterResultView.as_view(), name='filter_result'),
+    path('delete-multiple-student-result/', views.DeleteMultipleStudentResultView.as_view(), name='delete_multiple_student_result'),
     path('subject-result/', views.SubjectResultListCreateApiView.as_view(), name='subject_result'),
     path('subject-result/<str:pk>/', views.SubjectResultRetrieveUpdateDestroyApiView.as_view(), name='subject_result_details'),
+    
     
     #E-result
     path('e-result/', views.EResultView.as_view(), name='e_result'),
     path('e-result/<str:pk>/', views.EResultRetrieveUpdateDestroyApiView.as_view(), name='indiviual_e_result'),
     path('delete-multiple-e-result/', views.DeleteMultipleEResultView.as_view(), name='delete_multiple_e_result'),
     path('check-e-result/', views.CheckEResultView.as_view(), name='check_e_result'),
+    path('filter-e-result/', views.FilterEResultView.as_view(), name='filter_e_result'),
+
     # ---------------------- End -------------------------- #
     
     #scheme of work

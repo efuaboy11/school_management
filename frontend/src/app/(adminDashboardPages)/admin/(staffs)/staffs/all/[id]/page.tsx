@@ -10,7 +10,9 @@ import { useRouter } from 'next/navigation';
 import AllDataContext from '@/context/AllData'
 import { useDropzone } from 'react-dropzone';
 import Link from 'next/link'
-const IndivivdualTeacher = ({ params }: { params: Promise<{ id: string }> }) => {
+
+
+const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
   const {id} = use(params)
 
   const [showPersonalInformationModal, setShowPersonalInformationModal] = useState(false);
@@ -30,6 +32,7 @@ const IndivivdualTeacher = ({ params }: { params: Promise<{ id: string }> }) => 
   const [email, setEmail] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
   const [dateOfBirth, setDateOfBirth] = useState('')
+  const [gender, setGender] = useState('')
   const [maritalStatus, setMaritialStatus] = useState('')
   const [department, setDepartment] = useState('')
   const [emplomentStatus, setEmploymentStatus] = useState('')
@@ -160,7 +163,8 @@ const IndivivdualTeacher = ({ params }: { params: Promise<{ id: string }> }) => 
         setLastName(data?.last_name || '')
         setEmail(data?.email || '')
         setPhoneNumber(data?.phone_number || '')
-        setDateOfBirth(data?.date_of_birth || '')
+        setGender(data?.gender || '')
+        setDateOfBirth(data?.date_of_birth?.split('T')[0] || '');
         setMaritialStatus(data?.maritial_status || '')
         setDepartment(data?.department || '')
         setDisability(data?.disability || '')
@@ -338,6 +342,7 @@ const IndivivdualTeacher = ({ params }: { params: Promise<{ id: string }> }) => 
     formData.append('email', email)
     formData.append('phone_number', phoneNumber)
     formData.append('date_of_birth', dateOfBirth)
+    formData.append('gender', gender)
     formData.append('maritial_status', maritalStatus)
     formData.append('years_of_experience', yearsOfExperience)
     formData.append('disability', disability)
@@ -555,7 +560,16 @@ const IndivivdualTeacher = ({ params }: { params: Promise<{ id: string }> }) => 
                                 <label htmlFor="phoneNumber" className="form-label">Date of Birth</label>
                                 <input type="date"  className={`site-input ${errorsPersonalInformation.dateOfBirth ? 'error-input' : ''}`} {...registerPersonalInformation('dateOfBirth', {required: true})}  value={dateOfBirth}  onChange={(e) => setDateOfBirth(e.target.value)}  placeholder='Date of Birth' />
                                 {errorsPersonalInformation.dateOfBirth && <p className="error-text">This field is required</p>}
+                              </div>
 
+                              <div className="col-md-6">
+                                <label htmlFor="phoneNumber" className="form-label">Gender <span className="text-danger">*</span></label>
+                                <select   className={`site-input ${errorsPersonalInformation.gender ? 'error-input' : ''}`} {...registerPersonalInformation('gender', {required: true})}  value={gender}  onChange={(e) => setGender(e.target.value)}>
+                                  <option value="">Select</option>
+                                  <option value="male">Male</option>
+                                  <option value="female">Female</option>
+                                </select>
+                                {errorsPersonalInformation.gender && <p className="error-text">This field is required</p>}                 
                               </div>
 
                               <div className="col-md-6">
@@ -893,18 +907,25 @@ const IndivivdualTeacher = ({ params }: { params: Promise<{ id: string }> }) => 
 
                         <div className='col-sm-3  col-lg-2 mb-3'>
                           <div>
+                            <p className="light-text xsm-text">Religion</p>
+                            <p className='sm-text'>{formatName(userData.religion)}</p>
+                          </div>
+                        </div>
+
+                        <div className='col-sm-3  col-lg-1 mb-3'>
+                          <div>
                             <p className="light-text xsm-text">Disability</p>
                             <p className='sm-text'>{formatName(userData.disability)}</p>
                           </div>
                         </div>
 
-
-                        <div className='col-sm-3  col-lg-2 mb-3'>
+                        <div className='col-sm-3  col-lg-1 mb-3'>
                           <div>
-                            <p className="light-text xsm-text">Religion</p>
-                            <p className='sm-text'>{formatName(userData.religion)}</p>
+                            <p className="light-text xsm-text">Gender</p>
+                            <p className='sm-text'>{formatName(userData.gender)}</p>
                           </div>
                         </div>
+
                       </div>
                     </div>
                     
@@ -1148,5 +1169,5 @@ const IndivivdualTeacher = ({ params }: { params: Promise<{ id: string }> }) => 
   )
 }
 
-export default IndivivdualTeacher
+export default IndivivdualStaff
 

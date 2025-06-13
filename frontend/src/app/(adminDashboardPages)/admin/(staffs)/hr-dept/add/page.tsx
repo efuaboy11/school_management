@@ -20,7 +20,7 @@ const AddHr = () => {
   const [email, setEmail] = useState('')
   const [officeLocation, setOfficeLocation] = useState('')
   const [homeAddress, setHomeAddress] = useState('')
-  const [role, setRole] = useState('')
+  const [gender, setGender] = useState('')
   const [stateOfOrigin, setStateOfOrigin] = useState('')
   const [religion, setReligion] = useState('')
   const [phoneNumber, setPhoneNumber] = useState('')
@@ -133,6 +133,7 @@ const AddHr = () => {
     formData.append('home_address', homeAddress)
     formData.append('state_of_origin', stateOfOrigin)
     formData.append('religion', religion)
+    formData.append('gender', gender)
     formData.append('phone_number', phoneNumber)
     formData.append('disability', disability)
     formData.append('disability_note', disabilityNote)
@@ -263,7 +264,16 @@ const AddHr = () => {
                     <label htmlFor="phoneNumber" className="form-label">Date of Birth <span className="text-danger">*</span></label>
                     <input type="date"  className={`site-input ${errors.dateOfBirth ? 'error-input' : ''}`} {...register('dateOfBirth', {required: true})}  value={dateOfBirth}  onChange={(e) => setDateOfBirth(e.target.value)}  placeholder='Date of Birth' />
                     {errors.dateOfBirth && <p className="error-text">This field is required</p>}
+                  </div>
 
+                  <div className="col-md-6">
+                    <label htmlFor="phoneNumber" className="form-label">Gender <span className="text-danger">*</span></label>
+                    <select   className={`site-input ${errors.gender ? 'error-input' : ''}`} {...register('gender', {required: true})}  value={gender}  onChange={(e) => setGender(e.target.value)}>
+                      <option value="">Select</option>
+                      <option value="male">Male</option>
+                      <option value="female">Female</option>
+                    </select>
+                    {errors.gender && <p className="error-text">This field is required</p>}                 
                   </div>
 
                   <div className="col-md-6">

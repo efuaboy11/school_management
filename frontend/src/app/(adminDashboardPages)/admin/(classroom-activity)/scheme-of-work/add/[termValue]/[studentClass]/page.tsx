@@ -492,7 +492,7 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
           <div className="col-sm-8">
             <div className="site-boxes border-radius-10px">
               <div className="border-bottom1 text-center p-3">
-                <p>Create  scheme of work</p>
+                <p>Create  scheme of work <i className="bi bi-dash-lg"></i> 2</p>
               </div>
 
               <div className="p-3">
@@ -509,6 +509,7 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
                           classNamePrefix="site-select"
                           styles={customStyles}  // ✅ Add this
                           isSearchable
+                          isClearable
                         />
                       </div>
 
@@ -522,6 +523,7 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
                           classNamePrefix="site-select"
                           styles={customStyles}  // ✅ Add this
                           isSearchable
+                          isClearable
                         />
                       </div>
                       <div className="col-lg-3 col-md-6">

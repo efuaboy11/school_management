@@ -7,6 +7,7 @@ import AuthContext from "@/context/AuthContext";
 import AdminFrame from "@/components/dashboardFrames/adminFrame";
 import { DashboardFooter } from "@/components/dashFooter";
 import "../../css/adminCss/staff.css"
+import '../../css/adminCss/adminResult.css'
 
 
 const RootLayout = ({ children }: { children: React.ReactNode }) => { 

@@ -192,7 +192,7 @@ const IndivivdualSchemeOfWork =  ({ params }: { params: Promise<any> }) => {
   } = useForm<any>();
 
   const onSubmit = (data: any, e:any) => {
-    if(teacherName && studentClass && termValue && subjectName && file != null){
+    if(teacherName && studentClass && termValue && subjectName){
       EditDetails(e)
     }else{
       showAlert()
@@ -400,6 +400,7 @@ const IndivivdualSchemeOfWork =  ({ params }: { params: Promise<any> }) => {
                                     classNamePrefix="site-select"
                                     styles={customStyles}  // ✅ Add this
                                     isSearchable
+                                    isClearable
                                   />
                                 </div>
 
@@ -413,6 +414,7 @@ const IndivivdualSchemeOfWork =  ({ params }: { params: Promise<any> }) => {
                                     classNamePrefix="site-select"
                                     styles={customStyles}  // ✅ Add this
                                     isSearchable
+                                    isClearable
                                   />
                                 </div>
 
@@ -429,6 +431,7 @@ const IndivivdualSchemeOfWork =  ({ params }: { params: Promise<any> }) => {
                                     classNamePrefix="site-select"
                                     styles={customStyles}  // ✅ Add this
                                     isSearchable
+                                    isClearable
                                   />
                                 </div>
 

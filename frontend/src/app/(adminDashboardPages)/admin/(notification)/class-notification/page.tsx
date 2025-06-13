@@ -460,6 +460,7 @@ const SchoolNotification = () => {
                           classNamePrefix="site-select"
                           styles={customStyles}  // ✅ Add this
                           isSearchable
+                          isClearable
                         />
                       </div>
 
@@ -474,6 +475,7 @@ const SchoolNotification = () => {
                           classNamePrefix="site-select"
                           styles={customStyles}  // ✅ Add this
                           isSearchable
+                          isClearable
                         />
                       </div>
                       

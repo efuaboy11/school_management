@@ -171,7 +171,7 @@ const CreateShemeOfWork1 = () => {
           <div className="col-sm-8">
             <div className="site-boxes border-radius-10px">
               <div className="border-bottom1 text-center p-3">
-                <p>Create  assignment - 1</p>
+                <p>Create  Scheme <i className="bi bi-dash-lg"></i> 1</p>
               </div>
 
               <div className="p-3">
@@ -188,6 +188,7 @@ const CreateShemeOfWork1 = () => {
                           classNamePrefix="site-select"
                           styles={customStyles}  // ✅ Add this
                           isSearchable
+                          isClearable
                         />
                       </div>
 

@@ -11,6 +11,8 @@ interface AllDataContextTye{
   sectionLabels: Record<string, string>;
 
   //queryset
+  studentQuery: string
+  setStudentQuery: (data: string) => void
   studentClassQuery: string
   setStudentClassQuery: (data: string) => void
   termQuery: string
@@ -309,6 +311,25 @@ interface AllDataContextTye{
   schemeOfWorkSearch: string
   setSchemeOfWorkSearch: (loader: string) => void
 
+  //Scratch card
+  scratchCardCount: number
+  setScratchCardCount: (count: number) => void
+  scratchCardData: any[]
+  setScratchCardData: (data: any[]) => void
+  scratchCardLoader: boolean
+  setScratchCardLoader: (loader: boolean) => void
+  scratchCardSearch: string
+  setScratchCardSearch: (search: string) => void
+
+  // E Result
+  eResultCount: number
+  setEResultCount: (count: number) => void
+  eResultData: any[]
+  setEResultData: (data: any[]) => void
+  eResultLoader: boolean
+  setEResultLoader: (loader: boolean) => void
+  eResultSearch: string
+  setEResultSearch: (search: string) => void
 
   // payment Method
   paymentMethodCount: number
@@ -616,6 +637,14 @@ interface AllDataContextTye{
   SchemeOFWorkFunction: () => Promise<void>;
   FilterClassTimetable: () => Promise<void>; 
 
+  // Scratch Card
+  ScratchCardFunction: () => Promise<void>;
+  FilterScratchCard: () => Promise<void>;
+
+  // E Result
+  EResultFunction: () => Promise<void>;
+  FilterEResult: () => Promise<void>;
+
   // Payment Method
   PaymentMethodFunction: () => Promise<void>
   FilterPaymentMethod: () => Promise<void>
@@ -713,6 +742,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     others: 'Others',
   };
 
+  const [studentQuery, setStudentQuery] = useState('')
   const [studentClassQuery, setStudentClassQuery] = useState('')
   const [termQuery,setTermQuery] = useState('')
   const [sessionQuery, setSessionQuery] = useState('')
@@ -723,7 +753,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   
   const [studentCount, setStudentCount] = useState(0)
   const [recentStudent, setRecentStudent] = useState<any[]>([])
-  const [studentData, setStudentData] = useState<any>([])
+  const [studentData, setStudentData] = useState<any[]>([])
   const [studentLoader, setStudentLoader] = useState(true)
   const [studentSearch, setStudentSearch] = useState('')
   const [studentGroupData, setStudentGroupData] = useState<any>([])
@@ -867,6 +897,16 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   const [schemeOfWorkData, setSchemeOfWorkData] = useState<any>([])
   const [schemeOfWorkLoader, setSchemeOfWorkLoader] = useState(true)
   const [schemeOfWorkSearch, setSchemeOfWorkSearch] = useState('')
+
+  const [scratchCardCount, setScratchCardCount] = useState(0)
+  const [scratchCardData, setScratchCardData] = useState<any>([])
+  const [scratchCardLoader, setScratchCardLoader] = useState(true)
+  const [scratchCardSearch, setScratchCardSearch] = useState('')
+
+  const [eResultCount, setEResultCount] = useState(0)
+  const [eResultData, setEResultData] = useState<any[]>([])
+  const [eResultLoader, setEResultLoader] = useState(true)
+  const [eResultSearch, setEResultSearch] = useState('')
 
 
   const [paymentMethodCount, setPaymentMethodCount] = useState(0)
@@ -2585,6 +2625,133 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     }
   }
 
+
+
+
+
+   const ScratchCardFunction = async() =>{
+    let response = await fetch(`http://127.0.0.1:8000/api/scratch-cards/?status=${statusQuery}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authTokens?.access}`
+      },
+    })
+
+    const data = await response.json()
+    if(response.ok){
+      if(Array.isArray(data) && data.length > 0){
+        setScratchCardCount(data.length)
+      }
+      
+      
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setScratchCardData(sortedData)
+      setScratchCardLoader(false)
+
+
+    }else{
+      setScratchCardLoader(false)
+    }
+
+
+
+  }
+
+
+  const FilterScratchCard = async() =>{
+    let url;
+
+    if(scratchCardSearch.length !== 0){
+      url = `http://127.0.0.1:8000/api/scratch-cards/?search=${scratchCardSearch}`
+    }
+
+
+    if (!url) {
+      console.error("URL is undefined");
+      return;
+    }
+
+    let response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type":"application/json",
+        Authorization: `Bearer ${authTokens?.access}`
+      }
+    });
+
+    const data = await response.json()
+
+    if(response.ok){
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setScratchCardData(sortedData)
+    }
+  }
+
+
+  //E Result
+
+  const EResultFunction = async() =>{
+    let response = await fetch(`http://127.0.0.1:8000/api/e-result/?student=${studentQuery}&student_class=${studentClassQuery}&term=${termQuery}&session=${sessionQuery}`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authTokens?.access}`
+      },
+    })
+
+    const data = await response.json()
+    if(response.ok){
+      if(Array.isArray(data) && data.length > 0){
+        setEResultCount(data.length)
+      }
+      
+      
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setEResultData(sortedData)
+      setEResultLoader(false)
+
+
+    }else{
+      setEResultLoader(false)
+      setEResultData([])
+    }
+
+
+
+  }
+
+    const FilterEResult = async() =>{
+    let url;
+
+    if(eResultSearch.length !== 0){
+      url = `http://127.0.0.1:8000/api/e-result/?search=${eResultSearch}`
+    }
+
+
+    if (!url) {
+      console.error("URL is undefined");
+      return;
+    }
+
+    let response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type":"application/json",
+        Authorization: `Bearer ${authTokens?.access}`
+      }
+    });
+
+    const data = await response.json()
+
+    if(response.ok){
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setEResultData(sortedData)
+    }
+  }
+
   // Payment Mehthod
   const PaymentMethodFunction = async() =>{
     let response = await fetch('http://127.0.0.1:8000/api/payment-method/', {
@@ -3651,7 +3818,8 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   const contextData ={
    sectionLabels,
-
+    
+    studentQuery, setStudentQuery,
     studentClassQuery, setStudentClassQuery,
     termQuery, setTermQuery,
     sessionQuery,setSessionQuery,
@@ -3812,6 +3980,16 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     schemeOfWorkLoader, setSchemeOfWorkLoader,
     schemeOfWorkSearch, setSchemeOfWorkSearch,
 
+    scratchCardCount, setScratchCardCount,
+    scratchCardData, setScratchCardData,
+    scratchCardLoader, setScratchCardLoader,
+    scratchCardSearch, setScratchCardSearch,
+
+    eResultCount, setEResultCount,
+    eResultData, setEResultData,
+    eResultLoader, setEResultLoader,
+    eResultSearch, setEResultSearch,
+
 
     paymentMethodCount, setPaymentMethodCount,
     paymentMethodData, setPaymentMethodData,
@@ -3942,6 +4120,8 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     SchoolNotificationFunction, FilterSchoolNotification,
     ClassNotificationFunction,  FilterClassNotification,
     SchemeOFWorkFunction, FilterSchemeOFWork,
+    ScratchCardFunction, FilterScratchCard,
+    EResultFunction, FilterEResult,
     StaffNotificationFunction, FilterStaffNotification,
     SchoolEventFunction, FilterSchoolEvent,
     AssignmentFunction, FilterAssignment,

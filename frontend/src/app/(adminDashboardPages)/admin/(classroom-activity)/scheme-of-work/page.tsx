@@ -159,7 +159,7 @@ const SchemeOfWorkPage = () => {
   }));
 
 
-    const customStyles = {
+  const customStyles = {
     control: (provided: any, state: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#0d0d0d' : '#fff',
@@ -377,6 +377,7 @@ const SchemeOfWorkPage = () => {
                     classNamePrefix="site-select"
                     styles={customStyles}  // ✅ Add this
                     isSearchable
+                    isClearable
                   />
                 </div>
 
@@ -390,6 +391,7 @@ const SchemeOfWorkPage = () => {
                     classNamePrefix="site-select"
                     styles={customStyles}  // ✅ Add this
                     isSearchable
+                    isClearable
                   />
                 </div>
 

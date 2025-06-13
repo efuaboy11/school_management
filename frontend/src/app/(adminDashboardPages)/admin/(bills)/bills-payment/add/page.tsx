@@ -267,6 +267,7 @@ const PayBills = () => {
                             classNamePrefix="site-select"
                             styles={customStyles}
                             isSearchable
+                            isClearable
                           />
                         )}
                         {studentErrorMessage && <p className="error-text">This field is required</p>}

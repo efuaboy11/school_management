@@ -9,12 +9,16 @@ interface DownloadLinkProps {
 export const DownloadLink = ({ url, fileName }: DownloadLinkProps) => {
     const {
       authTokens,
-      setLoader,
+      loader2,
+      setLoader2,
+      disableButton,
+      setDisableButton,
   
     } = useContext(AuthContext)!;
 
   const handleDownload = () => {
-    setLoader(true)
+    setLoader2(true)
+    setDisableButton(true)
     fetch(url, {
       headers: {
         Authorization: `Bearer ${authTokens?.access}`, // Add your authorization header here
@@ -35,17 +39,20 @@ export const DownloadLink = ({ url, fileName }: DownloadLinkProps) => {
         link.click();
         document.body.removeChild(link);
         window.URL.revokeObjectURL(fileURL);
-        setLoader(false)
+        setLoader2(false)
+        setDisableButton(false)
       })
       .catch((error) => {
         console.error("Error fetching the file:", error);
-        setLoader(false)
+        setLoader2(false)
     });
   };
 
   return (
-    <button className="site-btn px-2" type="button" onClick={handleDownload}>
-      Download
-    </button>
+    <div>
+      <button onClick={handleDownload} disabled={disableButton}  className={`Button site-btn px-3`}>
+        <span><i className="ri-download-cloud-2-line me-2"></i> Download</span>
+      </button> 
+    </div>
   );
 };

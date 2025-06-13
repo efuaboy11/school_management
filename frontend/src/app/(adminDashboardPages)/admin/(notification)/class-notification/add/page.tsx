@@ -238,6 +238,7 @@ const UploadSchoolNotificationPage = () => {
                           classNamePrefix="site-select"
                           styles={customStyles}  // ✅ Add this
                           isSearchable
+                          isClearable
                         />
                       </div>
 
@@ -252,6 +253,7 @@ const UploadSchoolNotificationPage = () => {
                           classNamePrefix="site-select"
                           styles={customStyles}  // ✅ Add this
                           isSearchable
+                          isClearable
                         />
                       </div>
                       
@@ -275,7 +277,7 @@ const UploadSchoolNotificationPage = () => {
                       <div className='pt-3'>
                         <button disabled={disableButton} type="submit" className={`Button site-btn px-3`}>
                           <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                          <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-upload-line me-2"></i>Update</span>
+                          <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-upload-line me-2"></i>Add</span>
                         </button>
                       </div>
                     </div>
