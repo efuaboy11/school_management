@@ -381,13 +381,13 @@ const ScratchCardPage = () => {
 
 
       <div className="container-xl pt-4">
-        <div className="d-flex justify-content-between">
+        <div className="d-md-flex justify-content-between">
           <div>
             <p className="md-text">Scratch Card Numbers</p>
             <p className="light-text pb-3">Total of {scratchCardCount} cards avaliable</p>
-          </div>
+         </div>
 
-          <div className='d-none d-sm-block'>
+          <div className='d-flex mb-4'>
             <button onClick={showStatusModal} className="site-btn px-3 Link"><i className="ri-send-plane-fill pe-2"></i>Generate number</button>
           </div>
         </div>

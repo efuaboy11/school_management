@@ -344,13 +344,13 @@ const TermPage = () => {
               </div>
             </div>
       <div className="container-xl pt-4">
-        <div className="d-flex justify-content-between">
+        <div className="d-md-flex justify-content-between">
           <div>
             <p className="md-text">Term</p>
             <p className="light-text pb-3">Total of {termCount} term avaliable</p>
-          </div>
+         </div>
 
-          <div className='d-none d-sm-block'>
+          <div className='d-flex mb-4'>
             <Link href='/admin/term/add' className="site-btn px-3 Link"><i className="ri-send-plane-fill pe-2"></i> Add Term</Link>
           </div>
         </div>

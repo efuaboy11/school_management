@@ -199,13 +199,13 @@ const ResultDept = () => {
         </section>
       )}
       <div className="container-xl pt-4">
-        <div className="d-flex justify-content-between">
+        <div className="d-md-flex justify-content-between">
           <div>
             <p className="md-text">Result Dept</p>
             <p className="light-text pb-3">Total of {resultOfficerCount} result officer avaliable</p>
-          </div>
+         </div>
 
-          <div className='d-none d-sm-block'>
+          <div className='d-flex mb-4'>
             <Link href='/admin/staffs/add' className="site-btn px-3 Link"><i className="ri-user-add-line pe-2"></i> Add  Result Oficer</Link>
           </div>
         </div>

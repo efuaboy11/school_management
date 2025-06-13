@@ -198,13 +198,13 @@ const AllStudents = () => {
         </section>
       )}
       <div className="container-xl">
-        <div className="d-flex justify-content-between">
+        <div className="d-md-flex justify-content-between">
           <div>
             <p className="md-text">Students</p>
             <p className="light-text pb-3">Total of {studentCount} student avaliable</p>
           </div>
 
-          <div className='d-none d-sm-block'>
+          <div className='d-flex mb-4'>
             <Link href='/admin/add-student' className="site-btn px-3 Link"><i className="ri-send-plane-fill pe-2"></i> Add student</Link>
           </div>
         </div>

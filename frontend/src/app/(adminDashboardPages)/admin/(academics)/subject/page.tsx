@@ -195,9 +195,9 @@ const Subjects = () => {
           <div>
             <p className="md-text">Subject</p>
             <p className="light-text pb-3">Total of {subjectCount} subject avaliable</p>
-          </div>
+         </div>
 
-          <div className='d-none d-sm-block'>
+          <div className='d-flex mb-4'>
            <Link href='/admin/subject/add' className="site-btn px-3 Link"><i className="ri-send-plane-fill pe-2"></i> Add subject</Link>
           </div>
         </div>

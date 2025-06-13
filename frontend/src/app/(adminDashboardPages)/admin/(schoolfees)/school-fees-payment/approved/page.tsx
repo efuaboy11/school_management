@@ -197,14 +197,14 @@ const SuccsessfulSchoolFeesPayment = () => {
           </div>
         </section>
       )}
-      <div className="container-xl pt-4 pb-5 mb-5">
-        <div className="d-flex justify-content-between">
+            <div className="container-xl pt-4 pb-5 mb-5">
+        <div className="d-md-flex justify-content-between">
           <div>
             <p className="md-text">All Successful Payment</p>
             <p className="light-text pb-3">Total of {sucessSchoolFeesPaymentCount} successful payment avaliable</p>
-          </div>
+         </div>
 
-          <div className='d-none d-sm-block'>
+          <div className='d-flex mb-4'>
             <Link href='/admin/school-fees-payment/add/step-1' className="site-btn px-3 Link"><i className="ri-send-plane-fill pe-2"></i>Pay Fees</Link>
           </div>
         </div>

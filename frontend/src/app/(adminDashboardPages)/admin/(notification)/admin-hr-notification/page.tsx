@@ -365,7 +365,7 @@ const AdminHrNotificationPage = () => {
 
 
       <div className="container-xl pt-4">
-        <div className="d-flex justify-content-between">
+        <div className="d-md-flex justify-content-between">
           <div>
             <p className="md-text">Admin / HR Notiffications</p>
             <p className="light-text pb-3">Total of {adminHrNotificationCount} notification avaliable</p>
