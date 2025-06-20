@@ -3,8 +3,8 @@
 import { fa0, faAngleDown, faArrowLeft, faBars, faLock } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Link from 'next/link'
-import React, { useContext, useState } from 'react'
-import { usePathname } from 'next/navigation'
+import React, { useContext, useEffect, useState } from 'react'
+import { usePathname, useRouter } from 'next/navigation'
 import AuthContext from '@/context/AuthContext'
 import '../../css/component/dashFrames.css'
 
@@ -14,14 +14,13 @@ const AdminFrame = () => {
     toggleCloseSidebar,
     OnbodyClick,
     showSidebar,
- 
+    LogoutUser,
+    authTokens,
 
   } = useContext(AuthContext)!
 
+  const router = useRouter()
 
-  const  LogoutUser = () =>{
-    return('yes')
-  }
   const [studentDropdown, setStudentDropdown] = useState(false)
   const [staffDropdown, setStaffDropdown] = useState(false)
   const [parentDropdown, setParentDropdown] = useState(false)
@@ -253,6 +252,33 @@ const AdminFrame = () => {
   const toggleNavDropdown = () =>{
     setNavDropdown(!navDropdown)
   }
+
+  const currentUser = async () =>{
+    try{
+      let response = await fetch(`http://127.0.0.1:8000/api/me/`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+          Authorization: `Bearer ${authTokens?.access}`,
+        },
+
+      })
+      const data = await response.json()
+
+      if(response.ok){
+        if(data.role !== 'admin'){
+          router.push('/login')
+        }
+      }
+    }catch{
+      console.log('error')
+    }
+
+  }
+
+  // useEffect(() =>{
+  //   currentUser()
+  // }, [])
 
 
   return (
@@ -1020,29 +1046,22 @@ const AdminFrame = () => {
                 </div>
                 <div className="dashboard-content-user-link cursor-pointer">
                   <div className="d-flex dashboard-content-user-link-hover" onClick={toggleNavDropdown}>
-                    {/* <img src={userIco} width='35px' alt="" /> */}
+                    <img width='35px' src="/img/icon/user-icon.png" alt="border-radius-50"/>
                     <p className='px-2 pt-1'>School Management</p>
                     <p className='pt-1'><FontAwesomeIcon className='xsm-text' icon={faAngleDown}/></p>
                   </div>
                   {navDropdown &&
-                    <div className="border-bottom-dark dashboard-content-user-drop-down border-radius-10px site-boxes">
+                    <div className="border-bottom-dark dashboard-content-user-drop-down  site-boxes">
                       <ul className=''>
-                        <li className='pb-2'>
-                          <Link href='/admin/change-password/step-1/' className='light-link'>
+                        <li className='pb-3'>
+                          <Link href='/admin/change-password' className='light-link'>
                             <div className="d-flex">
                               <i className="bi bi-gear pe-2"></i>
-                              <p className=''>Change password </p>
+                              <p className=''>Settings </p>
                             </div>
                           </Link>
                         </li>
-                        <li className='pb-2'>
-                          <Link href='/admin/user-login-details/' className='light-link'>
-                            <div className="d-flex">
-                              <i className="bi bi-person-fill pe-2"></i>
-                              <p className=''>User details</p>
-                            </div>
-                          </Link>
-                        </li>
+              
                         <li className='pb-2'>
                           <button className='light-link Button' onClick={LogoutUser}>
                             <div className="d-flex">

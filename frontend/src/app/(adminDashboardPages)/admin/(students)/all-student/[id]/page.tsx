@@ -8,6 +8,7 @@ import { useForm } from 'react-hook-form'
 import { Pagination, Stack } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import AllDataContext from '@/context/AllData'
+import Link from 'next/link'
 const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => {
   const {id} = use(params)
 
@@ -1406,9 +1407,9 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
                                       <td><span className={` ${data.status === 'approved' && 'text-success'  } ${data.status === 'declined' &&  'text-danger'} ${data.status === 'pending' && 'text-warning'}  `}>{formatName(data.status)}</span></td>
                                       <td>{formatDate(data.date)}</td>
                                       <td>
-                                        <div className="site-border box-50px d-flex  align-center justify-content-center border-radius-5px cursor-pointer">
+                                        <Link href={`/admin/school-fees-payment/individual/${data.id}/${data.transaction_id}`} className=" Link site-border box-50px d-flex  align-center justify-content-center border-radius-5px cursor-pointer">
                                           <i className="ri-eye-line"></i>
-                                        </div>
+                                        </Link>
                                       </td>
                                     </tr>
 
@@ -1528,9 +1529,9 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
                                       <td><span className={` ${data.status === 'approved' && 'text-success'  } ${data.status === 'declined' &&  'text-danger'} ${data.status === 'pending' && 'text-warning'}  `}>{formatName(data.status)}</span></td>
                                       <td>{formatDate(data.date)}</td>
                                       <td>
-                                        <div className="site-border box-50px d-flex  align-center justify-content-center border-radius-5px cursor-pointer">
+                                        <Link href={`/admin/bills-payment/individual/${data.id}/${data.transaction_id}`} className=" Link site-border box-50px d-flex  align-center justify-content-center border-radius-5px cursor-pointer">
                                           <i className="ri-eye-line"></i>
-                                        </div>
+                                        </Link>
                                       </td>
                                     </tr>
 

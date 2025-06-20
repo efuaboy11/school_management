@@ -17,8 +17,10 @@ interface UserCounts{
     teacherCount:number,
     parentCount:number,
     staffCount:number,
+    label: string,
 
 }
+
 
 interface SchoolFees{
   allCount: number;
@@ -29,7 +31,7 @@ interface SchoolFees{
 
 
 
-export const UsersChart = ({studentCount, teacherCount, parentCount, staffCount}:UserCounts) =>{
+export const UsersChart = ({studentCount, teacherCount, parentCount, staffCount, label}:UserCounts) =>{
 
 
   const chartRef = useRef<HTMLCanvasElement | null>(null)
@@ -49,7 +51,7 @@ export const UsersChart = ({studentCount, teacherCount, parentCount, staffCount}
       labels: ['Student', 'Teacher', 'Parent', 'Staff'],
       datasets: [
         {
-          label: 'Users Counts',
+          label: `${label}`,
           data: [studentCount, teacherCount,  parentCount, staffCount],
           backgroundColor: [
             'rgba(120, 62, 188, 0.6)',  // primary-color
@@ -103,6 +105,89 @@ export const UsersChart = ({studentCount, teacherCount, parentCount, staffCount}
       }
     };
   }, [studentCount, teacherCount,  parentCount, staffCount])
+
+  return (
+    <div style={{ width: '100%', height: '200px' }}>
+      <canvas ref={chartRef} />
+    </div>
+  );
+}
+
+
+export const SchoolFeesBarChart = ({allCount, pendingCount, successfulCount, declinedCount}:SchoolFees) =>{
+
+
+  const chartRef = useRef<HTMLCanvasElement | null>(null)
+  const myChartRef = useRef<Chart | null>(null)
+
+  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  
+
+  useEffect(() =>{
+    if(myChartRef.current){
+       myChartRef.current.destroy();
+    }
+
+
+    // Define the data for the chart
+    const data = {
+      labels: ['Total', 'Pending', 'Success', 'Declined'],
+      datasets: [
+        {
+          label: `School Fees Chart`,
+          data: [allCount, pendingCount,  successfulCount, declinedCount],
+          backgroundColor: [
+            'rgba(120, 62, 188, 0.6)',  
+            'rgba(255, 206, 86, 0.6)',  
+            'rgba(47, 179, 122, 0.6)',  
+            'rgba(255, 99, 132, 0.6)', 
+          ],
+          borderColor: [
+            'rgba(120, 62, 188, 1)',
+            'rgba(255, 206, 86, 1)',
+            'rgba(47, 179, 122, 1)',
+            'rgba(255, 99, 132, 1)',
+          ],
+          
+          borderWidth: 1,
+        },
+      ],
+    };
+
+    const options = {
+      responsive: true,
+      maintainAspectRatio: false,
+      scales: {
+        x: {
+          grid: {
+            color: theme === 'light' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.1)' // ⬅️ default light gray for grid lines on light recentThemes
+          }
+        },
+        y: {
+          beginAtZero: true,
+          grid: {  
+            color: theme === 'light' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.1)' // ⬅️ same here
+          }
+        },
+      },
+    };
+
+    // Create the chart instance
+    if (chartRef.current) {
+      myChartRef.current = new Chart(chartRef.current, {
+        type: 'bar',
+        data: data,
+        options: options,
+      });
+    }
+
+    // Cleanup to avoid memory leaks
+    return () => {
+      if (myChartRef.current) {
+        myChartRef.current.destroy();
+      }
+    };
+  }, [allCount, pendingCount,  successfulCount, declinedCount])
 
   return (
     <div style={{ width: '100%', height: '200px' }}>
@@ -218,11 +303,14 @@ export const BillsChart = ({
   pendingBillsCount,
   successfulBillsCount,
   declinedBillsCount,
+  label
+  
 }: {
   billsCount: number;
   pendingBillsCount: number;
   successfulBillsCount: number;
   declinedBillsCount: number;
+  label: string
 }) => {
   const chartRef = useRef<HTMLCanvasElement | null>(null);
   const myChartRef = useRef<Chart | null>(null);
@@ -238,7 +326,7 @@ export const BillsChart = ({
       labels: ['All', 'Pending', 'Successful', 'Declined'],
       datasets: [
         {
-          label: 'School Fees Status',
+          label:  `${label}`,
           data: [billsCount, pendingBillsCount, successfulBillsCount, declinedBillsCount],
           borderColor: 'rgba(120, 62, 188, 1)',
           backgroundColor: 'rgba(120, 62, 188, 0.3)',

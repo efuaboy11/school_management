@@ -53,6 +53,7 @@ urlpatterns = [
     path('request-to-change-password/', views.RequestToChangePasswordView.as_view(), name='request_to_change_password'),
     path('request-to-change-password/<str:pk>/update-status/', views.RequestToChangePasswordStatusView.as_view(), name='request_to_change_password-update-status'),
     path('change-password/', views.ChangePasswordFormSerializer.as_view(), name='change_password'),
+    path('change-admin-password/', views.ChangeAdminPasswordFormView.as_view(), name='change_password'),
     
     #login
     path('logout/', views.LogoutView.as_view(), name='logout'),
@@ -67,7 +68,9 @@ urlpatterns = [
     path('delete-multiple-email/', views.DeleteMultipleEmailsView.as_view(), name='delete_multiple_email' ),
     path('list-emails/<str:email_type>/',
          views.ListEmailAddressesAPIView.as_view(), name='list-emails'),
-    
+    path('contact-us/', views.ContactUsView.as_view(), name='contact-us' ),
+        
+        
     #Subjects
     path('subjects/', views.SubjectsView.as_view(), name='subjects' ),
     path('subjects/<str:pk>/', views.SubjectsRetriveUpdateDestory.as_view(), name='indiviual_subjects' ),

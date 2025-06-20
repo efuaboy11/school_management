@@ -11,6 +11,7 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import '../libs/fontawesome';
 import { AllDataProvider } from "@/context/AllData";
 import 'bootstrap-icons/font/bootstrap-icons.css';
+import "../css/authCss/auth.css"
 
 
 const geistSans = Geist({

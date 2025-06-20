@@ -332,6 +332,7 @@ const AdminHome = () => {
                     teacherCount={teacherCount}
                     parentCount={parentCount}
                     staffCount={staffCount}
+                    label='User count'
                   />
                 </div>
               </div>
@@ -341,7 +342,7 @@ const AdminHome = () => {
           <div className="col-md-6 col-lg-4">
             <div className="site-boxes position-relative1 recent-notification-box border-radius-10px p-4">
               <div className='pb-4'>
-                <h6>Recent Notifications</h6>
+                <h6>Recent Admin Notifications</h6>
               </div>
               {adminHrNotificationLoader ? (
                 <div className="recent-notification-spinner">
@@ -363,7 +364,7 @@ const AdminHome = () => {
                       ))}
 
                       <div>
-                        <Link href='' className='site-btn width-100 Link'>View All</Link>
+                        <Link href='/admin/admin-hr-notification' className='site-btn width-100 Link'>View All</Link>
                       </div>
                     </div>
 
@@ -546,7 +547,7 @@ const AdminHome = () => {
 
 
                 <div className='pt-4 recent-school-fees-link'>
-                  <Link href='' className='site-btn Link width-120px'>View all</Link>
+                  <Link href='/admin/school-fees-payment/all' className='site-btn Link width-120px'>View all</Link>
                 </div>
               </div>
             </div>
@@ -558,7 +559,7 @@ const AdminHome = () => {
             <div className="site-boxes position-relative1 recent-student-box border-radius-10px p-4">
               <div className='pb-5  d-flex justify-content-between'>
                 <h6>Recent Students</h6>
-                <Link href='' className='light-link'>View all</Link>
+                <Link href='/admin/all-student' className='light-link'>View all</Link>
               </div>
               {studentLoader ? (
                 <div className="recent-notification-spinner">
@@ -673,6 +674,7 @@ const AdminHome = () => {
                     pendingBillsCount={totalPendingBillsPayment}
                     declinedBillsCount={totalDeclinedBillsPayment}
                     successfulBillsCount={totalSucessBillsPayment}
+                    label='Bills Chart'
                   />
                 </div>
               </div>
@@ -824,7 +826,7 @@ const AdminHome = () => {
 
 
                 <div className='pt-4 recent-school-fees-link'>
-                  <Link href='' className='site-btn Link width-120px'>View all</Link>
+                  <Link href='/admin/bills-payment/all' className='site-btn Link width-120px'>View all</Link>
                 </div>
               </div>
             </div>
@@ -836,7 +838,7 @@ const AdminHome = () => {
               <div>
                 <div className="d-flex justify-content-between pb-4">
                   <p>Recent Staff</p>
-                  <Link href='' className='light-link'>View all</Link>
+                  <Link href='/admin/staffs' className='light-link'>View all</Link>
                 </div>
 
                 {staffLoader ? (
@@ -900,7 +902,7 @@ const AdminHome = () => {
               <div>
                 <div className="d-flex justify-content-between pb-4">
                   <p>Recent Parent</p>
-                  <Link href='' className='light-link'>View all</Link>
+                  <Link href='/admin/all-parents' className='light-link'>View all</Link>
                 </div>  
 
                 {parentLoader ? (

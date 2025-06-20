@@ -184,7 +184,7 @@ const CreateShemeOfWork1 = () => {
                           options={StudentClassOptions}
                           value={StudentClassOptions.find((opt: { value: string; label: string }) => opt.value === studentClass)}
                           onChange={(selectedOption: { value: string; label: string } | null) => setStudentClass(selectedOption?.value || '')}
-                          placeholder="Select Student"
+                          placeholder="Select class"
                           classNamePrefix="site-select"
                           styles={customStyles}  // ✅ Add this
                           isSearchable

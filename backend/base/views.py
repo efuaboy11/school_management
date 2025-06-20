@@ -196,7 +196,7 @@ class DeleteMultipleHRView(generics.GenericAPIView):
 
 class TeachersView(generics.ListAPIView):
     serializer_class = StaffSerializer
-    permission_classes = [IsAdminOrHR]
+    permission_classes = [IsAdminOrHrOrStudent]
     filter_backends = [ExactSearchFilter]
     search_fields = ['first_name', 'last_name', 'email', 'phone_number', 'userID']
     
@@ -420,20 +420,40 @@ class ChangePasswordFormSerializer(generics.GenericAPIView):
         except RequestToChangePassword.DoesNotExist:
             return Response({"error": "Invalid token."}, status=404)
          
-         
+  
+class ChangeAdminPasswordFormView(generics.GenericAPIView):
+    serializer_class = ChangeAdminPasswordFormSerializer
+    permission_classes = [IsAdminUser]
+    
+    def post(self, request):
+        username = request.data.get('username')
+        new_username = request.data.get('new_username')
+        new_password = request.data.get('new_password')
+        
+        try:
+            user = Users.objects.get(username=username)
+            user.username = new_username
+            user.set_password(new_password)
+            user.save()
+            return Response({"message": "password and username updated successfully."})
+        except Users.DoesNotExist:
+            return Response({"error": " user with this uername name is not found."}, status=404)
+
+
+       
 class LogoutView(generics.GenericAPIView):
     serializer_class = LogoutSerializer 
     permission_classes = [permissions.IsAuthenticated]
     
     def post(self, request):
-        refresh_token = request.data.get("refresh")
+        refresh_token = request.data.get("refresh_token")
         
         if refresh_token is None:
             return Response({"error": "Refresh token required"}, status=status.HTTP_400_BAD_REQUEST)
         
         try:
             token = RefreshToken(refresh_token)
-            token.blacklist()
+            # token.blacklist()
             return Response({"message": "Logout successful, token blacklisted"}, status=status.HTTP_200_OK)
         except TokenError as e:
             return Response({"error": str(e)}, status=status.HTTP_400_BAD_REQUEST)
@@ -544,8 +564,39 @@ class ListEmailAddressesAPIView(generics.ListAPIView):
             
         return Response({"email_addresses": list(email_addresses)}, status=status.HTTP_200_OK)    
             
+         
+         
+#Contact us
+class ContactUsView(generics.GenericAPIView):
+    serializer_class = ContactUsSerializer
+    permission_classes = [AllowAny]
+    
+    def post(self, request, *args, **kwargs):
+        serializer = ContactUsSerializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        user_email = request.data.get('email')
+        name = request.data.get('name')
+        message = request.data.get('message')
+        subject = request.data.get('subject')
+        
+        html_content = render_to_string('email/contact_us.html', {
+            'email' : user_email,
+            'name' : name,
+            'subject': subject,
+            'message': message,
+            'year': '2025'
+        })
+        delivery_results = contact_us(from_email=user_email, message=html_content, subject=subject)
+        
+        if delivery_results:
+            return Response({"message": "Email(s) sent successfully."}, status=status.HTTP_200_OK)
+        else:
+            return Response({"error": "Failed to send email(s)."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
             
-             
+         
+    
+         
   
   
 #Subjects
@@ -939,7 +990,7 @@ class SchoolEventView(generics.ListCreateAPIView):
         
 class SchoolEventRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SchoolEventSerializer
-    permission_classes = [IsAdminOrHR]
+    permission_classes = [IsAuthenticated]
     queryset = SchoolEvent.objects.all()
     lookup_field = 'pk'
     
@@ -1063,10 +1114,20 @@ class StudentResultListCreateApiView(generics.ListCreateAPIView):
 class StudentResultRetrieveUpdateDestroyApiView(generics.RetrieveUpdateDestroyAPIView):
     queryset = StudentResult.objects.all()
     serializer_class = StudentResultSerializer
-    permission_classes = [IsAdminOrAcademicOfficer]
+    permission_classes = [IsAdminOrAcademicOfficerorStudent]
     lookup_field = 'pk'
     
+    def update(self, request, *args, **kwargs):
+        user = request.user
+        if user.role not in ['admin', 'academic_officer']:
+            return Response({"error": "You do not have permission to update results."}, status=status.HTTP_403_FORBIDDEN)
+        return super().update(request, *args, **kwargs)
+
     def destroy(self, request, *args, **kwargs):
+        user = request.user
+        if user.role not in ['admin', 'academic_officer']:
+            return Response({"error": "You do not have permission to delete results."}, status=status.HTTP_403_FORBIDDEN)
+        
         instance = self.get_object()
         instance.subjectresult_set.all().delete()
         instance.delete()
@@ -1110,24 +1171,30 @@ class CheckStudentResultView(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         student = request.data.get('student')
         pin = request.data.get('pin')
-        class_id = request.data.get('class_id')
-        term_id = request.data.get('term_id')
-        session_id = request.data.get('session_id')
+        class_id = request.data.get('student_class')
+        term_id = request.data.get('term')
+        session_id = request.data.get('session')
 
         try:
             scratch_card = ScratchCard.objects.get(pin=pin)
         except ScratchCard.DoesNotExist:
             return Response({"error": "Invalid Scratch Card Pin."}, status=status.HTTP_400_BAD_REQUEST)
-
-        if not scratch_card.use(student):
+        
+        try: 
+            student_id = Student.objects.get(id=student)
+        except Student.DoesNotExist:
+            return Response({"error": "Student not found."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        
+        if not scratch_card.use(student_id):
             return Response({"error": "Scratch card has expired or has been used."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             result = StudentResult.objects.get(
-                student=student,
-                student_class_id=class_id,
-                term_id=term_id,
-                session_id=session_id
+                student=student_id,
+                student_class=class_id,
+                term=term_id,
+                session=session_id
             )
             return Response(StudentResultSerializer(result).data)
         except StudentResult.DoesNotExist:
@@ -1159,7 +1226,7 @@ class FilterResultView(generics.ListCreateAPIView):
 
 class DeleteMultipleStudentResultView(generics.GenericAPIView):
     permission_classes = [IsAdminOrResultOfficer]
-    serializer_class = DeleteMultipleIDSerializer
+    serializer_class = DeleteMultipleUUIDSerializer
 
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -1247,8 +1314,20 @@ class EResultView(generics.ListCreateAPIView):
 class EResultRetrieveUpdateDestroyApiView(generics.RetrieveUpdateDestroyAPIView):
     queryset = EResult.objects.all()
     serializer_class = EResultSerializer
-    permission_classes = [IsAdminOrResultOfficer]
+    permission_classes = [IsAdminOrResultOfficerOrStudent]
     
+    def update(self, request, *args, **kwargs):
+        user = request.user
+        if user.role not in ['admin', 'academic_officer']:
+            return Response({"error": "You do not have permission to update results."}, status=status.HTTP_403_FORBIDDEN)
+        return super().update(request, *args, **kwargs)
+
+    def destroy(self, request, *args, **kwargs):
+        user = request.user
+        if user.role not in ['admin', 'academic_officer']:
+            return Response({"error": "You do not have permission to delete results."}, status=status.HTTP_403_FORBIDDEN)
+        
+        return super().destroy(request, *args, **kwargs)
     
 class CheckEResultView(generics.ListCreateAPIView):
     queryset = EResult.objects.all()
@@ -1258,24 +1337,29 @@ class CheckEResultView(generics.ListCreateAPIView):
     def post(self, request, *args, **kwargs):
         student = request.data.get('student')
         pin = request.data.get('pin')
-        class_id = request.data.get('class_id')
-        term_id = request.data.get('term_id')
-        session_id = request.data.get('session_id')
+        class_id = request.data.get('student_class')
+        term_id = request.data.get('term')
+        session_id = request.data.get('session')
 
         try:
             scratch_card = ScratchCard.objects.get(pin=pin)
         except ScratchCard.DoesNotExist:
             return Response({"error": "Invalid Scratch Card Pin."}, status=status.HTTP_400_BAD_REQUEST)
 
-        if not scratch_card.use(student):
+        try: 
+            student_id = Student.objects.get(id=student)
+        except Student.DoesNotExist:
+            return Response({"error": "Student not found."}, status=status.HTTP_400_BAD_REQUEST)
+        
+        if not scratch_card.use(student_id):
             return Response({"error": "Scratch card has expired or has been used."}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             result = EResult.objects.get(
-                student=student,
+                student=student_id,
                 student_class_id=class_id,
-                term_id=term_id,
-                session_id=session_id
+                term=term_id,
+                session=session_id
             )
             return Response(EResultSerializer(result).data)
         except EResult.DoesNotExist:
@@ -1304,7 +1388,7 @@ class FilterEResultView(generics.ListCreateAPIView):
 
 class DeleteMultipleEResultView(generics.GenericAPIView):
     permission_classes = [IsAdminOrResultOfficer]
-    serializer_class = DeleteMultipleIDSerializer
+    serializer_class = DeleteMultipleUUIDSerializer
     
     def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
@@ -1326,17 +1410,24 @@ class SchemeOfWorkView(generics.ListCreateAPIView):
         term = self.request.query_params.get('term')    
         subject = self.request.query_params.get('subject')
         student_class = self.request.query_params.get('student_class')
-       
-        if user.role == Role.ADMIN or user.role == Role.TEACHERS:
+
+        if user.role in [Role.ADMIN, Role.STUDENTS]:
             queryset = SchemeOfWork.objects.all()
-            if term:
-                queryset = queryset.filter(term=term)
-            if subject:
-                queryset = queryset.filter(subject=subject)
-            if student_class:
-                queryset = queryset.filter(student_class=student_class)
-            return queryset
-        return SchemeOfWork.objects.filter(student_class=student_class)
+        elif user.role == Role.TEACHERS:
+            queryset = SchemeOfWork.objects.filter(teacher=user.id)
+        else:
+            return SchemeOfWork.objects.none()  # Or raise a permission error
+
+        if term:
+            queryset = queryset.filter(term=term)
+        if subject:
+            queryset = queryset.filter(subject=subject)
+        if student_class:
+            queryset = queryset.filter(student_class=student_class)
+
+        return queryset
+
+        
         
     
     def post(self, request, *args, **kwargs):
@@ -1440,7 +1531,7 @@ class AssignmentView(generics.ListCreateAPIView):
   
 class AssignmentRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = AssignmentSerializer
-    permission_classes = [IsAdminOrTeacher]
+    permission_classes = [IsAdminOrTeacherorStudent]
     queryset = Assignment.objects.all()
     lookup_field = 'pk'
     
@@ -1470,13 +1561,13 @@ class AssignmentSubmissionView(generics.ListCreateAPIView):
         if user.role == Role.ADMIN:
             return AssignmentSubmission.objects.all()
         elif user.role == Role.TEACHERS:
-            return AssignmentSubmission.objects.filter(teacher_assignment=teacher_assignment)
+            return AssignmentSubmission.objects.filter(teacher_assignment=user)
         elif user.role == Role.STUDENTS:
-            return AssignmentSubmission.objects.filter(student=student)
+            return AssignmentSubmission.objects.filter(student=user)
 
 class AssignmentSubmissionRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = AssignmentSubmissionSeralizer
-    permission_classes = [IsAdminOrTeacher]
+    permission_classes = [IsAdminOrTeacherorStudent]
     queryset = AssignmentSubmission.objects.all()
     lookup_field = 'pk'
     
@@ -1622,7 +1713,7 @@ class PaymentMethodView(generics.ListCreateAPIView):
 
 class PaymentMethodRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):   
     serializer_class = PaymentMethodSerializer
-    permission_classes = [IsAdminorBursary]
+    permission_classes = [IsAuthenticated]
     queryset = PaymentMethod.objects.all()
     lookup_field = 'pk'
     
@@ -1873,7 +1964,7 @@ class ApprovedPaymentSchoolFeesView(generics.ListAPIView):
 
 class PaymentSchoolFeesRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = PaymentSchoolFeesSerializer
-    permission_classes = [IsAdminorBursary]
+    permission_classes = [IsAdminOrBursaryOrStudent]
     queryset = PaymentSchoolFees.objects.all()
     lookup_field = 'pk'
     
@@ -1932,7 +2023,7 @@ class BillsView(generics.ListAPIView):
     
 class BillsRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BillsSerializer
-    permission_classes = [IsAdminorBursary]
+    permission_classes = [IsAdminOrBursaryOrStudent]
     queryset = Bills.objects.all()
     lookup_field = 'pk'
     
@@ -2057,7 +2148,7 @@ class ApprovedBillsPaymentView(generics.ListAPIView):
 
 class BillsPaymentRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = BillPaymentSerializer
-    permission_classes = [IsAdminorBursary]
+    permission_classes = [IsAdminOrBursaryOrStudent]
     queryset = BillPayment.objects.all()
     lookup_field = 'pk'
     
@@ -2144,6 +2235,8 @@ class ActiveBankAccountView(generics.ListAPIView):
     
     def get_queryset(self):
         return BankAccount.objects.filter(is_active=True)        
+
+
 
 # --------------------------------------------- E commerce ------------------------------------ #
 class ProductCategoriesView(generics.ListCreateAPIView):

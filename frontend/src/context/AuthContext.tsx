@@ -6,6 +6,7 @@ import { createContext, useEffect, useState } from "react";
 import { ReactNode } from "react";
 import { useRouter } from 'next/navigation';
 import validator from 'validator';
+import Cookies from 'js-cookie';
 
 interface AuthContextType {
   authTokens: AuthTokens | null;
@@ -71,6 +72,7 @@ interface AuthContextType {
   handlePasswordChange: (event:any) =>void;
   userDetails: (profileId: any) => Promise<void>;
   LoginUser: (e: any) => Promise<void>;
+  LogoutUser: (e: any) => Promise<void>;
   forgotPassword: (e: any) => Promise<void>;
   ChangePassword: (e:any) => Promise<void>
 
@@ -465,7 +467,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setUser(decodedUser);
 
         localStorage.setItem("authTokens", JSON.stringify(data));
+
         setAuthToken(data)
+        Cookies.set('token', data.access, { path: '/', secure: true });
+        Cookies.set('role', data.role, { path: '/', secure: true });
       
         const route = roleRoutes[data.role];
         if (route) {
@@ -615,56 +620,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const LogoutUser = async() =>{
-    setLoader(true)
-    setDisableButton(true)
-
-    try{
-      let response = await fetch('http://127.0.0.1:8000/api/logout/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          refresh_token: authTokens?.refresh,
-        })
-      })
-
-      const data = await response.json();
-      if(response.status === 200){
-        console.log(data);
-        setMessage("Logout Successful. Hope to see you again")
-        showAlert()
-        setIsSuccess(true)
-        setDisableButton(false)
-        setLoader(false)
-        router.push('/login')
-        localStorage.removeItem("authTokens")
-      }else{
-        const errorData = await response.json()
-          const errorMessages = Object.values(errorData)
-          .flat()
-          .join(', ');
-        setMessage(errorMessages)
-        setDisableButton(false)
-        setIsSuccess(false)
-        showAlert()
-        console.log(errorMessages)
-        setLoader(false)
-      }
-
-
-    }catch(error){
-      console.log(error)
-      showAlert()
-      setMessage('An unexpected error occurred. Contact support');
-      setDisableButton(false)
-      setIsSuccess(false)
-      setLoader(false)
-
-    }
+    setMessage("Logout Successful. Hope to see you again")
+    showAlert()
+    setIsSuccess(true)
+    router.push('/login')
+    Cookies.remove('token', { path: '/' });
+    Cookies.remove('role', { path: '/' });
+    localStorage.removeItem("authTokens")
   }
 
   const updateToken = async () =>{
+    if (!authTokens?.refresh) return;
     let response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
         method: 'POST',
         headers: {
@@ -678,9 +644,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         console.log("token updated")
         setAuthToken(data)
         localStorage.setItem("authTokens", JSON.stringify(data))
+        Cookies.set('token', data.access, { path: '/', secure: true });
+        Cookies.set('role', data.role, { path: '/', secure: true });
     }
 
   }
+
+  
 
 
   useEffect(() => {
@@ -694,12 +664,12 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return () => clearInterval(interval)
   }, [authTokens])
 
-  // useEffect(() =>{
-  //   const decoded_exp = user?.exp;
-  //   if (decoded_exp && typeof decoded_exp === 'number' && decoded_exp * 1000 < Date.now()) {
-  //     LogoutUser()
-  //   }
-  // })
+  useEffect(() =>{
+    const decoded_exp = user?.exp;
+    if (decoded_exp && typeof decoded_exp === 'number' && decoded_exp * 1000 < Date.now()) {
+      LogoutUser()
+    }
+  }, [user])
 
 
   const contextData = {
@@ -766,6 +736,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     handleUsernameChange,
     userDetails,
     LoginUser,
+    LogoutUser,
     forgotPassword,
     ChangePassword,
 

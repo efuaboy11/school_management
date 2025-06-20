@@ -23,6 +23,25 @@ def send_email(to_email, message, subject):
         return False
     
     
+    
+def contact_us(from_email, message, subject):
+    msg = MIMEText(message, 'html')
+    msg['Subject'] = f'{subject}'
+    msg['From'] = from_email
+    msg['To'] = settings.DEFAULT_FROM_EMAIL
+    
+    try:
+        with smtplib.SMTP('smtp.gmail.com', 587) as server:
+            server.starttls()
+            server.login(settings.EMAIL_HOST_USER, settings.EMAIL_HOST_PASSWORD)
+            server.send_message(msg)
+        print("Email sent successfully")
+        return True
+    except smtplib.SMTPException as e:
+        print(f"Failed to send email: {e}")
+        return False
+    
+    
 def send_bulk_email(email_list, message, subject, text, is_bulk):
     
     delivery_status = {email: 'pending' for email in email_list}

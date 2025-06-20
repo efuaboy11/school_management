@@ -261,7 +261,7 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
 
       if(response.ok){
         showAlert()
-        setMessage('Class timetable created')
+        setMessage('Scheme of work created')
         setIsSuccess(true)
         setLoader(false)
         setDisableButton(false)
@@ -505,7 +505,7 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
                           options={TeachersOptions}
                           value={TeachersOptions.find((opt: { value: string; label: string }) => opt.value === teacherName)}
                           onChange={(selectedOption: { value: string; label: string } | null) => setTeacherName(selectedOption?.value || '')}
-                          placeholder="Select Student"
+                          placeholder="Select teacher"
                           classNamePrefix="site-select"
                           styles={customStyles}  // ✅ Add this
                           isSearchable
@@ -519,7 +519,7 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
                           options={SubjectsOptions}
                           value={SubjectsOptions.find((opt: { value: string; label: string }) => opt.value === subjectName)}
                           onChange={(selectedOption: { value: string; label: string } | null) => setSubjectName(selectedOption?.value || '')}
-                          placeholder="Select Student"
+                          placeholder="Select subject"
                           classNamePrefix="site-select"
                           styles={customStyles}  // ✅ Add this
                           isSearchable

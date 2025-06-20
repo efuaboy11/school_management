@@ -19,6 +19,10 @@
   max-height: 90%;
 }
 
+.student-sidebar-height{
+  max-height: 60%;
+}
+
 .dashboard-sidebar-dropdown-link:hover{
   background: var(--dashboard-dropdown-link-hover);
 }
@@ -42,6 +46,7 @@
 .dashboard-link{
   color: var(--light-color);
   text-decoration: none;
+  padding: 0px;
 }
 
 .dashboard-link:hover{ 
@@ -85,15 +90,19 @@
 }
 
 .dashboard-content-user-link{
-  position: relative;
+
   padding: 19px;
   transition: all ease 0.5s;
   color: var(--light-color);
   
 }
 .dashboard-content-user-drop-down{
-  position: absolute;
-  padding: 20px ;
+  min-width: 200px;
+  position: fixed;
+  right: 10px;
+  top: 73px;
+  padding: 20px;
+  border-radius: 10px;
 }
 .dashboard-main-content{
   margin-left: 300px;

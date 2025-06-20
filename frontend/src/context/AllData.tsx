@@ -2450,7 +2450,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-      const recentData = sortedData.slice(0, 4);
+      const recentData = sortedData.slice(0, 5);
       setRecentAssignmentSubmission(recentData)
       setAssignmentSubmissionData(sortedData)
       setAssignmentSubmissionLoader(false)

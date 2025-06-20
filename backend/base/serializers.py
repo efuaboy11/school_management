@@ -243,6 +243,7 @@ class CustomTokenObtainSerializer(TokenObtainPairSerializer):
         
         token['profile_id'] = profile_id
         token['role'] = user.role
+        token['user_id'] = str(user.id)
         
         return token
     
@@ -275,7 +276,7 @@ class CustomTokenRefreshSerializer(TokenRefreshSerializer):
         except UserProfile.DoesNotExist:
             pass
         
-        data['profile_id'] = profile_id
+        data['user_id'] = str(user.id)
         data['role'] = user.role
         
         return data 
@@ -306,7 +307,12 @@ class ChangePasswordFormSerializer(serializers.Serializer):
     token = serializers.CharField()
     new_username = serializers.CharField()
     new_password = serializers.CharField()
-    
+  
+  
+class ChangeAdminPasswordFormSerializer(serializers.Serializer):
+    username = serializers.CharField()
+    new_username = serializers.CharField()
+    new_password =serializers.CharField() 
     
 class LogoutSerializer(serializers.Serializer):
     refresh_token  = serializers.CharField()
@@ -353,6 +359,13 @@ class EmailSerializer(serializers.ModelSerializer):
             'delivery_status',
             'date',
         ]
+       
+class ContactUsSerializer(serializers.Serializer):
+    email = serializers.EmailField()
+    name = serializers.CharField(max_length=100)
+    subject = serializers.CharField(max_length=100)
+    message = serializers.CharField()
+
         
         
 #Subjects
@@ -522,6 +535,7 @@ class ScratchCardSerializer(serializers.ModelSerializer):
             'trials_left',
             'status',
             'is_active',
+            'student',
             'created_at'
         ]
     
@@ -740,7 +754,7 @@ class EResultSerializer(serializers.ModelSerializer):
         
     def get_student_name(self, obj):
         student = obj.student
-        serializer = ShortStudentSerializer(instance=student, many=False)
+        serializer = ShortStudentSerializer(instance=student, context=self.context, many=False)
         return serializer.data
     
     def get_student_class_name(self, obj):
@@ -855,12 +869,16 @@ class AssignmentSerializer(serializers.ModelSerializer):
 class AssignmentSubmissionSeralizer(serializers.ModelSerializer):
     teacher_name = serializers.SerializerMethodField()
     student_name = serializers.SerializerMethodField()
+    subject_name = serializers.SerializerMethodField()
     class Meta:
         model = AssignmentSubmission
         fields = [
             'id',
             'teacher_assignment',
             'teacher_name',
+            'subject',
+            'subject_name',
+            'assignment_note',
             'assignment_code',
             'student',
             'student_name',
@@ -881,7 +899,12 @@ class AssignmentSubmissionSeralizer(serializers.ModelSerializer):
     def get_student_name(self, obj):
         student = obj.student
         serializer = ShortStudentSerializer(
-            instance=student, many=False)
+            instance=student, context=self.context, many=False)
+        return serializer.data
+    
+    def get_subject_name(self, obj):
+        subject = obj.subject
+        serializer = ShortSubjectsSerializer(subject, many=False)
         return serializer.data
     
 
@@ -1009,7 +1032,7 @@ class PaymentSchoolFeesSerializer(serializers.ModelSerializer):
         ]
     def get_student_name(self, obj):
         student = obj.student
-        serializer = ShortStudentSerializer(instance=student, many=False)
+        serializer = ShortStudentSerializer(instance=student, context=self.context, many=False)
         return serializer.data
     
     def get_fee_type_name(self, obj):
@@ -1078,7 +1101,7 @@ class BillPaymentSerializer(serializers.ModelSerializer):
     
     def get_student_name(self, obj):
         student = obj.student
-        serializer = ShortStudentSerializer(instance=student, many=False)
+        serializer = ShortStudentSerializer(instance=student, context=self.context, many=False)
         return serializer.data
     
 class BillPaymentUpdateStatusSerializer(serializers.ModelSerializer):
@@ -1101,6 +1124,8 @@ class BankAccountSerializer(serializers.ModelSerializer):
             'description',
         ]
         
+
+
         
 # --------------------------------------------- E commerce ------------------------------------ #
 
@@ -1208,11 +1233,6 @@ class CreateOrderSerializer(serializers.Serializer):
         child=serializers.IntegerField(),  # Use UUIDField if your ID is UUID
         allow_empty=False
     )
-    
-    
-    
-    
-    
     
     
     

@@ -384,7 +384,7 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
                           options={StudentsOptions}
                           value={StudentsOptions.find((opt: { value: string; label: string }) => opt.value === studentValue)}
                           onChange={(selectedOption: { value: string; label: string } | null) => setStudentValue(selectedOption?.value || '')}
-                          placeholder="Select Student"
+                          placeholder="Select"
                           classNamePrefix="site-select"
                           styles={customStyles}  // ✅ Add this
                           isSearchable
@@ -399,7 +399,7 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
                           options={StudentClassOptions}
                           value={StudentClassOptions.find((opt: { value: string; label: string }) => opt.value === classValue)}
                           onChange={(selectedOption: { value: string; label: string } | null) => setClassValue(selectedOption?.value || '')}
-                          placeholder="Select Student"
+                          placeholder="Select"
                           classNamePrefix="site-select"
                           styles={customStyles}  // ✅ Add this
                           isSearchable

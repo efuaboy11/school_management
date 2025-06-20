@@ -456,7 +456,7 @@ const SchoolNotification = () => {
                           options={TeachersOptions}
                           value={TeachersOptions.find((opt: { value: string; label: string }) => opt.value === teacherValue)}
                           onChange={(selectedOption: { value: string; label: string } | null) => setTeacherValue(selectedOption?.value || '')}
-                          placeholder="Select Student"
+                          placeholder="Select"
                           classNamePrefix="site-select"
                           styles={customStyles}  // ✅ Add this
                           isSearchable
@@ -471,7 +471,7 @@ const SchoolNotification = () => {
                           options={StudentClassOptions}
                           value={StudentClassOptions.find((opt: { value: string; label: string }) => opt.value === studentClassValue)}
                           onChange={(selectedOption: { value: string; label: string } | null) => setStudentClassValue(selectedOption?.value || '')}
-                          placeholder="Select Student"
+                          placeholder="Select"
                           classNamePrefix="site-select"
                           styles={customStyles}  // ✅ Add this
                           isSearchable

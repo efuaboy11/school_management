@@ -249,8 +249,8 @@ const AllSchoolFeesPayment = () => {
                   <SchoolFeesLineChart
                     schoolFeesData={totalAllSchoolFeesPayment}
                     pendingSchoolFeesData={totalPendingSchoolFeesPayment}
-                    successfulSchoolFeesData={totalDeclinedSchoolFeesPayment}
-                    declinedSchoolFeesData={totalSucessSchoolFeesPayment}
+                    successfulSchoolFeesData={totalSucessSchoolFeesPayment}
+                    declinedSchoolFeesData={totalDeclinedSchoolFeesPayment}
                   />
                 </div>
               </div>

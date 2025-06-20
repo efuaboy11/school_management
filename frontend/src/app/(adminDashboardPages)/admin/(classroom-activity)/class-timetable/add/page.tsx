@@ -255,7 +255,7 @@ const CreateClassTImet = () => {
                           options={TeachersOptions}
                           value={TeachersOptions.find((opt: { value: string; label: string }) => opt.value === teacherName)}
                           onChange={(selectedOption: { value: string; label: string } | null) => setTeacherName(selectedOption?.value || '')}
-                          placeholder="Select Student"
+                          placeholder="Select"
                           classNamePrefix="site-select"
                           styles={customStyles}  // ✅ Add this
                           isSearchable
@@ -270,7 +270,7 @@ const CreateClassTImet = () => {
                           options={StudentClassOptions}
                           value={StudentClassOptions.find((opt: { value: string; label: string }) => opt.value === studentClass)}
                           onChange={(selectedOption: { value: string; label: string } | null) => setStudentClass(selectedOption?.value || '')}
-                          placeholder="Select Student"
+                          placeholder="Select"
                           classNamePrefix="site-select"
                           styles={customStyles}  // ✅ Add this
                           isSearchable

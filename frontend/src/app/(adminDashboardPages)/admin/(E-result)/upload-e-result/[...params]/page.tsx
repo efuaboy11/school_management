@@ -532,7 +532,7 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
                           options={StudentsOptions}
                           value={StudentsOptions.find((opt: { value: string; label: string }) => opt.value === studentValue)}
                           onChange={(selectedOption: { value: string; label: string } | null) => setStudentValue(selectedOption?.value || '')}
-                          placeholder="Select Student"
+                          placeholder="Select"
                           classNamePrefix="site-select"
                           styles={customStyles}  // ✅ Add this
                           isSearchable

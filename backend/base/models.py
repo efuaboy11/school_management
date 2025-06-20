@@ -339,6 +339,7 @@ class SchoolEvent(models.Model):
 
 # Student Result
 class StudentResult(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False) 
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     student_class = models.ForeignKey(StudentClass, on_delete=models.CASCADE)
     term = models.ForeignKey(Term, on_delete=models.CASCADE)
@@ -417,13 +418,13 @@ class ScratchCard(models.Model):
             return False
         if self.student is None:
             self.student = student_id
-        elif self.student.id != student_id:
+        elif self.student != student_id:
             return False
-        
-        if self.status == 'active':
-            if self.trials_left < 5:
-                self.status = 'used'
+                   
         self.trials_left -= 1
+    
+        if self.trials_left < 5:
+            self.status = 'used'
         if self.trials_left == 0:
             self.is_active = False
             self.status = 'expired'
@@ -436,6 +437,7 @@ class ScratchCard(models.Model):
 
 # E-result
 class EResult(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     student_class = models.ForeignKey(StudentClass, on_delete=models.CASCADE)
     term = models.ForeignKey(Term, on_delete=models.CASCADE)
@@ -473,7 +475,9 @@ class Assignment(models.Model):
 class AssignmentSubmission(models.Model):
     teacher_assignment = models.ForeignKey(Staff, on_delete=models.CASCADE, limit_choices_to={'role': 'teacher'}, null=True, blank=True)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    assignment_code = models.CharField(unique=True, max_length=20,  blank=True)
+    subject = models.ForeignKey(Subjects, on_delete=models.CASCADE, null=True, blank=True)
+    assignment_note = models.TextField(null=True, blank=True)
+    assignment_code = models.CharField(max_length=20,  blank=True)
     submission_file = models.FileField(upload_to="assignment_submission", null=True, blank=True)
     submission_photo = models.ImageField(upload_to="assignment_submission_photo", null=True, blank=True)
     date_submitted = models.DateTimeField(default=timezone.now)
@@ -596,6 +600,10 @@ class BankAccount(models.Model):
     description = models.TextField(null=True, blank=True)
     
     
+# class FAQ(models.Model):
+#     question = models.CharField(max_length=300, null=True, blank=True)
+#     answer = models.TextField(null=True, blank=True)
+#     file = models.FileField(upload_to="bill_receipt", null=True, blank=True)
 
 
 # ------------------------------------------------- E - commerce ----------------------------------- #

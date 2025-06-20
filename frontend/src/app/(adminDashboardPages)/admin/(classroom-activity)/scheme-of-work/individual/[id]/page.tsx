@@ -580,6 +580,11 @@ const IndivivdualSchemeOfWork =  ({ params }: { params: Promise<any> }) => {
                         </div>
 
                         <div className="pb-3 d-sm-flex justify-content-between">
+                          <p className="pb-2 sm-text">Term</p>
+                          <p>{formatName(details.term_name.name)}</p>
+                        </div>
+
+                        <div className="pb-3 d-sm-flex justify-content-between">
                           <p className="pb-2 sm-text">Teachers Name</p>
                           <p>{formatName(details.teacher_name.first_name)} {formatName(details.teacher_name.last_name)}</p>
                         </div>

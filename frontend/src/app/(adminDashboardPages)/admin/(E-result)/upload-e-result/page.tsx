@@ -188,7 +188,7 @@ const UploadEResultPage = () => {
                           options={StudentClassOptions}
                           value={StudentClassOptions.find((opt: { value: string; label: string }) => opt.value === classID)}
                           onChange={(selectedOption: { value: string; label: string } | null) => setClassID(selectedOption?.value || '')}
-                          placeholder="Select Student"
+                          placeholder="Select"
                           classNamePrefix="site-select"
                           styles={customStyles}  // ✅ Add this
                           isSearchable

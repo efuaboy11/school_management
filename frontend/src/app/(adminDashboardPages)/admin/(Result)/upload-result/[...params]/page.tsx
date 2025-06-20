@@ -459,11 +459,11 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
                             return (
                               <tr key={index}>
                                 <td className='light-text'>{formatName(subjectName)}</td>
-                                <td><input className={`site-search-input`}   type="text" name="total_ca" value={subject.total_ca} onChange={(e) => handleSubjectChange(index, e)} /></td>
-                                <td><input className={`site-search-input`}   type="text" name="exam" value={subject.exam} onChange={(e) => handleSubjectChange(index, e)} /></td>
-                                <td><input className={`site-search-input`}   type="text" name="total" value={subject.total} onChange={(e) => handleSubjectChange(index, e)} /></td>
-                                <td><input className={`site-search-input`}   type="text" name="grade" value={subject.grade} onChange={(e) => handleSubjectChange(index, e)} /></td>
-                                <td><input className={`site-search-input`}   type="text" name="position" value={subject.position} onChange={(e) => handleSubjectChange(index, e)} /></td>
+                                <td><input className={`site-search-input`}   type="text" name="total_ca" value={subject.total_ca || ''} onChange={(e) => handleSubjectChange(index, e)} /></td>
+                                <td><input className={`site-search-input`}   type="text" name="exam" value={subject.exam || ''} onChange={(e) => handleSubjectChange(index, e)} /></td>
+                                <td><input className={`site-search-input`}   type="text" name="total" value={subject.total || ''} onChange={(e) => handleSubjectChange(index, e)} /></td>
+                                <td><input className={`site-search-input`}   type="text" name="grade" value={subject.grade || ''} onChange={(e) => handleSubjectChange(index, e)} /></td>
+                                <td><input className={`site-search-input`}   type="text" name="position" value={subject.position || ''} onChange={(e) => handleSubjectChange(index, e)} /></td>
                               </tr>
                             );
 
@@ -630,7 +630,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
                       <div className="col-sm-6">
                         <div className="d-flex align-center">
-                          <p className='pe-2'>Politness:</p>
+                          <p className='pe-2'>Politeness:</p>
                           <input className={`site-search-input ${errors.politeness ? 'error-input' : ''}`}  {...register('politeness', {required: true})} type="text" value={politeness} onChange={(e) => setPoliteness(e.target.value)}/>
                         </div>
                       </div>

@@ -255,6 +255,7 @@ const AllSchoolFeesPayment = () => {
                     pendingBillsCount={totalPendingBillsPayment}
                     declinedBillsCount={totalDeclinedBillsPayment}
                     successfulBillsCount={totalSucessBillsPayment}
+                    label='Bills Chart'
                   />
                 </div>
               </div>
