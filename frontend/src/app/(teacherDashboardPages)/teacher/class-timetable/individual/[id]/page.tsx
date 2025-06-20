@@ -35,10 +35,7 @@ const IndivivdualClassTimeTable = ({ params }: { params: Promise<{ id: string }>
   } = useContext(AuthContext)!;
 
   const {
-    teacherData,
     studentClassData,
-
-    TeacherFunction,
     StudentClassFunction,
   } = useContext(AllDataContext)!;
 
@@ -46,8 +43,6 @@ const IndivivdualClassTimeTable = ({ params }: { params: Promise<{ id: string }>
 
   const [Loading, setLoading] = useState(true)
   const [details, setDetails] = useState<any>(null)
-
-  const [teacherName, setTeacherName] = useState('')
   const [studentClass, setStudentClass] = useState('')
   const [file, setFile] = useState<File | null>(null)
 
@@ -84,10 +79,7 @@ const IndivivdualClassTimeTable = ({ params }: { params: Promise<{ id: string }>
   }
 
 
-  const TeachersOptions = teacherData.map((data: any) => ({
-    value: data.id,
-    label: `${data.first_name} ${data.last_name}`
-  }));
+
 
 
 
@@ -181,7 +173,7 @@ const IndivivdualClassTimeTable = ({ params }: { params: Promise<{ id: string }>
   } = useForm<any>();
 
   const onSubmit = (data: any, e:any) => {
-    if(studentClass  && teacherName){
+    if(studentClass){
       EditDetails(e)
     }else{
       showAlert()
@@ -207,8 +199,6 @@ const IndivivdualClassTimeTable = ({ params }: { params: Promise<{ id: string }>
       if(response.ok){
         setDetails(data)
         console.log('data', data)
-        
-        setTeacherName(data?.teacher || '')
         setStudentClass(data?.student_class || '')
         setLoading(false)
       }else{
@@ -272,8 +262,6 @@ const IndivivdualClassTimeTable = ({ params }: { params: Promise<{ id: string }>
     setLoader(true)
 
     const formData = new FormData()
-
-    formData.append('teacher', teacherName)
     formData.append('student_class', studentClass)
     if(file){
       formData.append('class_timetable', file)  
@@ -334,7 +322,6 @@ const IndivivdualClassTimeTable = ({ params }: { params: Promise<{ id: string }>
     }, [showModal]);
 
     useEffect(() =>{
-      TeacherFunction()
       StudentClassFunction()
       IndividualDetailsFunction()
     }, [])
@@ -363,7 +350,7 @@ const IndivivdualClassTimeTable = ({ params }: { params: Promise<{ id: string }>
                       <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
                         <div>
                           <div className="d-flex justify-content-between pb-2">
-                            <p className='font-size-20px '>Edit Timetable</p>
+                            <p className='font-size-20px '>Edit Assignment</p>
                             <div onClick={handleClosenModal} className='cursor-pointer'>
                               <i className="ri-close-line md-text"></i>
                             </div>
@@ -373,18 +360,6 @@ const IndivivdualClassTimeTable = ({ params }: { params: Promise<{ id: string }>
                           <div className='pt-4'>
                             <form onSubmit={handleSubmit(onSubmit)}>
                               <div className="row g-3">
-                                <div className="col-md-6">
-                                  <label htmlFor="lastName" className="form-label">Select Teacher<span className="text-danger">*</span> </label>
-                                  <Select
-                                    options={TeachersOptions}
-                                    value={TeachersOptions.find((opt: { value: string; label: string }) => opt.value === teacherName)}
-                                    onChange={(selectedOption: { value: string; label: string } | null) => setTeacherName(selectedOption?.value || '')}
-                                    placeholder="Select Student"
-                                    classNamePrefix="site-select"
-                                    styles={customStyles}  // ✅ Add this
-                                    isSearchable
-                                  />
-                                </div>
 
 
                                 <div className="col-md-6">
@@ -522,12 +497,6 @@ const IndivivdualClassTimeTable = ({ params }: { params: Promise<{ id: string }>
                       </div>
 
                       <div className='light-text p-3'>
-                        <div className="pb-3 d-sm-flex justify-content-between">
-                          <p className="pb-2 sm-text">Teachers Name</p>
-                          <p>{formatName(details.teacher_name.first_name)} {formatName(details.teacher_name.last_name)}</p>
-                        </div>
-
-
                         <div className="pb-3 d-sm-flex justify-content-between">
                           <p className="pb-2 sm-text">Class</p>
                           <p>{formatName(details.student_class_name.name)}</p>

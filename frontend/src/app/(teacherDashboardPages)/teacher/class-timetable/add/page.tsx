@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form'
 import Select from 'react-select';
 
 const CreateClassTImetable = () => {
-  const [teacherName, setTeacherName] = useState('')
+
   const [studentClass, setStudentClass] = useState('')
   const [file, setFile] = useState<File | null>(null)
 
@@ -38,10 +38,8 @@ const CreateClassTImetable = () => {
 
 
   const {
-    teacherData,
-    studentClassData,
 
-    TeacherFunction,
+    studentClassData,
     StudentClassFunction,
   } = useContext(AllDataContext)!;
 
@@ -66,12 +64,6 @@ const CreateClassTImetable = () => {
     }
   };
 
-
-
-  const TeachersOptions = teacherData.map((data: any) => ({
-    value: data.id,
-    label: `${data.first_name} ${data.last_name}`
-  }));
 
 
 
@@ -169,7 +161,7 @@ const CreateClassTImetable = () => {
     setDisableButton(true)
 
     const formData = new FormData()
-    formData.append('teacher', teacherName)
+    formData.append('teacher', `${authTokens?.user_id}`)
     formData.append('student_class', studentClass)
     if(file){
       formData.append('class_timetable', file)  
@@ -193,7 +185,6 @@ const CreateClassTImetable = () => {
         setIsSuccess(true)
         setLoader(false)
         setDisableButton(false)
-        setTeacherName('')
         setStudentClass('')
         setFile(null)
 
@@ -226,7 +217,6 @@ const CreateClassTImetable = () => {
 
   useEffect(() =>{
     StudentClassFunction()
-    TeacherFunction()
   }, [])
 
 
@@ -249,21 +239,6 @@ const CreateClassTImetable = () => {
                 {hasMounted && (
                   <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row g-3">
-                      <div className="col-md-6">
-                        <label htmlFor="lastName" className="form-label">Select Teacher<span className="text-danger">*</span> </label>
-                        <Select
-                          options={TeachersOptions}
-                          value={TeachersOptions.find((opt: { value: string; label: string }) => opt.value === teacherName)}
-                          onChange={(selectedOption: { value: string; label: string } | null) => setTeacherName(selectedOption?.value || '')}
-                          placeholder="Select"
-                          classNamePrefix="site-select"
-                          styles={customStyles}  // ✅ Add this
-                          isSearchable
-                          isClearable
-                        />
-                      </div>
-
-
                       <div className="col-md-6">
                         <label htmlFor="lastName" className="form-label">Select Class <span className="text-danger">*</span></label>
                         <Select

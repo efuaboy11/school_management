@@ -12,26 +12,19 @@ import { useForm } from 'react-hook-form'
 import ThemeContext from '@/context/ThemeContext'
 import Select from 'react-select';
 
-const ClassNotification = () => {
+const StafflNotification = () => {
 
 
 
   const {
-    classNotificationCount,
-    classNotificationData,
-    setClassNotificationData,
-    classNotificationLoader,
+    staffNotificationCount,
+    staffNotificationData,
+    staffNotificationLoader,
 
-    classNotificationSearch,
-    setClassNotificationSearch,
-    ClassNotificationFunction, 
-    FilterClassNotification,
-
-    studentClassData,
-    StudentClassFunction,
-
-    teacherData,
-    TeacherFunction
+    staffNotificationSearch,
+    setStaffNotificationSearch,
+    StaffNotificationFunction, 
+    FilterStaffNotification,
   } = useContext(AllDataContext)!;
 
   const {
@@ -94,102 +87,18 @@ const ClassNotification = () => {
     } = useForm();
 
   
-  // const classNotificationData = [...Array(100).keys()];
+  // const staffNotificationData = [...Array(100).keys()];
   const startIndex = (page - 1) * itemsPerPage;
-  const currentItems = classNotificationData.slice(startIndex, startIndex + itemsPerPage);
+  const currentItems = staffNotificationData.slice(startIndex, startIndex + itemsPerPage);
 
-
-  const TeachersOptions = teacherData.map((data: any) => ({
-    value: data.id,
-    label: `${data.first_name} ${data.last_name}`
-  }));
-
-    const StudentClassOptions = studentClassData.map((data: any) => ({
-    value: data.id,
-    label: `${data.name}`
-  }));
-
-
-  const customStyles = {
-    control: (provided: any, state: any) => ({
-      ...provided,
-      backgroundColor: theme === 'dark' ? '#0d0d0d' : '#fff',
-      borderColor: state.isFocused ? '#783ebc' : theme === 'light' ? '#ccc' : '#333',
-      boxShadow: state.isFocused ? '0 0 0 4px rgba(120, 62, 188, 0.2)' : 'none',
-      color: theme === 'dark' ? '#fff' : '#000',
-    }),
-  
-    menu: (provided: any) => ({
-      ...provided,
-      backgroundColor: theme === 'dark' ? '#0d0d0d' : '#fff',
-      border: '1px solid #ccc',
-      zIndex: 999,
-    }),
-  
-    option: (provided: any, state: any) => {
-      const isDark = theme === 'dark';
-  
-      const backgroundColor = state.isSelected
-        ? '#783ebc'
-        : state.isFocused
-        ? isDark
-          ? '#1a1a1a' // hover in dark
-          : '#f0f0f0' // hover in light
-        : isDark
-        ? '#0d0d0d'
-        : '#fff';
-  
-      const color = state.isSelected
-        ? '#fff'
-        : state.isFocused
-        ? isDark
-          ? '#fff'
-          : '#000'
-        : isDark
-        ? '#fff'
-        : '#000';
-  
-      return {
-        ...provided,
-        backgroundColor,
-        color,
-        cursor: 'pointer',
-      };
-    },
-  
-    singleValue: (provided: any) => ({
-      ...provided,
-      color: theme === 'dark' ? '#fff' : '#000',
-    }),
-  
-    placeholder: (provided: any) => ({
-      ...provided,
-      color: theme === 'dark' ? '#aaa' : '#666',
-    }),
-  
-    input: (provided: any) => ({
-      ...provided,
-      color: theme === 'dark' ? '#fff' : '#000',
-    }),
-  
-    dropdownIndicator: (provided: any) => ({
-      ...provided,
-      color: theme === 'dark' ? '#fff' : '#000',
-    }),
-  
-    indicatorSeparator: (provided: any) => ({
-      ...provided,
-      backgroundColor: theme === 'dark' ? '#444' : '#ccc',
-    }),
-  };
 
 
   useEffect(() =>{
-    if(!classNotificationSearch){
-      ClassNotificationFunction()
-    }else if(classNotificationSearch){
+    if(!staffNotificationSearch){
+      StaffNotificationFunction()
+    }else if(staffNotificationSearch){
       const debouncedSearch = debounce(() => {
-        FilterClassNotification();
+        FilterStaffNotification();
       }, 300);
       debouncedSearch();
 
@@ -199,12 +108,8 @@ const ClassNotification = () => {
       
     }
     
-  }, [classNotificationSearch])
+  }, [staffNotificationSearch])
 
-  useEffect (() =>{
-    StudentClassFunction()
-    TeacherFunction()
-  }, [])
 
 
 
@@ -217,8 +122,8 @@ const ClassNotification = () => {
       <div className="container-xl pt-4">
         <div className="d-md-flex justify-content-between">
           <div>
-            <p className="md-text">Class Notiffications</p>
-            <p className="light-text pb-3">Total of {classNotificationCount} notification avaliable</p>
+            <p className="md-text">Staff Notiffications</p>
+            <p className="light-text pb-3">Total of {staffNotificationCount} notification avaliable</p>
          </div>
         </div>
 
@@ -226,14 +131,14 @@ const ClassNotification = () => {
 
           <div>
             <div className="d-flex align-items-center">
-              <input type="text" className="site-search-input" placeholder="Search" value={classNotificationSearch} onChange={(e) => setClassNotificationSearch(e.target.value)}/>
+              <input type="text" className="site-search-input" placeholder="Search" value={staffNotificationSearch} onChange={(e) => setStaffNotificationSearch(e.target.value)}/>
               <button className="site-btn px-3 ms-2"><i className="ri-search-line"></i></button>
             </div>
           </div>
         </div>
 
         <div>
-          {classNotificationLoader ? (
+          {staffNotificationLoader ? (
             <div>
               <div className="mt-5 pt-5">
                 <div className="d-flex justify-content-center align-items-center">
@@ -259,9 +164,6 @@ const ClassNotification = () => {
 
                             <div className='d-flex justify-content-between flex-wrap pt-3 light-text font-bold'>
                               <p className='me-4 pb-2'>{formatDate(data.date)}</p>
-                              <p className='me-4 pb-2'>Posted by: <span className='light-text'>{formatName(data.teacher_name.first_name)}</span></p>
-                              <p className='me-4'>Class: <span className='light-text'>{formatName(data.student_class_name.name)}</span></p>
-
                             </div>
 
                             <div className="">
@@ -279,11 +181,11 @@ const ClassNotification = () => {
                   </div>
                   
 
-                  {classNotificationData.length > 10 && (
+                  {staffNotificationData.length > 10 && (
                       <div className="col-12 mb-4 mt-3">
                         <Stack spacing={2} alignItems="center">
                           <Pagination
-                            count={Math.ceil(classNotificationData.length / itemsPerPage)}
+                            count={Math.ceil(staffNotificationData.length / itemsPerPage)}
                             page={page}
                             onChange={handleChange}
                             sx={{
@@ -326,4 +228,4 @@ const ClassNotification = () => {
   )
 }
 
-export default ClassNotification
+export default StafflNotification

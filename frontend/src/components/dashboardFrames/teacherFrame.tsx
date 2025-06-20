@@ -343,7 +343,7 @@ const TeacherFrame = () => {
           
           <ul className='scroll-bar-y student-sidebar-height'>
             <li className="mt-3 py-3">
-              <Link href='/student/home'  className='dashboard-link' onClick={OnbodyClick}>
+              <Link href='/teacher/home'  className='dashboard-link' onClick={OnbodyClick}>
                 <div className="d-flex ps-3">
                   <i className="ri-home-smile-line sm-text me-3"></i>
                   <p>Home</p>
@@ -420,24 +420,24 @@ const TeacherFrame = () => {
               <div>
                 <ul className={`dashboard-dropdown-bg ${notificationDropdown ? "slide-in" : "slide-out"}`}>
 
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/student/school-notification") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/student/school-notification" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/teacher/school-notification") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/teacher/school-notification" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
                         <p>General Notificaion</p> 
                       </div>
                     </Link>
                   </li>
 
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/student/class-notification") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/student/class-notification" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/teacher/staff-notification") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/teacher/class-notification" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
-                        <p>Classrom Notification</p> 
+                        <p>Staff Notification</p> 
                       </div>
                     </Link>
                   </li>
 
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/student/school-event") ?"active-dash-link": ""}`}>
-                    <Link className='dashboard-link' href="/student/school-event" onClick={OnbodyClick}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/teacher/school-event") ?"active-dash-link": ""}`}>
+                    <Link className='dashboard-link' href="/teacher/school-event" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
                         <p>School Event </p> 
                       </div>
@@ -453,7 +453,7 @@ const TeacherFrame = () => {
               <div className="row">
                 <div className="col-8 ps-4">
                   <div className="d-flex ">
-                    <Link href='/student/home'  className='dashboard-link' onClick={OnbodyClick}>
+                    <Link href='/teacher/class-timetable'  className='dashboard-link' onClick={OnbodyClick}>
                       <div className="d-flex">
                         <i className="bi bi-journal me-3"></i>
                         <p>Class Timetable</p>
@@ -469,7 +469,7 @@ const TeacherFrame = () => {
               <div className="row">
                 <div className="col-8 ps-4">
                   <div className="d-flex ">
-                    <Link href='/student/home'  className='dashboard-link' onClick={OnbodyClick}>
+                    <Link href='/teacher/home'  className='dashboard-link' onClick={OnbodyClick}>
                       <div className="d-flex">
                         <i className="bi bi-cart4 me-3"></i>
                         <p>Store</p>
@@ -482,7 +482,7 @@ const TeacherFrame = () => {
             </li>
 
             <li className='mb-5 mx-3'>
-              <Link href='/student/contact-us' className="site-btn px-3 Link"><i className="ri-phone-line pe-2"></i>Contact Support</Link>
+              <Link href='/teacher/contact-us' className="site-btn px-3 Link"><i className="ri-phone-line pe-2"></i>Contact Support</Link>
             </li>
 
 
@@ -525,7 +525,7 @@ const TeacherFrame = () => {
                     <div className="border-bottom-dark dashboard-content-user-drop-down  site-boxes">
                       <ul className=''>
                         <li className='pb-3'>
-                          <Link href={`/student/user-profile/${authTokens?.user_id}`} className='light-link'>
+                          <Link href={`/teacher/user-profile/${authTokens?.user_id}`} className='light-link'>
                             <div className="d-flex">
                               <i className="ri-user-3-line pe-2"></i>
                               <p className=''>My profile </p>

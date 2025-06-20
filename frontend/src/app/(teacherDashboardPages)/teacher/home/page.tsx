@@ -304,7 +304,7 @@ const TeacherHome = () => {
                     <div>
                       <div className="d-flex justify-content-between pb-4">
                         <p>Recent Assignment Submission</p>
-                        <Link href='' className='light-link'>View all</Link>
+                        <Link href='/teacher/assignment-submission' className='light-link'>View all</Link>
                       </div>
 
                       {assignmentSubmissionLoader ? (
@@ -393,7 +393,7 @@ const TeacherHome = () => {
                           ))}
 
                           <div>
-                            <Link href='' className='site-btn width-100 Link'>View All</Link>
+                            <Link href='/teacher/staff-notification' className='site-btn width-100 Link'>View All</Link>
                           </div>
                         </div>
 
@@ -431,7 +431,7 @@ const TeacherHome = () => {
 
                     <div className='col-md-3'>
                       <div className="d-flex align-items-center height-100">
-                        <Link href='/dashboard/support-center/' className="site-inverse-btn px-4 py-2 Link">Get Support Now</Link>
+                        <Link href='/teacher/contact-us' className="site-inverse-btn px-4 py-2 Link">Get Support Now</Link>
                       </div>
                       
                     </div>
