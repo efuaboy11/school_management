@@ -7,7 +7,19 @@ class IsAdminOrStudent(permissions.BasePermission):
 
     def has_permission(self, request, view):
         return request.user.is_authenticated and (request.user.role in ["admin", "student"])
-    
+  
+  
+class IsStaff(permissions.BasePermission):
+    """
+    Custom permission to only allow admins or student to access the view.
+    """
+
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and (request.user.role in ["admin", "hr", "student", "teacher", "bursary", "store_keeper", "result_officer", "academic_officer", "other_staff"])
+  
+  
+  
+  
     
 class IsAdminOrHR(permissions.BasePermission):
     """
@@ -68,6 +80,14 @@ class IsAdminOrAcademicOfficer(permissions.BasePermission):
     def has_permission(self, request, view):
         return request.user.is_authenticated and (request.user.role in ["admin", "academic_officer"])
     
+   
+class IsAdminOrAcademicOfficerOrHr(permissions.BasePermission):
+    """
+    Custom permission to only allow admins or  academic officer to access the view.
+    """
+
+    def has_permission(self, request, view):
+        return request.user.is_authenticated and (request.user.role in ["admin", "academic_officer", "hr"])
    
    
 class IsAdminOrAcademicOfficerorStudent(permissions.BasePermission):

@@ -205,7 +205,7 @@ const AllEmail = () => {
          </div>
 
           <div className='d-flex mb-4'>
-            <Link href='/admin/school-fees-payment/add/step-1' className="site-btn px-3 Link"><i className="ri-send-plane-fill pe-2"></i>Send Email</Link>
+            <Link href='/admin/send-email' className="site-btn px-3 Link"><i className="ri-send-plane-fill pe-2"></i>Send Email</Link>
           </div>
         </div>
 

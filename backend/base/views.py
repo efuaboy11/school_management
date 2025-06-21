@@ -42,7 +42,7 @@ class UsersView(generics.ListAPIView):
     
     
 class StudentView(generics.ListCreateAPIView):
-    permission_classes = [IsAdminOrHR]
+    permission_classes = [IsStaff]
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
     filter_backends = [ExactSearchFilter]
@@ -67,7 +67,7 @@ class StudentView(generics.ListCreateAPIView):
         
 
 class StudentRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAdminOrHrOrStudent]
+    permission_classes = [IsAuthenticated]
     queryset = Student.objects.all()
     serializer_class = StudentSerializer
     lookup_field = 'pk'
@@ -130,7 +130,7 @@ class DeleteMultipleStaffView(generics.GenericAPIView):
 
 
 class StaffRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
-    permission_classes = [IsAdminOrHrOrTeacher]
+    permission_classes = [IsStaff]
     queryset = Staff.objects.all()
     serializer_class = StaffSerializer
     lookup_field = 'pk'
@@ -144,7 +144,7 @@ class StaffRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
             return Response({"error": "You do not have permission to delete this staff."}, status=status.HTTP_403_FORBIDDEN)
     
 class HRView(generics.ListCreateAPIView):
-    permission_classes = [IsAdminUser]
+    permission_classes = [IsAdminOrHR]
     queryset = HR.objects.all()
     serializer_class = HRSerializer
     filter_backends = [ExactSearchFilter]
@@ -340,6 +340,8 @@ class RequestToChangePasswordView(generics.ListAPIView):
     permission_classes = [IsAdminOrHR]
     queryset = RequestToChangePassword.objects.all()
     serializer_class = RequestToChangePasswordSerializer
+    filter_backends = [ExactSearchFilter]
+    search_fields = ['user__first_name', 'user__last_name']
     
     
 class RequestToChangePasswordStatusView(generics.RetrieveUpdateAPIView):
@@ -380,17 +382,36 @@ class RequestToChangePasswordStatusView(generics.RetrieveUpdateAPIView):
             
             send_email(to_email=user_email, message=html_content, subject=subject)
             
-            return Response({
-                "message": "Status updated to approved and password reset link sent.",
-                "reset_link": url
-            })
+            if send_email:
+                return Response({
+                    "message": "Status updated to approved and password reset link sent.",
+                    "reset_link": url
+                })
+            else:
+                return Response({
+                    "error": "An eror occurred",
+                    "reset_link": url
+                })
+                
         elif updated_status == 'declined':
             print("❌ Status is declined")
             return Response({"message": "Status updated to declined. No link sent."})
         print("⚠️ Status was already approved, no new action taken.")
         return Response({"message": f"Status updated to {updated_status}."})
 
-         
+    
+class DeleteMultipleRequestToChangePasswordView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrHR]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = RequestToChangePassword.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+     
+     
          
 class ChangePasswordFormSerializer(generics.GenericAPIView):
     serializer_class = ChangePasswordFormSerializer
@@ -479,6 +500,19 @@ class DisableAccountRetrieveDestory(generics.RetrieveDestroyAPIView):
     permission_classes = [IsAdminOrHR]
     queryset =   DisableAccount.objects.all()
     lookup_field = 'pk'
+    
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        user = instance.user  # assuming DisableAccount has a ForeignKey to Users via `user`
+
+        # Set account status back to active
+        user.account_status = 'active'
+        user.save()
+
+        # Delete the DisableAccount record
+        instance.delete()
+
+        return Response({"message": "Account re-enabled and record deleted."}, status=status.HTTP_204_NO_CONTENT)
     
 
 # Email         
@@ -686,7 +720,7 @@ class StudentsInClassView(generics.ListAPIView):
 
 class UpdateStudentCurrentClassView(generics.GenericAPIView):
     serializer_class = UpdateStudentCurrentClassSerializer
-    permission_classes = [IsAdminOrAcademicOfficer]
+    permission_classes = [IsAdminOrAcademicOfficerOrHr]
 
     def post(self, request, *args, **kwargs):
         student = request.data.get('student')
@@ -900,29 +934,6 @@ class ClassNotificationView(generics.ListCreateAPIView):
             return ClassNotification.objects.filter(student_class=student_class)
 
     
-    # def post(self, request, *args, **kwargs):
-    #     user = request.user
-    #     teacher = request.data.get('teacher')  # Assuming 'teacher' is passed in the request data
-    #     try:
-    #         teacher = Staff.objects.get(id=teacher)  # Use .get() since it's one-to-one
-    #     except Staff.DoesNotExist:
-    #         return Response({"error": "Teacher profile not found."}, status=status.HTTP_404_NOT_FOUND)
-
-    #     # Now get the assigned class ID
-    #     teacher_class_id = teacher.assigned_class.id if teacher.assigned_class else None
-    #     requested_class_id = request.data.get('student_class')  # Make sure this comes from the request
-
-    #     # Check if teacher is allowed to post to this class
-    #     if str(teacher_class_id) == str(requested_class_id):  # Cast to string to avoid type mismatch
-    #         if user.role in [Role.ADMIN, Role.TEACHERS]:
-    #             serializer = self.get_serializer(data=request.data)
-    #             serializer.is_valid(raise_exception=True)
-    #             serializer.save()
-    #             return Response(serializer.data, status=status.HTTP_201_CREATED)
-    #         else:
-    #             return Response({"error": "You do not have permission to create a notification."}, status=status.HTTP_403_FORBIDDEN)
-    #     else:
-    #         return Response({"error": "You do not have permission to create a notification for this class."}, status=status.HTTP_403_FORBIDDEN)
 
 class ClassNotificationRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ClassNotificationSerializer

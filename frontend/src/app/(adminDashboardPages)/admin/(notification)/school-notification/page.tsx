@@ -372,7 +372,7 @@ const SchoolNotification = () => {
       <div className="container-xl pt-4">
         <div className="d-md-flex justify-content-between">
           <div>
-            <p className="md-text">School Notiffications</p>
+            <p className="md-text">School School Notifications</p>
             <p className="light-text pb-3">Total of {schoolNotificationCount} notification avaliable</p>
          </div>
 

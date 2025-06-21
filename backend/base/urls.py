@@ -52,6 +52,7 @@ urlpatterns = [
     path('request-to-change-password-form/', views.RequestToChangePasswordFormView.as_view(), name='request_to_change_password_form'),
     path('request-to-change-password/', views.RequestToChangePasswordView.as_view(), name='request_to_change_password'),
     path('request-to-change-password/<str:pk>/update-status/', views.RequestToChangePasswordStatusView.as_view(), name='request_to_change_password-update-status'),
+    path('delete-multiple-request-to-change-password/', views.DeleteMultipleRequestToChangePasswordView.as_view(), name='delete_multiple_request_to_change_password' ),
     path('change-password/', views.ChangePasswordFormSerializer.as_view(), name='change_password'),
     path('change-admin-password/', views.ChangeAdminPasswordFormView.as_view(), name='change_password'),
     

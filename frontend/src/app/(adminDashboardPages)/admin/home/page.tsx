@@ -72,7 +72,7 @@ const AdminHome = () => {
 
 
 
-    const toggleShowBills = () =>{
+  const toggleShowBills = () =>{
     if(!showBills){
       setShowBills(!showBills)
     }
@@ -138,10 +138,8 @@ const AdminHome = () => {
 
     totalPendingBillsPayment,
     totalDeclinedBillsPayment,
-    sucessBillsPaymentCount,
     totalSucessBillsPayment,
     totalBillsPayment,
-    billsPaymentCount,
     
 
 

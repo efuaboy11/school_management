@@ -488,7 +488,7 @@ export const SchoolFeesLineChart = ({
   }, [schoolFeesData, pendingSchoolFeesData, successfulSchoolFeesData, declinedSchoolFeesData, theme]);
 
   return (
-    <div style={{ width: '100%', height: '280px' }}>
+    <div style={{ width: '100%', height: '300px' }}>
       <canvas ref={chartRef} />
     </div>
   );

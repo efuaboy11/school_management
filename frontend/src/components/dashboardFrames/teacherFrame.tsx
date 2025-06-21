@@ -518,7 +518,7 @@ const TeacherFrame = () => {
 
                       )
                     }
-                    <p className='px-2 pt-1'>{formatName(userDetails?.first_name || 'Student name')} {formatName(userDetails?.last_name || '')}</p>
+                    <p className='px-2 pt-1'>{formatName(userDetails?.first_name || 'Teacher name')} {formatName(userDetails?.last_name || '')}</p>
                     <p className='pt-1'><FontAwesomeIcon className='xsm-text' icon={faAngleDown}/></p>
                   </div>
                   {navDropdown &&

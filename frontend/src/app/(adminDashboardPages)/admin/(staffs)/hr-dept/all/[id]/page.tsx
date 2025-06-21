@@ -169,7 +169,7 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
       if (response.ok) {
         setLoader(false)
         setDisableButton(false)
-        router.push('/admin/hr/all')
+        router.push('/admin/hr-dept/all')
         setUserDeleteModal(false)
         showAlert()
         setIsSuccess(true)

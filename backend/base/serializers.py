@@ -285,17 +285,24 @@ class RequestToChangePasswordFormSerializer(serializers.Serializer):
     username = serializers.CharField()
     
 class RequestToChangePasswordSerializer(serializers.ModelSerializer):
+    user_details = serializers.SerializerMethodField()
     class Meta:
         model = RequestToChangePassword
         fields = [
             'id',
             'user',
+            'user_details',
             'request_date',
             'approved_status',
             'approved_date',
             'token',
             'token_expiry'
         ]
+        
+    def get_user_details(self, obj):
+        user = obj.user
+        serializer = UsersSerializer(instance=user, many=False)
+        return serializer.data
         
 class RequestToChangePasswordStatusSerializer(serializers.ModelSerializer):
     class Meta:

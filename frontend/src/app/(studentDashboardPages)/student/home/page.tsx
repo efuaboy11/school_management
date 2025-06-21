@@ -368,7 +368,7 @@ const StudentHome = () => {
               <div className="col-md-6 col-lg-4">
                 <div className="site-boxes position-relative1 recent-notification-box border-radius-10px p-4">
                   <div className='pb-4'>
-                    <h6>Recent Notifications</h6>
+                    <h6>Recent Class Notifications</h6>
                   </div>
                   {classNotificationLoader ? (
                     <div className="recent-notification-spinner">
@@ -392,7 +392,7 @@ const StudentHome = () => {
                           ))}
 
                           <div>
-                            <Link href='' className='site-btn width-100 Link'>View All</Link>
+                            <Link href='/student/class-notification' className='site-btn width-100 Link'>View All</Link>
                           </div>
                         </div>
 
@@ -600,7 +600,7 @@ const StudentHome = () => {
 
 
                     <div className='pt-4 recent-school-fees-link'>
-                      <Link href='' className='site-btn Link width-120px'>View all</Link>
+                      <Link href='/student/school-fees-payment/all' className='site-btn Link width-120px'>View all</Link>
                     </div>
                   </div>
                 </div>
@@ -752,7 +752,7 @@ const StudentHome = () => {
 
 
                     <div className='pt-4 recent-school-fees-link'>
-                      <Link href='' className='site-btn Link width-120px'>View all</Link>
+                      <Link href='/student/bills-payment/all' className='site-btn Link width-120px'>View all</Link>
                     </div>
                   </div>
                 </div>
