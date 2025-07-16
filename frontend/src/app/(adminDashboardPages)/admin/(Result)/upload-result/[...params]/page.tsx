@@ -309,7 +309,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
   return (
     <div>
-      <div className="container-lg pt-4">
+      <div className="container-lg pt-4 mt-5">
         <div className="row align-center">
           <div className="col-md-2 d-none  d-md-flex justify-content-center">
             {studentDetails && (
@@ -762,7 +762,15 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
             </section>
           </form>
         ) : (
-          <div></div>
+           <div className="mt-5 pt-5">
+            <div className="d-flex justify-content-center align-items-center">
+              <div className="book-loader">
+                <div className="book red"></div>
+                <div className="book blue"></div>
+                <div className="book green"></div>
+              </div>
+            </div>
+          </div>
         )}
 
 

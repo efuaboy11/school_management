@@ -242,7 +242,7 @@ const IndivivdualSubject = ({ params }: { params: Promise<{ id: string }> }) => 
                       <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
                         <div>
                           <div className="d-flex justify-content-between pb-2">
-                            <p className='font-size-20px '>Edit Parent Profile</p>
+                            <p className='font-size-20px '>Edit Details</p>
                             <div onClick={handleClosenModal} className='cursor-pointer'>
                               <i className="ri-close-line md-text"></i>
                             </div>

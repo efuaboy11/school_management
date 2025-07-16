@@ -431,7 +431,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     teacher: '/teacher/home',
     bursary: '/bursary/home',
     store_keeper: '/store-keeper/home',
-    exam_officer: '/exam-officer/home',
+    result_officer: '/result-officer/home',
     academic_officer: '/academic-officer/home',
     other_staff: '/other-staff/home',
   };
@@ -630,25 +630,29 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   }
 
   const updateToken = async () =>{
-    if (!authTokens?.refresh) return;
-    let response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
-        method: 'POST',
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({refresh: authTokens?.refresh})
-    })
-    const data = await response.json()
+    if(authTokens){
+      if (!authTokens?.refresh) return;
+      let response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
+          method: 'POST',
+          headers: {
+              "Content-Type": "application/json",
+          },
+          body: JSON.stringify({refresh: authTokens?.refresh})
+      })
+      const data = await response.json()
 
-    if(response.status === 200){
-        console.log("token updated")
-        setAuthToken(data)
-        localStorage.setItem("authTokens", JSON.stringify(data))
-        Cookies.set('token', data.access, { path: '/', secure: true });
-        Cookies.set('role', data.role, { path: '/', secure: true });
+      if(response.status === 200){
+          console.log("token updated")
+          setAuthToken(data)
+          localStorage.setItem("authTokens", JSON.stringify(data))
+          Cookies.set('token', data.access, { path: '/', secure: true });
+          Cookies.set('role', data.role, { path: '/', secure: true });
+      }
     }
 
   }
+
+  console.log(authTokens)
 
   
 

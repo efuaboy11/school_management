@@ -979,7 +979,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
 
                       <div className="d-flex justify-content-between light-text mb-3">
                         <p>Class Assigned:</p>
-                        <p>{formatName(userData.assigend_class_name.name)}</p>
+                        <p>{formatName(userData.assigend_class_name.name || 'not assigned')}</p>
                       </div>
 
                       <div className="d-flex justify-content-between light-text mb-3">

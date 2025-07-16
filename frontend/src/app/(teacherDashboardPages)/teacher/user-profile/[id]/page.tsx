@@ -102,13 +102,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
     setShowContactInformationModal(true);
   }
 
-  const handleShowUserDeleteModal = () => {
-    setUserDeleteModal(true)
-  }
 
-  const handleCloseUserDeleteModal = () => {
-    setUserDeleteModal(false)
-  }
 
   const handleShowSchoolFeesDeleteModal = () =>{
     setSchoolFeesDeleteModal(true)
@@ -191,51 +185,6 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
 
 
 
-  const deleteUserFunction = async () => {
-    
-    setDisableButton(true)
-    setLoader(true)
-
-    try{
-      let response = await fetch(`http://127.0.0.1:8000/api/staff/${id}/`, {
-        method: "DELETE",
-        headers: {
-          Authorization: `Bearer ${authTokens?.access}`
-        }
-      })
-
-      if (response.ok) {
-        setLoader(false)
-        setDisableButton(false)
-        router.push('/admin/staffs/all')
-        setUserDeleteModal(false)
-        showAlert()
-        setIsSuccess(true)
-        setMessage('Staff  deleted')
-      } else {
-        const errorData = await response.json()
-        const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
-        setMessage(errorMessages)
-        setLoader(false)
-        setDisableButton(false)
-        showAlert()
-        setIsSuccess(false)
-        setIsSuccess(true)
-        setDisableButton(false)
-      }
-
-    }catch{
-      showAlert()
-      setMessage('An unexpected error occurred.');
-      setDisableButton(false)
-      setIsSuccess(false)
-      setLoader(false)
-      setLoader(false)
-
-    }
-  }
 
 
   useEffect(() =>{
@@ -687,7 +636,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
                             <div className="row g-3">
                               <div className="col-md-12">
                                 <label htmlFor="firstName" className="form-label">Assigned Class</label>
-                                <select   className={`site-input ${errorsSchoolInformation.studentClass ? 'error-input' : ''}`} {...registerSchoolInformation('studentClass', {required: true})}  value={studentClass}  onChange={(e) => setStudentClass(e.target.value)}>
+                                <select   className={`site-input ${errorsSchoolInformation.studentClass ? 'error-input' : ''}`} {...registerSchoolInformation('studentClass')}  value={studentClass}  onChange={(e) => setStudentClass(e.target.value)}>
                                   <option value="">Select</option>
                                   {studentClassData.map((data:any) => (
                                     <option key={data.id} value={data.id}>{data.name}</option>
@@ -820,40 +769,6 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
 
 
 
-      {userDeleteModal && (
-        <section className={` ${userDeleteModal ? 'overlay-background' : ''}`}>
-          <div className='container-lg'>
-              
-            <div className=" row justify-content-center align-center2 height-90vh">
-
-                <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
-                  <div className="site-modal-conatiner">
-                    <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
-                      <div className="d-flex justify-content-center text-center">
-                        <div>
-                          <Image src="/img/icon/warning.png" alt="empty" width={100} height={100} />
-                          <p className='md-text mt-3'>Are you sure?</p>
-                          <p className="light-text">This action cannot be undone. This user  will be deleted from the database.</p>
-                          <div className='pt-4'>
-                            <button className="site-delete-btn px-3 me-2 width-100 mb-4" onClick={deleteUserFunction} disabled={disableButton}>
-                              <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                              <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-delete-bin-line pe-2"></i> Delete</span>
-                            </button>
-                            <button onClick={handleCloseUserDeleteModal} className="site-btn site-cancel-btn px-3 width-100"><i className="ri-close-circle-line pe-2"></i>Cancel</button>
-                          </div>
-                        </div>
-                      </div>
-                    
-                    </div>
-                  </div>
-                </div>
-            
-
-            </div>
-
-          </div>
-        </section>
-      )}
 
       {Loading ? (
         <div>
@@ -886,10 +801,6 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
                       <div className="d-flex mx-3 pt-4">
                         <div className="me-3">
                           <button onClick={handleShowPersonalInformationModal} className='site-inverse-btn px-3'><i className="ri-edit-line"></i><span className="ms-2 d-none d-md-inline">Edit</span></button>
-                        </div>
-
-                        <div className="me-3">
-                          <button onClick={handleShowUserDeleteModal} className='site-delete-btn px-3'><i className="ri-delete-bin-line "></i><span className="ms-2 d-none d-md-inline">Delete</span></button>
                         </div>
                       </div>
                     </div>
@@ -979,7 +890,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
 
                       <div className="d-flex justify-content-between light-text mb-3">
                         <p>Class Assigned:</p>
-                        <p>{formatName(userData.assigend_class_name.name)}</p>
+                        <p>{formatName(userData.assigend_class_name.name || 'not assigned')}</p>
                       </div>
 
                       <div className="d-flex justify-content-between light-text mb-3">

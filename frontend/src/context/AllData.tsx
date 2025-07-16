@@ -326,6 +326,8 @@ interface AllDataContextTye{
   setEResultCount: (count: number) => void
   eResultData: any[]
   setEResultData: (data: any[]) => void
+  recentEResultData: any[]
+  setRecentEResultData: (data: any[]) => void
   eResultLoader: boolean
   setEResultLoader: (loader: boolean) => void
   eResultSearch: string
@@ -905,6 +907,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   const [eResultCount, setEResultCount] = useState(0)
   const [eResultData, setEResultData] = useState<any[]>([])
+  const [recentEResultData, setRecentEResultData] = useState<any[]>([])
   const [eResultLoader, setEResultLoader] = useState(true)
   const [eResultSearch, setEResultSearch] = useState('')
 
@@ -2706,10 +2709,15 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       if(Array.isArray(data) && data.length > 0){
         setEResultCount(data.length)
       }
+
       
+      const sortedData = [...data].sort((a, b) =>
+        new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
       
-      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      const recentData = sortedData.slice(0, 7);
       setEResultData(sortedData)
+      setRecentEResultData(recentData)
       setEResultLoader(false)
 
 
@@ -2747,7 +2755,9 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
     if(response.ok){
       // sorting from A to Z
-      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      const sortedData = [...data].sort((a, b) =>
+        new Date(b.date).getTime() - new Date(a.date).getTime()
+      );
       setEResultData(sortedData)
     }
   }
@@ -3629,7 +3639,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-      const recentData = sortedData.slice(0, 4);
+      const recentData = sortedData.slice(0, 8);
       setRecentProduct(recentData)
       setProductData(sortedData)
       setProductLoader(false)
@@ -3986,6 +3996,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     scratchCardSearch, setScratchCardSearch,
 
     eResultCount, setEResultCount,
+    recentEResultData, setRecentEResultData,
     eResultData, setEResultData,
     eResultLoader, setEResultLoader,
     eResultSearch, setEResultSearch,

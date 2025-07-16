@@ -20,6 +20,16 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
 
+
+
+class StorageQuotaView(generics.RetrieveUpdateAPIView):
+    queryset = StorageQuota.objects.all()
+    serializer_class = StorageQuotaSerializer
+
+    def get_object(self):
+        # Assuming you have only one quota object for now
+        return StorageQuota.objects.first()
+
 # Create your views here.
 @api_view(['GET'])
 def endpoints(request):
@@ -751,7 +761,7 @@ class TermView(generics.ListCreateAPIView):
 
 class TermRetriveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = TermSerializer
-    permission_classes = [IsAdminOrAcademicOfficer]
+    permission_classes = [IsStaff]
     queryset = Term.objects.all()
     lookup_field = 'pk'                
  
@@ -778,7 +788,7 @@ class SessionView(generics.ListCreateAPIView):
 
 class SessionRetriveUpdateDestory(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SessionSerializer
-    permission_classes = [IsAdminOrAcademicOfficer]
+    permission_classes = [IsStaff]
     queryset = Session.objects.all()
     lookup_field = 'pk'                
 
@@ -1084,7 +1094,7 @@ class DeleteMultipleScratchCardView(generics.GenericAPIView):
 
 class StudentResultListCreateApiView(generics.ListCreateAPIView):
     serializer_class = StudentResultSerializer
-    permission_classes = [IsAdminOrAcademicOfficerOrStudent]
+    permission_classes = [IsAdminOrResultOfficerOrStudent]
     
     def get_queryset(self):
         queryset = StudentResult.objects.all()
@@ -1125,7 +1135,7 @@ class StudentResultListCreateApiView(generics.ListCreateAPIView):
 class StudentResultRetrieveUpdateDestroyApiView(generics.RetrieveUpdateDestroyAPIView):
     queryset = StudentResult.objects.all()
     serializer_class = StudentResultSerializer
-    permission_classes = [IsAdminOrAcademicOfficerorStudent]
+    permission_classes = [IsAdminOrResultOfficerOrStudent]
     lookup_field = 'pk'
     
     def update(self, request, *args, **kwargs):
@@ -1148,7 +1158,7 @@ class StudentResultRetrieveUpdateDestroyApiView(generics.RetrieveUpdateDestroyAP
 class SubjectResultListCreateApiView(generics.ListCreateAPIView):
     queryset = SubjectResult.objects.all()
     serializer_class = SubjectResultSerializer
-    permission_classes = [IsAdminOrAcademicOfficerOrStudent]
+    permission_classes = [IsAdminOrResultOfficerOrStudent]
     def get_serializer(self, *args, **kwargs):
         if isinstance(data := kwargs.get("data", {}), list):
             kwargs["many"] = True
@@ -1169,14 +1179,14 @@ class SubjectResultRetrieveUpdateDestroyApiView(generics.RetrieveUpdateDestroyAP
     queryset = SubjectResult.objects.all()
     serializer_class = SubjectResultSerializer
     lookup_field = "pk"
-    permission_classes = [IsAdminOrAcademicOfficer]
+    permission_classes = [IsAdminOrResultOfficer]
 
          
          
 class CheckStudentResultView(generics.ListCreateAPIView):
     queryset = StudentResult.objects.all()
     serializer_class = StudentResultSerializer
-    permission_classes = [IsAdminOrAcademicOfficerOrStudent]
+    permission_classes = [IsAdminOrResultOfficerOrStudent]
     
     
     def post(self, request, *args, **kwargs):
@@ -1215,7 +1225,7 @@ class CheckStudentResultView(generics.ListCreateAPIView):
 
 class FilterResultView(generics.ListCreateAPIView):
     serializer_class = FilterStudentResultSerializer
-    permission_classes = [IsAdminOrAcademicOfficer]
+    permission_classes = [IsAdminOrResultOfficer]
     filter_backends = [filters.SearchFilter]
     search_fields = ['student__first_name', 'student__last_name']
 

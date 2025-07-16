@@ -9,7 +9,7 @@ const roleRoutes: Record<string, string> = {
   teacher: '/teacher',
   bursary: '/bursary',
   store_keeper: '/store-keeper',
-  exam_officer: '/exam-officer',
+  result_officer: '/exam-officer',
   academic_officer: '/academic-officer',
   other_staff: '/other-staff',
 };
@@ -43,7 +43,7 @@ export const config = {
     '/teacher/:path*',
     '/bursary/:path*',
     '/store-keeper/:path*',
-    '/exam-officer/:path*',
+    '/result-officer/:path*',
     '/academic-officer/:path*',
     '/other-staff/:path*',
   ],

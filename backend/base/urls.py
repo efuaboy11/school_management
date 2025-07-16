@@ -1,10 +1,13 @@
 from django.urls import path
 from . import views
+from .utils  import storage_usage_view
 
 app_name = 'base'
 
 urlpatterns = [
     path('', views.endpoints, name='endpoints'),
+    path('storage-usage/', storage_usage_view, name='storage-usage'),
+    path('storage-quota/', views.StorageQuotaView.as_view(), name='storage-quota'),
     
     # ---------------------- User -------------------------- #
     path('users/', views.UsersView.as_view(), name='users'),

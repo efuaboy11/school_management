@@ -450,6 +450,12 @@ const AddTeacher = () => {
                     {errors.employmentStatus && <p className="error-text">This field is required</p>}
                   </div>
 
+                  <div className="col-md-6">
+                    <label htmlFor="lastName" className="form-label">Department <span className="text-danger">*</span></label>
+                    <input type="text"  className={`site-input ${errors.cityOrTown ? 'error-input' : ''}`} {...register('department', {required: true})}  value={department}  onChange={(e) => setDepartment(e.target.value)} placeholder='City or Origin' />
+                    {errors.department && <p className="error-text">This field is required</p>}
+                  </div>
+
 
 
 
@@ -470,7 +476,7 @@ const AddTeacher = () => {
                       <option value="teacher">Teacher</option>
                       <option value="bursary">Bursary</option>
                       <option value="store_keeper">Store Keeper</option>
-                      <option value="exam_officer">Exam officer</option>
+                      <option value="result_officer">Result officer</option>
                       <option value="academic_officer">Academic Officer</option>
                       <option value="other_staff">Other Staff</option>
                     </select>

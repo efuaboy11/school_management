@@ -6,6 +6,15 @@ from django.utils import timezone
 import uuid
 import secrets
 
+
+class StorageQuota(models.Model):
+    limit_gb = models.FloatField(default=5.0, help_text="Maximum allowed space in GB")
+
+    def __str__(self):
+        return f"{self.limit_gb} GB Limit"
+
+
+
 class Role(models.TextChoices):
     ADMIN = 'admin', "Admin"
     HR = 'hr', 'HR'

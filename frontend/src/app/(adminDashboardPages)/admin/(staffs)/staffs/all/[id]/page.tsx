@@ -687,7 +687,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
                             <div className="row g-3">
                               <div className="col-md-12">
                                 <label htmlFor="firstName" className="form-label">Assigned Class</label>
-                                <select   className={`site-input ${errorsSchoolInformation.studentClass ? 'error-input' : ''}`} {...registerSchoolInformation('studentClass', {required: true})}  value={studentClass}  onChange={(e) => setStudentClass(e.target.value)}>
+                                <select   className={`site-input ${errorsSchoolInformation.studentClass ? 'error-input' : ''}`} {...registerSchoolInformation('studentClass')}  value={studentClass}  onChange={(e) => setStudentClass(e.target.value)}>
                                   <option value="">Select</option>
                                   {studentClassData.map((data:any) => (
                                     <option key={data.id} value={data.id}>{data.name}</option>
@@ -979,7 +979,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
 
                       <div className="d-flex justify-content-between light-text mb-3">
                         <p>Class Assigned:</p>
-                        <p>{formatName(userData.assigend_class_name.name)}</p>
+                        <p>{formatName(userData.assigend_class_name.name || 'not assigned')}</p>
                       </div>
 
                       <div className="d-flex justify-content-between light-text mb-3">

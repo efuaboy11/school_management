@@ -6,6 +6,12 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework.exceptions import AuthenticationFailed
 from django.contrib.contenttypes.models import ContentType
 
+class StorageQuotaSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = StorageQuota
+        fields = ['id', 'limit_gb']
+        
+
 class UsersSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -616,6 +622,7 @@ class StudentResultSerializer(serializers.ModelSerializer):
             'principal_comment',
             'next_term_begins',
             'subject_result',   
+            'created_at',
         ]
         
     def get_class_name(self, obj):
