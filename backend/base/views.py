@@ -22,6 +22,7 @@ from django.utils.decorators import method_decorator
 
 
 
+
 class StorageQuotaView(generics.RetrieveUpdateAPIView):
     queryset = StorageQuota.objects.all()
     serializer_class = StorageQuotaSerializer
