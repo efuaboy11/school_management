@@ -318,7 +318,7 @@ const BursaryFrame = () => {
           <div className="dashboard-sidebar-head stylish-text pt-3 mx-4 ">
             <h4>BURSARY PANEL</h4><FontAwesomeIcon icon={faArrowLeft} onClick={toggleCloseSidebar} className="close-sidebar-btn pt-1 sm-text cursor-pointer"/></div>
           <hr />
-
+          <p></p>
           
           <div className="pt-5 mt-4 mb-4">
             <div className="d-flex justify-content-center">

@@ -303,6 +303,7 @@ class LoginView(generics.GenericAPIView):
                 return Response({"error": "This account is disabled."}, status=status.HTTP_403_FORBIDDEN)
             
             user_auth = authenticate(username=username, password=password)
+            user.failed_login_attempts = 0
             if user_auth is None:
                 user.failed_login_attempts += 1
                 user.save()
@@ -310,6 +311,8 @@ class LoginView(generics.GenericAPIView):
                 if user.failed_login_attempts >= 3:
                     DisableAccount.objects.get_or_create(user=user, reason="Too many failed login attempts.")
                     AdminorHRNotification.objects.get_or_create(text=f"User {user.username} has been disabled due to multiple failed login attempts.")
+                    user.failed_login_attempts =0
+                    user.save()
                     return Response({"error": "Your account has been disabled due to multiple failed login attempts."}, status=status.HTTP_403_FORBIDDEN)
                 return Response({"error": "Invalid credentials."}, status=status.HTTP_401_UNAUTHORIZED)
             

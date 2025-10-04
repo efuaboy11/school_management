@@ -281,7 +281,7 @@ const StudentHome = () => {
                           <div className='primary-bg site-small-icon border-radius-5px me-2'>
                             <i className="ri-book-line  white-text"></i>
                           </div>
-                          <p className='light-text'>Assignment Given</p>
+                          <p className='light-text ps-1'>Assignment Given</p>
                         </div>
 
                         <p className="lg-text">{assignmentCount}</p>
@@ -297,7 +297,7 @@ const StudentHome = () => {
                           <div className='secondary-bg site-small-icon border-radius-5px me-2'>
                             <i className="ri-book-open-line  white-text"></i>
                           </div>
-                          <p className='light-text'>Assignment Submission</p>
+                          <p className='light-text ps-1'>Assignment Submission</p>
                         </div>
 
                         <p className="lg-text">{assignmentSubmissionCount}</p>
@@ -313,7 +313,7 @@ const StudentHome = () => {
                           <div className='support-bg site-small-icon border-radius-5px me-2'>
                             <i className="ri-school-line  white-text"></i>
                           </div>
-                          <p className='light-text'>Student Class</p>
+                          <p className='light-text ps-1'>Student <br /> Class</p>
                         </div>
 
                         <p className="md-text pb-3">{formatName(userDetails.student_class_name.name)}</p>

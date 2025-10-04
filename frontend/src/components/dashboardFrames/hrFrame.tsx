@@ -598,7 +598,7 @@ const HrFrame = () => {
               <div className="row">
                 <div className="col-12 ps-4">
                   <div className="d-flex ">
-                    <Link href='/hr/class-timetable'  className='dashboard-link' onClick={OnbodyClick}>
+                    <Link href='/hr/request-to-change-password'  className='dashboard-link' onClick={OnbodyClick}>
                       <div className="d-flex">
                         <i className="bi bi-journal me-3"></i>
                         <p>Request to change Password</p>
