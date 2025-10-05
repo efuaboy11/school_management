@@ -5,6 +5,8 @@ import 'package:mobile_app/screens/Auth/forgot_password_success.dart';
 import 'package:mobile_app/screens/Auth/login.dart';
 import 'package:mobile_app/screens/home.dart';
 import 'package:mobile_app/screens/student/home.dart';
+import 'package:mobile_app/screens/student/school_fees/add_school_fees/step1.dart';
+import 'package:mobile_app/screens/student/school_fees/add_school_fees/step2.dart';
 import 'package:mobile_app/screens/student/school_fees/fee_details.dart';
 import 'package:mobile_app/screens/student/school_fees/history.dart';
 
@@ -49,7 +51,6 @@ final GoRouter appRouter = GoRouter(
       path: '/student/fees-history',
       name: 'student-fees-history',
       builder:(context, state){
-        print(state.uri.toString());
         return SchoolFeesHistoryScreen();
       },
     ),
@@ -59,6 +60,21 @@ final GoRouter appRouter = GoRouter(
       name: 'student-fees-history-detail',
       builder:(context, state) => SchoolFeesDetailScreen(),
     ),
+
+
+    GoRoute(
+      path: '/student/pay-fees',
+      name: 'student-fee-payment',
+      builder:(context, state) => SchoolFeesPaymentScreen(),
+    ),
+
+    GoRoute(
+      path: '/student/pay-2',
+      name: 'student-fee-payment-2',
+      builder:(context, state) => SchoolFeesPaymentScreenTwo(),
+    ),
+
+    
 
     
   ],

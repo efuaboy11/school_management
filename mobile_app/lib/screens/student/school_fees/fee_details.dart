@@ -20,7 +20,9 @@ class SchoolFeesDetailScreen extends StatelessWidget{
         ),
         title: Text('Payment Details ', style: TextStyle(color: Colors.white),),
         actions: [
-          IconButton(onPressed: (){}, icon: Icon(Icons.attach_money, color: Colors.white, size: 30)),
+          IconButton(onPressed: (){
+            context.push('/student/pay-fees');
+          }, icon: Icon(Icons.attach_money, color: Colors.white, size: 30)),
           IconButton(
             icon: Icon(Icons.menu, color: Colors.white, size: 30),
             onPressed: () {
