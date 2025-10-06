@@ -103,10 +103,6 @@ const ClassTimetablePage = () => {
             <p className="md-text">Class TImetable</p>
             <p className="light-text pb-3">Total of {classTimetableCount} class timetable avalaible</p>
          </div>
-
-          <div className='d-flex mb-4'>
-            <Link href='/admin/class-timetable/add' className="site-btn px-3 Link"><i className="ri-send-plane-fill pe-2"></i> Add Timetable</Link>
-          </div>
         </div>
 
         <div className="d-flex justify-content-end">

@@ -2,8 +2,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/theme.dart';
 
-class SchoolFeesPaymentScreenTwo extends StatelessWidget{
-  const SchoolFeesPaymentScreenTwo({super.key});
+class BillPaymentScreenTwo extends StatelessWidget{
+  const BillPaymentScreenTwo({super.key});
 
   // onPressed: () => context.pop(),
 
@@ -14,7 +14,7 @@ class SchoolFeesPaymentScreenTwo extends StatelessWidget{
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     final customColors = Theme.of(context).extension<CustomColors>()!;
 
-    String currentScreen = 'cash_payment';
+    String currentScreen = 'online_payment';
     Widget content = Center(child: Text('wait a moment...'),);
 
     if(currentScreen == 'cash_payment'){
@@ -195,16 +195,16 @@ class SchoolFeesPaymentScreenTwo extends StatelessWidget{
                           child: ElevatedButton(
                             onPressed: () {
                               // context.push('/student/pay-2');
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (ctx) => SchoolFeesPaymentScreenTwo())
-                              );
+                              // Navigator.of(context).push(
+                              //   MaterialPageRoute(builder: (ctx) => SchoolFeesPaymentScreenTwo())
+                              // );
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Theme.of(context).colorScheme.primary,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                             ),
                             child: Text(
-                              "Submit",
+                              "Pay now",
                               style: TextStyle(
                                 fontSize: 16,
                                 color: Colors.white,
@@ -235,7 +235,7 @@ class SchoolFeesPaymentScreenTwo extends StatelessWidget{
             Navigator.of(context).pop();
           }
         ),
-        title: Text('Verification', style: TextStyle(fontSize: 18),),
+        title: Text('Verification', style: TextStyle(fontSize: 18)),
         actions: [
           IconButton(
             icon: Icon(Icons.menu),
@@ -286,7 +286,7 @@ class SchoolFeesPaymentScreenTwo extends StatelessWidget{
                                   
                                 ),
                   
-                                child: Text('Fee Payment Summary', textAlign: TextAlign.center,),
+                                child: Text('Bill Payment Summary', textAlign: TextAlign.center,),
                               ),
                   
                               ListTile(
@@ -300,34 +300,16 @@ class SchoolFeesPaymentScreenTwo extends StatelessWidget{
                               ),
                   
                               ListTile(
-                                title: Text('Fee Type'),
-                                trailing: Text('School Fees'),
+                                title: Text('Bill Type'),
+                                trailing: Text('Christmas Fee'),
                               ),
-                  
-                             
-                  
-                              ListTile(
-                                title: Text('Class being paid for'),
-                                trailing: Text('School Fees'),
-                              ),
-                  
-                  
-                              ListTile(
-                                title: Text('Term'),
-                                trailing: Text('First term'),
-                              ),
-                  
-                              ListTile(
-                                title: Text('Session'),
-                                trailing: Text('2021/2022'),
-                              ),
+                                             
                   
                               ListTile(
                                 title: Text('Amount to be paid'),
                                 trailing: Text('48000 USD', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
                               ),
-                  
-                  
+          
                   
                   
                   

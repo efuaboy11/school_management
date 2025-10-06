@@ -1,29 +1,117 @@
 
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile_app/screens/student/school_fees/add_school_fees/step2.dart';
 import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
+import 'package:image_picker/image_picker.dart';
+import 'dart:io';
+import 'package:path/path.dart' as path;
 
-class SchoolFeesPaymentScreen extends StatefulWidget{
-  const SchoolFeesPaymentScreen({super.key});
+class SubmitAssignmentScreen extends StatefulWidget{
+  const SubmitAssignmentScreen({super.key});
 
   @override
-  State<SchoolFeesPaymentScreen> createState() => _SchoolFeesPaymentScreenState();
+  State<SubmitAssignmentScreen> createState() => _SubmitAssignmentScreenState();
 }
 
-class _SchoolFeesPaymentScreenState extends State<SchoolFeesPaymentScreen> {
-  String? selectedPaymentMethod;
+class _SubmitAssignmentScreenState extends State<SubmitAssignmentScreen> {
+  String? selectedTeacher;
+  String? selectedSubject;
+  String? assignemtCode;
+  String? submissionNote;
+  String? assignmentImage;
+  String? assignmentFile;
+  File? selectedImage;
+  File? selectedFile;
 
-  String? selectedFeeType;
-  String? selectedStudentClass;
-  String? selectedSession;
-  String? selectedTerm;
+
+  void _getPicture(String method) async{
+    final imagePicker = ImagePicker();
+    dynamic pickedImage;
+
+    if(method == 'camera'){
+      pickedImage = await imagePicker.pickImage(source: ImageSource.camera,);
+    }else{
+      pickedImage = await imagePicker.pickImage(source: ImageSource.gallery, maxHeight: 600);
+    }
+
+    if(pickedImage == null){
+      return;
+    }
+
+    setState(() {
+      selectedImage = File(pickedImage.path);
+    });
+  }
+
+
+  void _pickFile() async {
+    final result = await FilePicker.platform.pickFiles();
+
+    if(result == null && result!.files.single.path == null){
+      return;
+    }
+    setState(() {
+      selectedFile = File(result.files.single.path!);
+    });
+    
+  }
+
 
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     final customColors = Theme.of(context).extension<CustomColors>()!;
+
+    Widget imgContent = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      spacing: 10,
+      children: [
+        Icon(Icons.camera),
+        Text('Select Image')
+      ],
+    );
+
+    if(selectedImage != null){
+      imgContent = SizedBox(
+        width: 100,
+        height: 100,
+        
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(8),
+          child: Image.file(
+            selectedImage!,
+            fit: BoxFit.cover,
+          ),
+        ),
+      );
+
+    }
+
+
+
+    Widget fileContent = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      spacing: 10,
+      children: [
+        Icon(Icons.insert_drive_file),
+        Text('Select File')
+      ],
+    );
+
+    if(selectedFile != null){
+      fileContent = Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      spacing: 10,
+      children: [
+        Icon(Icons.insert_drive_file),
+        Text(path.basename(selectedFile!.path),)
+      ],
+    );
+
+    }
+
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
@@ -33,7 +121,7 @@ class _SchoolFeesPaymentScreenState extends State<SchoolFeesPaymentScreen> {
             context.pop();
           }
         ),
-        title: Text('School Fees Payment ', style: TextStyle(fontSize: 18)),
+        title: Text('Sumbit assignemt ', style: TextStyle(fontSize: 18)),
         actions: [
           IconButton(
             icon: Icon(Icons.menu,),
@@ -59,7 +147,6 @@ class _SchoolFeesPaymentScreenState extends State<SchoolFeesPaymentScreen> {
       body:
         Column(
           children: [
-            SizedBox(height: 15,),
             Expanded(
               child: SingleChildScrollView(
                 child: Padding(
@@ -67,20 +154,8 @@ class _SchoolFeesPaymentScreenState extends State<SchoolFeesPaymentScreen> {
                   child: SizedBox(
                     width: double.infinity,
                     child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: Column(  
-                            children: [
-                              Text('This step is to verify the fees details and ensure they are authentic.', style: TextStyle(fontSize: 19), textAlign: TextAlign.center,),
-                              SizedBox(height: 5,),
-                              Text('Note: Please enter the verified details for the specific fee you intend to pay.', style: TextStyle(color: customColors.lightText), textAlign: TextAlign.center,),
-                              SizedBox(height: 20,),
-                  
-                            ],
-                  
-                          )
-                        ),
                         Card(
                           child: Padding(
                             padding: EdgeInsetsGeometry.all(18),
@@ -90,11 +165,11 @@ class _SchoolFeesPaymentScreenState extends State<SchoolFeesPaymentScreen> {
                                 spacing: 20,
                                 children: [
                                   DropdownButtonFormField(
-                                    hint: Text("Select payment method"),
+                                    hint: Text("Select Teacher"),
                                     decoration: InputDecoration(
                                       contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
                                       
-                                      prefixIcon: Icon(Icons.payment),
+                                      prefixIcon: Icon(Icons.person),
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(12.0),
                                       ),
@@ -108,30 +183,30 @@ class _SchoolFeesPaymentScreenState extends State<SchoolFeesPaymentScreen> {
                                       }
                                       return null;
                                     },
-                                    value: selectedPaymentMethod,
+                                    value: selectedTeacher,
                                     items: [
                                       DropdownMenuItem(
-                                        value: 'cash',
-                                        child: Text('Cash payment')
+                                        value: 'mr frank',
+                                        child: Text('Mr Frank')
                                       ),
                         
                                       DropdownMenuItem(
-                                        value: 'card',
-                                        child: Text('Card payment'),
+                                        value: 'mrs joy',
+                                        child: Text('Mrs joy'),
                                       ),
                                     ], 
                                     onChanged: (value){
                                       setState(() {
-                                        selectedPaymentMethod = value;
+                                        selectedTeacher = value;
                                       });
                                     }
                                   ),
                         
                                   DropdownButtonFormField(
-                                    hint: Text("Select fee type"),
+                                    hint: Text("Select Subject"),
                                     decoration: InputDecoration(
                                       contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
-                                      
+                                      prefixIcon: Icon(Icons.book),
                                       
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(12.0),
@@ -147,155 +222,119 @@ class _SchoolFeesPaymentScreenState extends State<SchoolFeesPaymentScreen> {
                                       return null;
                                     },
                         
-                                    value: selectedFeeType,
+                                    value: selectedSubject,
                                     items: [
                                       DropdownMenuItem(
-                                        value: 'school_fees',
-                                        child: Text('School Fees')
+                                        value: 'Mathematics',
+                                        child: Text('Mathematics')
                                       ),
                         
                                       DropdownMenuItem(
-                                        value: 'P.T.A',
-                                        child: Text('P.T.A payment'),
+                                        value: 'English',
+                                        child: Text('English'),
                                       ),
                                     ], 
                                     onChanged: (value){
                                       setState(() {
-                                        selectedFeeType = value;
+                                        selectedSubject = value;
                                       });
                                     }
                                   ),
-                        
-                                  DropdownButtonFormField(
-                                    hint: Text("Select student class"),
+
+
+                                  TextFormField(
                                     decoration: InputDecoration(
+                                      hintText: 'Assignment code',
+                                      prefixIcon: Icon(Icons.code), // You can change this icon
                                       contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
-                                      
-                                      
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(12.0),
                                       ),
-                                      
-                                      
                                     ),
-                                    
-                                    validator: (value){
-                                      if(value == null){
-                                        return 'Please select student class';
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter assignment code';
                                       }
                                       return null;
                                     },
-                        
-                                    value: selectedStudentClass,
-                                    items: [
-                                      DropdownMenuItem(
-                                        value: 'primary 1',
-                                        child: Text('Primary 1')
-                                      ),
-                        
-                                      DropdownMenuItem(
-                                        value: 'primary 2',
-                                        child: Text('Primary 2'),
-                                      ),
-                                    ], 
-                                    onChanged: (value){
-                                      setState(() {
-                                        selectedStudentClass = value;
-                                      });
-                                    }
+                                    
                                   ),
-                        
-                        
-                        
-                                  DropdownButtonFormField(
-                                    hint: Text("Select Session"),
+
+                                  TextFormField(
+                                    textAlignVertical: TextAlignVertical.top,
+                                    maxLines: 5, // Makes it a text area with 5 lines height
+                                    keyboardType: TextInputType.multiline,
                                     decoration: InputDecoration(
+                                      hintText: 'Submission note',
                                       contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
-                                      
-                                      
                                       border: OutlineInputBorder(
                                         borderRadius: BorderRadius.circular(12.0),
                                       ),
-                                      
-                                      
                                     ),
-                                    
-                                    validator: (value){
-                                      if(value == null){
-                                        return 'Please select session';
-                                      }
-                                      return null;
-                                    },
-                        
-                                    value: selectedSession,
-                                    items: [
-                                      DropdownMenuItem(
-                                        value: '2021/2022',
-                                        child: Text('2021/2022')
-                                      ),
-                        
-                                      DropdownMenuItem(
-                                        value: '2022/2023',
-                                        child: Text('2022/2023'),
-                                      ),
-                                    ], 
-                                    onChanged: (value){
-                                      setState(() {
-                                        selectedSession = value;
-                                      });
-                                    }
+                                    // No validator since it's optional
                                   ),
-                        
-                        
-                        
-                                  DropdownButtonFormField(
-                                    hint: Text("Select Term"),
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
-                                      
-                                      
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(12.0),
-                                      ),
-                                      
-                                      
-                                    ),
-                                    
-                                    validator: (value){
-                                      if(value == null){
-                                        return 'Please select term';
-                                      }
-                                      return null;
+
+
+                                  PopupMenuButton<String>(
+                                    onSelected: (value) {
+                                      _getPicture(value);
                                     },
-                        
-                                    value: selectedTerm,
-                                    items: [
-                                      DropdownMenuItem(
-                                        value: 'first term',
-                                        child: Text('first term')
+                                    itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+                                      const PopupMenuItem<String>(
+                                        value: 'gallery',
+                                        child: Text('Select Image from gallery'),
                                       ),
-                        
-                                      DropdownMenuItem(
-                                        value: 'Second Term',
-                                        child: Text('Second Term'),
+                                      const PopupMenuItem<String>(
+                                        value: 'camera',
+                                        child: Text('Take Picture'),
                                       ),
-                                    ], 
-                                    onChanged: (value){
-                                      setState(() {
-                                        selectedSession = value;
-                                      });
-                                    }
+                                    ],
+                                    child: Container(
+                                      width: double.infinity,
+                                      
+                                      decoration: BoxDecoration(
+                                        color: customColors.lightBorder
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 50),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: imgContent
+                                        ),
+                                      ),
+                                    ), // or use any widget as the trigger
                                   ),
+
+                                  GestureDetector(
+                                    onTap: _pickFile,
+                                    child: Container(
+                                      width: double.infinity,
+                                      
+                                      decoration: BoxDecoration(
+                                        color: customColors.lightBorder
+                                      ),
+                                      child: Padding(
+                                        padding: const EdgeInsets.symmetric(vertical: 50),
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: fileContent
+                                        ),
+                                      ),
+                                    ), 
+                                  ),
+
+
                         
+                                  
                                   SizedBox(
                                     width: double.infinity,
                                     height: 50,
                                     child: ElevatedButton(
                                       onPressed: () {
                                         // context.push('/student/pay-2');
-                                        Navigator.of(context).push(
-                                          MaterialPageRoute(builder: (ctx) => SchoolFeesPaymentScreenTwo())
-                                        );
+                                        // Navigator.of(context).push(
+                                        //   MaterialPageRoute(builder: (ctx) => SubmitAssignmentScreenTwo())
+                                        // );
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Theme.of(context).colorScheme.primary,

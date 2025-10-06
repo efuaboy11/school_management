@@ -158,7 +158,9 @@ class StudentHomeScreen extends StatelessWidget {
                                     ),
                                           
                                     GestureDetector(
-                                      onTap: () {},
+                                      onTap: () {
+                                        context.push('/student/bills-history');
+                                      },
                                       child: Column(
                                         children: [
                                           Icon(Icons.monetization_on, color: Theme.of(context).colorScheme.secondary,),
@@ -169,7 +171,9 @@ class StudentHomeScreen extends StatelessWidget {
                                     ),
                                           
                                     GestureDetector(
-                                      onTap: () {},
+                                      onTap: () {
+                                        context.push('/student/assignment');
+                                      },
                                       child: Column(
                                         children: [
                                           Icon(Icons.book_rounded, color: Theme.of(context).colorScheme.tertiary,),
@@ -180,7 +184,9 @@ class StudentHomeScreen extends StatelessWidget {
                                     ),
 
                                     GestureDetector(
-                                      onTap: () {},
+                                      onTap: () {
+                                        context.push('/student/assignment-submission');
+                                      },
                                       child: Column(
                                         children: [
                                           Icon(Icons.assessment, color: Theme.of(context).colorScheme.secondary,),

@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
 
-class SchoolFeesDetailScreen extends StatelessWidget{
-  const SchoolFeesDetailScreen({super.key});
+class BillsDetailScreen extends StatelessWidget{
+  const BillsDetailScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,10 +21,10 @@ class SchoolFeesDetailScreen extends StatelessWidget{
         title: Text('Payment Details ', style: TextStyle(fontSize: 18)),
         actions: [
           IconButton(onPressed: (){
-            context.push('/student/pay-fees');
+            context.push('/student/bills-payment');
           }, icon: Icon(Icons.attach_money,)),
           IconButton(
-            icon: Icon(Icons.menu,),
+            icon: Icon(Icons.menu),
             onPressed: () {
               scaffoldKey.currentState?.openDrawer();
             },
@@ -99,7 +99,7 @@ class SchoolFeesDetailScreen extends StatelessWidget{
                             ),
                             child: ListTile(
                               contentPadding: EdgeInsets.zero,
-                              title: Text('School Fess'),
+                              title: Text('200.00 NGN'),
                               subtitle: Text('Date: 27th may 2023'),
 
                               trailing: Container(
@@ -158,8 +158,8 @@ class SchoolFeesDetailScreen extends StatelessWidget{
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text('Payment Method', style: TextStyle(color: customColors.lightText, fontSize: 15),),
-                                        Text('Online payment'),
+                                        Text('Bill Type', style: TextStyle(color: customColors.lightText, fontSize: 15),),
+                                        Text('Utility and resources Bills'),
                                       ],
                                     ),
                                 
@@ -174,42 +174,22 @@ class SchoolFeesDetailScreen extends StatelessWidget{
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text('Fee type', style: TextStyle(color: customColors.lightText, fontSize: 15),),
-                                        Text('School Fees'),
+                                        Text('Payment Methos', style: TextStyle(color: customColors.lightText, fontSize: 15),),
+                                        Text('Online Payment'),
                                       ],
                                     ),
                                 
                                     Column(
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
-                                        Text('Class paid for', style: TextStyle(color: customColors.lightText, fontSize: 15),),
-                                        Text('Primary 1'),
+                                        Text('Bill Payment Description', style: TextStyle(color: customColors.lightText, fontSize: 15),),
+                                        Text('Uitility resources'),
                                       ],
                                     ),
-                                
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text('Term paid for', style: TextStyle(color: customColors.lightText, fontSize: 15),),
-                                        Text('First term'),
-                                      ],
-                                    ),
-                                
-                                    Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text('Session paid for', style: TextStyle(color: customColors.lightText, fontSize: 15),),
-                                        Text('2022/2023'),
-                                      ],
-                                    ),
-                                
+                                                
                                 
                                   ],
                                 ),
-                                SizedBox(height: 20,),
-
-                                Text('Fee payment Description', style: TextStyle(color: customColors.lightText, fontSize: 15),),
-                                Text('hehehhee'),
                           ],
                             ),
                           ),

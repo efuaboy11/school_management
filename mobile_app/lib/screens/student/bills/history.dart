@@ -4,8 +4,8 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
 
-class SchoolFeesHistoryScreen extends StatelessWidget{
-  const SchoolFeesHistoryScreen({super.key});
+class BillsHistoryScreen extends StatelessWidget{
+  const BillsHistoryScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -16,14 +16,14 @@ class SchoolFeesHistoryScreen extends StatelessWidget{
       key: scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back,),
           onPressed: () => context.pop(),
         ),
-        title: Text('Fees History',  style: TextStyle(fontSize: 18),),
+        title: Text('Bills History', style: TextStyle(fontSize: 18)),
         actions: [
           IconButton(onPressed: (){
-            context.push('/student/pay-fees');
-          }, icon: Icon(Icons.attach_money)),
+            context.push('/student/bills-payment');
+          }, icon: Icon(Icons.attach_money,)),
           IconButton(
             icon: Icon(Icons.menu,),
             onPressed: () {
@@ -92,14 +92,14 @@ class SchoolFeesHistoryScreen extends StatelessWidget{
                     ),
                     child: ListTile(
                       onTap: (){
-                        context.push('/student/fees-history/detail');
+                        context.push('/student/bills-history/details');
                       },
                       contentPadding: EdgeInsets.zero,
                       leading: CircleAvatar(
                         backgroundColor: customColors.successful,
                         child: Icon(Icons.check,  color: Colors.white,),
                       ),
-                      title: Text('School Fess'),
+                      title: Text('Utitily bills'),
                       trailing: Text('4000 NGN', style: TextStyle(fontSize: 16),),
                       subtitle: Text('Date: 27th may 2023'),
                     ),
@@ -122,7 +122,7 @@ class SchoolFeesHistoryScreen extends StatelessWidget{
                         backgroundColor: customColors.declined,
                         child: Icon(Icons.cancel_outlined, color: Colors.white,),
                       ),
-                      title: Text('P.T.A'),
+                      title: Text('Class due'),
                       trailing: Text('4000 NGN', style: TextStyle(fontSize: 16),),
                       subtitle: Text('Date: 27th may 2023'),
                     ),
@@ -145,7 +145,7 @@ class SchoolFeesHistoryScreen extends StatelessWidget{
                         backgroundColor: customColors.pending,
                         child: Icon(Icons.hourglass_top,  color: Colors.white,),
                       ),
-                      title: Text('P.T.A'),
+                      title: Text('hostel due'),
                       trailing: Text('4000 NGN', style: TextStyle(fontSize: 16),),
                       subtitle: Text('Date: 27th may 2023'),
                     ),
@@ -168,7 +168,7 @@ class SchoolFeesHistoryScreen extends StatelessWidget{
                         backgroundColor: customColors.declined,
                         child: Icon(Icons.cancel_outlined, color: Colors.white,),
                       ),
-                      title: Text('P.T.A'),
+                      title: Text('Cutleries'),
                       trailing: Text('4000 NGN', style: TextStyle(fontSize: 16),),
                       subtitle: Text('Date: 27th may 2023'),
                     ),
@@ -190,7 +190,7 @@ class SchoolFeesHistoryScreen extends StatelessWidget{
                         backgroundColor: customColors.pending,
                         child: Icon(Icons.hourglass_bottom, color: Colors.white,),
                       ),
-                      title: Text('P.T.A'),
+                      title: Text('Excursion'),
                       trailing: Text('4000 NGN', style: TextStyle(fontSize: 16),),
                       subtitle: Text('Date: 27th may 2023'),
                     ),
