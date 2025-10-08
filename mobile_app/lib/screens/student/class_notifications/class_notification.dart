@@ -1,14 +1,19 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile_app/screens/student/class_notifications/class_notifcation_details.dart';
 import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
 
-class SchoolFeesHistoryScreen extends StatelessWidget{
-  const SchoolFeesHistoryScreen({super.key});
+class ClassNotificationScreen extends StatelessWidget{
+  const ClassNotificationScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+
+    void openEditOverlay(){
+      showModalBottomSheet(useSafeArea: true, isScrollControlled: true, context: context, builder: (ctx) => ClassNotificationDetails());
+    }
     
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     final customColors = Theme.of(context).extension<CustomColors>()!;
@@ -16,14 +21,12 @@ class SchoolFeesHistoryScreen extends StatelessWidget{
       key: scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back,),
           onPressed: () => context.pop(),
         ),
-        title: Text('Fees History',  style: TextStyle(fontSize: 18),),
+        title: Text('Class Notifications', style: TextStyle(fontSize: 18)),
         actions: [
-          IconButton(onPressed: (){
-            context.push('/student/pay-fees');
-          }, icon: Icon(Icons.attach_money)),
+
           IconButton(
             icon: Icon(Icons.menu,),
             onPressed: () {
@@ -63,16 +66,48 @@ class SchoolFeesHistoryScreen extends StatelessWidget{
               style: TextStyle(fontSize: 14.0), // smaller text
             ),
 
-            SizedBox(height: 15,),
+            SizedBox(height: 24,),
 
-            Align(
-              alignment: Alignment.center,
-              child: Card(
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Text('Transaction History', style: TextStyle(fontSize: 20),),
+            Row(
+              spacing: 10,
+              children: [
+                GestureDetector(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Theme.of(context).colorScheme.primary
+                    ),
+                  
+                    child: Text('All'),
+                  ),
                 ),
-              ),
+
+
+                GestureDetector(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: customColors.lightBorder
+                    ),
+                    child: Text('Read'),
+                  ),
+                ),
+
+                GestureDetector(
+                  child: Container(
+                    padding: EdgeInsets.symmetric(vertical: 10, horizontal: 20),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      color: customColors.lightBorder
+                    ),
+                    child: Text('Unread 20+'),
+                  ),
+                ),
+
+                
+              ],
             ),
 
             SizedBox(height: 15,),
@@ -91,40 +126,15 @@ class SchoolFeesHistoryScreen extends StatelessWidget{
                       
                     ),
                     child: ListTile(
-                      onTap: (){
-                        context.push('/student/fees-history/detail');
-                      },
+                      onTap: openEditOverlay,
                       contentPadding: EdgeInsets.zero,
                       leading: CircleAvatar(
-                        backgroundColor: customColors.successful,
-                        child: Icon(Icons.check,  color: Colors.white,),
+                        backgroundColor: customColors.lightBorder,
+                        child: Icon(Icons.notifications,),
                       ),
-                      title: Text('School Fess'),
-                      trailing: Text('4000 NGN', style: TextStyle(fontSize: 14),),
-                      subtitle: Text('Date: 27th may 2023'),
-                    ),
-                  ),
-
-
-                  Container(     
-                    decoration: BoxDecoration(
-                      border: Border(
-                        bottom: BorderSide(
-                          color: customColors.lightBorder,
-                          width: 1.0
-                        )
-                      )
-                      
-                    ),
-                    child: ListTile(
-                      contentPadding: EdgeInsets.zero,
-                      leading: CircleAvatar(
-                        backgroundColor: customColors.declined,
-                        child: Icon(Icons.cancel_outlined, color: Colors.white,),
-                      ),
-                      title: Text('P.T.A'),
-                      trailing: Text('4000 NGN', style: TextStyle(fontSize: 14),),
-                      subtitle: Text('Date: 27th may 2023'),
+                      title: Text('Christmas Event'),
+                      trailing: Text('25m ago', style: TextStyle(color: customColors.lightText),),
+                      subtitle: Text('Christmas event to be hold on the 10th of jan 2023 \nPosted by: Iseghohimhen efua', style: TextStyle(color: customColors.lightText)),
                     ),
                   ),
 
@@ -140,19 +150,20 @@ class SchoolFeesHistoryScreen extends StatelessWidget{
                       
                     ),
                     child: ListTile(
+                      onTap: openEditOverlay,
                       contentPadding: EdgeInsets.zero,
                       leading: CircleAvatar(
-                        backgroundColor: customColors.pending,
-                        child: Icon(Icons.hourglass_top,  color: Colors.white,),
+                        backgroundColor: customColors.lightBorder,
+                        child: Icon(Icons.notifications,),
                       ),
-                      title: Text('P.T.A'),
-                      trailing: Text('4000 NGN', style: TextStyle(fontSize: 14),),
-                      subtitle: Text('Date: 27th may 2023'),
+                      title: Text('Christmas Event'),
+                      trailing: Text('25m ago', style: TextStyle(color: customColors.lightText),),
+                      subtitle: Text('Christmas event to be hold on the 10th of jan 2023 \nPosted by: Iseghohimhen efua', style: TextStyle(color: customColors.lightText)),
                     ),
                   ),
 
 
-                  Container(     
+                  Container(
                     decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
@@ -163,18 +174,20 @@ class SchoolFeesHistoryScreen extends StatelessWidget{
                       
                     ),
                     child: ListTile(
+                      onTap: openEditOverlay,
                       contentPadding: EdgeInsets.zero,
                       leading: CircleAvatar(
-                        backgroundColor: customColors.declined,
-                        child: Icon(Icons.cancel_outlined, color: Colors.white,),
+                        backgroundColor: customColors.lightBorder,
+                        child: Icon(Icons.notifications,),
                       ),
-                      title: Text('P.T.A'),
-                      trailing: Text('4000 NGN', style: TextStyle(fontSize: 14),),
-                      subtitle: Text('Date: 27th may 2023'),
+                      title: Text('Christmas Event'),
+                      trailing: Text('25m ago', style: TextStyle(color: customColors.lightText),),
+                      subtitle: Text('Christmas event to be hold on the 10th of jan 2023 \nPosted by: Iseghohimhen efua', style: TextStyle(color: customColors.lightText)),
                     ),
                   ),
 
-                  Container(     
+
+                  Container(
                     decoration: BoxDecoration(
                       border: Border(
                         bottom: BorderSide(
@@ -185,14 +198,38 @@ class SchoolFeesHistoryScreen extends StatelessWidget{
                       
                     ),
                     child: ListTile(
+                      onTap: openEditOverlay,
                       contentPadding: EdgeInsets.zero,
                       leading: CircleAvatar(
-                        backgroundColor: customColors.pending,
-                        child: Icon(Icons.hourglass_bottom, color: Colors.white,),
+                        backgroundColor: customColors.lightBorder,
+                        child: Icon(Icons.notifications,),
                       ),
-                      title: Text('P.T.A'),
-                      trailing: Text('4000 NGN', style: TextStyle(fontSize: 14),),
-                      subtitle: Text('Date: 27th may 2023'),
+                      title: Text('Christmas Event'),
+                      trailing: Text('25m ago', style: TextStyle(color: customColors.lightText),),
+                      subtitle: Text('Christmas event to be hold on the 10th of jan 2023 \nPosted by: Iseghohimhen efua', style: TextStyle(color: customColors.lightText)),
+                    ),
+                  ),
+
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(
+                          color: customColors.lightBorder,
+                          width: 1.0
+                        )
+                      )
+                      
+                    ),
+                    child: ListTile(
+                      onTap: openEditOverlay,
+                      contentPadding: EdgeInsets.zero,
+                      leading: CircleAvatar(
+                        backgroundColor: customColors.lightBorder,
+                        child: Icon(Icons.notifications,),
+                      ),
+                      title: Text('Christmas Event'),
+                      trailing: Text('25m ago', style: TextStyle(color: customColors.lightText),),
+                      subtitle: Text('Christmas event to be hold on the 10th of jan 2023 \nPosted by: Iseghohimhen efua', style: TextStyle(color: customColors.lightText)),
                     ),
                   ),
                 ],

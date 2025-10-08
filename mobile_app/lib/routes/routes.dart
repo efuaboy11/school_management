@@ -10,10 +10,15 @@ import 'package:mobile_app/screens/student/assignment/assignment_details.dart';
 import 'package:mobile_app/screens/student/assignment_submission/assigment_submission.dart';
 import 'package:mobile_app/screens/student/assignment_submission/assignment_submission_details.dart';
 import 'package:mobile_app/screens/student/assignment_submission/submit_assignment.dart';
-import 'package:mobile_app/screens/student/bills/add_school_fees/step1.dart';
+import 'package:mobile_app/screens/student/bills/add_bills/step1.dart';
 import 'package:mobile_app/screens/student/bills/bill_details.dart';
 import 'package:mobile_app/screens/student/bills/history.dart';
+import 'package:mobile_app/screens/student/class_notifications/class_notification.dart';
+import 'package:mobile_app/screens/student/class_timetable/class_timetable.dart';
+import 'package:mobile_app/screens/student/general_notification/general_notification.dart';
 import 'package:mobile_app/screens/student/home.dart';
+import 'package:mobile_app/screens/student/scheme_of_work/scheme_of_work.dart';
+import 'package:mobile_app/screens/student/scheme_of_work/select_term_scheme.dart';
 import 'package:mobile_app/screens/student/school_fees/add_school_fees/step1.dart';
 import 'package:mobile_app/screens/student/school_fees/fee_details.dart';
 import 'package:mobile_app/screens/student/school_fees/history.dart';
@@ -173,6 +178,52 @@ final GoRouter appRouter = GoRouter(
       pageBuilder:(context, state) => MaterialPage(
         key: state.pageKey,
         child: SubmitAssignmentScreen()
+      ),
+    ),
+
+    GoRoute(
+      path: '/student/class-timetable',
+      name: 'student-class-timetable',
+      pageBuilder:(context, state) => MaterialPage(
+        key: state.pageKey,
+        child: ClassTimeTableScreen()
+      ),
+    ),
+
+    GoRoute(
+      path: '/student/scheme/select-term',
+      name: 'student-scheme-selct-term',
+      pageBuilder:(context, state) => MaterialPage(
+        key: state.pageKey,
+        child: SelectTermSchemeScreen()
+      ),
+    ),
+
+    GoRoute(
+      path: '/student/scheme',
+      name: 'student-scheme',
+      pageBuilder:(context, state) => MaterialPage(
+        key: state.pageKey,
+        child: SchemeOfWorkScreen()
+      ),
+    ),
+
+    GoRoute(
+      path: '/student/notification',
+      name: 'student-notification',
+      pageBuilder:(context, state) => MaterialPage(
+        key: state.pageKey,
+        child: GeneralNotificationScreen()
+      ),
+    ),
+
+
+    GoRoute(
+      path: '/student/class-notification',
+      name: 'student-class-notification',
+      pageBuilder:(context, state) => MaterialPage(
+        key: state.pageKey,
+        child: ClassNotificationScreen()
       ),
     ),
 

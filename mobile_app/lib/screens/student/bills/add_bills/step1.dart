@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile_app/screens/student/bills/add_school_fees/step2.dart';
+import 'package:mobile_app/screens/student/bills/add_bills/step2.dart';
 // import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
 

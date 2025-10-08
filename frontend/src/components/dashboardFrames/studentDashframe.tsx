@@ -587,7 +587,7 @@ const StudentFrame = () => {
 
             </li> 
 
-            {/* <li className=" pb-4">
+            <li className=" pb-4">
               <div className="row">
                 <div className="col-8 ps-4">
                   <div className="d-flex ">
@@ -601,9 +601,9 @@ const StudentFrame = () => {
                 </div>
               </div>
               
-            </li> */}
+            </li>
 
-            <li className=" pb-4">
+            {/* <li className=" pb-4">
               <div className="row">
                 <div className="col-8 ps-4">
                   <div className="d-flex ">
@@ -617,7 +617,7 @@ const StudentFrame = () => {
                 </div>
               </div>
               
-            </li>
+            </li> */}
 
             <li className=" pb-4">
               <div className="row">
