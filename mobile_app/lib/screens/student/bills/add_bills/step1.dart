@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile_app/screens/student/bills/add_bills/step2.dart';
 // import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
+import 'package:mobile_app/widgets/student/menu.dart';
 
 class BillPaymentScreen extends StatefulWidget{
   const BillPaymentScreen({super.key});
@@ -49,11 +50,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
       ),
 
       drawer: Drawer(
-        child: Column(
-          children: [
-            Text('data')
-          ],
-        ),
+        child: MenuBarWidget()
       ),
 
       body:

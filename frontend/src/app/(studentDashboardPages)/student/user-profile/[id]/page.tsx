@@ -248,57 +248,6 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
   }
 
 
-  const deleteSchoolFeesFunction = async () =>{
-    setDisableButton(true)
-    setLoader(true)
-
-    try{
-      let response = await fetch('http://127.0.0.1:8000/api/delete-multiple-payment-school-fees/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${authTokens?.access}`,
-        },
-        body: JSON.stringify({
-          ids: selectedIDs,
-        }),
-
-      })
-
-      if(response.ok){
-        setLoader(false)
-        setDisableButton(false)
-        setSchoolFeesPaymentData(schoolFeesPaymentData.filter(dat => dat.id !== selectedIDs))
-        setSchoolFeesDeleteModal(false)
-        setSelectedIDs([])
-        setMessage("Data entry deleted successfully")
-        IndividualSchoolFeesPaymentFunction()
-        showAlert()
-        setIsSuccess(true)
-        
-          
-      }else {
-        const errorData = await response.json()
-        const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
-
-        setLoader(false)
-        setDisableButton(false)
-        setMessage(errorMessages)
-        showAlert()
-        setIsSuccess(false)
-
-      }
-    }catch(error){
-      setLoader(false)
-      setDisableButton(false)
-      setMessage("An error occurred. Please try again.")
-      showAlert()
-      setIsSuccess(false)
-    }
-  }
-
 
 
   useEffect(() =>{
@@ -369,11 +318,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
   } = useForm<any>();
 
 
-  const {
-   register: registerSchoolInformation,
-    handleSubmit: handleSubmitSchoolInformation,
-    formState: { errors: errorsSchoolInformation, isValid: isValidSchoolInformation },
-  } = useForm<any>();
+
 
   const {
    register: registerContactInformation,
@@ -386,11 +331,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
     EditPersonalInformation(e)
 
   }
-
-  const onSchoolInformationSubmit = (data: any, e:any) => {
-    EditSchoolInformation(e)
-
-  }
+  
   const onContactInformationSubmit = (data: any, e:any) => {
     EditContactInformation(e)
 
@@ -462,59 +403,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
     }  
   }
 
-  const EditSchoolInformation = async(e:any) =>{
-    e.preventDefault()
-    setLoader(true)
 
-    const formData = new FormData()
-
-    formData.append('student_class', studentClass)
-    formData.append('admission_number', admissionNumber)
-
-
-
-    try{
-      const response = await fetch(`http://127.0.0.1:8000/api/students/${id}/`, {
-        method: 'PATCH',
-        body: formData,
-        headers:{
-          Authorization: `Bearer ${authTokens?.access}`
-        }
-      })
-
-
-      if(response.ok){
-        showAlert()
-        setMessage('Details updated successfully')
-        setIsSuccess(true)
-        setShowSchoolInformationModal(false)
-        IndividualUserDataFunction()
-        setLoader(false)
-        setDisableButton(false)
-
-      }else{
-        const errorData = await response.json()
-        const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
-        setMessage(errorMessages)
-        setDisableButton(false)
-        setIsSuccess(false)
-        setLoader(false)
-        showAlert()
-      }
-
-      
-    }catch(error){
-      console.log(error)
-      showAlert()
-      setMessage('An unexpected error occurred.');
-      setDisableButton(false)
-      setIsSuccess(false)
-      setLoader(false)
-
-    }  
-  }
 
   const EditContactInformation = async(e:any) =>{
     e.preventDefault()
@@ -709,69 +598,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
       )}
 
 
-      {showSchoolInformationModal && (
-        <section className={` ${showSchoolInformationModal ? 'overlay-background' : ''}`}>
-          <div className='container-lg'>
-              
-            <div className=" row justify-content-center align-center2 height-90vh">
-
-                <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
-                  <div className="site-modal-conatiner">
-                    <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
-                      <div>
-                        <div className="d-flex justify-content-between pb-2">
-                          <p className='font-size-20px '>Edit School Profile</p>
-                          <div onClick={handleCloseStudentInformationModal} className='cursor-pointer'>
-                            <i className="ri-close-line md-text"></i>
-                          </div>
-                        </div>
-          
-
-                        <div className='pt-4'>
-                          <form onSubmit={handleSubmitSchoolInformation(onSchoolInformationSubmit)}>
-                            <div className="row g-3">
-                              <div className="col-md-12">
-                                <label htmlFor="firstName" className="form-label">Student Class</label>
-                                <select   className={`site-input ${errorsSchoolInformation.studentClass ? 'error-input' : ''}`} {...registerSchoolInformation('studentClass', {required: true})}  value={studentClass}  onChange={(e) => setStudentClass(e.target.value)}>
-                                  <option value="">Select</option>
-                                  {studentClassData.map((data:any) => (
-                                    <option key={data.id} value={data.id}>{data.name}</option>
-                                  ))}
-                                </select>
-                                {/* <input type="text" className={`site-input ${errorsSchoolInformation.studentClass ? 'error-input' : ''}`} {...registerSchoolInformation('studentClass', {required: true})}  value={studentClass}  onChange={(e) => setStudentClass(e.target.value)}  placeholder='Class' />
-                                {errorsSchoolInformation.studentClass && <p className="error-text">This field is required</p>} */}
-                              </div>
-
-                              <div className="col-md-12">
-                                <label htmlFor="lastName" className="form-label">Admission Number </label>
-                                <input type="text"  className={`site-input ${errorsSchoolInformation.admissionNumber ? 'error-input' : ''}`} {...registerSchoolInformation('admissionNumber', {required: true})}  value={admissionNumber}  onChange={(e) => setAdmissionNumber(e.target.value)} placeholder='Admission Number' />
-                              </div>
-
-                              <div className="col-12 mt-4">
-                                <button type='submit' className='site-btn px-4'>
-                                  <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                                  <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill pe-2"></i> Sumbit</span>
-                                </button>
-                            
-                              </div>
-                            </div>
-
-                          </form>
-                        </div>
-                        
-                      </div>
-                    
-                    </div>
-                  </div>
-                </div>
-            
-
-            </div>
-
-          </div>
-        </section>
-      )}
-
+     
 
       {showContactInformationModal && (
         <section className={` ${showContactInformationModal ? 'overlay-background' : ''}`}>
@@ -844,40 +671,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
       )}
 
 
-      {schoolFeesDeleteModal && (
-        <section className={` ${schoolFeesDeleteModal ? 'overlay-background' : ''}`}>
-          <div className='container-lg'>
-              
-            <div className=" row justify-content-center align-center2 height-90vh">
-
-                <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
-                  <div className="site-modal-conatiner">
-                    <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
-                      <div className="d-flex justify-content-center text-center">
-                        <div>
-                          <Image src="/img/icon/warning.png" alt="empty" width={100} height={100} />
-                          <p className='md-text mt-3'>Are you sure?</p>
-                          <p className="light-text">This action cannot be undone. {selectedIDs.length} selected {selectedIDs.length === 1 ? 'data entry' : 'data entries'} will be deleted.</p>
-                          <div className='pt-4'>
-                            <button className="site-delete-btn px-3 me-2 width-100 mb-4" onClick={deleteSchoolFeesFunction} disabled={disableButton}>
-                              <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                              <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-delete-bin-line pe-2"></i> Delete</span>
-                            </button>
-                            <button onClick={handleCloseSchoolFeesDeleteModal} className="site-btn site-cancel-btn px-3 width-100"><i className="ri-close-circle-line pe-2"></i>Cancel</button>
-                          </div>
-                        </div>
-                      </div>
-                    
-                    </div>
-                  </div>
-                </div>
-            
-
-            </div>
-
-          </div>
-        </section>
-      )}
+      
 
       {Loading ? (
         <div>
@@ -991,9 +785,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
                     <div className='p-3 border-bottom1 justify-content-between d-flex align-center'>
                       <p>School Information</p>
 
-                      <div>
-                        <button onClick={handleShowStudentInformationModal} className='site-inverse-btn px-3'><i className="ri-edit-line me-2"></i>Edit</button>
-                      </div>
+                      
                     </div>
                     
                     <div className='p-3'>

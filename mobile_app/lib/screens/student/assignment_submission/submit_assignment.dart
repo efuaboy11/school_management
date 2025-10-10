@@ -7,6 +7,7 @@ import 'package:mobile_app/widgets/student/tabs.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:path/path.dart' as path;
+import 'package:mobile_app/widgets/student/menu.dart';
 
 class SubmitAssignmentScreen extends StatefulWidget{
   const SubmitAssignmentScreen({super.key});
@@ -137,11 +138,7 @@ class _SubmitAssignmentScreenState extends State<SubmitAssignmentScreen> {
       ),
 
       drawer: Drawer(
-        child: Column(
-          children: [
-            Text('data')
-          ],
-        ),
+        child: MenuBarWidget()
       ),
 
       body:
@@ -262,7 +259,7 @@ class _SubmitAssignmentScreenState extends State<SubmitAssignmentScreen> {
 
                                   TextFormField(
                                     textAlignVertical: TextAlignVertical.top,
-                                    maxLines: 5, // Makes it a text area with 5 lines height
+                                    maxLines: 10, // Makes it a text area with 5 lines height
                                     keyboardType: TextInputType.multiline,
                                     decoration: InputDecoration(
                                       hintText: 'Submission note',

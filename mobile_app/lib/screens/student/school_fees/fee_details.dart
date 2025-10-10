@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
+import 'package:mobile_app/widgets/student/menu.dart';
 
 class SchoolFeesDetailScreen extends StatelessWidget{
   const SchoolFeesDetailScreen({super.key});
@@ -37,11 +38,7 @@ class SchoolFeesDetailScreen extends StatelessWidget{
       ),
 
       drawer: Drawer(
-        child: Column(
-          children: [
-            Text('data')
-          ],
-        ),
+        child: MenuBarWidget()
       ),
 
       body:Padding(

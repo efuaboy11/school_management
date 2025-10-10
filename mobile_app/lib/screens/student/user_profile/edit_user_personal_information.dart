@@ -1,28 +1,21 @@
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_app/theme.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
-import 'package:path/path.dart' as path;
 
-class EditAssignmentScreen extends StatefulWidget{
-  const EditAssignmentScreen({super.key});
+class EditUserPersonalInformation extends StatefulWidget{
+  const EditUserPersonalInformation({super.key});
 
   @override
-  State<EditAssignmentScreen> createState() => _EditAssignmentScreenState();
+  State<EditUserPersonalInformation> createState() => _EditUserPersonalInformationState();
 }
 
-class _EditAssignmentScreenState extends State<EditAssignmentScreen> {
-  String? selectedTeacher;
-  String? selectedSubject;
-  String? assignemtCode;
-  String? submissionNote;
-  String? assignmentImage;
-  String? assignmentFile;
+class _EditUserPersonalInformationState extends State<EditUserPersonalInformation> {
+  String? selectedDisability;
   File? selectedImage;
-  File? selectedFile;
+  
 
 
   void _getPicture(String method) async{
@@ -45,17 +38,7 @@ class _EditAssignmentScreenState extends State<EditAssignmentScreen> {
   }
 
 
-  void _pickFile() async {
-    final result = await FilePicker.platform.pickFiles();
-
-    if(result == null && result!.files.single.path == null){
-      return;
-    }
-    setState(() {
-      selectedFile = File(result.files.single.path!);
-    });
-    
-  }
+  
 
 
   @override
@@ -87,29 +70,6 @@ class _EditAssignmentScreenState extends State<EditAssignmentScreen> {
 
     }
 
-
-
-    Widget fileContent = Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      spacing: 10,
-      children: [
-        Icon(Icons.insert_drive_file),
-        Text('Select File')
-      ],
-    );
-
-    if(selectedFile != null){
-      fileContent = Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      spacing: 10,
-      children: [
-        Icon(Icons.insert_drive_file),
-        Text(path.basename(selectedFile!.path),)
-      ],
-    );
-
-    }
-
     return SingleChildScrollView(
       child: Padding(
         padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 5),
@@ -133,88 +93,9 @@ class _EditAssignmentScreenState extends State<EditAssignmentScreen> {
                   child: Column(
                     spacing: 20,
                     children: [
-                      DropdownButtonFormField(
-                        hint: Text("Select Teacher"),
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
-                          
-                          prefixIcon: Icon(Icons.person),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          
-                          
-                        ),
-                        
-                        validator: (value){
-                          if(value == null){
-                            return 'Please select a teacher';
-                          }
-                          return null;
-                        },
-                        value: selectedTeacher,
-                        items: [
-                          DropdownMenuItem(
-                            value: 'mr frank',
-                            child: Text('Mr Frank')
-                          ),
-            
-                          DropdownMenuItem(
-                            value: 'mrs joy',
-                            child: Text('Mrs joy'),
-                          ),
-                        ], 
-                        onChanged: (value){
-                          setState(() {
-                            selectedTeacher = value;
-                          });
-                        }
-                      ),
-            
-                      DropdownButtonFormField(
-                        hint: Text("Select Subject"),
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
-                          prefixIcon: Icon(Icons.book),
-                          
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12.0),
-                          ),
-                          
-                          
-                        ),
-                        
-                        validator: (value){
-                          if(value == null){
-                            return 'Please select a fee type';
-                          }
-                          return null;
-                        },
-            
-                        value: selectedSubject,
-                        items: [
-                          DropdownMenuItem(
-                            value: 'Mathematics',
-                            child: Text('Mathematics')
-                          ),
-            
-                          DropdownMenuItem(
-                            value: 'English',
-                            child: Text('English'),
-                          ),
-                        ], 
-                        onChanged: (value){
-                          setState(() {
-                            selectedSubject = value;
-                          });
-                        }
-                      ),
-
-
                       TextFormField(
                         decoration: InputDecoration(
-                          hintText: 'Assignment code',
-                          prefixIcon: Icon(Icons.code), // You can change this icon
+                          hintText: 'Enter first name', 
                           contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.0),
@@ -222,7 +103,25 @@ class _EditAssignmentScreenState extends State<EditAssignmentScreen> {
                         ),
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter assignment code';
+                            return 'Please enter first name';
+                          }
+                          return null;
+                        },
+                        
+                      ),
+
+
+                      TextFormField(
+                        decoration: InputDecoration(
+                          hintText: 'Enter last name', 
+                          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter last name';
                           }
                           return null;
                         },
@@ -230,11 +129,155 @@ class _EditAssignmentScreenState extends State<EditAssignmentScreen> {
                       ),
 
                       TextFormField(
+                        decoration: InputDecoration(
+                          hintText: 'Enter email', 
+                          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter email';
+                          }
+                          return null;
+                        },
+                        
+                      ),
+
+                      TextFormField(
+                        decoration: InputDecoration(
+                          hintText: 'Enter D.O.B', 
+                          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter D.O.B';
+                          }
+                          return null;
+                        },
+                        
+                      ),
+
+
+                      TextFormField(
+                        decoration: InputDecoration(
+                          hintText: 'Enter Gender', 
+                          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter gender';
+                          }
+                          return null;
+                        },
+                        
+                      ),
+
+
+                      TextFormField(
+                        decoration: InputDecoration(
+                          hintText: 'Enter Father name', 
+                          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter father name';
+                          }
+                          return null;
+                        },
+                        
+                      ),
+
+                      TextFormField(
+                        decoration: InputDecoration(
+                          hintText: 'Enter Mother name', 
+                          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter mother name';
+                          }
+                          return null;
+                        },
+                        
+                      ),
+
+                      TextFormField(
+                        decoration: InputDecoration(
+                          hintText: 'Enter Religion', 
+                          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                          ),
+                        ),
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter email';
+                          }
+                          return null;
+                        },
+                        
+                      ),
+
+
+                      DropdownButtonFormField(
+                        hint: Text("Any Disability"),
+                        decoration: InputDecoration(
+                          contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
+                          
+                          
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12.0),
+                            ),
+                          
+                          
+                        ),
+                        
+                        validator: (value){
+                          if(value == null){
+                            return 'Please select session';
+                          }
+                          return null;
+                        },
+            
+                        value: selectedDisability,
+                        items: [
+                          DropdownMenuItem(
+                            value: 'yes',
+                            child: Text('Yes')
+                          ),
+            
+                          DropdownMenuItem(
+                            value: 'no',
+                            child: Text('No'),
+                          ),
+                        ], 
+                        onChanged: (value){
+                          setState(() {
+                            selectedDisability = value;
+                          });
+                        }
+                      ),
+
+                      TextFormField(
                         textAlignVertical: TextAlignVertical.top,
                         maxLines: 5, // Makes it a text area with 5 lines height
                         keyboardType: TextInputType.multiline,
                         decoration: InputDecoration(
-                          hintText: 'Submission note',
+                          hintText: 'Diability note',
                           contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12.0),
@@ -274,23 +317,7 @@ class _EditAssignmentScreenState extends State<EditAssignmentScreen> {
                         ), // or use any widget as the trigger
                       ),
 
-                      GestureDetector(
-                        onTap: _pickFile,
-                        child: Container(
-                          width: double.infinity,
-                          
-                          decoration: BoxDecoration(
-                            color: customColors.lightBorder
-                          ),
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 50),
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: fileContent
-                            ),
-                          ),
-                        ), 
-                      ),
+                      
 
 
             
@@ -302,7 +329,7 @@ class _EditAssignmentScreenState extends State<EditAssignmentScreen> {
                           onPressed: () {
                             // context.push('/student/pay-2');
                             // Navigator.of(context).push(
-                            //   MaterialPageRoute(builder: (ctx) => EditAssignmentScreenTwo())
+                            //   MaterialPageRoute(builder: (ctx) => EditUserPersonalInformationTwo())
                             // );
                           },
                           style: ElevatedButton.styleFrom(
@@ -318,6 +345,8 @@ class _EditAssignmentScreenState extends State<EditAssignmentScreen> {
                           ),
                         ),
                       ),
+                      
+                      SizedBox(height: 40,),
                     ],
                   )
                 )

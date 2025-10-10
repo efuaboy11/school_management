@@ -11,8 +11,8 @@ class StudentTab extends StatelessWidget {
     int currentIndex = 0;
     if (location.startsWith('/student/home')) currentIndex = 0;
     if (location.startsWith('/store')) currentIndex = 1;
-    if (location.startsWith('/help')) currentIndex = 2;
-    if (location.startsWith('/profile')) currentIndex = 3;
+    if (location.startsWith('/student/help')) currentIndex = 2;
+    if (location.startsWith('/student/user-profile')) currentIndex = 3;
 
     return BottomNavigationBar(
       type: BottomNavigationBarType.fixed,
@@ -26,10 +26,10 @@ class StudentTab extends StatelessWidget {
             context.go('/login');
             break;
           case 2:
-            context.go('/student/fees-history');
+            context.push('/student/help');
             break;
           case 3:
-            context.go('/profile');
+            context.go('/student/user-profile');
             break;
         }
       },

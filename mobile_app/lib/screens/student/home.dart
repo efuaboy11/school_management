@@ -5,6 +5,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/carousel.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:mobile_app/widgets/student/menu.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
 
 
@@ -49,16 +50,14 @@ class StudentHomeScreen extends StatelessWidget {
     return Scaffold(
       key: scaffoldKey,
       drawer: Drawer(
-        child: Column(
-          children: [
-            Text('data')
-          ],
-        ),
+        child: MenuBarWidget()
       ),
 
       appBar: AppBar(
         centerTitle: true,
-        leading: IconButton(onPressed: (){}, icon: Icon(Icons.person_3_rounded), color: customColors.lightText,),
+        leading: IconButton(onPressed: (){
+          context.go('/student/user-profile');
+        }, icon: Icon(Icons.person_3_rounded), color: customColors.lightText,),
         title: Text('Good Afternoon', style: TextStyle(fontSize: 15,)),
 
         actions: [
@@ -166,10 +165,10 @@ class StudentHomeScreen extends StatelessWidget {
                                     buildGridItem(context, Icons.money, 'Pay fees', '/student/fees-history', itemWidth),
                                     buildGridItem(context, Icons.monetization_on, 'Pay Bill', '/student/bills-history', itemWidth,  iconColor: Theme.of(context).colorScheme.tertiary),
                                     buildGridItem(context, Icons.book_rounded, 'Assignment', '/student/assignment', itemWidth,  iconColor: Theme.of(context).colorScheme.secondary),
-                                    buildGridItem(context, Icons.assessment, 'Result', '/student/assignment-submission', itemWidth),
+                                    buildGridItem(context, Icons.assessment, 'Result', '/student/check-result', itemWidth),
                                     buildGridItem(context, Icons.monetization_on, 'Scheme', '/student/scheme/select-term', itemWidth, iconColor: Colors.orange),
                                     buildGridItem(context, Icons.calendar_today, 'Timetable', '/student/class-timetable', itemWidth, iconColor: Colors.orange),
-                                    buildGridItem(context, Icons.event, 'Events', '', itemWidth),
+                                    buildGridItem(context, Icons.event, 'Events', '/student/school-event', itemWidth),
                                     buildGridItem(context, Icons.notifications, 'Notice', '/student/class-notification', itemWidth),
                                   ],
                                 );

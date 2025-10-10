@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:mobile_app/theme.dart';
+import 'package:mobile_app/widgets/student/menu.dart';
 
 class AssignmentDetailsScreen extends StatelessWidget{
   const AssignmentDetailsScreen({super.key});
@@ -40,11 +41,7 @@ class AssignmentDetailsScreen extends StatelessWidget{
       ),
 
       drawer: Drawer(
-        child: Column(
-          children: [
-            Text('data')
-          ],
-        ),
+        child: MenuBarWidget()
       ),
 
       body:

@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:mobile_app/theme.dart';
+import 'package:mobile_app/widgets/student/menu.dart';
 
 class SchoolFeesPaymentScreenTwo extends StatelessWidget{
   const SchoolFeesPaymentScreenTwo({super.key});
@@ -251,11 +252,7 @@ class SchoolFeesPaymentScreenTwo extends StatelessWidget{
       ),
 
       drawer: Drawer(
-        child: Column(
-          children: [
-            Text('data')
-          ],
-        ),
+        child: MenuBarWidget()
       ),
 
       body:

@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 // import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
+import 'package:mobile_app/widgets/student/menu.dart';
 
 class ClassTimeTableScreen extends StatelessWidget{
   const ClassTimeTableScreen({super.key});
@@ -36,11 +37,7 @@ class ClassTimeTableScreen extends StatelessWidget{
       ),
 
       drawer: Drawer(
-        child: Column(
-          children: [
-            Text('data')
-          ],
-        ),
+        child: MenuBarWidget()
       ),
 
       body:Padding(

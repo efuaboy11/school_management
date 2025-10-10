@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
 import 'package:mobile_app/screens/student/general_notification/general_notifcation_details.dart';
+import 'package:mobile_app/widgets/student/menu.dart';
 
 class GeneralNotificationScreen extends StatelessWidget{
   const GeneralNotificationScreen({super.key});
@@ -41,11 +42,7 @@ class GeneralNotificationScreen extends StatelessWidget{
       ),
 
       drawer: Drawer(
-        child: Column(
-          children: [
-            Text('data')
-          ],
-        ),
+        child: MenuBarWidget()
       ),
 
       body:Padding(

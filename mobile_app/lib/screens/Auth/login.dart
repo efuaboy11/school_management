@@ -20,17 +20,8 @@ class _LoginScreenState extends State<LoginScreen> {
   }
   @override
   Widget build(BuildContext context) {
-   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
 
     return Scaffold(
-      key: scaffoldKey,
-      drawer: Drawer(
-        child: Column(
-          children: [
-            Text('data')
-          ],
-        ),
-      ),
       body: Column(
           children: [
             // Top green curve
@@ -43,16 +34,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     color: Theme.of(context).colorScheme.primary,
                   ),
                 ),
-                Positioned(
-                  top: 70,
-                  right: 16,
-                  child: IconButton(
-                    icon: Icon(Icons.menu, color: Colors.white, size: 30),
-                    onPressed: () {
-                      scaffoldKey.currentState?.openDrawer();
-                    },
-                  ),
-                ),
+                
               ],
             ),
 

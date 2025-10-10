@@ -19,9 +19,13 @@ import 'package:mobile_app/screens/student/general_notification/general_notifica
 import 'package:mobile_app/screens/student/home.dart';
 import 'package:mobile_app/screens/student/scheme_of_work/scheme_of_work.dart';
 import 'package:mobile_app/screens/student/scheme_of_work/select_term_scheme.dart';
+import 'package:mobile_app/screens/student/school_event/school_event.dart';
 import 'package:mobile_app/screens/student/school_fees/add_school_fees/step1.dart';
 import 'package:mobile_app/screens/student/school_fees/fee_details.dart';
 import 'package:mobile_app/screens/student/school_fees/history.dart';
+import 'package:mobile_app/screens/student/check_result/check_result.dart';
+import 'package:mobile_app/screens/student/user_profile/user_profile.dart';
+import 'package:mobile_app/screens/student/help/help.dart';
 
 bool get isLoggedIn => false;
 
@@ -224,6 +228,45 @@ final GoRouter appRouter = GoRouter(
       pageBuilder:(context, state) => MaterialPage(
         key: state.pageKey,
         child: ClassNotificationScreen()
+      ),
+    ),
+
+    GoRoute(
+      path: '/student/school-event',
+      name: 'student-school-event',
+      pageBuilder:(context, state) => MaterialPage(
+        key: state.pageKey,
+        child: SchoolEventScreen()
+      ),
+    ),
+
+
+    GoRoute(
+      path: '/student/check-result',
+      name: 'student-check-result',
+      pageBuilder:(context, state) => MaterialPage(
+        key: state.pageKey,
+        child: CheckResultScreen()
+      ),
+    ),
+
+
+    GoRoute(
+      path: '/student/user-profile',
+      name: 'student-user-profile',
+      pageBuilder:(context, state) => MaterialPage(
+        key: state.pageKey,
+        child: UserProfileScreen()
+      ),
+    ),
+
+
+    GoRoute(
+      path: '/student/help',
+      name: 'student-help',
+      pageBuilder:(context, state) => MaterialPage(
+        key: state.pageKey,
+        child: HelpScreen()
       ),
     ),
 

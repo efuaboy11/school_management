@@ -1,22 +1,20 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:mobile_app/screens/student/school_fees/add_school_fees/step2.dart';
-import 'package:mobile_app/theme.dart';
-import 'package:mobile_app/widgets/student/menu.dart';
+import 'package:mobile_app/screens/student/check_result/check_resut_details.dart';
+// import 'package:mobile_app/screens/student/school_fees/add_school_fees/step2.dart';
+// import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
+import 'package:mobile_app/widgets/student/menu.dart';
 
-class SchoolFeesPaymentScreen extends StatefulWidget{
-  const SchoolFeesPaymentScreen({super.key});
+class CheckResultScreen extends StatefulWidget{
+  const CheckResultScreen({super.key});
 
   @override
-  State<SchoolFeesPaymentScreen> createState() => _SchoolFeesPaymentScreenState();
+  State<CheckResultScreen> createState() => _CheckResultScreenState();
 }
 
-class _SchoolFeesPaymentScreenState extends State<SchoolFeesPaymentScreen> {
-  String? selectedPaymentMethod;
-
-  String? selectedFeeType;
+class _CheckResultScreenState extends State<CheckResultScreen> {
   String? selectedStudentClass;
   String? selectedSession;
   String? selectedTerm;
@@ -24,7 +22,7 @@ class _SchoolFeesPaymentScreenState extends State<SchoolFeesPaymentScreen> {
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-    final customColors = Theme.of(context).extension<CustomColors>()!;
+    // final customColors = Theme.of(context).extension<CustomColors>()!;
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
@@ -34,7 +32,7 @@ class _SchoolFeesPaymentScreenState extends State<SchoolFeesPaymentScreen> {
             context.pop();
           }
         ),
-        title: Text('School Fees Payment ', style: TextStyle(fontSize: 18)),
+        title: Text('Check Result', style: TextStyle(fontSize: 18)),
         actions: [
           IconButton(
             icon: Icon(Icons.menu,),
@@ -65,19 +63,7 @@ class _SchoolFeesPaymentScreenState extends State<SchoolFeesPaymentScreen> {
                     width: double.infinity,
                     child: Column(
                       children: [
-                        Align(
-                          alignment: Alignment.center,
-                          child: Column(  
-                            children: [
-                              Text('This step is to verify the fees details and ensure they are authentic.', style: TextStyle(fontSize: 19), textAlign: TextAlign.center,),
-                              SizedBox(height: 5,),
-                              Text('Note: Please enter the verified details for the specific fee you intend to pay.', style: TextStyle(color: customColors.lightText), textAlign: TextAlign.center,),
-                              SizedBox(height: 20,),
-                  
-                            ],
-                  
-                          )
-                        ),
+
                         Card(
                           child: Padding(
                             padding: EdgeInsetsGeometry.all(18),
@@ -85,86 +71,9 @@ class _SchoolFeesPaymentScreenState extends State<SchoolFeesPaymentScreen> {
                             child: Form(
                               child: Column(
                                 spacing: 20,
-                                children: [
+                                children: [                       
                                   DropdownButtonFormField(
-                                    hint: Text("Select payment method"),
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
-                                      
-                                      prefixIcon: Icon(Icons.payment),
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(12.0),
-                                      ),
-                                      
-                                      
-                                    ),
-                                    
-                                    validator: (value){
-                                      if(value == null){
-                                        return 'Please select a payment method';
-                                      }
-                                      return null;
-                                    },
-                                    value: selectedPaymentMethod,
-                                    items: [
-                                      DropdownMenuItem(
-                                        value: 'cash',
-                                        child: Text('Cash payment')
-                                      ),
-                        
-                                      DropdownMenuItem(
-                                        value: 'card',
-                                        child: Text('Card payment'),
-                                      ),
-                                    ], 
-                                    onChanged: (value){
-                                      setState(() {
-                                        selectedPaymentMethod = value;
-                                      });
-                                    }
-                                  ),
-                        
-                                  DropdownButtonFormField(
-                                    hint: Text("Select fee type"),
-                                    decoration: InputDecoration(
-                                      contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
-                                      
-                                      
-                                      border: OutlineInputBorder(
-                                        borderRadius: BorderRadius.circular(12.0),
-                                      ),
-                                      
-                                      
-                                    ),
-                                    
-                                    validator: (value){
-                                      if(value == null){
-                                        return 'Please select a fee type';
-                                      }
-                                      return null;
-                                    },
-                        
-                                    value: selectedFeeType,
-                                    items: [
-                                      DropdownMenuItem(
-                                        value: 'school_fees',
-                                        child: Text('School Fees')
-                                      ),
-                        
-                                      DropdownMenuItem(
-                                        value: 'P.T.A',
-                                        child: Text('P.T.A payment'),
-                                      ),
-                                    ], 
-                                    onChanged: (value){
-                                      setState(() {
-                                        selectedFeeType = value;
-                                      });
-                                    }
-                                  ),
-                        
-                                  DropdownButtonFormField(
-                                    hint: Text("Select student class"),
+                                    hint: Text("Select class"),
                                     decoration: InputDecoration(
                                       contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
                                       
@@ -284,14 +193,32 @@ class _SchoolFeesPaymentScreenState extends State<SchoolFeesPaymentScreen> {
                                     }
                                   ),
                         
+
+                                  TextFormField(
+                                    decoration: InputDecoration(
+                                      hintText: 'Scratch card pin',
+                                      prefixIcon: Icon(Icons.code), // You can change this icon
+                                      contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
+                                      border: OutlineInputBorder(
+                                        borderRadius: BorderRadius.circular(12.0),
+                                      ),
+                                    ),
+                                    validator: (value) {
+                                      if (value == null || value.isEmpty) {
+                                        return 'Please enter pin';
+                                      }
+                                      return null;
+                                    },
+                                    
+                                  ),
                                   SizedBox(
                                     width: double.infinity,
                                     height: 50,
                                     child: ElevatedButton(
                                       onPressed: () {
-                                        // context.push('/student/pay-2');
+                                        
                                         Navigator.of(context).push(
-                                          MaterialPageRoute(builder: (ctx) => SchoolFeesPaymentScreenTwo())
+                                          MaterialPageRoute(builder: (ctx) => CheckResutDetailsScreen())
                                         );
                                       },
                                       style: ElevatedButton.styleFrom(
