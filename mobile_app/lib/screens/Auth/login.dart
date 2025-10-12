@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile_app/auth_service.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -9,8 +10,45 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+    final _formkey = GlobalKey<FormState>();
   bool hidePassword = true;
   final TextEditingController _passwordController = TextEditingController();
+
+  var _enteredUsername = '';
+  var _enteredPassword = '';
+
+  bool isLoading = false;
+
+  Future<void> _login() async{
+
+    if(_formkey.currentState!.validate()){
+      isLoading = true;
+      _formkey.currentState!.save();
+      
+      final response = await AuthService.login(_enteredUsername, _enteredPassword);
+
+      if(response == 'success'){
+        
+        final role = await AuthService.getRole();
+        isLoading = false;
+        if(role == 'student'){
+          if(!mounted) return;
+          context.go('/student/home');
+        }else if(role == 'teacher'){
+          if(!mounted) return;
+          context.go('/teacher/home');
+
+        }
+      }else{
+        isLoading = false;
+        if(!mounted) return;
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(response))
+        );
+      }
+    }
+
+  }
 
   void _togglePassword() {
     setState(() {
@@ -43,110 +81,137 @@ class _LoginScreenState extends State<LoginScreen> {
               child: SingleChildScrollView(
                 padding: const EdgeInsets.symmetric(horizontal: 24.0, vertical: 10.0),
                 child: SafeArea(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Image.asset(
-                        'assets/image/logo.png',
-                        width: 120,
-                        height: 120,
+                  child: Form(
+                    key: _formkey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Image.asset(
+                          'assets/image/logo.png',
+                          width: 120,
+                          height: 120,
+                    
+                        ),
+                        SizedBox(height: 20,),
+                        const Text("Let's Sign in", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
+                        const SizedBox(height: 8),
+                        const Text("Welcome Back,\nYou've been missed!", style: TextStyle(fontSize: 18)),
+                        const SizedBox(height: 32),
+                        
+                          
+                        // Student ID
+                        TextFormField(
+                          maxLength: 25,
+                          decoration: InputDecoration(
+                            hintText: 'Username',
+                            // school_outlined
+                            suffixIcon: const Icon(Icons.person),
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                          ),
 
-                      ),
-                      SizedBox(height: 20,),
-                      const Text("Let's Sign in", style: TextStyle(fontSize: 28, fontWeight: FontWeight.bold)),
-                      const SizedBox(height: 8),
-                      const Text("Welcome Back,\nYou've been missed!", style: TextStyle(fontSize: 18)),
-                      const SizedBox(height: 32),
-                      
-                        
-                      // Student ID
-                      TextField(
-                        decoration: InputDecoration(
-                          hintText: 'Username',
-                          // school_outlined
-                          suffixIcon: const Icon(Icons.person),
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                          validator: (value){
+                            if(value == null || value.isEmpty || value.trim().length <= 1){
+                              return 'Please enter username';
+                            }
+                            return null;
+                          },
+
+                          onSaved: (value){
+                            _enteredUsername = value!;
+                          },
                         ),
-                      ),
-                      const SizedBox(height: 16),
-                        
-                      // Password
-                      TextField(
-                        obscureText: hidePassword,
-                        controller: _passwordController,
-                        decoration: InputDecoration(
-                          hintText: 'Password',
-                          suffixIcon:  GestureDetector(
-                            onTap: _togglePassword,
-                            child: Icon(Icons.lock_outline)
+                        const SizedBox(height: 16),
+                          
+                        // Password
+                        TextFormField(
+                          obscureText: hidePassword,
+                          maxLength: 25,
+                          controller: _passwordController,
+                          decoration: InputDecoration(
+                            hintText: 'Password',
+                            suffixIcon:  GestureDetector(
+                              onTap: _togglePassword,
+                              child: Icon(Icons.lock_outline)
+                            ),
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                           ),
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+
+                          validator: (value){
+                            if(value == null || value.isEmpty || value.trim().length <= 1){
+                              return 'Please enter password';
+                            }
+                            return null;
+                          },
+
+                          onSaved: (value) {
+                            _enteredPassword = value!;
+                          },
                         ),
-                      ),
-                      const SizedBox(height: 8),
-                        
-                      // Reset password
-                      Align(
-                        alignment: Alignment.centerRight,
-                        child: TextButton(
-                          onPressed: () => context.go('/forgot-password'),
-                          child: const Text("Forgot password?", style: TextStyle(color: Colors.blue)),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                        
-                      // Sign in button
-                      SizedBox(
-                        width: double.infinity,
-                        height: 50,
-                        child: ElevatedButton(
-                          onPressed: () {},
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: Theme.of(context).colorScheme.primary,
-                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        const SizedBox(height: 8),
+                          
+                        // Reset password
+                        Align(
+                          alignment: Alignment.centerRight,
+                          child: TextButton(
+                            onPressed: () => context.go('/forgot-password'),
+                            child: const Text("Forgot password?", style: TextStyle(color: Colors.blue)),
                           ),
-                          child: Text(
-                            "Sign in",
-                            style: TextStyle(
-                              fontSize: 16,
-                              color: Colors.white,
+                        ),
+                        const SizedBox(height: 16),
+                          
+                        // Sign in button
+                        SizedBox(
+                          width: double.infinity,
+                          height: 50,
+                          child: ElevatedButton(
+                            onPressed: _login,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: Theme.of(context).colorScheme.primary,
+                              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                            ),
+                            child: isLoading  ? CircularProgressIndicator()  : Text(
+                              "Sign in",
+                              style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                              ),
                             ),
                           ),
                         ),
-                      ),
-                      const SizedBox(height: 16),
-                        
-                      // Login as Parent
-                      // Center(
-                      //   child: RichText(
-                      //     text: TextSpan(
-                      //       text: 'Login as ',
-                      //       style: TextStyle(color: Colors.black),
-                      //       children: [
-                      //         TextSpan(
-                      //           text: 'Parent?',
-                      //           style: TextStyle(color: Colors.blue.shade800, fontWeight: FontWeight.bold),
-                      //         ),
-                      //       ],
-                      //     ),
-                      //   ),
-                      // ),
-                      // const SizedBox(height: 16),
-                        
-                      // Terms & Privacy
-                      Center(
-                        child: Wrap(
-                          alignment: WrapAlignment.center,
-                          children: [
-                            Text("By logging in, you agree to our ", style: TextStyle(color: Colors.grey[700])),
-                            Text("Terms & Condition", style: TextStyle(color: Colors.blue)),
-                            Text(" & ", style: TextStyle(color: Colors.grey[700])),
-                            Text("Privacy Policy", style: TextStyle(color: Colors.blue)),
-                          ],
+                        const SizedBox(height: 16),
+                          
+                        // Login as Parent
+                        // Center(
+                        //   child: RichText(
+                        //     text: TextSpan(
+                        //       text: 'Login as ',
+                        //       style: TextStyle(color: Colors.black),
+                        //       children: [
+                        //         TextSpan(
+                        //           text: 'Parent?',
+                        //           style: TextStyle(color: Colors.blue.shade800, fontWeight: FontWeight.bold),
+                        //         ),
+                        //       ],
+                        //     ),
+                        //   ),
+                        // ),
+                        // const SizedBox(height: 16),
+                          
+                        // Terms & Privacy
+                        Center(
+                          child: Wrap(
+                            alignment: WrapAlignment.center,
+                            children: [
+                              Text("By logging in, you agree to our ", style: TextStyle(color: Colors.grey[700])),
+                              Text("Terms & Condition", style: TextStyle(color: Colors.blue)),
+                              Text(" & ", style: TextStyle(color: Colors.grey[700])),
+                              Text("Privacy Policy", style: TextStyle(color: Colors.blue)),
+                            ],
+                          ),
                         ),
-                      ),
-                      SizedBox(height: 40,)
-                    ],
+                        SizedBox(height: 40,)
+                      ],
+                    ),
                   ),
                 ),
               ),

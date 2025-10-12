@@ -1,10 +1,12 @@
 // import 'package:flutter/material.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile_app/auth_service.dart';
+
 import 'package:mobile_app/screens/Auth/forgot_password.dart';
 import 'package:mobile_app/screens/Auth/forgot_password_success.dart';
 import 'package:mobile_app/screens/Auth/login.dart';
-import 'package:mobile_app/screens/home.dart';
+import 'package:mobile_app/screens/splash_screen.dart';
 import 'package:mobile_app/screens/student/assignment/assigment.dart';
 import 'package:mobile_app/screens/student/assignment/assignment_details.dart';
 import 'package:mobile_app/screens/student/assignment_submission/assigment_submission.dart';
@@ -30,14 +32,36 @@ import 'package:mobile_app/screens/student/help/help.dart';
 bool get isLoggedIn => false;
 
 final GoRouter appRouter = GoRouter(
-  initialLocation: '/student/home',
+  initialLocation: '/splash',
+  redirect: (context, state) async{
+    // final access = await AuthService.getAccessToken();
+    // final isExpired = await AuthService.isTokenExpired();
+    final role = await AuthService.getRole();
+
+    // if(access == null || isExpired){
+    //   await Future.delayed(const Duration(seconds: 5)); 
+    //   await AuthService.logout();
+    //   return "/login";
+
+    // }
+    final path = state.uri.toString();
+
+    if (role == "student" && path.startsWith("/teacher")) {
+      return "/student/dashboard";
+    }
+    if (role == "teacher" && path.startsWith("/student")) {
+      return "/teacher/dashboard";
+    }
+
+    return null;
+  },
   routes:  <GoRoute>[
     GoRoute(
-      path: '/',
-      name: 'home',
+      path: '/splash',
+      name: 'splash',
       pageBuilder: (context, state) => MaterialPage(
         key: state.pageKey,
-        child: HomeScreen()
+        child: SplashScreen()
       ),
     ),
 
