@@ -28,7 +28,12 @@ SECRET_KEY = 'django-insecure-11*&!$q2guvv22(ca6kegyym7npii(w78_yb^$x52pbe%zmvsn
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = [
+    "153.92.222.155",
+    "127.0.0.1",
+    "school.amanilightequity.com",
+
+]
 
 AUTH_USER_MODEL = 'base.Users'  # Replace 'yourapp' with the actual app name where Users is defined
 
