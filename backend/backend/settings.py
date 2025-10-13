@@ -14,6 +14,7 @@ from pathlib import Path
 import os
 from datetime import timedelta
 from django.conf import settings
+from environ import Env
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -32,7 +33,6 @@ ALLOWED_HOSTS = [
     "153.92.222.155",
     "127.0.0.1",
     "school.amanilightequity.com",
-
 ]
 
 AUTH_USER_MODEL = 'base.Users'  # Replace 'yourapp' with the actual app name where Users is defined
@@ -102,12 +102,28 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/5.1/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+env = environenv = Env()
+Env.read_env()
+ENVIRONMENT = env('ENVIRONMENT', default='production')
+
+if ENVIRONMENT == "production":
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.postgresql",
+            "NAME": "school_db",
+            "USER": "school_user",
+            "PASSWORD": "efuaboy11",
+            "HOST": "153.92.222.155",
+            "PORT": "5432",
+        }
     }
-}
+else:
+    DATABASES = {
+        "default": {
+            "ENGINE": "django.db.backends.sqlite3",
+            "NAME": BASE_DIR / "db.sqlite3",
+        }
+    }
 
 
 # Password validation
