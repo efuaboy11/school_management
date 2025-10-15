@@ -32,6 +32,7 @@ DEBUG = True
 ALLOWED_HOSTS = [
     "153.92.222.155",
     "127.0.0.1",
+    "localhost",
     "school.amanilightequity.com",
 ]
 
@@ -104,7 +105,7 @@ WSGI_APPLICATION = 'backend.wsgi.application'
 
 env = environenv = Env()
 Env.read_env()
-ENVIRONMENT = env('ENVIRONMENT', default='production')
+ENVIRONMENT = env('ENVIRONMENT', default='development')
 
 if ENVIRONMENT == "production":
     DATABASES = {

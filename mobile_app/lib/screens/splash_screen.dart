@@ -46,7 +46,7 @@ class _SplashScreenState extends State<SplashScreen> {
     }
 
     if (role == "student") {
-      if (mounted) context.go('/student/dashboard');
+      if (mounted) context.go('/student/home');
     } else if (role == "teacher") {
       if (mounted) context.go('/teacher/dashboard');
     } else {

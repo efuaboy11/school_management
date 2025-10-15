@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile_app/auth_manager.dart';
 import 'package:mobile_app/auth_service.dart';
+import 'package:flutter/cupertino.dart';
+import 'dart:io' show Platform; // For platform check
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -10,27 +13,95 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
-    final _formkey = GlobalKey<FormState>();
+  final _formkey = GlobalKey<FormState>();
+  AuthManager? _authManager;
   bool hidePassword = true;
   final TextEditingController _passwordController = TextEditingController();
 
   var _enteredUsername = '';
   var _enteredPassword = '';
 
-  bool isLoading = false;
+
+  void showLoadingDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false, // prevent closing by tapping outside
+      context: context,
+      barrierColor: Colors.black.withValues(alpha: 0.5), // dim background
+      builder: (context) => Center(
+        child: Image.asset(
+          'assets/image/loading.gif',
+          width: 120,
+          height: 120,
+        ),
+      ),
+    );
+  }
+
+  void hideLoadingDialog(BuildContext context) {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+
+
+  void showPlatformDialog(BuildContext context, String errorMessage) {
+    if (Platform.isIOS) {
+      showCupertinoDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Text('Login Error!'),
+            content: Text(errorMessage),
+            actions: [
+              CupertinoDialogAction(
+                child: Text('OK'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text('Login Error!'),
+            content: Text(errorMessage),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
 
   Future<void> _login() async{
 
     if(_formkey.currentState!.validate()){
-      isLoading = true;
+      showLoadingDialog(context);
+      
       _formkey.currentState!.save();
       
       final response = await AuthService.login(_enteredUsername, _enteredPassword);
-
+      print(response);
       if(response == 'success'){
-        
+        final isExpired = await AuthService.isTokenExpired();
+        final access = await AuthService.getAccessToken();
         final role = await AuthService.getRole();
-        isLoading = false;
+        
+
+        if (access != null && !isExpired) {
+          if(!mounted) return;
+          _authManager ??= AuthManager(context); // create it
+          _authManager!.restart();               // restart monitoring
+        }
+
+        
         if(role == 'student'){
           if(!mounted) return;
           context.go('/student/home');
@@ -39,12 +110,16 @@ class _LoginScreenState extends State<LoginScreen> {
           context.go('/teacher/home');
 
         }
-      }else{
-        isLoading = false;
         if(!mounted) return;
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text(response))
-        );
+
+        hideLoadingDialog(context);
+      }else{
+        if(!mounted) return;
+        hideLoadingDialog(context);
+
+
+        if(!mounted) return;
+        showPlatformDialog(context, response);
       }
     }
 
@@ -169,7 +244,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               backgroundColor: Theme.of(context).colorScheme.primary,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                             ),
-                            child: isLoading  ? CircularProgressIndicator()  : Text(
+                            child:Text(
                               "Sign in",
                               style: TextStyle(
                                 fontSize: 16,

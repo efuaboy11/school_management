@@ -2,6 +2,8 @@
 
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile_app/auth_service.dart';
+// import 'package:go_router/go_router.dart';
 
 
 class MenuBarWidget extends StatefulWidget {
@@ -13,6 +15,18 @@ class MenuBarWidget extends StatefulWidget {
 
 class _MenuBarWidgetState extends State<MenuBarWidget> {
   bool _expandedActivity = false;
+  bool isLoading = false;
+
+
+  void _logout() async{
+    final repsonse = await AuthService.logout();
+
+    if(repsonse == 'success'){
+      if(!mounted) return;
+      context.go('/login');
+    }
+    
+  }
 
 
   @override
@@ -221,6 +235,27 @@ class _MenuBarWidgetState extends State<MenuBarWidget> {
                   onTap: () {
                     context.push('/student/check-result');
                   },
+                ),
+
+
+                 Container(
+                  margin: EdgeInsets.symmetric(horizontal: 15),
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: _logout,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: Theme.of(context).colorScheme.primary,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                    ),
+                    child: isLoading  ? CircularProgressIndicator( color: Colors.white,)  : Text(
+                      "Sign out",
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
                 ),
               ],
             )

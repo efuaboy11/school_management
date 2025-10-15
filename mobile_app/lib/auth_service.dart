@@ -6,7 +6,7 @@ import 'package:jwt_decoder/jwt_decoder.dart';
 
 class AuthService {
   static const _authStorage = FlutterSecureStorage();
-  static const _baseUrl = "http://127.0.0.1:8000/api";
+  static const _baseUrl = "http://school.amanilightequity.com/api";
 
   static Future<void> saveTokens(String access, String refresh, String role, String userId) async {
     await _authStorage.write(key: "access", value: access);
@@ -21,15 +21,16 @@ class AuthService {
   static Future<String?> getRole() => _authStorage.read(key: "role");
   static Future<String?> getUserId() => _authStorage.read(key: "user_id");
 
-  static Future<void> logout () async {
+  static Future<String> logout () async {
     await _authStorage.deleteAll();
+    return 'success';
   }
 
   static Future<String> login(String username, String password) async{
 
     try{
       final response = await http.post(
-        Uri.parse("http://10.0.2.2:8000/api/login/"),
+        Uri.parse("http://school.amanilightequity.com/api/login/"),
         headers: {
           'Content-Type': 'application/json',
         },
@@ -42,7 +43,7 @@ class AuthService {
         final data = jsonDecode(response.body);
         await saveTokens(data["access"], data["refresh"], data["role"], data["user_id"]);
         print("Login successful: ${data["user_id"]}");
-        return 'suceess';
+        return 'success';
       }else {
         await logout();
         final errorData = jsonDecode(response.body);
@@ -76,6 +77,7 @@ class AuthService {
         await _authStorage.write(key: "refresh", value: data["refresh"]);
         await _authStorage.write(key: "role", value: data["role"]);
         await _authStorage.write(key: "user_id", value: data["user_id"]);
+        print('token refresh');
         return data["access"];
       }else {
         final errorData = jsonDecode(response.body);

@@ -14,7 +14,7 @@ class AuthManager with WidgetsBindingObserver {
   void _startTokenMonitor() {
     _tokenCheckTimer = Timer.periodic(Duration(minutes: 9), (timer) async {
     final isExpired = await AuthService.isTokenExpired();
-        final access = await AuthService.getAccessToken();
+    final access = await AuthService.getAccessToken();
 
     if (isExpired || access == null ) {
       _tokenCheckTimer?.cancel(); // Stop checking

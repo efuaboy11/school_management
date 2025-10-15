@@ -47,7 +47,7 @@ final GoRouter appRouter = GoRouter(
     final path = state.uri.toString();
 
     if (role == "student" && path.startsWith("/teacher")) {
-      return "/student/dashboard";
+      return "/student/home";
     }
     if (role == "teacher" && path.startsWith("/student")) {
       return "/teacher/dashboard";

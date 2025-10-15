@@ -1,21 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:go_router/go_router.dart';
+import 'package:mobile_app/models/student_details.dart';
+import 'package:mobile_app/providers/student_details.dart';
 import 'package:mobile_app/screens/student/user_profile/edit_user_contact_info.dart';
 import 'package:mobile_app/screens/student/user_profile/edit_user_personal_information.dart';
 import 'package:mobile_app/theme.dart';
+import 'package:mobile_app/utils.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
 
-class UserProfileScreen extends StatelessWidget {
+class UserProfileScreen extends ConsumerStatefulWidget {
   const UserProfileScreen({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final customColors = Theme.of(context).extension<CustomColors>()!;
-    void openEditPersonalInfoOverlay(){
-      showModalBottomSheet(useSafeArea: true, isScrollControlled: true, context: context, builder: (ctx) => EditUserPersonalInformation());
-    }
+  ConsumerState<UserProfileScreen> createState() => _UserProfileScreenState();
+}
 
-    void openEditContactInfoOverlay(){
-      showModalBottomSheet(useSafeArea: true, isScrollControlled: true, context: context, builder: (ctx) => EditUserContactInformation());
+class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
+  bool _loading = true;
+  String? _error;
+
+  @override
+  void initState() {
+    super.initState();
+    _loadStudentDetails();
+  }
+
+  Future<void> _loadStudentDetails() async{
+    try{
+      final respose = await ref.read(studentDetailsProvider.notifier).fetchStudentDetails();
+      if(respose != 'success'){
+        _error = respose;
+      }
+    }finally{
+      setState(() {
+        _loading = false;
+      });
+    }
+  }
+
+  
+
+  @override
+  Widget build(BuildContext context) {
+    final studentDetails = ref.watch(studentDetailsProvider);
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+    void openEditPersonalInfoOverlay(StudentDetails studentDetails){
+      showModalBottomSheet(useSafeArea: true, isScrollControlled: true, context: context, builder: (ctx) => EditUserPersonalInformation(studentDetails: studentDetails,));
+    }
+    void openEditContactInfoOverlay(StudentDetails studentDetails){
+      showModalBottomSheet(useSafeArea: true, isScrollControlled: true, context: context, builder: (ctx) => EditUserContactInformation(studentDetails: studentDetails,));
     }
     Widget buildGridItem(BuildContext context, String text, String subText, double width){
       return SizedBox(
@@ -30,6 +64,44 @@ class UserProfileScreen extends StatelessWidget {
             Text(subText)
           ],
         ),
+      );
+    }
+
+    if (_loading) {
+      return Scaffold(
+        body: Center(
+          child: Image.asset(
+            'assets/image/loading.gif',
+            width: 120,
+            height: 120,
+          ),
+        ),
+      );
+    }
+
+    if (_error != null) {
+      return Scaffold(
+        body: Center(child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/image/error.png',
+              width: 300,
+              height: 300,
+            ),
+            Text("Error: $_error", textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodySmall,),
+            SizedBox(height: 15,),
+            ElevatedButton.icon(
+              icon: Icon(Icons.dashboard),
+              label: Text('Home'),
+              onPressed: () {
+                context.go('/student/home');
+              },
+            ),
+
+          ],
+        )),
+        bottomNavigationBar: StudentTab(),
       );
     }
 
@@ -62,7 +134,7 @@ class UserProfileScreen extends StatelessWidget {
                   backgroundColor: Theme.of(context).colorScheme.inversePrimary,
                   child: CircleAvatar(
                     radius: 55,
-                    backgroundImage: AssetImage('assets/image/passports.jpg'), // Replace with user image
+                    backgroundImage: NetworkImage(studentDetails.passport), // Replace with user image
                   ),
                 ),
               ),
@@ -78,8 +150,8 @@ class UserProfileScreen extends StatelessWidget {
           ),
 
           const SizedBox(height: 60), 
-          Text('Iseghohimhen Efua', textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleLarge,),
-          Text('Primary 1', textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleMedium,),
+          Text('${formatName(studentDetails.lastName)} ${formatName(studentDetails.firstName)}', textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleLarge,),
+          Text(formatName(studentDetails.studentClass), textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleMedium,),
 
           Expanded(
             child: SingleChildScrollView(
@@ -109,7 +181,9 @@ class UserProfileScreen extends StatelessWidget {
                               children: [
                                 Text('Personal Information'),
                                 OutlinedButton.icon(
-                                  onPressed: openEditPersonalInfoOverlay,
+                                  onPressed: (){
+                                    openEditPersonalInfoOverlay(studentDetails);
+                                  },
                                   icon: Icon(Icons.edit, color: Theme.of(context).colorScheme.primary),
                                   label: Text('Edit', style: TextStyle(color: Theme.of(context).colorScheme.primary)),
                                   style: OutlinedButton.styleFrom(
@@ -136,13 +210,13 @@ class UserProfileScreen extends StatelessWidget {
                                   spacing: spacing,
                                   runSpacing: spacing,
                                   children: [
-                                    buildGridItem(context, 'Student ID', 'stuban710', itemWidth),
-                                    buildGridItem(context, 'D.0.B', '7 may 2025', itemWidth),
-                                    buildGridItem(context, 'Gender', 'Male', itemWidth),
-                                    buildGridItem(context, 'Father Name', 'Alfred', itemWidth),
-                                    buildGridItem(context, 'Mothers name', 'Mothers Name', itemWidth),
-                                    buildGridItem(context, 'Disability', 'No', itemWidth),
-                                    buildGridItem(context, 'Religion', 'Muslim', itemWidth),
+                                    buildGridItem(context, 'Student ID', studentDetails.userID, itemWidth),
+                                    buildGridItem(context, 'D.0.B', formatDate(studentDetails.dateOfBirth), itemWidth),
+                                    buildGridItem(context, 'Gender', formatName(studentDetails.gender), itemWidth),
+                                    buildGridItem(context, 'Father Name', formatName(studentDetails.fatherName), itemWidth),
+                                    buildGridItem(context, 'Mothers name', formatName(studentDetails.motherName), itemWidth),
+                                    buildGridItem(context, 'Disability', formatName(studentDetails.disability), itemWidth),
+                                    buildGridItem(context, 'Religion', formatName(studentDetails.religion), itemWidth),
                                   ],
                                 );
                             
@@ -196,7 +270,7 @@ class UserProfileScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('Account username:'),
-                                Text('Oluwabunmi', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                Text(studentDetails.userName, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                   color: customColors.lightText
                                 ),)
                               ],
@@ -211,7 +285,7 @@ class UserProfileScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('Current class:'),
-                                Text('Primary 1', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                Text(formatName(studentDetails.studentClass), style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                   color: customColors.lightText
                                 ),)
                               ],
@@ -227,7 +301,7 @@ class UserProfileScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('Admission number:'),
-                                Text('7887', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                Text(studentDetails.admissionNumber, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                   color: customColors.lightText
                                 ),)
                               ],
@@ -243,7 +317,7 @@ class UserProfileScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('Account Status:'),
-                                Text('Active', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                Text(formatName(studentDetails.accountStatus), style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                   color: customColors.lightText
                                 ),)
                               ],
@@ -283,7 +357,9 @@ class UserProfileScreen extends StatelessWidget {
                               children: [
                                 Text('Contact Information'),
                                 OutlinedButton.icon(
-                                  onPressed: openEditContactInfoOverlay,
+                                  onPressed: (){
+                                    openEditContactInfoOverlay(studentDetails);
+                                  },
                                   icon: Icon(Icons.edit, color: Theme.of(context).colorScheme.primary),
                                   label: Text('Edit', style: TextStyle(color: Theme.of(context).colorScheme.primary)),
                                   style: OutlinedButton.styleFrom(
@@ -306,7 +382,7 @@ class UserProfileScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('State of Origin:'),
-                                Text('Edo', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                Text(formatName(studentDetails.stateOfOrigin), style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                   color: customColors.lightText
                                 ),)
                               ],
@@ -321,7 +397,7 @@ class UserProfileScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('City/town:'),
-                                Text('Benin', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                Text(formatName(studentDetails.cityOrTown), style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                   color: customColors.lightText
                                 ),)
                               ],
@@ -337,7 +413,7 @@ class UserProfileScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('House Address:'),
-                                Text('Adolo college', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                Text(formatName(studentDetails.homeAddres), style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                   color: customColors.lightText
                                 ),)
                               ],
@@ -353,7 +429,7 @@ class UserProfileScreen extends StatelessWidget {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Text('Phone number:'),
-                                Text('08079022633', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                Text(studentDetails.phoneNumber, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                   color: customColors.lightText
                                 ),)
                               ],
