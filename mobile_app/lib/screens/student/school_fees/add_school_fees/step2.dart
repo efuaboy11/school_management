@@ -1,12 +1,17 @@
 
 import 'package:flutter/material.dart';
+import 'package:mobile_app/models/student_details.dart';
+import 'package:mobile_app/screens/student/school_fees/add_school_fees/bank_account.dart';
 import 'package:mobile_app/theme.dart';
+import 'package:mobile_app/utils.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
 
 class SchoolFeesPaymentScreenTwo extends StatelessWidget{
-  const SchoolFeesPaymentScreenTwo({super.key});
+  const SchoolFeesPaymentScreenTwo({super.key, required this.paymentDetails, required this.userDetails, required this.paymentMethod});
 
-  // onPressed: () => context.pop(),
+  final Map<String, dynamic> paymentDetails;
+  final StudentDetails userDetails;
+  final String paymentMethod;
 
 
 
@@ -15,10 +20,10 @@ class SchoolFeesPaymentScreenTwo extends StatelessWidget{
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     final customColors = Theme.of(context).extension<CustomColors>()!;
 
-    String currentScreen = 'cash_payment';
+    
     Widget content = Center(child: Text('wait a moment...'),);
 
-    if(currentScreen == 'cash_payment'){
+    if(paymentMethod == 'cash_payment'){
       content = Column(
         children: [
           Card(
@@ -83,75 +88,9 @@ class SchoolFeesPaymentScreenTwo extends StatelessWidget{
           )
         ],
       );
-    }else if(currentScreen == 'bank_payment'){
-      content = Column(
-        children: [
-          SizedBox(height: 10,),
-          Text('School Bank Account', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 24),),
-          SizedBox(height: 10,),
-          Text('Below are various school account where payment can be made', style: TextStyle(fontSize: 18), textAlign: TextAlign.center,),
-          SizedBox(height: 5,),
-          Text('Note: After transfer or paying in bank you will bring the reciept to the bursary department so it can be uploaded in our database', style: TextStyle(color: customColors.lightText), textAlign: TextAlign.center,),
-          SizedBox(height: 20,),
-          SizedBox(
-            width: double.infinity,
-            child: Card(
-              child: Padding(
-                padding: const EdgeInsets.all(15),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      spacing: 20,
-                      children: [
-                        CircleAvatar(
-                          radius: 30, // adjust as needed
-                          backgroundImage: AssetImage('assets/image/uba.jpeg'),
-                          backgroundColor: Colors.transparent, // optional
-                        ),
-                    
-                        Text('UBA', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),)
-                      ],
-                    ),
-                          
-                    SizedBox(height: 19,),
-            
-                    Text.rich(
-                      TextSpan(
-                        text: 'Account Name:',
-                        style: TextStyle(fontSize: 15),
-                        children: [
-                          TextSpan(
-                            text: ' Iseghohimhen Ehiz',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)
-                          )
-                        ]
-                      )
-                    ),
-
-
-                    Text.rich(
-                      TextSpan(
-                        text: 'Account Number:',
-                        style: TextStyle(fontSize: 15),
-                        children: [
-                          TextSpan(
-                            text: '2119788000',
-                            style: TextStyle(fontWeight: FontWeight.bold, fontSize: 17)
-                          )
-                        ]
-                      )
-                    ),
-                
-                  ],
-                ),
-              ),
-            ),
-          )
-        ],
-      );
-    }else if(currentScreen == 'online_payment'){
+    }else if(paymentMethod == 'bank_payment'){
+      content = BankAccount();
+    }else if(paymentMethod == 'online_payment'){
       content = Column(
         children: [
           Card(
@@ -196,9 +135,9 @@ class SchoolFeesPaymentScreenTwo extends StatelessWidget{
                           child: ElevatedButton(
                             onPressed: () {
                               // context.push('/student/pay-2');
-                              Navigator.of(context).push(
-                                MaterialPageRoute(builder: (ctx) => SchoolFeesPaymentScreenTwo())
-                              );
+                              // Navigator.of(context).push(
+                              //   MaterialPageRoute(builder: (ctx) => SchoolFeesPaymentScreenTwo())
+                              // );
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Theme.of(context).colorScheme.primary,
@@ -288,30 +227,30 @@ class SchoolFeesPaymentScreenTwo extends StatelessWidget{
                   
                               ListTile(
                                 title: Text('Student Name'),
-                                trailing: Text('Ben Mark'),
+                                trailing: Text('${formatName(userDetails.firstName)} ${userDetails.lastName}'),
                               ),
                   
                               ListTile(
                                 title: Text('Email'),
-                                trailing: Text('ben@gmail.com'),
+                                trailing: Text(userDetails.email),
                               ),
                   
                               ListTile(
                                 title: Text('Fee Type'),
-                                trailing: Text('School Fees'),
+                                trailing: Text(formatName(paymentDetails['fee_choice'])),
                               ),
                   
                              
                   
                               ListTile(
                                 title: Text('Class being paid for'),
-                                trailing: Text('School Fees'),
+                                trailing: Text(formatName(paymentDetails['student_class'])),
                               ),
                   
                   
                               ListTile(
                                 title: Text('Term'),
-                                trailing: Text('First term'),
+                                trailing: Text(formatName(paymentDetails['term'])),
                               ),
                   
                               ListTile(
@@ -321,7 +260,7 @@ class SchoolFeesPaymentScreenTwo extends StatelessWidget{
                   
                               ListTile(
                                 title: Text('Amount to be paid'),
-                                trailing: Text('48000 USD', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                                trailing: Text('${formatMoney(paymentDetails['amount'].toString())} NGN', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
                               ),
                   
                   

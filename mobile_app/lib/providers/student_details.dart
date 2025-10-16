@@ -31,7 +31,7 @@ class StudentDetailsNotifer extends StateNotifier<StudentDetails>{
           final errorData = jsonDecode(response.body);
           final errorMessages = errorData.values.join(", ");
           print(errorMessages);
-          return 'Failed to load user';
+          return 'Failed to load student details... Try again';
         }
       }catch(e, stackTrace){
         print('Unexpected error occurred: $e');

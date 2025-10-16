@@ -330,7 +330,7 @@ class StudentHomeScreen extends StatelessWidget {
                                       decoration: BoxDecoration(
                                         border: Border(
                                           bottom: BorderSide(
-                                            color: Colors.grey,
+                                            color: customColors.lightBorder,
                                             width: 1.0
                                           )
                                         )
@@ -356,7 +356,7 @@ class StudentHomeScreen extends StatelessWidget {
                                       decoration: BoxDecoration(
                                         border: Border(
                                           bottom: BorderSide(
-                                            color: Colors.grey,
+                                            color: customColors.lightBorder,
                                             width: 1.0
                                           )
                                         )
@@ -382,7 +382,7 @@ class StudentHomeScreen extends StatelessWidget {
                                       decoration: BoxDecoration(
                                         border: Border(
                                           bottom: BorderSide(
-                                            color: Colors.grey,
+                                            color: customColors.lightBorder,
                                             width: 1.0
                                           )
                                         )
@@ -408,7 +408,7 @@ class StudentHomeScreen extends StatelessWidget {
                                       decoration: BoxDecoration(
                                         border: Border(
                                           bottom: BorderSide(
-                                            color: Colors.grey,
+                                            color: customColors.lightBorder,
                                             width: 1.0
                                           )
                                         )
@@ -434,7 +434,7 @@ class StudentHomeScreen extends StatelessWidget {
                                       decoration: BoxDecoration(
                                         border: Border(
                                           bottom: BorderSide(
-                                            color: Colors.grey,
+                                            color: customColors.lightBorder,
                                             width: 1.0
                                           )
                                         )

@@ -46,6 +46,8 @@ dependencies:
   jwt_decoder: ^2.0.1
   flutter_riverpod: ^2.6.1
   intl: ^0.20.2
+  paystack: ^3.0.0
+
 
 dev_dependencies:
   flutter_test:
@@ -86,6 +88,8 @@ flutter:
     - assets/image/background3.png
     - assets/image/verified.png
     - assets/image/error.png
+    - assets/image/search_not_found.png
+    - assets/image/404.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

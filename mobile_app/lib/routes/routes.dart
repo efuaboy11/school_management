@@ -114,14 +114,6 @@ final GoRouter appRouter = GoRouter(
       },
     ),
 
-    GoRoute(
-      path: '/student/fees-history/detail',
-      name: 'student-fees-history-detail',
-      pageBuilder: (context, state) => MaterialPage(
-        key: state.pageKey,
-        child: SchoolFeesDetailScreen()
-      ),
-    ),
 
 
     GoRoute(

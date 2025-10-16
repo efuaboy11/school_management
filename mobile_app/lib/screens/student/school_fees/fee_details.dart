@@ -1,29 +1,84 @@
 
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:mobile_app/models/school_fee.dart';
 import 'package:mobile_app/theme.dart';
-import 'package:mobile_app/widgets/student/tabs.dart';
+import 'package:mobile_app/utils.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
 
 class SchoolFeesDetailScreen extends StatelessWidget{
-  const SchoolFeesDetailScreen({super.key});
+  const SchoolFeesDetailScreen({super.key, required this.feeDetails});
+
+  final SchoolFee feeDetails;
 
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     final customColors = Theme.of(context).extension<CustomColors>()!;
+
+    Widget status = Container(
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: customColors.successful,
+        borderRadius: BorderRadius.circular(10)
+      ),
+      child:Row(
+        mainAxisSize: MainAxisSize.min, // Wraps content instead of taking full width
+        children: [
+          Icon(Icons.check, color: Colors.white,), // Use any icon you want
+          SizedBox(width: 8), // Spacing between icon and text
+          Text(formatName(feeDetails.status), style: TextStyle(color: Colors.white),),
+        ],
+      ),
+    );
+
+    if(feeDetails.status == 'pending'){
+      Container(
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: customColors.pending,
+          borderRadius: BorderRadius.circular(10)
+        ),
+        child:Row(
+          mainAxisSize: MainAxisSize.min, // Wraps content instead of taking full width
+          children: [
+            Icon(Icons.hourglass_top, color: Colors.white,), // Use any icon you want
+            SizedBox(width: 8), // Spacing between icon and text
+            Text(formatName(feeDetails.status), style: TextStyle(color: Colors.white),),
+          ],
+        ),
+      );
+    }
+
+    if(feeDetails.status == 'declined'){
+      Container(
+        padding: EdgeInsets.all(10),
+        decoration: BoxDecoration(
+          color: customColors.declined,
+          borderRadius: BorderRadius.circular(10)
+        ),
+        child:Row(
+          mainAxisSize: MainAxisSize.min, // Wraps content instead of taking full width
+          children: [
+            Icon(Icons.cancel, color: Colors.white,), // Use any icon you want
+            SizedBox(width: 8), // Spacing between icon and text
+            Text(formatName(feeDetails.status), style: TextStyle(color: Colors.white),),
+          ],
+        ),
+      );
+    }
+
+    
+
+
     return Scaffold(
       key: scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
           icon: Icon(Icons.arrow_back,),
-          onPressed: () => context.pop(),
+          onPressed: () => Navigator.pop(context),
         ),
         title: Text('Payment Details ', style: TextStyle(fontSize: 18)),
         actions: [
-          IconButton(onPressed: (){
-            context.push('/student/pay-fees');
-          }, icon: Icon(Icons.attach_money,)),
           IconButton(
             icon: Icon(Icons.menu,),
             onPressed: () {
@@ -44,9 +99,7 @@ class SchoolFeesDetailScreen extends StatelessWidget{
       body:Padding(
         padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 15),
         child: Column(
-          children: [
-            
-
+          children: [         
 
             Align(
               alignment: Alignment.center,
@@ -75,7 +128,7 @@ class SchoolFeesDetailScreen extends StatelessWidget{
                               style: TextStyle(fontSize: 17),
                               children: [
                                 TextSpan(
-                                  text: ' #969A83202B19AB71',
+                                  text: ' #${feeDetails.transactionId}',
                                   style: TextStyle(color: Theme.of(context).colorScheme.tertiary)
                                 )
                               ]
@@ -96,24 +149,10 @@ class SchoolFeesDetailScreen extends StatelessWidget{
                             ),
                             child: ListTile(
                               contentPadding: EdgeInsets.zero,
-                              title: Text('School Fess'),
-                              subtitle: Text('Date: 27th may 2023'),
+                              title: Text(formatName(feeDetails.feeTypeDetails['fee_choice'])),
+                              subtitle: Text(formatDate(feeDetails.date)),
 
-                              trailing: Container(
-                                padding: EdgeInsets.all(10),
-                                decoration: BoxDecoration(
-                                  color: customColors.pending,
-                                  borderRadius: BorderRadius.circular(10)
-                                ),
-                                child:Row(
-                                  mainAxisSize: MainAxisSize.min, // Wraps content instead of taking full width
-                                  children: [
-                                    Icon(Icons.hourglass_top, color: Colors.white,), // Use any icon you want
-                                    SizedBox(width: 8), // Spacing between icon and text
-                                    Text('Pending', style: TextStyle(color: Colors.white),),
-                                  ],
-                                ),
-                              ),
+                              trailing: status,
                             ),
                           ),
 
@@ -148,7 +187,7 @@ class SchoolFeesDetailScreen extends StatelessWidget{
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text('Transaction ID', style: TextStyle(color: customColors.lightText, fontSize: 15),),
-                                        Text('969A83202B19AB71'),
+                                        Text(feeDetails.transactionId),
                                       ],
                                     ),
                                 
@@ -156,7 +195,7 @@ class SchoolFeesDetailScreen extends StatelessWidget{
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text('Payment Method', style: TextStyle(color: customColors.lightText, fontSize: 15),),
-                                        Text('Online payment'),
+                                        Text(formatName(feeDetails.paymentMethodDetails['name'])),
                                       ],
                                     ),
                                 
@@ -164,7 +203,7 @@ class SchoolFeesDetailScreen extends StatelessWidget{
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text('Amount', style: TextStyle(color: customColors.lightText, fontSize: 15),),
-                                        Text('300 NGN'),
+                                        Text('${formatMoney(feeDetails.feeTypeDetails['amount'].toString())} NGN'),
                                       ],
                                     ),
                                 
@@ -172,7 +211,7 @@ class SchoolFeesDetailScreen extends StatelessWidget{
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text('Fee type', style: TextStyle(color: customColors.lightText, fontSize: 15),),
-                                        Text('School Fees'),
+                                        Text(formatName(feeDetails.feeTypeDetails['fee_choice'])),
                                       ],
                                     ),
                                 
@@ -180,7 +219,7 @@ class SchoolFeesDetailScreen extends StatelessWidget{
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text('Class paid for', style: TextStyle(color: customColors.lightText, fontSize: 15),),
-                                        Text('Primary 1'),
+                                        Text(formatName(feeDetails.feeTypeDetails['student_class_name']['name'])),
                                       ],
                                     ),
                                 
@@ -188,7 +227,7 @@ class SchoolFeesDetailScreen extends StatelessWidget{
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text('Term paid for', style: TextStyle(color: customColors.lightText, fontSize: 15),),
-                                        Text('First term'),
+                                        Text(formatName(feeDetails.feeTypeDetails['term_name']['name'])),
                                       ],
                                     ),
                                 
@@ -196,7 +235,7 @@ class SchoolFeesDetailScreen extends StatelessWidget{
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text('Session paid for', style: TextStyle(color: customColors.lightText, fontSize: 15),),
-                                        Text('2022/2023'),
+                                        Text(feeDetails.feeTypeDetails['session_name']['name']),
                                       ],
                                     ),
                                 
@@ -206,7 +245,7 @@ class SchoolFeesDetailScreen extends StatelessWidget{
                                 SizedBox(height: 20,),
 
                                 Text('Fee payment Description', style: TextStyle(color: customColors.lightText, fontSize: 15),),
-                                Text('hehehhee'),
+                                Text(formatName(feeDetails.feeTypeDetails['description'])),
                           ],
                             ),
                           ),
@@ -242,7 +281,7 @@ class SchoolFeesDetailScreen extends StatelessWidget{
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text('User ID', style: TextStyle(color: customColors.lightText, fontSize: 15),),
-                                        Text('othmar964'),
+                                        Text(feeDetails.studentDetails['userID']),
                                       ],
                                     ),
                                 
@@ -250,7 +289,7 @@ class SchoolFeesDetailScreen extends StatelessWidget{
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text('User account', style: TextStyle(color: customColors.lightText, fontSize: 15),),
-                                        Text('Ben Mark'),
+                                        Text('${formatName(feeDetails.studentDetails['first_name'])} ${feeDetails.studentDetails['last_name']}'),
                                       ],
                                     ),
                                 
@@ -258,7 +297,7 @@ class SchoolFeesDetailScreen extends StatelessWidget{
                                       crossAxisAlignment: CrossAxisAlignment.start,
                                       children: [
                                         Text('Email', style: TextStyle(color: customColors.lightText, fontSize: 15),),
-                                        Text('Augustsailor01@gmail.com'),
+                                        Text(feeDetails.studentDetails['email']),
                                       ],
                                     ),
                                 
@@ -289,7 +328,7 @@ class SchoolFeesDetailScreen extends StatelessWidget{
 
                                 SizedBox(height: 25,),
 
-                                Image.asset('assets/image/receipt.jpg',
+                                Image.network(feeDetails.studentDetails['passport'],
                                   width: double.infinity,
                                   height: 300,
                                   
@@ -316,7 +355,6 @@ class SchoolFeesDetailScreen extends StatelessWidget{
         ),
       ),
 
-      bottomNavigationBar: StudentTab(),
       
     );
   }
