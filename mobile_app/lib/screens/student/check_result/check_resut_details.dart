@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/screens/student/check_result/result_score_details.dart';
 import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
+import 'package:mobile_app/widgets/platform_back_button.dart';
 
 class CheckResutDetailsScreen extends StatelessWidget{
   const CheckResutDetailsScreen({super.key});
@@ -39,7 +40,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
       key: scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,),
+          icon: PlatformBackButton(),
           onPressed: () {
             Navigator.of(context).pop();
           }

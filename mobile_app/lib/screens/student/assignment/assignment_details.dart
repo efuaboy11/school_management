@@ -2,6 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
+import 'package:mobile_app/widgets/platform_back_button.dart';
 
 class AssignmentDetailsScreen extends StatelessWidget{
   const AssignmentDetailsScreen({super.key});
@@ -20,7 +21,7 @@ class AssignmentDetailsScreen extends StatelessWidget{
       key: scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,),
+          icon: PlatformBackButton(),
           onPressed: () {
             Navigator.of(context).pop();
           }

@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
+import 'package:mobile_app/widgets/platform_back_button.dart';
 
 class HelpScreen extends StatefulWidget{
   const HelpScreen({super.key});
@@ -28,7 +29,7 @@ class _HelpScreenState extends State<HelpScreen> {
       key: scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,),
+          icon: PlatformBackButton(),
           onPressed: (){
             context.pop();
           }

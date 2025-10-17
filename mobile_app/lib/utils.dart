@@ -1,35 +1,62 @@
+import 'dart:convert';
+
+import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_app/auth_service.dart';
-import 'package:paystack/paystack.dart';
 import 'package:http/http.dart' as http;
+import 'package:flutter_paystack_plus/flutter_paystack_plus.dart';
 
 
-// Future<String> makePayement(String email, String amount) async{
-//   final token = await AuthService.getAccessToken(); 
-//   final Paystack paystack = Paystack();
-//   try{
-//     final response = await http.post(
-//       Uri.parse("http://school.amanilightequity.com/api/initialize-payment/"),
-//       headers: {
-//         'Authorization': 'Bearer $token',
-//         'Content-Type': 'application/json',
-//       },
-//       body: {
-//         'email' : email,
-//         'amount': amount,
-//       }
+Future<String> makePayement(BuildContext context, String email, String amount) async{
+  final token = await AuthService.getAccessToken(); 
+  try{
+    final response = await http.post(
+      Uri.parse("http://school.amanilightequity.com/api/initialize-payment/"),
+      headers: {
+        'Authorization': 'Bearer $token',
+        'Content-Type': 'application/json',
+      },
+      body: json.encode({ // ✅ Encode the body as JSON
+        'email': email,
+        'amount': int.parse(double.parse(amount).toStringAsFixed(0)),
+
+      }),
+    
       
-//     );
+    );
 
-//     if(response.statusCode == 201 || response.statusCode == 200){
-//       await paystack.
+    if(response.statusCode == 201 || response.statusCode == 200){
+      print('success');
+      Map<String, dynamic> data = json.decode(response.body);
+      await  FlutterPaystackPlus.openPaystackPopup(
+        customerEmail: email, 
+        amount: amount, 
+        reference: data['reference'], 
+        context: context,
+        onClosed: (){
+          print('Payment closed or cancelled');
+        }, 
+        onSuccess: (){
+          print('Payment successful!');
+        }
+      );
 
-//     }
+    }else{
+      final errorData = jsonDecode(response.body);
+      final errorMessages = errorData.values.join(", ");
+      print("Login failed: ${response.statusCode}");
+      print("Response body: ${response.body}");
+    }
+    
 
+  }catch(e){
+    print(e);
 
-//   }
+  }
 
-// }
+  return '';
+
+}
 
 
 

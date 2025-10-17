@@ -28,6 +28,7 @@ import 'package:mobile_app/screens/student/school_fees/history.dart';
 import 'package:mobile_app/screens/student/check_result/check_result.dart';
 import 'package:mobile_app/screens/student/user_profile/user_profile.dart';
 import 'package:mobile_app/screens/student/help/help.dart';
+import 'package:mobile_app/widgets/page_transition.dart';
 
 bool get isLoggedIn => false;
 
@@ -59,7 +60,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/splash',
       name: 'splash',
-      pageBuilder: (context, state) => MaterialPage(
+      pageBuilder: (context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: SplashScreen()
       ),
@@ -68,7 +70,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/login',
       name: 'login',
-      pageBuilder: (context, state) => MaterialPage(
+      pageBuilder: (context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: LoginScreen()
       ),
@@ -77,7 +80,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/forgot-password',
       name: 'forgot-password',
-      pageBuilder: (context, state) => MaterialPage(
+      pageBuilder: (context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: ForgotPasswordScreen()
       ),
@@ -86,7 +90,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/forgot-password-success',
       name: 'forgot-password-success',
-      pageBuilder: (context, state) => MaterialPage(
+      pageBuilder: (context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: ForgotPasswordSuccessScreen()
       ),
@@ -96,7 +101,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/student/home',
       name: 'student-gome',
-      pageBuilder: (context, state) => MaterialPage(
+      pageBuilder: (context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: StudentHomeScreen()
       ),
@@ -107,7 +113,8 @@ final GoRouter appRouter = GoRouter(
       path: '/student/fees-history',
       name: 'student-fees-history',
       pageBuilder: (context, state){
-        return MaterialPage(
+        return CustomTransitionPage(
+          transitionsBuilder: platformPageTransitionBuilder,
           key: state.pageKey,
           child: SchoolFeesHistoryScreen()
         );
@@ -119,18 +126,21 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/student/pay-fees',
       name: 'student-fee-payment',
-      pageBuilder: (context, state) => MaterialPage(
+      pageBuilder: (context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: SchoolFeesPaymentScreen()
       ),
     ),
 
+    
 
 
     GoRoute(
       path: '/student/bills-history',
       name: 'student-bills-history',
-      pageBuilder: (context, state) => MaterialPage(
+      pageBuilder: (context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: BillsHistoryScreen()
       ),
@@ -139,7 +149,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/student/bills-history/details',
       name: 'student-bills-history-details',
-      pageBuilder:(context, state) => MaterialPage(
+      pageBuilder:(context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: BillsDetailScreen()
       ),
@@ -148,7 +159,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/student/bills-payment',
       name: 'student-bills-payment',
-      pageBuilder:(context, state) => MaterialPage(
+      pageBuilder:(context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: BillPaymentScreen()
       ),
@@ -157,7 +169,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/student/assignment',
       name: 'student-assignment',
-      pageBuilder:(context, state) => MaterialPage(
+      pageBuilder:(context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: AssignmentScreen()
       ),
@@ -166,7 +179,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/student/assignment-details',
       name: 'student-assignment-details',
-      pageBuilder:(context, state) => MaterialPage(
+      pageBuilder:(context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: AssignmentDetailsScreen()
       ),
@@ -176,7 +190,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/student/assignment-submission',
       name: 'student-assignment-submission',
-      pageBuilder:(context, state) => MaterialPage(
+      pageBuilder:(context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: AssignmentSubmissionScreen()
       ),
@@ -185,7 +200,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/student/assignment-submission-details',
       name: 'student-assignment-submission-details',
-      pageBuilder:(context, state) => MaterialPage(
+      pageBuilder:(context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: AssignmentSubmisionDetailsScreen()
       ),
@@ -195,7 +211,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/student/submit-assignment',
       name: 'student-submit-assignment',
-      pageBuilder:(context, state) => MaterialPage(
+      pageBuilder:(context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: SubmitAssignmentScreen()
       ),
@@ -204,7 +221,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/student/class-timetable',
       name: 'student-class-timetable',
-      pageBuilder:(context, state) => MaterialPage(
+      pageBuilder:(context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: ClassTimeTableScreen()
       ),
@@ -213,7 +231,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/student/scheme/select-term',
       name: 'student-scheme-selct-term',
-      pageBuilder:(context, state) => MaterialPage(
+      pageBuilder:(context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: SelectTermSchemeScreen()
       ),
@@ -222,7 +241,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/student/scheme',
       name: 'student-scheme',
-      pageBuilder:(context, state) => MaterialPage(
+      pageBuilder:(context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: SchemeOfWorkScreen()
       ),
@@ -231,7 +251,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/student/notification',
       name: 'student-notification',
-      pageBuilder:(context, state) => MaterialPage(
+      pageBuilder:(context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: GeneralNotificationScreen()
       ),
@@ -241,7 +262,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/student/class-notification',
       name: 'student-class-notification',
-      pageBuilder:(context, state) => MaterialPage(
+      pageBuilder:(context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: ClassNotificationScreen()
       ),
@@ -250,7 +272,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/student/school-event',
       name: 'student-school-event',
-      pageBuilder:(context, state) => MaterialPage(
+      pageBuilder:(context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: SchoolEventScreen()
       ),
@@ -260,7 +283,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/student/check-result',
       name: 'student-check-result',
-      pageBuilder:(context, state) => MaterialPage(
+      pageBuilder:(context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: CheckResultScreen()
       ),
@@ -270,7 +294,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/student/user-profile',
       name: 'student-user-profile',
-      pageBuilder:(context, state) => MaterialPage(
+      pageBuilder:(context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: UserProfileScreen()
       ),
@@ -280,7 +305,8 @@ final GoRouter appRouter = GoRouter(
     GoRoute(
       path: '/student/help',
       name: 'student-help',
-      pageBuilder:(context, state) => MaterialPage(
+      pageBuilder:(context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: HelpScreen()
       ),

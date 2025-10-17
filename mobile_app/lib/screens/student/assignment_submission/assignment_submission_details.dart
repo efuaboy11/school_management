@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:mobile_app/screens/student/assignment_submission/edit_assignment.dart';
 import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
+import 'package:mobile_app/widgets/platform_back_button.dart';
 
 class AssignmentSubmisionDetailsScreen extends StatelessWidget{
   const AssignmentSubmisionDetailsScreen({super.key});
@@ -25,7 +26,7 @@ class AssignmentSubmisionDetailsScreen extends StatelessWidget{
       key: scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,),
+          icon: PlatformBackButton(),
           onPressed: () {
             Navigator.of(context).pop();
           }

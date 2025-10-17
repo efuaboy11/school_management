@@ -5,6 +5,7 @@ import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
 import 'package:mobile_app/screens/student/general_notification/general_notifcation_details.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
+import 'package:mobile_app/widgets/platform_back_button.dart';
 
 class GeneralNotificationScreen extends StatelessWidget{
   const GeneralNotificationScreen({super.key});
@@ -22,7 +23,7 @@ class GeneralNotificationScreen extends StatelessWidget{
       key: scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,),
+          icon: PlatformBackButton(),
           onPressed: () => context.pop(),
         ),
         title: Text('General Notifications', style: TextStyle(fontSize: 18)),

@@ -6,6 +6,7 @@ import 'package:mobile_app/screens/student/check_result/check_resut_details.dart
 // import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
+import 'package:mobile_app/widgets/platform_back_button.dart';
 
 class CheckResultScreen extends StatefulWidget{
   const CheckResultScreen({super.key});
@@ -27,7 +28,7 @@ class _CheckResultScreenState extends State<CheckResultScreen> {
       key: scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,),
+          icon: PlatformBackButton(),
           onPressed: (){
             context.pop();
           }

@@ -5,6 +5,7 @@ import 'package:mobile_app/screens/student/school_fees/add_school_fees/bank_acco
 import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/utils.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
+import 'package:mobile_app/widgets/platform_back_button.dart';
 
 class SchoolFeesPaymentScreenTwo extends StatelessWidget{
   const SchoolFeesPaymentScreenTwo({super.key, required this.paymentDetails, required this.userDetails, required this.paymentMethod});
@@ -134,10 +135,7 @@ class SchoolFeesPaymentScreenTwo extends StatelessWidget{
                           height: 50,
                           child: ElevatedButton(
                             onPressed: () {
-                              // context.push('/student/pay-2');
-                              // Navigator.of(context).push(
-                              //   MaterialPageRoute(builder: (ctx) => SchoolFeesPaymentScreenTwo())
-                              // );
+                              makePayement(context,  userDetails.email, paymentDetails['amount'].toString());
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Theme.of(context).colorScheme.primary,
@@ -170,7 +168,7 @@ class SchoolFeesPaymentScreenTwo extends StatelessWidget{
       key: scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,),
+          icon: PlatformBackButton(),
           onPressed: () {
             Navigator.of(context).pop();
           }

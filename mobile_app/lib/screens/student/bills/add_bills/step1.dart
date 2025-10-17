@@ -5,6 +5,7 @@ import 'package:mobile_app/screens/student/bills/add_bills/step2.dart';
 // import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
+import 'package:mobile_app/widgets/platform_back_button.dart';
 
 class BillPaymentScreen extends StatefulWidget{
   const BillPaymentScreen({super.key});
@@ -29,7 +30,7 @@ class _BillPaymentScreenState extends State<BillPaymentScreen> {
       key: scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,),
+          icon: PlatformBackButton(),
           onPressed: (){
             context.pop();
           }

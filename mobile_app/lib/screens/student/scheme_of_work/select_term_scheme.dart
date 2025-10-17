@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 // import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
+import 'package:mobile_app/widgets/platform_back_button.dart';
 
 class SelectTermSchemeScreen extends StatefulWidget{
   const SelectTermSchemeScreen({super.key});
@@ -23,7 +24,7 @@ class _SelectTermSchemeScreenState extends State<SelectTermSchemeScreen> {
       key: scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,),
+          icon: PlatformBackButton(),
           onPressed: () => context.pop(),
         ),
         title: Text('Scheme of work', style: TextStyle(fontSize: 18)),

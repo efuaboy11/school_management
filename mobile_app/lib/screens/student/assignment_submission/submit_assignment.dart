@@ -8,6 +8,7 @@ import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:mobile_app/widgets/student/menu.dart';
+import 'package:mobile_app/widgets/platform_back_button.dart';
 
 class SubmitAssignmentScreen extends StatefulWidget{
   const SubmitAssignmentScreen({super.key});
@@ -117,7 +118,7 @@ class _SubmitAssignmentScreenState extends State<SubmitAssignmentScreen> {
       key: scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,),
+          icon: PlatformBackButton(),
           onPressed: (){
             context.pop();
           }

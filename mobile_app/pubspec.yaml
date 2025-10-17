@@ -46,7 +46,7 @@ dependencies:
   jwt_decoder: ^2.0.1
   flutter_riverpod: ^2.6.1
   intl: ^0.20.2
-  paystack: ^3.0.0
+  flutter_paystack_plus: ^2.1.0
 
 
 dev_dependencies:

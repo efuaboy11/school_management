@@ -4,6 +4,7 @@ import 'package:mobile_app/models/school_fee.dart';
 import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/utils.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
+import 'package:mobile_app/widgets/platform_back_button.dart';
 
 class SchoolFeesDetailScreen extends StatelessWidget{
   const SchoolFeesDetailScreen({super.key, required this.feeDetails});
@@ -74,7 +75,7 @@ class SchoolFeesDetailScreen extends StatelessWidget{
       key: scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,),
+          icon: PlatformBackButton(),
           onPressed: () => Navigator.pop(context),
         ),
         title: Text('Payment Details ', style: TextStyle(fontSize: 18)),

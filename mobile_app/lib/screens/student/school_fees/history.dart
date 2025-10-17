@@ -6,7 +6,7 @@ import 'package:mobile_app/providers/school_fee.dart';
 import 'package:mobile_app/screens/student/school_fees/fee_details.dart';
 import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/utils.dart';
-import 'package:mobile_app/widgets/platform_back_button.dart';
+  import 'package:mobile_app/widgets/platform_back_button.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
 import 'dart:async';

@@ -33,7 +33,7 @@ class StudentHomeScreen extends StatelessWidget {
   Widget buildGridItem(BuildContext context, IconData icon, String label, String route, double width, {Color? iconColor}) {
     return SizedBox(
     width: width,
-    child: GestureDetector(
+    child: InkWell(
       onTap: route.isNotEmpty ? () => context.push(route) : null,
       child: Column(
         mainAxisSize: MainAxisSize.min,

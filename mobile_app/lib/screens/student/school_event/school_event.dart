@@ -5,6 +5,7 @@ import 'package:mobile_app/screens/student/school_event/school_event_details.dar
 import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
+import 'package:mobile_app/widgets/platform_back_button.dart';
 
 class SchoolEventScreen extends StatelessWidget{
   const SchoolEventScreen({super.key});
@@ -22,7 +23,7 @@ class SchoolEventScreen extends StatelessWidget{
       key: scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,),
+          icon: PlatformBackButton(),
           onPressed: () => context.pop(),
         ),
         title: Text('School Events', style: TextStyle(fontSize: 18)),

@@ -5,6 +5,7 @@ import 'package:mobile_app/screens/student/class_notifications/class_notifcation
 import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
+import 'package:mobile_app/widgets/platform_back_button.dart';
 
 class ClassNotificationScreen extends StatelessWidget{
   const ClassNotificationScreen({super.key});
@@ -22,7 +23,7 @@ class ClassNotificationScreen extends StatelessWidget{
       key: scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,),
+          icon: PlatformBackButton(),
           onPressed: () => context.pop(),
         ),
         title: Text('Class Notifications', style: TextStyle(fontSize: 18)),

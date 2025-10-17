@@ -13,6 +13,7 @@ import 'package:mobile_app/widgets/student/tabs.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter/cupertino.dart';
 import 'dart:io' show Platform; 
+import 'package:mobile_app/widgets/platform_back_button.dart';
 
 class SchoolFeesPaymentScreen extends ConsumerStatefulWidget{
   const SchoolFeesPaymentScreen({super.key});
@@ -276,7 +277,7 @@ class _SchoolFeesPaymentScreenState extends ConsumerState<SchoolFeesPaymentScree
       key: scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,),
+          icon: PlatformBackButton(),
           onPressed: (){
             context.pop();
           }

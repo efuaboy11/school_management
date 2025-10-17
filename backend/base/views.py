@@ -1716,7 +1716,8 @@ class InitializePaymentView(generics.GenericAPIView):
         return Response({
             'payment_url': response['data']['authorization_url'],
             'reference': reference,
-            'public_key': settings.PAYSTACK_PUBLIC_KEY
+            'public_key': settings.PAYSTACK_PUBLIC_KEY,
+            'private_key': settings.PAYSTACK_SECRET_KEY,
         })
 
 class PaymentMethodView(generics.ListCreateAPIView):

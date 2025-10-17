@@ -4,6 +4,7 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
+import 'package:mobile_app/widgets/platform_back_button.dart';
 
 class BillsHistoryScreen extends StatelessWidget{
   const BillsHistoryScreen({super.key});
@@ -17,7 +18,7 @@ class BillsHistoryScreen extends StatelessWidget{
       key: scaffoldKey,
       appBar: AppBar(
         leading: IconButton(
-          icon: Icon(Icons.arrow_back,),
+          icon: PlatformBackButton(),
           onPressed: () => context.pop(),
         ),
         title: Text('Bills History', style: TextStyle(fontSize: 18)),
