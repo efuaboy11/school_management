@@ -174,7 +174,7 @@ const AdminHome = () => {
     StaffFunction,
     AdminHrNotificationFunction,
     SessionFunction,
-    PendingBillsPaymentFunction,
+    // PendingBillsPaymentFunction,
     // SucessBillsPaymentFunction,
     DeclinedBillsPaymentFunction,
     EmailFunction,
@@ -205,7 +205,7 @@ const AdminHome = () => {
     SessionFunction()
 
     // BillsPaymentFunction(),
-      PendingBillsPaymentFunction(),
+      // PendingBillsPaymentFunction(),
       // SucessBillsPaymentFunction(),
       DeclinedBillsPaymentFunction()
     EmailFunction()
