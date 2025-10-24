@@ -182,7 +182,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
   };
 
   const ResultFunction = async() =>{
-    let response = await fetch(`http://school.amanilightequity.com/api/student-result/?student=${studentQuery}&student_class=${classID}&term=${termID}&session=${sessionID}`, {
+    let response = await fetch(`http://127.0.0.1:8000/api/student-result/?student=${studentQuery}&student_class=${classID}&term=${termID}&session=${sessionID}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -214,7 +214,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
   const IndividualClassFunction = async () =>{
     try{
-      let response = await fetch(`http://school.amanilightequity.com/api/student-class/${classID}/`, {
+      let response = await fetch(`http://127.0.0.1:8000/api/student-class/${classID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -239,7 +239,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
   const IndividualTermFunction = async () =>{
     try{
-      let response = await fetch(`http://school.amanilightequity.com/api/term/${termID}/`, {
+      let response = await fetch(`http://127.0.0.1:8000/api/term/${termID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -265,7 +265,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
   const IndividualSessionFunction = async () =>{
     try{
-      let response = await fetch(`http://school.amanilightequity.com/api/session/${sessionID}/`, {
+      let response = await fetch(`http://127.0.0.1:8000/api/session/${sessionID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -289,7 +289,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
   }
 
   const StudentFunction = async() =>{
-    let response = await fetch(`http://school.amanilightequity.com/api/student-in-class/?student_class=${classID}`, {
+    let response = await fetch(`http://127.0.0.1:8000/api/student-in-class/?student_class=${classID}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -317,7 +317,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
     setLoader(true)
 
     try{
-      let response = await fetch('http://school.amanilightequity.com/api/delete-multiple-student-result/', {
+      let response = await fetch('http://127.0.0.1:8000/api/delete-multiple-student-result/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

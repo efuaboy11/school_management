@@ -52,7 +52,7 @@ const UploadSchoolNotificationPage = () => {
 
 
     try{
-      const response = await fetch(`http://school.amanilightequity.com/api/school-notification/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/school-notification/`, {
         method: 'POST',
         body: formData,
         headers:{

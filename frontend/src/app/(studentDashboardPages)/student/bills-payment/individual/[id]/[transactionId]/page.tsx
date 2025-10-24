@@ -40,7 +40,7 @@ const IndividualBills = ({ params }: { params: Promise<any> }) =>{
 
   const IndividualDataFunction = async () =>{
     try{
-      let response = await fetch(`http://school.amanilightequity.com/api/bills-payment/${id}/`, {
+      let response = await fetch(`http://127.0.0.1:8000/api/bills-payment/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

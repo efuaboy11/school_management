@@ -121,7 +121,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
   const IndividualPaymentMethodFunction = async () =>{
     try{
-      let response = await fetch(`http://school.amanilightequity.com/api/payment-method/${paymentMethodID}/`, {
+      let response = await fetch(`http://127.0.0.1:8000/api/payment-method/${paymentMethodID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -148,7 +148,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
   const IndividualBillFunction = async () =>{
     try{
-      let response = await fetch(`http://school.amanilightequity.com/api/bills/${billID}/`, {
+      let response = await fetch(`http://127.0.0.1:8000/api/bills/${billID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -174,7 +174,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
   const IndividualBankAccountFunction = async () =>{
     try{
-      let response = await fetch(`http://school.amanilightequity.com/api/bank-account/`, {
+      let response = await fetch(`http://127.0.0.1:8000/api/bank-account/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -218,7 +218,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
 
     try{
-      const response = await fetch(`http://school.amanilightequity.com/api/bills-payment/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/bills-payment/`, {
         method: 'POST',
         body: formData,
         headers:{
@@ -271,7 +271,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
 
     try{
-      const response = await fetch(`http://school.amanilightequity.com/api/initialize-payment/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/initialize-payment/`, {
         method: 'POST',
         body: JSON.stringify({
           email: studentData?.email,
@@ -319,7 +319,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
   const IndividualStudentFunction = async() =>{
 
-    let response = await fetch(`http://school.amanilightequity.com/api/students/${authTokens?.user_id}`, {
+    let response = await fetch(`http://127.0.0.1:8000/api/students/${authTokens?.user_id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

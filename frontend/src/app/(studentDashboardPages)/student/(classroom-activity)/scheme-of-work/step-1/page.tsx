@@ -51,7 +51,7 @@ const PayBills = () => {
 
   const UserDetails = async () =>{
     try{
-      let response = await fetch(`http://school.amanilightequity.com/api/students/${authTokens?.user_id}/`, {
+      let response = await fetch(`http://127.0.0.1:8000/api/students/${authTokens?.user_id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

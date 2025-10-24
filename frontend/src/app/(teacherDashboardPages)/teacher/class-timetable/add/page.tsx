@@ -170,7 +170,7 @@ const CreateClassTImetable = () => {
 
 
     try{
-      const response = await fetch(`http://school.amanilightequity.com/api/class-timetable/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/class-timetable/`, {
         method: 'POST',
         body: formData,
         headers:{

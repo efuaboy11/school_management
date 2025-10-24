@@ -150,7 +150,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
 
   const IndividualUserDataFunction = async () =>{
     try{
-      let response = await fetch(`http://school.amanilightequity.com/api/students/${id}/`, {
+      let response = await fetch(`http://127.0.0.1:8000/api/students/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -195,7 +195,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
 
   const IndividualSchoolFeesPaymentFunction = async () =>{
     try{
-      let response = await fetch(`http://school.amanilightequity.com/api/payment-school-fees/?student=${id}`, {
+      let response = await fetch(`http://127.0.0.1:8000/api/payment-school-fees/?student=${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -222,7 +222,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
 
   const IndividualBillsFunction = async () =>{
     try{
-      let response = await fetch(`http://school.amanilightequity.com/api/bills-payment/?student=${id}`, {
+      let response = await fetch(`http://127.0.0.1:8000/api/bills-payment/?student=${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -361,7 +361,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
 
 
     try{
-      const response = await fetch(`http://school.amanilightequity.com/api/students/${id}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/students/${id}/`, {
         method: 'PATCH',
         body: formData,
         headers:{
@@ -420,7 +420,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
 
 
     try{
-      const response = await fetch(`http://school.amanilightequity.com/api/students/${id}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/students/${id}/`, {
         method: 'PATCH',
         body: formData,
         headers:{

@@ -125,7 +125,7 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
 
   const IndividualPaymentFunction = async () =>{
     try{
-      let response = await fetch(`http://school.amanilightequity.com/api/payment-method/${id}/`, {
+      let response = await fetch(`http://127.0.0.1:8000/api/payment-method/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -151,7 +151,7 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
 
   const IndividualBankAccountFunction = async () =>{
     try{
-      let response = await fetch(`http://school.amanilightequity.com/api/bank-account/`, {
+      let response = await fetch(`http://127.0.0.1:8000/api/bank-account/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -195,7 +195,7 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
 
 
     try{
-      const response = await fetch(`http://school.amanilightequity.com/api/payment-school-fees/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/payment-school-fees/`, {
         method: 'POST',
         body: formData,
         headers:{
@@ -250,7 +250,7 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
 
 
     try{
-      const response = await fetch(`http://school.amanilightequity.com/api/initialize-payment/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/initialize-payment/`, {
         method: 'POST',
         body: JSON.stringify({
           email: studentData?.email,
@@ -298,7 +298,7 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
 
   const IndividualStudentFunction = async() =>{
 
-    let response = await fetch(`http://school.amanilightequity.com/api/students/${authTokens?.user_id}`, {
+    let response = await fetch(`http://127.0.0.1:8000/api/students/${authTokens?.user_id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

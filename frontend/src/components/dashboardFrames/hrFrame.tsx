@@ -262,7 +262,7 @@ const HrFrame = () => {
 
   const UserDetails = async () =>{
     try{
-      let response = await fetch(`http://school.amanilightequity.com/api/hr/${authTokens?.user_id}/`, {
+      let response = await fetch(`http://127.0.0.1:8000/api/hr/${authTokens?.user_id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -283,7 +283,7 @@ const HrFrame = () => {
   console.log(authTokens)
   const currentUser = async () =>{
     try{
-      let response = await fetch(`http://school.amanilightequity.com/api/me/`, {
+      let response = await fetch(`http://127.0.0.1:8000/api/me/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

@@ -69,7 +69,7 @@ const AddSessionPage = () => {
 
 
     try{
-      const response = await fetch(`http://school.amanilightequity.com/api/session/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/session/`, {
         method: 'POST',
         body: JSON.stringify(payload),
         headers:{

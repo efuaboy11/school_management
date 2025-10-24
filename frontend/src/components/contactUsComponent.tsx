@@ -65,7 +65,7 @@ const ContactUsComponent = () => {
 
 
     try{
-      const response = await fetch(`http://school.amanilightequity.com/api/contact-us/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/contact-us/`, {
         method: 'POST',
         body: formData,
         headers:{

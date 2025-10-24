@@ -100,7 +100,7 @@ const AllParents = () => {
     setLoader(true)
 
     try{
-      let response = await fetch('http://school.amanilightequity.com/api/delete-multiple-parents/', {
+      let response = await fetch('http://127.0.0.1:8000/api/delete-multiple-parents/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

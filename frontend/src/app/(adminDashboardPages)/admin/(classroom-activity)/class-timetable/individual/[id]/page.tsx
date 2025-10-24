@@ -194,7 +194,7 @@ const IndivivdualClassTimeTable = ({ params }: { params: Promise<{ id: string }>
 
   const IndividualDetailsFunction = async () =>{
     try{
-      let response = await fetch(`http://school.amanilightequity.com/api/class-timetable/${id}/`, {
+      let response = await fetch(`http://127.0.0.1:8000/api/class-timetable/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -227,7 +227,7 @@ const IndivivdualClassTimeTable = ({ params }: { params: Promise<{ id: string }>
     setLoader(true)
 
     try{
-      let response = await fetch(`http://school.amanilightequity.com/api/class-timetable/${id}/`, {
+      let response = await fetch(`http://127.0.0.1:8000/api/class-timetable/${id}/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`
@@ -282,7 +282,7 @@ const IndivivdualClassTimeTable = ({ params }: { params: Promise<{ id: string }>
 
 
     try{
-      const response = await fetch(`http://school.amanilightequity.com/api/class-timetable/${id}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/class-timetable/${id}/`, {
         method: 'PATCH',
         body: formData,
         headers:{

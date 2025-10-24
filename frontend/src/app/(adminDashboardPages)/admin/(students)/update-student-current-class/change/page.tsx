@@ -74,7 +74,7 @@ const ChangeStudentCurrentClassPage = () => {
 
 
     try{
-      const response = await fetch(`http://school.amanilightequity.com/api/update-student-current-class/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/update-student-current-class/`, {
         method: 'POST',
         body: formData,
         headers:{

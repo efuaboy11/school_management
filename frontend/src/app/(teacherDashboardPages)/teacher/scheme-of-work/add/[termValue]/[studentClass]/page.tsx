@@ -242,7 +242,7 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
 
 
     try{
-      const response = await fetch(`http://school.amanilightequity.com/api/scheme-of-work/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/scheme-of-work/`, {
         method: 'POST',
         body: formData,
         headers:{
@@ -291,7 +291,7 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
 
 
   const SchemeOFWorkFunction = async() =>{
-    let response = await fetch(`http://school.amanilightequity.com/api/scheme-of-work-filter/?student_class=${studentClass}&term=${termValue}`, {
+    let response = await fetch(`http://127.0.0.1:8000/api/scheme-of-work-filter/?student_class=${studentClass}&term=${termValue}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -326,7 +326,7 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
     setLoader(true)
 
     try{
-      let response = await fetch('http://school.amanilightequity.com/api/delete-multiple-scheme-of-work/', {
+      let response = await fetch('http://127.0.0.1:8000/api/delete-multiple-scheme-of-work/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -373,7 +373,7 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
 
   const IndividualTerm = async () =>{
     try{
-      let response = await fetch(`http://school.amanilightequity.com/api/term/${termValue}/`, {
+      let response = await fetch(`http://127.0.0.1:8000/api/term/${termValue}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -395,7 +395,7 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
 
   const IndividualClass = async () =>{
     try{
-      let response = await fetch(`http://school.amanilightequity.com/api/student-class/${studentClass}/`, {
+      let response = await fetch(`http://127.0.0.1:8000/api/student-class/${studentClass}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

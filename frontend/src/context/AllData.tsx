@@ -1022,7 +1022,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
 
   const StudentFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/students/', {
+    let response = await fetch('http://127.0.0.1:8000/api/students/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1084,7 +1084,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(studentSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/students/?search=${studentSearch}`
+      url = `http://127.0.0.1:8000/api/students/?search=${studentSearch}`
     }
 
 
@@ -1114,7 +1114,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Teacher
   const TeacherFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/teachers/', {
+    let response = await fetch('http://127.0.0.1:8000/api/teachers/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1153,7 +1153,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(teacherSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/teachers/?search=${teacherSearch}`
+      url = `http://127.0.0.1:8000/api/teachers/?search=${teacherSearch}`
     }
 
 
@@ -1181,7 +1181,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
 
   const ParentFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/parents/', {
+    let response = await fetch('http://127.0.0.1:8000/api/parents/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1221,7 +1221,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(parentSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/parents/?search=${parentSearch}`
+      url = `http://127.0.0.1:8000/api/parents/?search=${parentSearch}`
     }
 
 
@@ -1251,7 +1251,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   // Staff
   const StaffFunction = async() =>{
     console.log('lpadign')
-    let response = await fetch('http://school.amanilightequity.com/api/staff/', {
+    let response = await fetch('http://127.0.0.1:8000/api/staff/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1291,7 +1291,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(staffSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/staff/?search=${staffSearch}`
+      url = `http://127.0.0.1:8000/api/staff/?search=${staffSearch}`
     }
 
 
@@ -1320,7 +1320,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // HR
   const HrFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/hr/', {
+    let response = await fetch('http://127.0.0.1:8000/api/hr/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1359,7 +1359,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(hrSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/hr/?search=${hrSearch}`
+      url = `http://127.0.0.1:8000/api/hr/?search=${hrSearch}`
     }
 
 
@@ -1388,7 +1388,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Bursary
   const BursaryFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/bursary/', {
+    let response = await fetch('http://127.0.0.1:8000/api/bursary/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1420,7 +1420,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(bursarySearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/bursary/?search=${bursarySearch}`
+      url = `http://127.0.0.1:8000/api/bursary/?search=${bursarySearch}`
     }
 
 
@@ -1448,7 +1448,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Store Keeper
   const StoreKeeperFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/store_keeper/', {
+    let response = await fetch('http://127.0.0.1:8000/api/store_keeper/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1480,7 +1480,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(storeKeeperSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/store_keeper/?search=${storeKeeperSearch}`
+      url = `http://127.0.0.1:8000/api/store_keeper/?search=${storeKeeperSearch}`
     }
 
 
@@ -1508,7 +1508,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Exam Officer
   const ResultOfficerFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/result_officer/', {
+    let response = await fetch('http://127.0.0.1:8000/api/result_officer/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1540,7 +1540,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(resultOfficerSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/result_officer/?search=${resultOfficerSearch}`
+      url = `http://127.0.0.1:8000/api/result_officer/?search=${resultOfficerSearch}`
     }
 
 
@@ -1568,7 +1568,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Academic Officer
   const AcademicOfficerFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/academic-officer/', {
+    let response = await fetch('http://127.0.0.1:8000/api/academic-officer/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1600,7 +1600,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(academicOfficerSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/academic-officer/?search=${academicOfficerSearch}`
+      url = `http://127.0.0.1:8000/api/academic-officer/?search=${academicOfficerSearch}`
     }
 
 
@@ -1628,7 +1628,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   //  other Staff
   const OtherStaffFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/other-staff/', {
+    let response = await fetch('http://127.0.0.1:8000/api/other-staff/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1660,7 +1660,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(otherStaffSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/other-staff/?search=${otherStaffSearch}`
+      url = `http://127.0.0.1:8000/api/other-staff/?search=${otherStaffSearch}`
     }
 
 
@@ -1688,7 +1688,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // email
   const EmailFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/email/', {
+    let response = await fetch('http://127.0.0.1:8000/api/email/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1724,7 +1724,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(emailSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/email/?search=${emailSearch}`
+      url = `http://127.0.0.1:8000/api/email/?search=${emailSearch}`
     }
 
 
@@ -1753,7 +1753,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   //subject
   const SubjectFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/subjects/', {
+    let response = await fetch('http://127.0.0.1:8000/api/subjects/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1805,7 +1805,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(subjectSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/subjects/?search=${subjectSearch}`
+      url = `http://127.0.0.1:8000/api/subjects/?search=${subjectSearch}`
     }
 
 
@@ -1841,7 +1841,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Term
   const TermFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/term/', {
+    let response = await fetch('http://127.0.0.1:8000/api/term/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1876,7 +1876,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(termSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/term/?search=${termSearch}`
+      url = `http://127.0.0.1:8000/api/term/?search=${termSearch}`
     }
 
 
@@ -1904,7 +1904,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
  // session
   const SessionFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/session/', {
+    let response = await fetch('http://127.0.0.1:8000/api/session/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1941,7 +1941,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(sessionSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/session/?search=${sessionSearch}`
+      url = `http://127.0.0.1:8000/api/session/?search=${sessionSearch}`
     }
 
 
@@ -1971,7 +1971,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
    // Student Class
    const StudentClassFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/student-class/', {
+    let response = await fetch('http://127.0.0.1:8000/api/student-class/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2012,7 +2012,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(studentClassSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/student-class/?search=${studentClassSearch}`
+      url = `http://127.0.0.1:8000/api/student-class/?search=${studentClassSearch}`
     }
 
 
@@ -2041,7 +2041,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Admin or hr Notification
   const AdminHrNotificationFunction = async() =>{
-    let response = await fetch(`http://school.amanilightequity.com/api/admin-or-hr-notification/?seen=${statusQuery}`, {
+    let response = await fetch(`http://127.0.0.1:8000/api/admin-or-hr-notification/?seen=${statusQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2078,7 +2078,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(adminHrNotificationSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/admin-or-hr-notification/?search=${adminHrNotificationSearch}`
+      url = `http://127.0.0.1:8000/api/admin-or-hr-notification/?search=${adminHrNotificationSearch}`
     }
 
 
@@ -2106,7 +2106,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   //School Notification
   const SchoolNotificationFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/school-notification/', {
+    let response = await fetch('http://127.0.0.1:8000/api/school-notification/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2143,7 +2143,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(schoolNotificationSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/school-notification/?search=${schoolNotificationSearch}`
+      url = `http://127.0.0.1:8000/api/school-notification/?search=${schoolNotificationSearch}`
     }
 
 
@@ -2171,7 +2171,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
  // class Notififcatiion
   const ClassNotificationFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/class-notification/', {
+    let response = await fetch('http://127.0.0.1:8000/api/class-notification/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2208,7 +2208,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(classNotificationSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/class-notification/?search=${classNotificationSearch}`
+      url = `http://127.0.0.1:8000/api/class-notification/?search=${classNotificationSearch}`
     }
 
 
@@ -2237,7 +2237,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // staff Notification
   const StaffNotificationFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/staff-notification/', {
+    let response = await fetch('http://127.0.0.1:8000/api/staff-notification/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2274,7 +2274,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(staffNotificationSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/staff-notification/?search=${staffNotificationSearch}`
+      url = `http://127.0.0.1:8000/api/staff-notification/?search=${staffNotificationSearch}`
     }
 
 
@@ -2303,7 +2303,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // School Event
   const SchoolEventFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/school-event/', {
+    let response = await fetch('http://127.0.0.1:8000/api/school-event/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2340,7 +2340,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(schoolEventSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/school-event/?search=${schoolEventSearch}`
+      url = `http://127.0.0.1:8000/api/school-event/?search=${schoolEventSearch}`
     }
 
 
@@ -2369,7 +2369,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Assignment
   const AssignmentFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/assignment/', {
+    let response = await fetch('http://127.0.0.1:8000/api/assignment/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2406,7 +2406,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(assignmentSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/assignment/?search=${assignmentSearch}`
+      url = `http://127.0.0.1:8000/api/assignment/?search=${assignmentSearch}`
     }
 
 
@@ -2435,7 +2435,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Asignment Submission
   const AssignmentSubmissionFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/assignment-submission/', {
+    let response = await fetch('http://127.0.0.1:8000/api/assignment-submission/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2472,7 +2472,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(assignmentSubmissionSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/assignment-submission/?search=${assignmentSubmissionSearch}`
+      url = `http://127.0.0.1:8000/api/assignment-submission/?search=${assignmentSubmissionSearch}`
     }
 
 
@@ -2501,7 +2501,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Class Timetable
   const ClassTimetableFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/class-timetable/', {
+    let response = await fetch('http://127.0.0.1:8000/api/class-timetable/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2538,7 +2538,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(classTimetableSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/class-timetable/?search=${classTimetableSearch}`
+      url = `http://127.0.0.1:8000/api/class-timetable/?search=${classTimetableSearch}`
     }
 
 
@@ -2569,7 +2569,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
     // Class Timetable
   const SchemeOFWorkFunction = async() =>{
-    let response = await fetch(`http://school.amanilightequity.com/api/scheme-of-work/?student_class=${studentClassQuery}&term=${termQuery}&subject=${subjectQuery}`, {
+    let response = await fetch(`http://127.0.0.1:8000/api/scheme-of-work/?student_class=${studentClassQuery}&term=${termQuery}&subject=${subjectQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2602,7 +2602,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(schemeOfWorkSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/scheme-of-work/?search=${schemeOfWorkSearch}`
+      url = `http://127.0.0.1:8000/api/scheme-of-work/?search=${schemeOfWorkSearch}`
     }
 
 
@@ -2633,7 +2633,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
 
    const ScratchCardFunction = async() =>{
-    let response = await fetch(`http://school.amanilightequity.com/api/scratch-cards/?status=${statusQuery}`, {
+    let response = await fetch(`http://127.0.0.1:8000/api/scratch-cards/?status=${statusQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2666,7 +2666,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(scratchCardSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/scratch-cards/?search=${scratchCardSearch}`
+      url = `http://127.0.0.1:8000/api/scratch-cards/?search=${scratchCardSearch}`
     }
 
 
@@ -2696,7 +2696,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   //E Result
 
   const EResultFunction = async() =>{
-    let response = await fetch(`http://school.amanilightequity.com/api/e-result/?student=${studentQuery}&student_class=${studentClassQuery}&term=${termQuery}&session=${sessionQuery}`, {
+    let response = await fetch(`http://127.0.0.1:8000/api/e-result/?student=${studentQuery}&student_class=${studentClassQuery}&term=${termQuery}&session=${sessionQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2734,7 +2734,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(eResultSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/e-result/?search=${eResultSearch}`
+      url = `http://127.0.0.1:8000/api/e-result/?search=${eResultSearch}`
     }
 
 
@@ -2764,7 +2764,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Payment Mehthod
   const PaymentMethodFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/payment-method/', {
+    let response = await fetch('http://127.0.0.1:8000/api/payment-method/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2801,7 +2801,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(paymentMethodSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/payment-method/?search=${paymentMethodSearch}`
+      url = `http://127.0.0.1:8000/api/payment-method/?search=${paymentMethodSearch}`
     }
 
 
@@ -2830,7 +2830,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // school fees
   const SchoolFeesFunction = async() =>{
-    let response = await fetch(`http://school.amanilightequity.com/api/school-fees/?student_class=${studentClassQuery}&term=${termQuery}&session=${sessionQuery}&fee_type=${feeTypeQuery}`, {
+    let response = await fetch(`http://127.0.0.1:8000/api/school-fees/?student_class=${studentClassQuery}&term=${termQuery}&session=${sessionQuery}&fee_type=${feeTypeQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2865,7 +2865,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(schoolFeesSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/school-fees/?search=${schoolFeesSearch}`
+      url = `http://127.0.0.1:8000/api/school-fees/?search=${schoolFeesSearch}`
     }
 
 
@@ -2894,7 +2894,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
     //All  School Fees Payment
   const AllSchoolFeesPaymentFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/payment-school-fees/', {
+    let response = await fetch('http://127.0.0.1:8000/api/payment-school-fees/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2933,7 +2933,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(allSchoolFeesPaymentSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/payment-school-fees/?search=${allSchoolFeesPaymentSearch}`
+      url = `http://127.0.0.1:8000/api/payment-school-fees/?search=${allSchoolFeesPaymentSearch}`
     }
 
 
@@ -2961,7 +2961,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   //pending  School Fees Payment
   const PendingSchoolFeesPaymentFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/payment-school-fees/pending/', {
+    let response = await fetch('http://127.0.0.1:8000/api/payment-school-fees/pending/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3000,7 +3000,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(pendingSchoolFeesPaymentSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/payment-school-fees/pending/?search=${pendingSchoolFeesPaymentSearch}`
+      url = `http://127.0.0.1:8000/api/payment-school-fees/pending/?search=${pendingSchoolFeesPaymentSearch}`
     }
 
 
@@ -3028,7 +3028,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // success school Fees payment
   const SucessSchoolFeesPaymentFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/payment-school-fees/approved/', {
+    let response = await fetch('http://127.0.0.1:8000/api/payment-school-fees/approved/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3067,7 +3067,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(sucessSchoolFeesPaymentSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/payment-school-fees/approved/?search=${sucessSchoolFeesPaymentSearch}`
+      url = `http://127.0.0.1:8000/api/payment-school-fees/approved/?search=${sucessSchoolFeesPaymentSearch}`
     }
 
 
@@ -3095,7 +3095,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // declined school Fees payment
   const DeclinedSchoolFeesPaymentFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/payment-school-fees/declined/', {
+    let response = await fetch('http://127.0.0.1:8000/api/payment-school-fees/declined/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3134,7 +3134,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(declinedSchoolFeesPaymentSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/payment-school-fees/declined/?search=${declinedSchoolFeesPaymentSearch}`
+      url = `http://127.0.0.1:8000/api/payment-school-fees/declined/?search=${declinedSchoolFeesPaymentSearch}`
     }
 
 
@@ -3163,7 +3163,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // bills
   const BillsFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/bills/', {
+    let response = await fetch('http://127.0.0.1:8000/api/bills/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3200,7 +3200,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(billsSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/bills/?search=${billsSearch}`
+      url = `http://127.0.0.1:8000/api/bills/?search=${billsSearch}`
     }
 
 
@@ -3227,7 +3227,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
   const BillsPaymentFunction = async() =>{
-      let response = await fetch('http://school.amanilightequity.com/api/bills-payment/', {
+      let response = await fetch('http://127.0.0.1:8000/api/bills-payment/', {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -3259,7 +3259,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(billsPaymentSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/bills-payment/?search=${billsPaymentSearch}`
+      url = `http://127.0.0.1:8000/api/bills-payment/?search=${billsPaymentSearch}`
     }
     
     if (!url) {
@@ -3286,7 +3286,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // pending Bills
   const PendingBillsPaymentFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/bills-payment/pending/', {
+    let response = await fetch('http://127.0.0.1:8000/api/bills-payment/pending/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3325,7 +3325,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(pendingBillsPaymentSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/bills-payment/pending/?search=${pendingBillsPaymentSearch}`
+      url = `http://127.0.0.1:8000/api/bills-payment/pending/?search=${pendingBillsPaymentSearch}`
     }
 
 
@@ -3354,7 +3354,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // success Bills
   const SucessBillsPaymentFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/bills-payment/approved/', {
+    let response = await fetch('http://127.0.0.1:8000/api/bills-payment/approved/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3394,7 +3394,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(sucessBillsPaymentSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/bills-payment/approved/?search=${sucessBillsPaymentSearch}`
+      url = `http://127.0.0.1:8000/api/bills-payment/approved/?search=${sucessBillsPaymentSearch}`
     }
 
 
@@ -3422,7 +3422,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // declined Bills'
   const DeclinedBillsPaymentFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/bills-payment/declined/', {
+    let response = await fetch('http://127.0.0.1:8000/api/bills-payment/declined/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3459,7 +3459,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Bank Account'
   const BankAccountFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/bank-account/', {
+    let response = await fetch('http://127.0.0.1:8000/api/bank-account/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3496,7 +3496,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(bankAccountSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/bank-account/?search=${bankAccountSearch}`
+      url = `http://127.0.0.1:8000/api/bank-account/?search=${bankAccountSearch}`
     }
 
 
@@ -3528,7 +3528,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(declinedBillsPaymentSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/bills-payment/declined/?search=${declinedBillsPaymentSearch}`
+      url = `http://127.0.0.1:8000/api/bills-payment/declined/?search=${declinedBillsPaymentSearch}`
     }
 
 
@@ -3557,7 +3557,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   //product categories
   const ProductCatergoriesFunction = async() =>{
-    let response = await fetch(`http://school.amanilightequity.com/api/product-categories/`, {
+    let response = await fetch(`http://127.0.0.1:8000/api/product-categories/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3592,7 +3592,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(productCatergoriesSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/product-categories/?search=${productCatergoriesSearch}`
+      url = `http://127.0.0.1:8000/api/product-categories/?search=${productCatergoriesSearch}`
     }
 
 
@@ -3621,7 +3621,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // product
   const ProductFunction = async() =>{
-    let response = await fetch(`http://school.amanilightequity.com/api/product/?product_category=${productCategoriesQuery}&status=${statusQuery}`, {
+    let response = await fetch(`http://127.0.0.1:8000/api/product/?product_category=${productCategoriesQuery}&status=${statusQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3658,7 +3658,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(productSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/product/?search=${productSearch}`
+      url = `http://127.0.0.1:8000/api/product/?search=${productSearch}`
     }
 
 
@@ -3686,7 +3686,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
     // favourite product
   const FavouriteProductFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/favorite-products/', {
+    let response = await fetch('http://127.0.0.1:8000/api/favorite-products/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3723,7 +3723,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(favouriteProductSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/favorite-products/?search=${favouriteProductSearch}`
+      url = `http://127.0.0.1:8000/api/favorite-products/?search=${favouriteProductSearch}`
     }
 
 
@@ -3751,7 +3751,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // order product
   const OrderProductFunction = async() =>{
-    let response = await fetch('http://school.amanilightequity.com/api/order-products/', {
+    let response = await fetch('http://127.0.0.1:8000/api/order-products/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3788,7 +3788,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     let url;
 
     if(orderProductSearch.length !== 0){
-      url = `http://school.amanilightequity.com/api/order-products/?search=${orderProductSearch}`
+      url = `http://127.0.0.1:8000/api/order-products/?search=${orderProductSearch}`
     }
 
 
