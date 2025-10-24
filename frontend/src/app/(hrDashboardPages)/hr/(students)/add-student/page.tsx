@@ -45,7 +45,7 @@ const AddStudent = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors},
+    formState: { errors },
   } = useForm<any>();
 
   const {
@@ -149,7 +149,7 @@ const AddStudent = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/students/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/students/`, {
         method: 'POST',
         body: formData,
         headers: {

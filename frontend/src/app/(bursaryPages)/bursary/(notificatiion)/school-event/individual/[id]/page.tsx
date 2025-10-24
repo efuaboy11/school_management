@@ -21,7 +21,7 @@ const IndivivdualEvent = ({ params }: { params: Promise<{ id: string }> }) => {
 
   const IndividualDetailsFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/school-event/${id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/school-event/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

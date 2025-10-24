@@ -113,7 +113,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
 
   const IndividualUserDataFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/staff/${id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/staff/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -207,13 +207,13 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
   const {
     register: registerSchoolInformation,
     handleSubmit: handleSubmitSchoolInformation,
-    formState: { errors: errorsSchoolInformation},
+    formState: { errors: errorsSchoolInformation },
   } = useForm<any>();
 
   const {
     register: registerContactInformation,
     handleSubmit: handleSubmitContactInformation,
-    formState: { errors: errorsContactInformation,},
+    formState: { errors: errorsContactInformation, },
   } = useForm<any>();
 
 
@@ -255,7 +255,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/staff/${id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/staff/${id}/`, {
         method: 'PATCH',
         body: formData,
         headers: {
@@ -311,7 +311,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/staff/${id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/staff/${id}/`, {
         method: 'PATCH',
         body: formData,
         headers: {
@@ -368,7 +368,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/staff/${id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/staff/${id}/`, {
         method: 'PATCH',
         body: formData,
         headers: {

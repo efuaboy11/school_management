@@ -77,7 +77,7 @@ const IndivivdualParent = ({ params }: { params: Promise<{ id: string }> }) => {
   const {
     register: registerPersonalInformation,
     handleSubmit: handleSubmitPersonalInformation,
-    formState: { errors: errorsPersonalInformation,},
+    formState: { errors: errorsPersonalInformation, },
   } = useForm<any>();
 
   const onPersonalInformationSubmit = (data: any, e: any) => {
@@ -87,7 +87,7 @@ const IndivivdualParent = ({ params }: { params: Promise<{ id: string }> }) => {
 
   const IndividualUserDataFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/parents/${id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/parents/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -123,7 +123,7 @@ const IndivivdualParent = ({ params }: { params: Promise<{ id: string }> }) => {
     setLoader(true)
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/parents/${id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/parents/${id}/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`
@@ -180,7 +180,7 @@ const IndivivdualParent = ({ params }: { params: Promise<{ id: string }> }) => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/parents/${id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/parents/${id}/`, {
         method: 'PATCH',
         body: formData,
         headers: {

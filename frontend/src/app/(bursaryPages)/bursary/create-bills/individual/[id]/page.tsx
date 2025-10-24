@@ -75,7 +75,7 @@ const IndivivdualBill = ({ params }: { params: Promise<{ id: string }> }) => {
 
   const IndividualDetailsFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/bills/${id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/bills/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ const IndivivdualBill = ({ params }: { params: Promise<{ id: string }> }) => {
     setLoader(true)
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/bills/${id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/bills/${id}/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`
@@ -161,7 +161,7 @@ const IndivivdualBill = ({ params }: { params: Promise<{ id: string }> }) => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/bills/${id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/bills/${id}/`, {
         method: 'PATCH',
         body: formData,
         headers: {

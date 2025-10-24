@@ -68,7 +68,7 @@ const AddSessionPage = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/session/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/session/`, {
         method: 'POST',
         body: JSON.stringify(payload),
         headers: {

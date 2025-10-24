@@ -69,7 +69,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
   const IndividualStudentFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/students/${studentID}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/students/${studentID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
   const IndividualClassFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/student-class/${classID}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/student-class/${classID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -128,7 +128,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
   const IndividualTermFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/term/${termID}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/term/${termID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -151,7 +151,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
   const IndividualSessionFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/session/${sessionID}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/session/${sessionID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -181,7 +181,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
   const {
     register,
     handleSubmit,
-    formState: { errors},
+    formState: { errors },
   } = useForm<any>();
 
   const onSubmit = (data: FormData, e: any) => {
@@ -238,7 +238,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
     }
 
     try {
-      const response = await fetch('http://school.amanilightequity.com/api/student-result/', {
+      const response = await fetch('https://school.amanilightequity.com/api/student-result/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

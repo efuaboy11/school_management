@@ -103,7 +103,7 @@ const ApproveBills = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-bills-payment/', {
+      const response = await fetch('https://school.amanilightequity.com/api/delete-multiple-bills-payment/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

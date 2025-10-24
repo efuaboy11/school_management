@@ -23,7 +23,7 @@ const OtherStaff = () => {
   } = useContext(AllDataContext)!;
 
   const {
- 
+
     authTokens,
     formatDate,
     formatName,
@@ -102,7 +102,7 @@ const OtherStaff = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-staff/', {
+      const response = await fetch('https://school.amanilightequity.com/api/delete-multiple-staff/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -235,7 +235,7 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/scheme-of-work/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/scheme-of-work/`, {
         method: 'POST',
         body: formData,
         headers: {
@@ -284,7 +284,7 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
 
 
   const SchemeOFWorkFunction = async () => {
-    const response = await fetch(`http://school.amanilightequity.com/api/scheme-of-work-filter/?student_class=${studentClass}&term=${termValue}`, {
+    const response = await fetch(`https://school.amanilightequity.com/api/scheme-of-work-filter/?student_class=${studentClass}&term=${termValue}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -316,7 +316,7 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-scheme-of-work/', {
+      const response = await fetch('https://school.amanilightequity.com/api/delete-multiple-scheme-of-work/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -363,7 +363,7 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
 
   const IndividualTerm = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/term/${termValue}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/term/${termValue}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -385,7 +385,7 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
 
   const IndividualClass = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/student-class/${studentClass}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/student-class/${studentClass}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

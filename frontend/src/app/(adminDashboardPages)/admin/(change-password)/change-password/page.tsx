@@ -79,7 +79,7 @@ const ChangePasswordPage = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/change-admin-password/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/change-admin-password/`, {
         method: 'POST',
         body: JSON.stringify({
           username: userDetails?.username,
@@ -133,7 +133,7 @@ const ChangePasswordPage = () => {
 
   const UserDetailsFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/me/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/me/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

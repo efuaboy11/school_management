@@ -49,7 +49,7 @@ const CreateTerm = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/term/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/term/`, {
         method: 'POST',
         body: formData,
         headers: {

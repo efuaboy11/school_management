@@ -1,5 +1,5 @@
 "use client"
-import { BillsChart, SchoolFeesBarChart} from '@/components/chatFrames'
+import { BillsChart, SchoolFeesBarChart } from '@/components/chatFrames'
 import AllDataContext from '@/context/AllData'
 import Link from 'next/link'
 import '../../../../css/adminCss/adminHome.css'
@@ -135,10 +135,10 @@ const StudentHome = () => {
 
     totalPendingBillsPayment,
     totalDeclinedBillsPayment,
-    
+
     totalSucessBillsPayment,
     totalBillsPayment,
-    
+
 
     AssignmentFunction,
     AssignmentSubmissionFunction,
@@ -187,7 +187,7 @@ const StudentHome = () => {
 
   const UserDetailsFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/students/${authTokens?.user_id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/students/${authTokens?.user_id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -221,9 +221,9 @@ const StudentHome = () => {
 
 
     // BillsPaymentFunction(),
-      // PendingBillsPaymentFunction(),
-      // SucessBillsPaymentFunction(),
-      DeclinedBillsPaymentFunction()
+    // PendingBillsPaymentFunction(),
+    // SucessBillsPaymentFunction(),
+    DeclinedBillsPaymentFunction()
 
 
     UserDetailsFunction()

@@ -116,7 +116,7 @@ const AssignmentPage = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-assignment/', {
+      const response = await fetch('https://school.amanilightequity.com/api/delete-multiple-assignment/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

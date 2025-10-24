@@ -1,6 +1,6 @@
 "use client"
 import AuthContext from '@/context/AuthContext'
-import React, { useContext,  useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 const UploadSchoolNotificationPage = () => {
@@ -32,7 +32,7 @@ const UploadSchoolNotificationPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors},
+    formState: { errors },
   } = useForm<any>();
 
   const onSubmit = (data: FormData, e: any) => {
@@ -51,7 +51,7 @@ const UploadSchoolNotificationPage = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/school-notification/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/school-notification/`, {
         method: 'POST',
         body: formData,
         headers: {

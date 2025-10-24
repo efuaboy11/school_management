@@ -123,7 +123,7 @@ const StaffNotification = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors},
+    formState: { errors },
   } = useForm();
 
 
@@ -141,7 +141,7 @@ const StaffNotification = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-staff-notification/', {
+      const response = await fetch('https://school.amanilightequity.com/api/delete-multiple-staff-notification/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -194,7 +194,7 @@ const StaffNotification = () => {
     setDisableButton(true)
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/staff-notification/${selectedDataId}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/staff-notification/${selectedDataId}/`, {
         method: 'PATCH',
         body: JSON.stringify({
           text: notificationMessage,

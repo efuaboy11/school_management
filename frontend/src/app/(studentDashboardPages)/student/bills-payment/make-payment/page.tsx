@@ -58,7 +58,7 @@ const PayBills = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors},
+    formState: { errors },
   } = useForm<any>();
 
   const studentOptions = studentData.map((data: any) => ({
@@ -178,7 +178,7 @@ const PayBills = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/bills-payment/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/bills-payment/`, {
         method: 'POST',
         body: formData,
         headers: {

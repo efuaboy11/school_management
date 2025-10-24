@@ -70,7 +70,7 @@ const AddStudentClass = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/student-class/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/student-class/`, {
         method: 'POST',
         body: JSON.stringify(payload),
         headers: {

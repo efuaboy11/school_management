@@ -53,7 +53,7 @@ const AddBankAcount = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors},
+    formState: { errors },
   } = useForm<any>();
 
   const onSubmit = (data: FormData, e: any) => {
@@ -85,7 +85,7 @@ const AddBankAcount = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/bank-account/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/bank-account/`, {
         method: 'POST',
         body: formData,
         headers: {

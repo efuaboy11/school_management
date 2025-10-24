@@ -102,7 +102,7 @@ const AllHr = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-hr/', {
+      const response = await fetch('https://school.amanilightequity.com/api/delete-multiple-hr/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

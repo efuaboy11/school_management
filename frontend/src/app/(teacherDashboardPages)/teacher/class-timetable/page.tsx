@@ -115,7 +115,7 @@ const ClassTimetablePage = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-class-timetable/', {
+      const response = await fetch('https://school.amanilightequity.com/api/delete-multiple-class-timetable/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -70,7 +70,7 @@ const PayFees = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors},
+    formState: { errors },
   } = useForm<any>();
 
   const handleImgFile = (files: File[]) => {
@@ -112,7 +112,7 @@ const PayFees = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/payment-school-fees/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/payment-school-fees/`, {
         method: 'POST',
         body: formData,
         headers: {
@@ -161,7 +161,7 @@ const PayFees = () => {
 
   const IndividualStudentFunction = async () => {
 
-    const response = await fetch(`http://school.amanilightequity.com/api/students/${storedStudent}`, {
+    const response = await fetch(`https://school.amanilightequity.com/api/students/${storedStudent}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

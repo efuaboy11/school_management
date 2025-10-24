@@ -50,7 +50,7 @@ const AddSubject = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/subjects/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/subjects/`, {
         method: 'POST',
         body: formData,
         headers: {

@@ -110,7 +110,7 @@ const PaymentMethod = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-payment-method/', {
+      const response = await fetch('https://school.amanilightequity.com/api/delete-multiple-payment-method/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

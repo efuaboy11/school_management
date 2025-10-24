@@ -104,7 +104,7 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
 
   const IndividualUserDataFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/hr/${id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/hr/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -150,7 +150,7 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
     setLoader(true)
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/hr/${id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/hr/${id}/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`
@@ -220,7 +220,7 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
   const {
     register: registerPersonalInformation,
     handleSubmit: handleSubmitPersonalInformation,
-    formState: { errors: errorsPersonalInformation},
+    formState: { errors: errorsPersonalInformation },
   } = useForm<any>();
 
 
@@ -253,7 +253,7 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/hr/${id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/hr/${id}/`, {
         method: 'PATCH',
         body: formData,
         headers: {

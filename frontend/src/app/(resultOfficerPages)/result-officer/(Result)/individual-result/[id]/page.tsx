@@ -148,13 +148,13 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
   const {
     register: registerAffectiveTraitInformation,
     handleSubmit: handleSubmitAffectiveTraitInformation,
-    formState: { errors: errorsAffectiveTraitInformation},
+    formState: { errors: errorsAffectiveTraitInformation },
   } = useForm<any>();
 
   const {
     register: registerPsychomotorTraitInformation,
     handleSubmit: handleSubmitPsychomotorInformation,
-    formState: { errors: errorsPsychomotorInformation},
+    formState: { errors: errorsPsychomotorInformation },
   } = useForm<any>();
 
   const {
@@ -165,7 +165,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
   const {
     register: registerRemarkInformation,
     handleSubmit: handleSubmitRemarkInformation,
-    formState: { errors: errorsRemarkInformation},
+    formState: { errors: errorsRemarkInformation },
   } = useForm<any>();
 
 
@@ -173,7 +173,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
     EditSummaryInformationInformation(e)
   }
 
-  const onAffectiveTraitInformationSubmit = ( e: any) => {
+  const onAffectiveTraitInformationSubmit = (e: any) => {
     EditAffectiveTraitInformation(e)
 
   }
@@ -217,7 +217,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
     }
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/student-result/${id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/student-result/${id}/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -279,7 +279,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
     }
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/student-result/${id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/student-result/${id}/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -333,7 +333,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
     }
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/student-result/${id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/student-result/${id}/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -387,7 +387,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
     }
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/student-result/${id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/student-result/${id}/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -458,7 +458,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
     };
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/student-result/${id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/student-result/${id}/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -500,7 +500,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
 
   const IndividualDetailsFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/student-result/${id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/student-result/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

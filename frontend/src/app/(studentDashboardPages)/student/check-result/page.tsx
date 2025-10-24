@@ -60,7 +60,7 @@ const CheckResultPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors,},
+    formState: { errors, },
   } = useForm<any>();
 
   const onSubmit = (data: FormData, e: any) => {
@@ -88,7 +88,7 @@ const CheckResultPage = () => {
     };
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/check-result/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/check-result/`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${authTokens?.access}`,

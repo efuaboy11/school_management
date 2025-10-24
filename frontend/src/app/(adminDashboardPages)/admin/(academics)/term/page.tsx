@@ -152,7 +152,7 @@ const TermPage = () => {
     setDisableButton(true)
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/term/${selectedDataId}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/term/${selectedDataId}/`, {
         method: 'PATCH',
         body: JSON.stringify({
           name: termValue,
@@ -199,7 +199,7 @@ const TermPage = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-term/', {
+      const response = await fetch('https://school.amanilightequity.com/api/delete-multiple-term/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

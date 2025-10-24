@@ -32,7 +32,7 @@ const UploadStaffNotificationPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors},
+    formState: { errors },
   } = useForm<any>();
 
   const onSubmit = (data: FormData, e: any) => {
@@ -51,7 +51,7 @@ const UploadStaffNotificationPage = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/staff-notification/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/staff-notification/`, {
         method: 'POST',
         body: formData,
         headers: {

@@ -92,7 +92,7 @@ const Subjects = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-subjects/', {
+      const response = await fetch('https://school.amanilightequity.com/api/delete-multiple-subjects/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

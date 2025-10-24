@@ -85,7 +85,7 @@ const CheckResultPage = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/filter-result/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/filter-result/`, {
         method: 'POST',
         body: formData,
         headers: {

@@ -214,7 +214,7 @@ const CreateAssignment = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/assignment/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/assignment/`, {
         method: 'POST',
         body: formData,
         headers: {

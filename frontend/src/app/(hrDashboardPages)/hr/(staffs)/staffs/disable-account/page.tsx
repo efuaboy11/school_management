@@ -53,7 +53,7 @@ const DisableStaffAccount = () => {
 
   const DisableAccountList = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/disable-account/?user_role=staff`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/disable-account/?user_role=staff`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -87,7 +87,7 @@ const DisableStaffAccount = () => {
     setLoader(true)
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/disable-account/${selectedDataId}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/disable-account/${selectedDataId}/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`
@@ -155,7 +155,7 @@ const DisableStaffAccount = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors},
+    formState: { errors },
   } = useForm<any>();
 
 
@@ -283,7 +283,7 @@ const DisableStaffAccount = () => {
     setLoader(true)
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/disable-account/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/disable-account/`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`,

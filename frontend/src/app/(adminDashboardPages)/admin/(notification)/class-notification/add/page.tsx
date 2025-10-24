@@ -160,7 +160,7 @@ const UploadSchoolNotificationPage = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/class-notification/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/class-notification/`, {
         method: 'POST',
         body: formData,
         headers: {

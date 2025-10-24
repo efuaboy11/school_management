@@ -22,7 +22,7 @@ const AddParent = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors},
+    formState: { errors },
   } = useForm<any>();
 
   const {
@@ -99,7 +99,7 @@ const AddParent = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/parents/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/parents/`, {
         method: 'POST',
         body: formData,
         headers: {

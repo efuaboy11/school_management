@@ -74,7 +74,7 @@ const SchemeOfWorkPage = ({ params }: { params: Promise<any> }) => {
 
 
   const SchemeOFWorkFunction = async () => {
-    const response = await fetch(`http://school.amanilightequity.com/api/scheme-of-work/?student_class=${classID}&term=${termID}&subject=${subjectQuery}`, {
+    const response = await fetch(`https://school.amanilightequity.com/api/scheme-of-work/?student_class=${classID}&term=${termID}&subject=${subjectQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -103,7 +103,7 @@ const SchemeOfWorkPage = ({ params }: { params: Promise<any> }) => {
 
   }
 
-  
+
 
 
   useEffect(() => {

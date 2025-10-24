@@ -250,7 +250,7 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/e-result/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/e-result/`, {
         method: 'POST',
         body: formData,
         headers: {
@@ -299,7 +299,7 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
 
 
   const ResultFunction = async () => {
-    const response = await fetch(`http://school.amanilightequity.com/api/e-result/?student=${studentQuery}&student_class=${classID}&term=${termID}&session=${sessionID}`, {
+    const response = await fetch(`https://school.amanilightequity.com/api/e-result/?student=${studentQuery}&student_class=${classID}&term=${termID}&session=${sessionID}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -330,7 +330,7 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-e-result/', {
+      const response = await fetch('https://school.amanilightequity.com/api/delete-multiple-e-result/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -377,7 +377,7 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
 
   const IndividualTerm = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/term/${termID}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/term/${termID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -399,7 +399,7 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
 
   const IndividualClass = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/student-class/${classID}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/student-class/${classID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -421,7 +421,7 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
 
   const IndividualSessionFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/session/${sessionID}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/session/${sessionID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

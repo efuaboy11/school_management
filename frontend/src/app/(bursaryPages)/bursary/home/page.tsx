@@ -1,5 +1,5 @@
 "use client"
-import { SchoolFeesBarChart,} from '@/components/chatFrames'
+import { SchoolFeesBarChart, } from '@/components/chatFrames'
 import AllDataContext from '@/context/AllData'
 import Link from 'next/link'
 import '../../../../css/adminCss/adminHome.css'
@@ -169,7 +169,7 @@ const HrHome = () => {
 
   const UserDetailsFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/staff/${authTokens?.user_id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/staff/${authTokens?.user_id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -198,9 +198,9 @@ const HrHome = () => {
     DeclinedSchoolFeesPaymentFunction()
 
     // BillsPaymentFunction(),
-      // PendingBillsPaymentFunction(),
-      // SucessBillsPaymentFunction(),
-      DeclinedBillsPaymentFunction()
+    // PendingBillsPaymentFunction(),
+    // SucessBillsPaymentFunction(),
+    DeclinedBillsPaymentFunction()
 
   }, [])
 

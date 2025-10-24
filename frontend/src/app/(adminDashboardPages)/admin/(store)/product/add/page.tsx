@@ -60,7 +60,7 @@ const AddProduct = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors},
+    formState: { errors },
   } = useForm<any>();
 
   const onSubmit = (data: FormData, e: any) => {
@@ -94,7 +94,7 @@ const AddProduct = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/product/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/product/`, {
         method: 'POST',
         body: formData,
         headers: {

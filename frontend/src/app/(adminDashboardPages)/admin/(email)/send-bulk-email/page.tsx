@@ -103,7 +103,7 @@ const SendBulkEmailPage = () => {
   }
 
   const StudentEmailFuncton = async () => {
-    const response = await fetch(`http://school.amanilightequity.com/api/list-emails/student/`, {
+    const response = await fetch(`https://school.amanilightequity.com/api/list-emails/student/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -124,7 +124,7 @@ const SendBulkEmailPage = () => {
 
 
   const TeacherEmailFunction = async () => {
-    const response = await fetch(`http://school.amanilightequity.com/api/list-emails/teacher/`, {
+    const response = await fetch(`https://school.amanilightequity.com/api/list-emails/teacher/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -145,7 +145,7 @@ const SendBulkEmailPage = () => {
 
 
   const BursaryEmailFunction = async () => {
-    const response = await fetch(`http://school.amanilightequity.com/api/list-emails/bursary/`, {
+    const response = await fetch(`https://school.amanilightequity.com/api/list-emails/bursary/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -165,7 +165,7 @@ const SendBulkEmailPage = () => {
   }
 
   const ResultOfficerEmailFunction = async () => {
-    const response = await fetch(`http://school.amanilightequity.com/api/list-emails/result-officer/`, {
+    const response = await fetch(`https://school.amanilightequity.com/api/list-emails/result-officer/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -185,7 +185,7 @@ const SendBulkEmailPage = () => {
   }
 
   const StaffEmailFunction = async () => {
-    const response = await fetch(`http://school.amanilightequity.com/api/list-emails/staff/`, {
+    const response = await fetch(`https://school.amanilightequity.com/api/list-emails/staff/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -205,7 +205,7 @@ const SendBulkEmailPage = () => {
   }
 
   const AllEmailFunction = async () => {
-    const response = await fetch(`http://school.amanilightequity.com/api/list-emails/all/`, {
+    const response = await fetch(`https://school.amanilightequity.com/api/list-emails/all/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -259,7 +259,7 @@ const SendBulkEmailPage = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/email/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/email/`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${authTokens?.access}`,

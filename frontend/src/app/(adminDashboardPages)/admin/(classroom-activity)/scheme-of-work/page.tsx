@@ -234,7 +234,7 @@ const SchemeOfWorkPage = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-scheme-of-work/', {
+      const response = await fetch('https://school.amanilightequity.com/api/delete-multiple-scheme-of-work/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

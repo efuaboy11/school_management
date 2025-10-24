@@ -53,7 +53,7 @@ const AddTeacher = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors},
+    formState: { errors },
   } = useForm<any>();
 
   const {
@@ -200,7 +200,7 @@ const AddTeacher = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/staff/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/staff/`, {
         method: 'POST',
         body: formData,
         headers: {

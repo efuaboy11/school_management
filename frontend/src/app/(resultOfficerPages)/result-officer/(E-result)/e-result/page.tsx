@@ -238,7 +238,7 @@ const EResultPage = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-e-result/', {
+      const response = await fetch('https://school.amanilightequity.com/api/delete-multiple-e-result/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

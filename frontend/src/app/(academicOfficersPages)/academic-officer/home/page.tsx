@@ -42,7 +42,7 @@ const TeacherHome = () => {
 
   const UserDetailsFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/staff/${authTokens?.user_id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/staff/${authTokens?.user_id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

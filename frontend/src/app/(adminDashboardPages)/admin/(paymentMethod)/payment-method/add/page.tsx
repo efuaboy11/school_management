@@ -1,6 +1,6 @@
 "use client"
 import AuthContext from '@/context/AuthContext'
-import React, { useContext,  useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 const AddPaymentMethod = () => {
@@ -49,7 +49,7 @@ const AddPaymentMethod = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/payment-method/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/payment-method/`, {
         method: 'POST',
         body: formData,
         headers: {

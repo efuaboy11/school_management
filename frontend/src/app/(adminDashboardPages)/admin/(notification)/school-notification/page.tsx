@@ -119,7 +119,7 @@ const SchoolNotification = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors},
+    formState: { errors },
   } = useForm();
 
 
@@ -137,7 +137,7 @@ const SchoolNotification = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-school-notification/', {
+      const response = await fetch('https://school.amanilightequity.com/api/delete-multiple-school-notification/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -189,7 +189,7 @@ const SchoolNotification = () => {
     setDisableButton(true)
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/school-notification/${selectedDataId}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/school-notification/${selectedDataId}/`, {
         method: 'PATCH',
         body: JSON.stringify({
           text: notificationMessage,

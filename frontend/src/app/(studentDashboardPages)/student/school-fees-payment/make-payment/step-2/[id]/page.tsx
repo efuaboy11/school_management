@@ -81,7 +81,7 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
   const {
 
     handleSubmit,
-    formState: { errors},
+    formState: { errors },
   } = useForm<any>();
 
   const handleImgFile = (files: File[]) => {
@@ -111,7 +111,7 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
 
   const IndividualPaymentFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/payment-method/${id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/payment-method/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -137,7 +137,7 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
 
   const IndividualBankAccountFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/bank-account/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/bank-account/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -181,7 +181,7 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/payment-school-fees/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/payment-school-fees/`, {
         method: 'POST',
         body: formData,
         headers: {
@@ -235,7 +235,7 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/initialize-payment/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/initialize-payment/`, {
         method: 'POST',
         body: JSON.stringify({
           email: studentData?.email,
@@ -283,7 +283,7 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
 
   const IndividualStudentFunction = async () => {
 
-    const response = await fetch(`http://school.amanilightequity.com/api/students/${authTokens?.user_id}`, {
+    const response = await fetch(`https://school.amanilightequity.com/api/students/${authTokens?.user_id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

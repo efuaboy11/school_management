@@ -138,7 +138,7 @@ const PendingPayment = () => {
     setDisableButton(true)
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/payment-school-fees/${selectedDataId}/update-status/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/payment-school-fees/${selectedDataId}/update-status/`, {
         method: 'PATCH',
         body: JSON.stringify({
           status: status,
@@ -195,7 +195,7 @@ const PendingPayment = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-payment-school-fees/', {
+      const response = await fetch('https://school.amanilightequity.com/api/delete-multiple-payment-school-fees/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

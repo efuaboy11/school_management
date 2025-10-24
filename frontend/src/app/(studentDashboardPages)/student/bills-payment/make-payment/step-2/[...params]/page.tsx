@@ -74,7 +74,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
 
   const {
-    
+
     handleSubmit,
     formState: { errors },
   } = useForm<any>();
@@ -106,7 +106,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
   const IndividualPaymentMethodFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/payment-method/${paymentMethodID}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/payment-method/${paymentMethodID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -133,7 +133,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
   const IndividualBillFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/bills/${billID}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/bills/${billID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -159,7 +159,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
   const IndividualBankAccountFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/bank-account/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/bank-account/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -203,7 +203,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/bills-payment/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/bills-payment/`, {
         method: 'POST',
         body: formData,
         headers: {
@@ -256,7 +256,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/initialize-payment/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/initialize-payment/`, {
         method: 'POST',
         body: JSON.stringify({
           email: studentData?.email,
@@ -304,7 +304,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
   const IndividualStudentFunction = async () => {
 
-    const response = await fetch(`http://school.amanilightequity.com/api/students/${authTokens?.user_id}`, {
+    const response = await fetch(`https://school.amanilightequity.com/api/students/${authTokens?.user_id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

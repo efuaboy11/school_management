@@ -163,7 +163,7 @@ const ScratchCardPage = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-scratch-cards/', {
+      const response = await fetch('https://school.amanilightequity.com/api/delete-multiple-scratch-cards/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -225,7 +225,7 @@ const ScratchCardPage = () => {
     setDisableButton(true)
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/generate-scratch-cards/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/generate-scratch-cards/`, {
         method: 'POST',
         body: JSON.stringify({
           amount: cardAmount,

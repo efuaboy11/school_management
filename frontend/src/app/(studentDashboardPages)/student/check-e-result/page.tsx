@@ -88,7 +88,7 @@ const CheckResultPage = () => {
     };
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/check-e-result/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/check-e-result/`, {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${authTokens?.access}`,

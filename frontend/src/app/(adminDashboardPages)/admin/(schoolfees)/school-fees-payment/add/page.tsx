@@ -52,7 +52,7 @@ const CreateSchoolFees = () => {
 
     TermFunction,
 
- 
+
     SessionFunction,
 
     schoolFeesData,
@@ -117,7 +117,7 @@ const CreateSchoolFees = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/school-fees/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/school-fees/`, {
         method: 'POST',
         body: formData,
         headers: {

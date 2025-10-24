@@ -72,7 +72,7 @@ const BursaryFrame = () => {
 
   const UserDetails = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/staff/${authTokens?.user_id}/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/staff/${authTokens?.user_id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -93,7 +93,7 @@ const BursaryFrame = () => {
   console.log(authTokens)
   const currentUser = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api/me/`, {
+      const response = await fetch(`https://school.amanilightequity.com/api/me/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
