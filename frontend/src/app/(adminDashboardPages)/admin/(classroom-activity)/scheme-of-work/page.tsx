@@ -13,7 +13,7 @@ import { DownloadLink } from '@/components/downloadLink'
 
 const SchemeOfWorkPage = () => {
 
-  const { theme, toggleTheme } = useContext(ThemeContext)!
+  const { theme} = useContext(ThemeContext)!
     ;
   const {
     schemeOfWorkCount,

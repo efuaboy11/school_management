@@ -10,6 +10,7 @@ import { useRouter } from 'next/navigation';
 import AllDataContext from '@/context/AllData'
 
 import Link from 'next/link'
+import { useDropzone } from 'react-dropzone'
 
 
 const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
@@ -53,7 +54,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
   const {
     truncateText,
     authTokens,
-    ,
+
     formatDate,
     formatName,
 

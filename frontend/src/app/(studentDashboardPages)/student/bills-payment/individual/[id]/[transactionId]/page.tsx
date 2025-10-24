@@ -25,9 +25,10 @@ const IndividualBills = ({ params }: { params: Promise<any> }) => {
   const {
     truncateText,
     authTokens,
-    ,
     formatDate,
     formatName,
+    formateDateTime,
+    formatCurrency,
 
 
 } = useContext(AuthContext)!;

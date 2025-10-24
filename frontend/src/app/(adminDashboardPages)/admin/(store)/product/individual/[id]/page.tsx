@@ -6,17 +6,16 @@ import { useForm } from 'react-hook-form'
 import Image from 'next/image'
 
 import AllDataContext from '@/context/AllData';
+import { useDropzone } from 'react-dropzone';
 
 
 const IndivivdualProduct = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params)
 
   const {
-    truncateText,
     authTokens,
-    ,
-    formatDate,
     formatName,
+    formatCurrency,
 
 
     loader,
@@ -44,7 +43,6 @@ const [productName, setProductName] = useState('')
 const [price, setPrice] = useState('')
 const [discountPrice, setDiscountPrice] = useState('')
 const [rating, setRating] = useState('')
-const [isActive, setIsActive] = useState(true)
 const [img, setImg] = useState<File | null>(null)
 const [deleteModal, setDeleteModal] = useState(false)
 
@@ -123,7 +121,6 @@ const IndividualDetailsFunction = async () => {
       setPrice(data?.price || '')
       setDiscountPrice(data?.disabled || '')
       setRating(data?.rating || '')
-      setIsActive(data?.is_active || true)
       setLoading(false)
     } else {
       setLoading(false)

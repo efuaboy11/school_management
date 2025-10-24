@@ -6,7 +6,6 @@ import Image from 'next/image'
 import AuthContext from '@/context/AuthContext'
 import { useForm } from 'react-hook-form'
 
-import { useRouter } from 'next/navigation';
 import AllDataContext from '@/context/AllData'
 import { useDropzone } from 'react-dropzone';
 import Link from 'next/link'

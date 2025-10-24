@@ -4,6 +4,7 @@ import React, { use, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form'
 import Image from 'next/image'
+import { useDropzone } from 'react-dropzone';
 
 const IndivivdualParent = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params)
@@ -11,7 +12,6 @@ const IndivivdualParent = ({ params }: { params: Promise<{ id: string }> }) => {
   const {
     truncateText,
     authTokens,
-    ,
     formatDate,
     formatName,
 

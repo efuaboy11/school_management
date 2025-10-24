@@ -27,7 +27,7 @@ const DisableHr = () => {
   const {
     truncateText,
     authTokens,
-    ,
+  
     formatDate,
     formatName,
 

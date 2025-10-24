@@ -1,5 +1,5 @@
 "use client"
-import { faEllipsis, faX } from '@fortawesome/free-solid-svg-icons'
+import { faX } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
@@ -25,20 +25,10 @@ const PendingPayment = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
-    authTokens,
     formatName,
-    loader,
-    setLoader,
-    disableButton,
-    setDisableButton,
-
+    formatCurrency,
 
     formatDate,
-
-    setMessage,
-    showAlert,
-    setIsSuccess,
 
   } = useContext(AuthContext)!;
 
