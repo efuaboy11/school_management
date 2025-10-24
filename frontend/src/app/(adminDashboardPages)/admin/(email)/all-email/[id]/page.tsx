@@ -10,10 +10,7 @@ const IndivivdualEmail = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params)
 
   const {
-    truncateText,
     authTokens,
-  
-    formatDate,
     formatName,
 
 
@@ -33,7 +30,7 @@ const [details, setDetails] = useState<any>(null)
 
 const [deleteModal, setDeleteModal] = useState(false)
 
-const [showModal, setShowModal] = useState(false);
+
 const [animateModal, setAnimateModal] = useState(false);
 
 const router = useRouter();
@@ -120,13 +117,6 @@ const deleteUserFunction = async () => {
 }
 
 
-useEffect(() => {
-  if (showModal) {
-    setAnimateModal(true)
-  } else {
-    setAnimateModal(false);
-  }
-}, [showModal]);
 
 useEffect(() => {
   IndividualDetailsFunction()
