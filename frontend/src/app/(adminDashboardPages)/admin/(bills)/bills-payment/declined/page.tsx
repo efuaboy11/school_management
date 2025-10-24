@@ -37,6 +37,7 @@ const DeclinedBills = () => {
     setMessage,
     showAlert,
     setIsSuccess,
+    formatCurrency,
 
   } = useContext(AuthContext)!;
 

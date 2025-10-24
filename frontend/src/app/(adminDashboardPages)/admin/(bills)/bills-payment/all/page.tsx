@@ -41,6 +41,7 @@ const AllSchoolFeesPayment = () => {
     setLoader,
     disableButton,
     setDisableButton,
+    formatCurrency,
 
 
     formatDate,

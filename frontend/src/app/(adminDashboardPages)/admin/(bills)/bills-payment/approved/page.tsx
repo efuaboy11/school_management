@@ -30,6 +30,7 @@ const ApproveBills = () => {
     setLoader,
     disableButton,
     setDisableButton,
+    formatCurrency,
 
 
     formatDate,
