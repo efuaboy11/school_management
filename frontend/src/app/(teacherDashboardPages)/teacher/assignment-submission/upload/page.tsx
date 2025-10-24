@@ -44,7 +44,7 @@ const CreateAssignmentSubmission = () => {
 
   const {
     teacherData,
-    studentClassData,
+
     subjectData,
 
     TeacherFunction,

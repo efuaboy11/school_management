@@ -1336,9 +1336,6 @@ export const AllDataProvider = ({ children }: { children: ReactNode }) => {
         a.first_name.localeCompare(b.first_name)
       );
 
-      const RecentsortedData = [...data].sort((a, b) =>
-        new Date(b.date_joined).getTime() - new Date(a.date_joined).getTime()
-      );
 
       setHrData(sortedData)
       setHrLoader(false)

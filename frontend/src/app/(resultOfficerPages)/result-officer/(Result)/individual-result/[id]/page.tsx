@@ -57,7 +57,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
 
 
   const [subjectResults, setSubjectResults] = useState<any>([]);
-  const [subjectData, setSubjectData] = useState<any>([])
+
   console.log('subjectResults', subjectResults)
 
   const [classValue, setClassValue] = useState("")
@@ -178,10 +178,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
     EditAffectiveTraitInformation(e)
 
   }
-  const onContactInformationSubmit = (e: any) => {
-    // EditContactInformation(e)
 
-  }
 
   const onPsychomotorInformationSubmit = (e: any) => {
     EditPsychomotorInformation(e)
@@ -578,105 +575,6 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
     setSubjectResults(values)
   }
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<any>();
-
-  const onSubmit = (data: FormData, e: any) => {
-    handleSubmitResult(e)
-  }
-
-  const handleSubmitResult = async (e: any) => {
-    e.preventDefault();
-    setLoader(true)
-
-    const cleanedSubjectResults = subjectResults.filter((item: any) => {
-      // Remove if all these are empty
-      return !(
-        item.total_ca === '' &&
-        item.exam_score === '' &&
-        item.total === '' &&
-        item.grade === '' &&
-        item.position === '' &&
-        item.cgpa === ''
-      );
-    });
-
-    const resultData = {
-      student: details?.student,
-      student_class: classValue,
-      term: termValue,
-      session: sessionValue,
-      total_marks_obtain: totalMarkObtain,
-      student_average: studentAverage,
-      class_average: classAverage,
-      total_students: totalStudents,
-      position: position,
-      decision: decision,
-      agility: agility,
-      caring: caring,
-      communication: communication,
-      loving: loving,
-      puntuality: puntuality,
-      seriousness: seriousness,
-      socialization: socialization,
-      attentiveness: attentiveness,
-      handling_of_tools: handlingOfTools,
-      honesty: honesty,
-      leadership: leadership,
-      music: music,
-      neatness: neatness,
-      perserverance: perserverance,
-      politeness: politeness,
-      tools: tools,
-      teacher_comment: teacherComment,
-      principal_comment: principalComment,
-      next_term_begins: nextTermBegins,
-      subject_result: cleanedSubjectResults,
-    }
-
-    try {
-      const response = await fetch('http://school.amanilightequity.com/api/student-result/', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${authTokens?.access}`
-        },
-        body: JSON.stringify(resultData)
-      });
-
-      if (response.ok) {
-        showAlert()
-        setMessage('Result uploaded')
-        setIsSuccess(true)
-        setLoader(false)
-        setDisableButton(false)
-        router.push('/admin/upload-result/')
-
-
-      } else {
-        const errorData = await response.json()
-        const errorMessages = Object.values(errorData)
-          .flat()
-          .join(', ');
-        setMessage(errorMessages)
-        setDisableButton(false)
-        setIsSuccess(false)
-        setLoader(false)
-        showAlert()
-      }
-    } catch (error) {
-      console.log(error)
-      showAlert()
-      setMessage('An unexpected error occurred.');
-      setDisableButton(false)
-      setIsSuccess(false)
-      setLoader(false)
-
-    }
-  }
 
   useEffect(() => {
     StudentClassFunction()
@@ -1147,10 +1045,6 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
 
                                     <tbody>
                                       {subjectResults.map((subject: any, index: any) => {
-                                        const subjectn = subjectData.find((s: any) => s.id === subject.subject)
-                                        console.log(subjectn)
-                                        console.log(subjectData)
-                                        const subjectName = subjectn ? subjectn.name : ''
                                         return (
                                           <tr key={index}>
                                             <td className='light-text'>{formatName(subject.subject_name)}</td>
@@ -1356,10 +1250,6 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
 
                                 <tbody>
                                   {subjectResults.map((subject: any, index: any) => {
-                                    const subjectn = subjectData.find((s: any) => s.id === subject.subject)
-                                    console.log(subjectn)
-                                    console.log(subjectData)
-                                    const subjectName = subjectn ? subjectn.name : ''
                                     return (
                                       <tr key={index}>
                                         <td className='light-text'>{formatName(subject.subject_name)}</td>

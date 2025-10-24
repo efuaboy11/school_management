@@ -77,7 +77,6 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
   const {
     StudentClassFunction,
     studentClassData,
-    setStudentClassData,
   } = useContext(AllDataContext)!;
 
 

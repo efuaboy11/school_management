@@ -11,9 +11,6 @@ const ForgetPassword = () => {
   
   const { 
     username,
-    setUsername,
-
-
     disableButton,
   
     loader,

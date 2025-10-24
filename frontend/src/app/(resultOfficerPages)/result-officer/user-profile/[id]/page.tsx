@@ -18,8 +18,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
   const [animateModal, setAnimateModal] = useState(false);
   const [userData, setUserData] = useState<any>(null)
 
-  const [schoolFeesDeleteModal, setSchoolFeesDeleteModal] = useState(false)
-  const [billsDeleteModal, setBillsDeleteModal] = useState(false)
+
 
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -197,21 +196,8 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
     }
   }, [showContactInformationModal]);
 
-  useEffect(() => {
-    if (schoolFeesDeleteModal) {
-      setAnimateModal(true)
-    } else {
-      setAnimateModal(false);
-    }
-  }, [schoolFeesDeleteModal]);
 
-  useEffect(() => {
-    if (billsDeleteModal) {
-      setAnimateModal(true)
-    } else {
-      setAnimateModal(false);
-    }
-  }, [billsDeleteModal]);
+
 
 
 

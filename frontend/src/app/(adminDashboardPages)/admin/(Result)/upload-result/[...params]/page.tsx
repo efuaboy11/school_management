@@ -181,7 +181,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors},
   } = useForm<any>();
 
   const onSubmit = (data: FormData, e: any) => {

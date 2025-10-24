@@ -15,11 +15,11 @@ const AdminFrame = () => {
     OnbodyClick,
     showSidebar,
     LogoutUser,
-    authTokens,
+
 
   } = useContext(AuthContext)!
 
-  const router = useRouter()
+
 
   const [studentDropdown, setStudentDropdown] = useState(false)
   const [staffDropdown, setStaffDropdown] = useState(false)

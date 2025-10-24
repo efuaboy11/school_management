@@ -205,7 +205,7 @@ const AdminHome = () => {
     DeclinedSchoolFeesPaymentFunction()
     SessionFunction()
 
-    BillsPaymentFunction(),
+    // BillsPaymentFunction(),
       PendingBillsPaymentFunction(),
       SucessBillsPaymentFunction(),
       DeclinedBillsPaymentFunction()

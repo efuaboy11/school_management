@@ -20,8 +20,7 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
   const [animateModal, setAnimateModal] = useState(false);
   const [userData, setUserData] = useState<any>(null)
   const [userDeleteModal, setUserDeleteModal] = useState(false)
-  const [schoolFeesDeleteModal, setSchoolFeesDeleteModal] = useState(false)
-  const [billsDeleteModal, setBillsDeleteModal] = useState(false)
+
 
 
   const router = useRouter();
@@ -210,22 +209,6 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
 
 
   useEffect(() => {
-    if (schoolFeesDeleteModal) {
-      setAnimateModal(true)
-    } else {
-      setAnimateModal(false);
-    }
-  }, [schoolFeesDeleteModal]);
-
-  useEffect(() => {
-    if (billsDeleteModal) {
-      setAnimateModal(true)
-    } else {
-      setAnimateModal(false);
-    }
-  }, [billsDeleteModal]);
-
-  useEffect(() => {
     if (userDeleteModal) {
       setAnimateModal(true)
     } else {
@@ -237,7 +220,7 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
   const {
     register: registerPersonalInformation,
     handleSubmit: handleSubmitPersonalInformation,
-    formState: { errors: errorsPersonalInformation, isValid: isValidPersonalInformation },
+    formState: { errors: errorsPersonalInformation},
   } = useForm<any>();
 
 

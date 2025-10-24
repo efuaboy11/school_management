@@ -6,7 +6,7 @@ import Image from 'next/image'
 import AuthContext from '@/context/AuthContext'
 import { useForm } from 'react-hook-form'
 import { Pagination, Stack } from '@mui/material';
-import { useRouter } from 'next/navigation';
+
 import AllDataContext from '@/context/AllData'
 import Link from 'next/link'
 const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => {
@@ -18,7 +18,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
   const [animateModal, setAnimateModal] = useState(false);
   const [userData, setUserData] = useState<any>(null)
 
-  const [schoolFeesDeleteModal, setSchoolFeesDeleteModal] = useState(false)
+
 
 
 
@@ -64,7 +64,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
 
     loader,
     setLoader,
-    disableButton,
+ 
     setDisableButton,
 
     setMessage,
@@ -76,7 +76,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
   const {
     StudentClassFunction,
     studentClassData,
-    setStudentClassData,
+
   } = useContext(AllDataContext)!;
 
 
@@ -259,13 +259,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
     }
   }, [showContactInformationModal]);
 
-  useEffect(() => {
-    if (schoolFeesDeleteModal) {
-      setAnimateModal(true)
-    } else {
-      setAnimateModal(false);
-    }
-  }, [schoolFeesDeleteModal]);
+
 
 
 
@@ -274,7 +268,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
   const {
     register: registerPersonalInformation,
     handleSubmit: handleSubmitPersonalInformation,
-    formState: { errors: errorsPersonalInformation, isValid: isValidPersonalInformation },
+    formState: { errors: errorsPersonalInformation,},
   } = useForm<any>();
 
 
@@ -283,7 +277,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
   const {
     register: registerContactInformation,
     handleSubmit: handleSubmitContactInformation,
-    formState: { errors: errorsContactInformation, isValid: isValidContactInformation },
+    formState: { errors: errorsContactInformation},
   } = useForm<any>();
 
 

@@ -23,7 +23,6 @@ const AllTeachers = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
     authTokens,
     formatDate,
     formatName,

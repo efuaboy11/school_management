@@ -25,19 +25,11 @@ const AcademicOfficerFrame = () => {
   const [userDetails, setUserDetails] = useState<any>(null)
 
 
-  const [studentDropdown, setStudentDropdown] = useState(false)
-  const [staffDropdown, setStaffDropdown] = useState(false)
-  const [parentDropdown, setParentDropdown] = useState(false)
-  const [schoolFeesDropdown, setSchoolFeesDropdown] = useState(false)
-  const [billsDropdown, setBillsDropdown] = useState(false)
-  const [storeDropdown, setstoreDropdown] = useState(false)
-  const [paymentMethodDropdown, setPaymentMethodDropdown] = useState(false)
+
   const [academicsDropdown, setAcademicsDropdown] = useState(false)
-  const [classActivityDropdown, setClassActivityDropdown] = useState(false)
+
   const [notificationDropdown, setNotificationDropdown] = useState(false)
-  const [resultDropdown, setResultDropdown] = useState(false)
-  const [EResultDropdown, setEResultDropdown] = useState(false)
-  const [emailDropdown, setEmailDropdown] = useState(false)
+
 
   const [navDropdown, setNavDropdown] = useState(false)
   const pathname = usePathname()
@@ -54,18 +46,10 @@ const AcademicOfficerFrame = () => {
 
 
   const toggleAcademics = () => {
-    setParentDropdown(false)
-    setStudentDropdown(false)
-    setStaffDropdown(false)
-    setSchoolFeesDropdown(false)
-    setBillsDropdown(false)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(false)
+
     setAcademicsDropdown(!academicsDropdown)
-    setClassActivityDropdown(false)
     setNotificationDropdown(false)
-    setResultDropdown(false)
-    setEResultDropdown(false)
+
   }
 
 
@@ -73,18 +57,9 @@ const AcademicOfficerFrame = () => {
 
 
   const toggleNotiffcation = () => {
-    setParentDropdown(false)
-    setStudentDropdown(false)
-    setStaffDropdown(false)
-    setSchoolFeesDropdown(false)
-    setBillsDropdown(false)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(false)
+
     setAcademicsDropdown(false)
-    setClassActivityDropdown(false)
     setNotificationDropdown(!notificationDropdown)
-    setResultDropdown(false)
-    setEResultDropdown(false)
   }
 
 

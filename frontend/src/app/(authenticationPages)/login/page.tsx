@@ -39,7 +39,7 @@ const Login = () => {
   }
 
 
-  const {register, handleSubmit, formState: { errors, isValid }} = useForm<FormData>();
+  const {register, handleSubmit, formState: { errors} = useForm<FormData>();
 
   const onSubmit = (data: FormData, e:any) => {
     // if(isValid){

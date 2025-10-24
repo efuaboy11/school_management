@@ -1,7 +1,6 @@
 "use client"
 import AuthContext from '@/context/AuthContext'
 import React, { use, useContext, useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation';
 import Image from 'next/image'
 import Link from 'next/link';
 import { Pagination, Stack } from '@mui/material';

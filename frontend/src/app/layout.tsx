@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono,  Inter } from "next/font/google";
+import {Inter } from "next/font/google";
 import "./globals.css";
 import 'bootstrap/dist/css/bootstrap.min.css'; // Import Bootstrap JS
 import { ThemeProvider } from "@/context/ThemeContext";

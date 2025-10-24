@@ -220,7 +220,7 @@ const StudentHome = () => {
     DeclinedSchoolFeesPaymentFunction()
 
 
-    BillsPaymentFunction(),
+    // BillsPaymentFunction(),
       PendingBillsPaymentFunction(),
       SucessBillsPaymentFunction(),
       DeclinedBillsPaymentFunction()

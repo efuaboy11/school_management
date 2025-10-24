@@ -53,7 +53,6 @@ const ChangeStudentCurrentClassPage = () => {
   const {
 
     handleSubmit,
-    formState: { errors },
   } = useForm<any>();
 
   const onSubmit = (data: FormData, e: any) => {

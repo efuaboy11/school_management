@@ -178,7 +178,7 @@ const DisableStaffAccount = () => {
   }
 
 
-  const handlesShowDiactivateModal = (i) => {
+  const handlesShowDiactivateModal = () => {
     setDiactivateModal(true)
   }
   const handlesCloseDiactivateModal = () => {

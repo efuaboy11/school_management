@@ -86,7 +86,7 @@ const TeacherHome = () => {
     DeclinedSchoolFeesPaymentFunction()
 
 
-    BillsPaymentFunction(),
+    // BillsPaymentFunction(),
       PendingBillsPaymentFunction(),
       SucessBillsPaymentFunction(),
       DeclinedBillsPaymentFunction()
