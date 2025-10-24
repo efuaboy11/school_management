@@ -116,7 +116,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const tokenString = typeof window !== "undefined" ? localStorage.getItem('authTokens') : null;
     try {
       return tokenString ? jwtDecode<DecodedUser>(JSON.parse(tokenString).access) : null;
-    } catch{
+    } catch {
       return null;
     }
   });
@@ -442,7 +442,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const sanitizedPassword = validator.escape(password);
 
     try {
-      const response = await fetch('http://localhost:8000/api/login/', {
+      const response = await fetch('http://school.amanilightequity.com/api/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
