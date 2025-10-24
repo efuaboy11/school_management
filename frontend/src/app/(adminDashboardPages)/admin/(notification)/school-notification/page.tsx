@@ -28,9 +28,7 @@ const SchoolNotification = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
     authTokens,
-      ,
     formatDate,
     formatName,
 

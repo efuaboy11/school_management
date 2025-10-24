@@ -37,7 +37,6 @@ const SchoolNotification = () => {
   const {
     truncateText,
     authTokens,
-    ,
     formatDate,
     formatName,
 

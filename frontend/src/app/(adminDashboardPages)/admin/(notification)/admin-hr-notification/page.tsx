@@ -32,7 +32,6 @@ const AdminHrNotificationPage = () => {
   const {
     truncateText,
     authTokens,
-      ,
     formatDate,
     formatName,
 
