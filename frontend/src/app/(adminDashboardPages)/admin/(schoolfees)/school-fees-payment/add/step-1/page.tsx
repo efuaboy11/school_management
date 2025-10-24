@@ -19,24 +19,24 @@ const VerifyDetails = () => {
   const [studentErrorMessage, setStudentErrorMessage] = useState('')
 
   const [isClient, setIsClient] = useState(false);
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  const { theme } = useContext(ThemeContext)!;
   useEffect(() => {
     setIsClient(true);
   }, []);
-  
 
-  const { 
+
+  const {
     authTokens,
-  
+
     loader,
     setLoader,
     disableButton,
     setDisableButton,
-  
+
     setMessage,
     showAlert,
     setIsSuccess,
-  
+
   } = useContext(AuthContext)!
 
 
@@ -54,24 +54,24 @@ const VerifyDetails = () => {
     StudentFunction,
   } = useContext(AllDataContext)!;
 
-  
+
 
 
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<any>();
 
 
   const studentOptions = studentData.map((data: any) => ({
     value: data.id,
-    label: `${data.first_name} ${data.last_name}` 
+    label: `${data.first_name} ${data.last_name}`
   }));
 
 
 
-  const onSubmit = (data: FormData, e:any) => {
+  const onSubmit = (data: FormData, e: any) => {
     VerifyFeeDetails(e)
   }
 
@@ -84,37 +84,37 @@ const VerifyDetails = () => {
       boxShadow: state.isFocused ? '0 0 0 4px rgba(120, 62, 188, 0.2)' : 'none',
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     menu: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#0d0d0d' : '#fff',
       border: '1px solid #ccc',
       zIndex: 999,
     }),
-  
+
     option: (provided: any, state: any) => {
       const isDark = theme === 'dark';
-  
+
       const backgroundColor = state.isSelected
         ? '#783ebc'
         : state.isFocused
-        ? isDark
-          ? '#1a1a1a' // hover in dark
-          : '#f0f0f0' // hover in light
-        : isDark
-        ? '#0d0d0d'
-        : '#fff';
-  
+          ? isDark
+            ? '#1a1a1a' // hover in dark
+            : '#f0f0f0' // hover in light
+          : isDark
+            ? '#0d0d0d'
+            : '#fff';
+
       const color = state.isSelected
         ? '#fff'
         : state.isFocused
-        ? isDark
-          ? '#fff'
-          : '#000'
-        : isDark
-        ? '#fff'
-        : '#000';
-  
+          ? isDark
+            ? '#fff'
+            : '#000'
+          : isDark
+            ? '#fff'
+            : '#000';
+
       return {
         ...provided,
         backgroundColor,
@@ -122,27 +122,27 @@ const VerifyDetails = () => {
         cursor: 'pointer',
       };
     },
-  
+
     singleValue: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     placeholder: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#aaa' : '#666',
     }),
-  
+
     input: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     dropdownIndicator: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     indicatorSeparator: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#444' : '#ccc',
@@ -150,7 +150,7 @@ const VerifyDetails = () => {
   };
 
 
-  const VerifyFeeDetails = async(e:any) =>{
+  const VerifyFeeDetails = async (e: any) => {
     e.preventDefault()
     setLoader(true)
     setDisableButton(true)
@@ -162,17 +162,17 @@ const VerifyDetails = () => {
     formData.append('fee_type', feeType)
 
 
-    try{
+    try {
       const response = await fetch(`http://127.0.0.1:8000/api/get-school-fees-amount/`, {
         method: 'POST',
         body: formData,
-        headers:{
+        headers: {
           Authorization: `Bearer ${authTokens?.access}`
         }
       })
-      
 
-      if(response.ok){
+
+      if (response.ok) {
         const data = await response.json();
         showAlert()
         setMessage('Details verified')
@@ -184,16 +184,16 @@ const VerifyDetails = () => {
         setSession('')
         setStudent('')
         setStudentClass('')
-        localStorage.setItem('schoolFeesDetails',  JSON.stringify(data))
+        localStorage.setItem('schoolFeesDetails', JSON.stringify(data))
         localStorage.setItem('student', student)
         router.push('/admin/school-fees-payment/add/step-2')
 
 
-      }else{
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setDisableButton(false)
         setIsSuccess(false)
@@ -201,8 +201,8 @@ const VerifyDetails = () => {
         showAlert()
       }
 
-      
-    }catch(error){
+
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred.');
@@ -210,12 +210,12 @@ const VerifyDetails = () => {
       setIsSuccess(false)
       setLoader(false)
 
-    }  
+    }
   }
 
 
 
-  
+
   useEffect(() => {
     StudentClassFunction()
     TermFunction()
@@ -243,7 +243,7 @@ const VerifyDetails = () => {
               </div>
 
               <div className="p-3">
-                <form  onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="row g-3">
 
                     <div className="col-md-6">
@@ -265,7 +265,7 @@ const VerifyDetails = () => {
 
                     <div className="col-md-6">
                       <label htmlFor="phoneNumber" className="form-label">Fee Type <span className="text-danger">*</span></label>
-                      <select   className={`site-input ${errors.feeType ? 'error-input' : ''}`} {...register('feeType', {required: true})}  value={feeType}  onChange={(e) => setFeeType(e.target.value)}>
+                      <select className={`site-input ${errors.feeType ? 'error-input' : ''}`} {...register('feeType', { required: true })} value={feeType} onChange={(e) => setFeeType(e.target.value)}>
                         <option value="">Select</option>
                         <option value="school fees">School fees</option>
                         <option value="P.T.A">P.T.A</option>
@@ -273,54 +273,54 @@ const VerifyDetails = () => {
                       {errors.feeType && <p className="error-text">This field is required</p>}
                     </div>
 
-   
-                    
+
+
 
 
                     <div className="col-md-6">
                       <label htmlFor="firstName" className="form-label">Student Class <span className="text-danger">*</span></label>
-                      <select   className={`site-input ${errors.studentClass ? 'error-input' : ''}`} {...register('studentClass', {required: true})}  value={studentClass}  onChange={(e) => setStudentClass(e.target.value)}>
+                      <select className={`site-input ${errors.studentClass ? 'error-input' : ''}`} {...register('studentClass', { required: true })} value={studentClass} onChange={(e) => setStudentClass(e.target.value)}>
                         <option value="">Select</option>
-                        {studentClassData.map((data:any) => (
+                        {studentClassData.map((data: any) => (
                           <option key={data.id} value={data.id}>{data.name}</option>
                         ))}
                       </select>
                       {errors.studentClass && <p className="error-text">This field is required</p>}
                     </div>
-                    
+
 
 
                     <div className="col-md-6">
                       <label htmlFor="firstName" className="form-label">Session <span className="text-danger">*</span></label>
-                      <select   className={`site-input ${errors.session ? 'error-input' : ''}`} {...register('session', {required: true})}  value={session}  onChange={(e) => setSession(e.target.value)}>
+                      <select className={`site-input ${errors.session ? 'error-input' : ''}`} {...register('session', { required: true })} value={session} onChange={(e) => setSession(e.target.value)}>
                         <option value="">Select</option>
-                        {sessionData?.map((data:any) => (
+                        {sessionData?.map((data: any) => (
                           <option key={data.id} value={data.id}>{data.name}</option>
                         ))}
                       </select>
                       {errors.session && <p className="error-text">This field is required</p>}
-                    </div> 
+                    </div>
 
                     <div className="col-md-6">
                       <label htmlFor="firstName" className="form-label">Term <span className="text-danger">*</span></label>
-                      <select   className={`site-input ${errors.term ? 'error-input' : ''}`} {...register('term', {required: true})}  value={term}  onChange={(e) => setTerm(e.target.value)}>
+                      <select className={`site-input ${errors.term ? 'error-input' : ''}`} {...register('term', { required: true })} value={term} onChange={(e) => setTerm(e.target.value)}>
                         <option value="">Select</option>
-                        {termData.map((data:any) => (
+                        {termData.map((data: any) => (
                           <option key={data.id} value={data.id}>{data.name}</option>
                         ))}
                       </select>
                       {errors.term && <p className="error-text">This field is required</p>}
-                    </div>   
+                    </div>
 
 
                     <div className="col-12">
                       <div className='mb-3'>
                         <button disabled={disableButton} type="submit" className={`Button site-btn px-3`}>
-                          <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                          <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
+                          <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                          <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
                         </button>
                       </div>
-                    
+
                     </div>
 
                   </div>

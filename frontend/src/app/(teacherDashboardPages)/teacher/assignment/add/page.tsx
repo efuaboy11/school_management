@@ -53,7 +53,7 @@ const CreateAssignment = () => {
     SubjectFunction
   } = useContext(AllDataContext)!;
 
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  const { theme } = useContext(ThemeContext)!;
 
 
 

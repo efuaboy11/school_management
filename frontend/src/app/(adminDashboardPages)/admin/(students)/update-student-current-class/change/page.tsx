@@ -13,32 +13,32 @@ const ChangeStudentCurrentClassPage = () => {
 
 
   const [hasMounted, setHasMounted] = useState(false);
-    
+
   useEffect(() => {
     setHasMounted(true);
   }, []);
-  
 
-  const { 
-  
+
+  const {
+
     authTokens,
-  
+
     loader,
     setLoader,
     disableButton,
     setDisableButton,
-  
+
     setMessage,
     showAlert,
     setIsSuccess,
-  
-    
-  
-  
+
+
+
+
   } = useContext(AuthContext)!
 
 
-  const {  
+  const {
     studentClassData,
     StudentClassFunction,
 
@@ -47,23 +47,23 @@ const ChangeStudentCurrentClassPage = () => {
 
   } = useContext(AllDataContext)!;
 
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
- 
+  const { theme } = useContext(ThemeContext)!;
+
 
 
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<any>();
 
-  const onSubmit = (data: FormData, e:any) => {
+  const onSubmit = (data: FormData, e: any) => {
     ChangeStudentCurrentClass(e)
-    
+
   }
 
 
-  const ChangeStudentCurrentClass = async(e:any) =>{
+  const ChangeStudentCurrentClass = async (e: any) => {
     e.preventDefault()
     setLoader(true)
     setDisableButton(true)
@@ -73,17 +73,17 @@ const ChangeStudentCurrentClassPage = () => {
     formData.append('student_new_class', classID)
 
 
-    try{
+    try {
       const response = await fetch(`http://127.0.0.1:8000/api/update-student-current-class/`, {
         method: 'POST',
         body: formData,
-        headers:{
+        headers: {
           Authorization: `Bearer ${authTokens?.access}`
         }
       })
 
 
-      if(response.ok){
+      if (response.ok) {
         showAlert()
         setMessage('Student class updated successfully')
         setIsSuccess(true)
@@ -94,11 +94,11 @@ const ChangeStudentCurrentClassPage = () => {
 
 
 
-      }else{
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setDisableButton(false)
         setIsSuccess(false)
@@ -106,8 +106,8 @@ const ChangeStudentCurrentClassPage = () => {
         showAlert()
       }
 
-      
-    }catch(error){
+
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred.');
@@ -115,9 +115,9 @@ const ChangeStudentCurrentClassPage = () => {
       setIsSuccess(false)
       setLoader(false)
 
-    }  
+    }
   }
-  
+
 
 
   const StudentDataOptions = studentData.map((data: any) => ({
@@ -139,37 +139,37 @@ const ChangeStudentCurrentClassPage = () => {
       boxShadow: state.isFocused ? '0 0 0 4px rgba(120, 62, 188, 0.2)' : 'none',
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     menu: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#0d0d0d' : '#fff',
       border: '1px solid #ccc',
       zIndex: 999,
     }),
-  
+
     option: (provided: any, state: any) => {
       const isDark = theme === 'dark';
-  
+
       const backgroundColor = state.isSelected
         ? '#783ebc'
         : state.isFocused
-        ? isDark
-          ? '#1a1a1a' // hover in dark
-          : '#f0f0f0' // hover in light
-        : isDark
-        ? '#0d0d0d'
-        : '#fff';
-  
+          ? isDark
+            ? '#1a1a1a' // hover in dark
+            : '#f0f0f0' // hover in light
+          : isDark
+            ? '#0d0d0d'
+            : '#fff';
+
       const color = state.isSelected
         ? '#fff'
         : state.isFocused
-        ? isDark
-          ? '#fff'
-          : '#000'
-        : isDark
-        ? '#fff'
-        : '#000';
-  
+          ? isDark
+            ? '#fff'
+            : '#000'
+          : isDark
+            ? '#fff'
+            : '#000';
+
       return {
         ...provided,
         backgroundColor,
@@ -177,27 +177,27 @@ const ChangeStudentCurrentClassPage = () => {
         cursor: 'pointer',
       };
     },
-  
+
     singleValue: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     placeholder: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#aaa' : '#666',
     }),
-  
+
     input: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     dropdownIndicator: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     indicatorSeparator: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#444' : '#ccc',
@@ -263,8 +263,8 @@ const ChangeStudentCurrentClassPage = () => {
                     <div className="d-flex justify-content-end">
                       <div className='pt-3'>
                         <button disabled={disableButton} type="submit" className={`Button site-btn px-3`}>
-                          <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                          <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill me-2"></i>Submit</span>
+                          <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                          <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill me-2"></i>Submit</span>
                         </button>
                       </div>
                     </div>

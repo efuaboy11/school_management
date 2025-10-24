@@ -47,7 +47,7 @@ const CreateShemeOfWork1 = () => {
     TermFunction,
   } = useContext(AllDataContext)!;
 
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  const { theme } = useContext(ThemeContext)!;
 
 
 

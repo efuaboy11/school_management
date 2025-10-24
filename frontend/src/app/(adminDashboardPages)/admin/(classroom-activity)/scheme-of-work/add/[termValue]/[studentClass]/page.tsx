@@ -67,7 +67,7 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
     SubjectFunction,
   } = useContext(AllDataContext)!;
 
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  const { theme } = useContext(ThemeContext)!;
 
 
 

@@ -22,7 +22,7 @@ const CreateSchoolFees = () => {
     setIsClient(true);
   }, []);
 
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  const { theme } = useContext(ThemeContext)!;
 
   const {
 

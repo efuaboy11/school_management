@@ -43,7 +43,7 @@ const CreateClassTImetable = () => {
     StudentClassFunction,
   } = useContext(AllDataContext)!;
 
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  const { theme } = useContext(ThemeContext)!;
 
 
 

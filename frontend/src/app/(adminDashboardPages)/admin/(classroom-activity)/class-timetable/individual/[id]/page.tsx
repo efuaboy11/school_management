@@ -8,20 +8,19 @@ import Image from 'next/image'
 import AllDataContext from '@/context/AllData';
 import ThemeContext from '@/context/ThemeContext';
 import Select from 'react-select';
-import { DownloadLink } from '@/components/downloadLink';
+
 
 
 const IndivivdualClassTimeTable = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params)
 
   const {
-    truncateText,
+
     authTokens,
     formateDateTime,
-    formatDate,
+
     formatName,
-    formatCurrency,
-    showSidebar,
+
     loader,
     setLoader,
     disableButton,
@@ -42,7 +41,7 @@ const IndivivdualClassTimeTable = ({ params }: { params: Promise<{ id: string }>
     StudentClassFunction,
   } = useContext(AllDataContext)!;
 
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  const { theme} = useContext(ThemeContext)!;
 
   const [Loading, setLoading] = useState(true)
   const [details, setDetails] = useState<any>(null)

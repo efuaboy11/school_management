@@ -19,7 +19,7 @@ const PayBills = () => {
 
   const router = useRouter();
   const [isClient, setIsClient] = useState(false);
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  const { theme } = useContext(ThemeContext)!;
   useEffect(() => {
     setIsClient(true);
   }, []);

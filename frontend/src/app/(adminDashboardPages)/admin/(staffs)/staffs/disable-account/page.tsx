@@ -23,7 +23,7 @@ const DisableStaffAccount = () => {
   const [reason, setReason] = useState('')
 
   const [messageError, setMessageError] = useState(false)
-  
+
   const {
     truncateText,
     authTokens,
@@ -43,19 +43,19 @@ const DisableStaffAccount = () => {
 
   } = useContext(AuthContext)!;
 
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  const { theme } = useContext(ThemeContext)!;
 
   const {
     staffData,
     StaffFunction
 
   } = useContext(AllDataContext)!
-  
 
 
 
-  const DisableAccountList = async () =>{
-    try{
+
+  const DisableAccountList = async () => {
+    try {
       const response = await fetch(`http://127.0.0.1:8000/api/disable-account/?user_role=staff`, {
         method: 'GET',
         headers: {
@@ -66,18 +66,18 @@ const DisableStaffAccount = () => {
       })
       const data = await response.json()
 
-      if(response.ok){
+      if (response.ok) {
         setDatas(data)
-        if(Array.isArray(data) && data.length > 0){
+        if (Array.isArray(data) && data.length > 0) {
           setDataCount(data.length)
         }
         console.log('data', data)
 
         setLoading(false)
-      }else{
+      } else {
         setLoading(false)
       }
-    }catch{
+    } catch {
       console.log('error')
       setLoading(false)
     }
@@ -85,11 +85,11 @@ const DisableStaffAccount = () => {
   }
 
   const deleteFunction = async () => {
-    
+
     setDisableButton(true)
     setLoader(true)
 
-    try{
+    try {
       const response = await fetch(`http://127.0.0.1:8000/api/disable-account/${selectedDataId}/`, {
         method: "DELETE",
         headers: {
@@ -108,8 +108,8 @@ const DisableStaffAccount = () => {
       } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setLoader(false)
         setDisableButton(false)
@@ -119,7 +119,7 @@ const DisableStaffAccount = () => {
         setDisableButton(false)
       }
 
-    }catch{
+    } catch {
       showAlert()
       setMessage('An unexpected error occurred.');
       setDisableButton(false)
@@ -130,7 +130,7 @@ const DisableStaffAccount = () => {
     }
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     DisableAccountList()
   }, [])
 
@@ -151,16 +151,16 @@ const DisableStaffAccount = () => {
     }
   }, [diactivateModal]);
 
-  useEffect(() =>{
+  useEffect(() => {
     StaffFunction()
   }, [])
 
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<any>();
-  
+
 
   const itemsPerPage = 5;
   const [page, setPage] = useState(1)
@@ -172,19 +172,19 @@ const DisableStaffAccount = () => {
   const startIndex = (page - 1) * itemsPerPage;
   const current = datas.slice(startIndex, startIndex + itemsPerPage);
 
-  const handleShowDeleteModal = (id:any) =>{
+  const handleShowDeleteModal = (id: any) => {
     setDeleteModal(true)
     setSelectedDataId(id)
   }
-  const handleClosedeleteModal  = () =>{
+  const handleClosedeleteModal = () => {
     setDeleteModal(false)
   }
 
 
-  const handlesShowDiactivateModal = (id:any) =>{
+  const handlesShowDiactivateModal = (id: any) => {
     setDiactivateModal(true)
   }
-  const handlesCloseDiactivateModal  = () =>{
+  const handlesCloseDiactivateModal = () => {
     setDiactivateModal(false)
   }
 
@@ -202,37 +202,37 @@ const DisableStaffAccount = () => {
       boxShadow: state.isFocused ? '0 0 0 4px rgba(120, 62, 188, 0.2)' : 'none',
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     menu: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#0d0d0d' : '#fff',
       border: '1px solid #ccc',
       zIndex: 999,
     }),
-  
+
     option: (provided: any, state: any) => {
       const isDark = theme === 'dark';
-  
+
       const backgroundColor = state.isSelected
         ? '#783ebc'
         : state.isFocused
-        ? isDark
-          ? '#1a1a1a' // hover in dark
-          : '#f0f0f0' // hover in light
-        : isDark
-        ? '#0d0d0d'
-        : '#fff';
-  
+          ? isDark
+            ? '#1a1a1a' // hover in dark
+            : '#f0f0f0' // hover in light
+          : isDark
+            ? '#0d0d0d'
+            : '#fff';
+
       const color = state.isSelected
         ? '#fff'
         : state.isFocused
-        ? isDark
-          ? '#fff'
-          : '#000'
-        : isDark
-        ? '#fff'
-        : '#000';
-  
+          ? isDark
+            ? '#fff'
+            : '#000'
+          : isDark
+            ? '#fff'
+            : '#000';
+
       return {
         ...provided,
         backgroundColor,
@@ -240,39 +240,39 @@ const DisableStaffAccount = () => {
         cursor: 'pointer',
       };
     },
-  
+
     singleValue: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     placeholder: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#aaa' : '#666',
     }),
-  
+
     input: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     dropdownIndicator: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     indicatorSeparator: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#444' : '#ccc',
     }),
   };
-  
-  
 
-  const onSubmit = () =>{
-    if(student === ''){
+
+
+  const onSubmit = () => {
+    if (student === '') {
       setMessageError(true)
-    }else{
+    } else {
       DisableUserAccountFunction()
     }
 
@@ -281,11 +281,11 @@ const DisableStaffAccount = () => {
   console.log(student)
 
   const DisableUserAccountFunction = async () => {
-    
+
     setDisableButton(true)
     setLoader(true)
 
-    try{
+    try {
       const response = await fetch(`http://127.0.0.1:8000/api/disable-account/`, {
         method: "POST",
         headers: {
@@ -311,8 +311,8 @@ const DisableStaffAccount = () => {
       } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setLoader(false)
         setDisableButton(false)
@@ -322,7 +322,7 @@ const DisableStaffAccount = () => {
         setDisableButton(false)
       }
 
-    }catch{
+    } catch {
       showAlert()
       setMessage('An unexpected error occurred.');
       setDisableButton(false)
@@ -339,65 +339,65 @@ const DisableStaffAccount = () => {
       {diactivateModal && (
         <section className={` ${diactivateModal ? 'overlay-background' : ''}`}>
           <div className='container-lg'>
-              
+
             <div className=" row justify-content-center align-center2 height-90vh">
 
-                <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
-                  <div className="site-modal-conatiner">
-                    <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
-                      <div>
-                        <div className="d-flex justify-content-between pb-2">
-                          <p className='font-size-20px '>Disable User Account</p>
-                          <div onClick={handlesCloseDiactivateModal} className='cursor-pointer'>
-                            <i className="ri-close-line md-text"></i>
-                          </div>
+              <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
+                <div className="site-modal-conatiner">
+                  <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
+                    <div>
+                      <div className="d-flex justify-content-between pb-2">
+                        <p className='font-size-20px '>Disable User Account</p>
+                        <div onClick={handlesCloseDiactivateModal} className='cursor-pointer'>
+                          <i className="ri-close-line md-text"></i>
                         </div>
-          
+                      </div>
 
-                        <div className='pt-4'>
-                          <form onSubmit={handleSubmit(onSubmit)}>
-                            <div className="row g-3">
-                                <div className="col-md-12">
-                                  <label htmlFor="lastName" className="form-label">Select User </label>
-                                  <Select
-                                    options={options}
-                                    value={options.find((opt: { value: string; label: string }) => opt.value === student)}
-                                    onChange={(selectedOption: { value: string; label: string } | null) => setStudent(selectedOption?.value || '')}
-                                    placeholder="Select user"
-                                    classNamePrefix="site-select"
-                                    styles={customStyles}  // ✅ Add this
-                                    isSearchable
-                                    isClearable
-                                  />
 
-                                  {messageError && <p className="error-text">This field is required</p>}
-                                </div>
+                      <div className='pt-4'>
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                          <div className="row g-3">
+                            <div className="col-md-12">
+                              <label htmlFor="lastName" className="form-label">Select User </label>
+                              <Select
+                                options={options}
+                                value={options.find((opt: { value: string; label: string }) => opt.value === student)}
+                                onChange={(selectedOption: { value: string; label: string } | null) => setStudent(selectedOption?.value || '')}
+                                placeholder="Select user"
+                                classNamePrefix="site-select"
+                                styles={customStyles}  // ✅ Add this
+                                isSearchable
+                                isClearable
+                              />
 
-                              <div className="col-md-12">
-                                <label htmlFor="lastName" className="form-label">Reason </label>
-                                <textarea rows={6}  className={`site-input ${errors.reason ? 'error-input' : ''}`} {...register('reason', {required: true})}  value={reason}  onChange={(e) => setReason(e.target.value)}></textarea>
-                                {errors.reason && <p className="error-text">This field is required</p>}
-
-                              </div>
-
-                              <div className="col-12 mt-4">
-                                <button type='submit' className='site-btn px-4'>
-                                  <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                                  <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill pe-2"></i> Sumbit</span>
-                                </button>
-                            
-                              </div>
+                              {messageError && <p className="error-text">This field is required</p>}
                             </div>
 
-                          </form>
-                        </div>
-                        
+                            <div className="col-md-12">
+                              <label htmlFor="lastName" className="form-label">Reason </label>
+                              <textarea rows={6} className={`site-input ${errors.reason ? 'error-input' : ''}`} {...register('reason', { required: true })} value={reason} onChange={(e) => setReason(e.target.value)}></textarea>
+                              {errors.reason && <p className="error-text">This field is required</p>}
+
+                            </div>
+
+                            <div className="col-12 mt-4">
+                              <button type='submit' className='site-btn px-4'>
+                                <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                                <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill pe-2"></i> Sumbit</span>
+                              </button>
+
+                            </div>
+                          </div>
+
+                        </form>
                       </div>
-                    
+
                     </div>
+
                   </div>
                 </div>
-            
+              </div>
+
 
             </div>
 
@@ -408,31 +408,31 @@ const DisableStaffAccount = () => {
       {deleteModal && (
         <section className={` ${deleteModal ? 'overlay-background' : ''}`}>
           <div className='container-lg'>
-              
+
             <div className=" row justify-content-center align-center2 height-90vh">
 
-                <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
-                  <div className="site-modal-conatiner">
-                    <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
-                      <div className="d-flex justify-content-center text-center">
-                        <div>
-                          <Image src="/img/icon/user.png" alt="empty" width={100} height={100} />
-                          <p className='md-text mt-3'>Enable user account?</p>
-                          <p className="light-text">This will enable the user account. The user will be able to login and access user dashboard</p>
-                          <div className='pt-4'>
-                            <button className="site-sucecssful-inverse-btn px-3 me-2 width-100 mb-4" onClick={deleteFunction} disabled={disableButton}>
-                              <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                              <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-user-follow-line pe-2"></i> Activate</span>
-                            </button>
-                            <button onClick={handleClosedeleteModal} className="site-btn site-cancel-btn px-3 width-100"><i className="ri-close-circle-line pe-2"></i>Cancel</button>
-                          </div>
+              <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
+                <div className="site-modal-conatiner">
+                  <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
+                    <div className="d-flex justify-content-center text-center">
+                      <div>
+                        <Image src="/img/icon/user.png" alt="empty" width={100} height={100} />
+                        <p className='md-text mt-3'>Enable user account?</p>
+                        <p className="light-text">This will enable the user account. The user will be able to login and access user dashboard</p>
+                        <div className='pt-4'>
+                          <button className="site-sucecssful-inverse-btn px-3 me-2 width-100 mb-4" onClick={deleteFunction} disabled={disableButton}>
+                            <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                            <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-user-follow-line pe-2"></i> Activate</span>
+                          </button>
+                          <button onClick={handleClosedeleteModal} className="site-btn site-cancel-btn px-3 width-100"><i className="ri-close-circle-line pe-2"></i>Cancel</button>
                         </div>
                       </div>
-                    
                     </div>
+
                   </div>
                 </div>
-            
+              </div>
+
 
             </div>
 
@@ -487,7 +487,7 @@ const DisableStaffAccount = () => {
                 </tbody>
               </table>
 
-              {datas.length > 10 &&(
+              {datas.length > 10 && (
                 <div>
                   <div className="mt-4">
                     <Stack spacing={2} alignItems="end">
@@ -514,7 +514,7 @@ const DisableStaffAccount = () => {
         </div>
 
 
-      </div> 
+      </div>
     </div>
   )
 }

@@ -67,7 +67,7 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
     StudentClassFunction,
   } = useContext(AllDataContext)!;
 
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  const { theme } = useContext(ThemeContext)!;
 
 
 

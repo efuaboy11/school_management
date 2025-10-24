@@ -23,7 +23,7 @@ const StafflNotification = () => {
 
     staffNotificationSearch,
     setStaffNotificationSearch,
-    StaffNotificationFunction, 
+    StaffNotificationFunction,
     FilterStaffNotification,
   } = useContext(AllDataContext)!;
 
@@ -46,27 +46,27 @@ const StafflNotification = () => {
 
   } = useContext(AuthContext)!;
 
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  const { theme } = useContext(ThemeContext)!;
 
 
-  
-  
-  
+
+
+
 
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
 
   const [filterOptions, setOptions] = useState(false)
 
-  const toggleFilterOptions = () =>{
+  const toggleFilterOptions = () => {
     setOptions(!filterOptions)
   }
 
-    const [hasMounted, setHasMounted] = useState(false);
-  
-    useEffect(() => {
-      setHasMounted(true);
-    }, []);
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
 
 
@@ -75,28 +75,28 @@ const StafflNotification = () => {
 
 
 
-  
+
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
-    const {
-      register,
-      handleSubmit,
-      formState: { errors, isValid },
-    } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm();
 
-  
+
   // const staffNotificationData = [...Array(100).keys()];
   const startIndex = (page - 1) * itemsPerPage;
   const currentItems = staffNotificationData.slice(startIndex, startIndex + itemsPerPage);
 
 
 
-  useEffect(() =>{
-    if(!staffNotificationSearch){
+  useEffect(() => {
+    if (!staffNotificationSearch) {
       StaffNotificationFunction()
-    }else if(staffNotificationSearch){
+    } else if (staffNotificationSearch) {
       const debouncedSearch = debounce(() => {
         FilterStaffNotification();
       }, 300);
@@ -105,9 +105,9 @@ const StafflNotification = () => {
       return () => {
         debouncedSearch.cancel();
       };
-      
+
     }
-    
+
   }, [staffNotificationSearch])
 
 
@@ -124,14 +124,14 @@ const StafflNotification = () => {
           <div>
             <p className="md-text">Staff Notiffications</p>
             <p className="light-text pb-3">Total of {staffNotificationCount} notification avaliable</p>
-         </div>
+          </div>
         </div>
 
         <div className="d-flex justify-content-end">
 
           <div>
             <div className="d-flex align-items-center">
-              <input type="text" className="site-search-input" placeholder="Search" value={staffNotificationSearch} onChange={(e) => setStaffNotificationSearch(e.target.value)}/>
+              <input type="text" className="site-search-input" placeholder="Search" value={staffNotificationSearch} onChange={(e) => setStaffNotificationSearch(e.target.value)} />
               <button className="site-btn px-3 ms-2"><i className="ri-search-line"></i></button>
             </div>
           </div>
@@ -170,7 +170,7 @@ const StafflNotification = () => {
                               <h6 className='py-2 font-bold me-3'>{formatName(data.subject)}</h6>
 
                             </div>
-                            
+
                             <p>{data.text || 'No message.'}</p>
                           </div>
                         </div>
@@ -179,32 +179,32 @@ const StafflNotification = () => {
 
 
                   </div>
-                  
+
 
                   {staffNotificationData.length > 10 && (
-                      <div className="col-12 mb-4 mt-3">
-                        <Stack spacing={2} alignItems="center">
-                          <Pagination
-                            count={Math.ceil(staffNotificationData.length / itemsPerPage)}
-                            page={page}
-                            onChange={handleChange}
-                            sx={{
-                              '& .MuiPaginationItem-root': {
-                                color: '#737b7d', // color of all numbers
-                              },
-                              '& .MuiPaginationItem-root.Mui-selected': {
-                                backgroundColor: '#783ebc', // Your custom color
-                                color: '#fff',
-                              },
-                            }}
-                          />
-                        </Stack>
-                      </div>
-                    )}
+                    <div className="col-12 mb-4 mt-3">
+                      <Stack spacing={2} alignItems="center">
+                        <Pagination
+                          count={Math.ceil(staffNotificationData.length / itemsPerPage)}
+                          page={page}
+                          onChange={handleChange}
+                          sx={{
+                            '& .MuiPaginationItem-root': {
+                              color: '#737b7d', // color of all numbers
+                            },
+                            '& .MuiPaginationItem-root.Mui-selected': {
+                              backgroundColor: '#783ebc', // Your custom color
+                              color: '#fff',
+                            },
+                          }}
+                        />
+                      </Stack>
+                    </div>
+                  )}
                 </div>
 
-              
-              ): (
+
+              ) : (
                 <div className="col-12 ">
                   <div className='site-boxes text-center pb-5 d-flex justify-content-center align-items-center  mt-5 pt-5'>
                     <div>
@@ -221,7 +221,7 @@ const StafflNotification = () => {
           )}
 
 
-          
+
         </div>
       </div>
     </div>

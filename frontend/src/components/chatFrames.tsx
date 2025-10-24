@@ -12,17 +12,17 @@ import ThemeContext from '@/context/ThemeContext';
 
 Chart.register(PolarAreaController, RadialLinearScale, ArcElement, Tooltip, Legend);
 
-interface UserCounts{
-    studentCount:number,
-    teacherCount:number,
-    parentCount:number,
-    staffCount:number,
-    label: string,
+interface UserCounts {
+  studentCount: number,
+  teacherCount: number,
+  parentCount: number,
+  staffCount: number,
+  label: string,
 
 }
 
 
-interface SchoolFees{
+interface SchoolFees {
   allCount: number;
   pendingCount: number;
   successfulCount: number;
@@ -31,18 +31,18 @@ interface SchoolFees{
 
 
 
-export const UsersChart = ({studentCount, teacherCount, parentCount, staffCount, label}:UserCounts) =>{
+export const UsersChart = ({ studentCount, teacherCount, parentCount, staffCount, label }: UserCounts) => {
 
 
   const chartRef = useRef<HTMLCanvasElement | null>(null)
   const myChartRef = useRef<Chart | null>(null)
 
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
-  
+  const { theme } = useContext(ThemeContext)!;
 
-  useEffect(() =>{
-    if(myChartRef.current){
-       myChartRef.current.destroy();
+
+  useEffect(() => {
+    if (myChartRef.current) {
+      myChartRef.current.destroy();
     }
 
 
@@ -52,7 +52,7 @@ export const UsersChart = ({studentCount, teacherCount, parentCount, staffCount,
       datasets: [
         {
           label: `${label}`,
-          data: [studentCount, teacherCount,  parentCount, staffCount],
+          data: [studentCount, teacherCount, parentCount, staffCount],
           backgroundColor: [
             'rgba(120, 62, 188, 0.6)',  // primary-color
             'rgba(65, 74, 202, 0.6)',   // secondary-color
@@ -65,7 +65,7 @@ export const UsersChart = ({studentCount, teacherCount, parentCount, staffCount,
             'rgba(38, 142, 192, 1)',
             'rgba(47, 179, 122, 1)',
           ],
-          
+
           borderWidth: 1,
         },
       ],
@@ -82,7 +82,7 @@ export const UsersChart = ({studentCount, teacherCount, parentCount, staffCount,
         },
         y: {
           beginAtZero: true,
-          grid: {  
+          grid: {
             color: theme === 'light' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.1)' // ⬅️ same here
           }
         },
@@ -104,7 +104,7 @@ export const UsersChart = ({studentCount, teacherCount, parentCount, staffCount,
         myChartRef.current.destroy();
       }
     };
-  }, [studentCount, teacherCount,  parentCount, staffCount])
+  }, [studentCount, teacherCount, parentCount, staffCount])
 
   return (
     <div style={{ width: '100%', height: '200px' }}>
@@ -114,18 +114,18 @@ export const UsersChart = ({studentCount, teacherCount, parentCount, staffCount,
 }
 
 
-export const SchoolFeesBarChart = ({allCount, pendingCount, successfulCount, declinedCount}:SchoolFees) =>{
+export const SchoolFeesBarChart = ({ allCount, pendingCount, successfulCount, declinedCount }: SchoolFees) => {
 
 
   const chartRef = useRef<HTMLCanvasElement | null>(null)
   const myChartRef = useRef<Chart | null>(null)
 
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
-  
+  const { theme } = useContext(ThemeContext)!;
 
-  useEffect(() =>{
-    if(myChartRef.current){
-       myChartRef.current.destroy();
+
+  useEffect(() => {
+    if (myChartRef.current) {
+      myChartRef.current.destroy();
     }
 
 
@@ -135,12 +135,12 @@ export const SchoolFeesBarChart = ({allCount, pendingCount, successfulCount, dec
       datasets: [
         {
           label: `School Fees Chart`,
-          data: [allCount, pendingCount,  successfulCount, declinedCount],
+          data: [allCount, pendingCount, successfulCount, declinedCount],
           backgroundColor: [
-            'rgba(120, 62, 188, 0.6)',  
-            'rgba(255, 206, 86, 0.6)',  
-            'rgba(47, 179, 122, 0.6)',  
-            'rgba(255, 99, 132, 0.6)', 
+            'rgba(120, 62, 188, 0.6)',
+            'rgba(255, 206, 86, 0.6)',
+            'rgba(47, 179, 122, 0.6)',
+            'rgba(255, 99, 132, 0.6)',
           ],
           borderColor: [
             'rgba(120, 62, 188, 1)',
@@ -148,7 +148,7 @@ export const SchoolFeesBarChart = ({allCount, pendingCount, successfulCount, dec
             'rgba(47, 179, 122, 1)',
             'rgba(255, 99, 132, 1)',
           ],
-          
+
           borderWidth: 1,
         },
       ],
@@ -165,7 +165,7 @@ export const SchoolFeesBarChart = ({allCount, pendingCount, successfulCount, dec
         },
         y: {
           beginAtZero: true,
-          grid: {  
+          grid: {
             color: theme === 'light' ? 'rgba(0, 0, 0, 0.1)' : 'rgba(255, 255, 255, 0.1)' // ⬅️ same here
           }
         },
@@ -187,7 +187,7 @@ export const SchoolFeesBarChart = ({allCount, pendingCount, successfulCount, dec
         myChartRef.current.destroy();
       }
     };
-  }, [allCount, pendingCount,  successfulCount, declinedCount])
+  }, [allCount, pendingCount, successfulCount, declinedCount])
 
   return (
     <div style={{ width: '100%', height: '200px' }}>
@@ -207,7 +207,7 @@ export const SchoolFeesChart = ({
   const chartRef = useRef<HTMLCanvasElement | null>(null);
   const myChartRef = useRef<Chart | null>(null);
 
-  const { theme} = useContext(ThemeContext)!;
+  const { theme } = useContext(ThemeContext)!;
 
 
   useEffect(() => {
@@ -250,23 +250,23 @@ export const SchoolFeesChart = ({
       scales: {
         r: {
           grid: {
-            color: theme === 'light' 
-              ? 'rgba(0, 0, 0, 0.1)' 
+            color: theme === 'light'
+              ? 'rgba(0, 0, 0, 0.1)'
               : 'rgba(255, 255, 255, 0.1)',
           },
           angleLines: {
-            color: theme === 'light' 
-              ? 'rgba(0, 0, 0, 0.1)' 
+            color: theme === 'light'
+              ? 'rgba(0, 0, 0, 0.1)'
               : 'rgba(255, 255, 255, 0.1)',
           },
           pointLabels: {
-            color: theme === 'light' 
-              ? '#000' 
+            color: theme === 'light'
+              ? '#000'
               : '#fff',
           },
           ticks: {
-            color: theme === 'light' 
-              ? '#000' 
+            color: theme === 'light'
+              ? '#000'
               : '#fff',
           }
         }
@@ -304,7 +304,7 @@ export const BillsChart = ({
   successfulBillsCount,
   declinedBillsCount,
   label
-  
+
 }: {
   billsCount: number;
   pendingBillsCount: number;
@@ -326,7 +326,7 @@ export const BillsChart = ({
       labels: ['All', 'Pending', 'Successful', 'Declined'],
       datasets: [
         {
-          label:  `${label}`,
+          label: `${label}`,
           data: [billsCount, pendingBillsCount, successfulBillsCount, declinedBillsCount],
           borderColor: 'rgba(120, 62, 188, 1)',
           backgroundColor: 'rgba(120, 62, 188, 0.3)',

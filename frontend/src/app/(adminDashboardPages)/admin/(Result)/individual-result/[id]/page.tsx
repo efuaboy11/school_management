@@ -53,7 +53,6 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
   const [details, setDetails] = useState<any>(null)
 
   const [loading, setLoading] = useState(true)
-  const [classData, setClassData] = useState<any[]>([])
 
   // const [studentLoader, setStudentLoader] = useState(true)
   // const [classLoader, setClassLoader] = useState(true)
@@ -148,26 +147,24 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
   const {
     register: registerSummaryInformation,
     handleSubmit: handleSubmitSummaryInformation,
-    formState: { errors: errorsSummaryInformation, isValid: isValidSummaryInformation },
+    formState: { errors: errorsSummaryInformation,},
   } = useForm<any>();
 
 
   const {
     register: registerAffectiveTraitInformation,
     handleSubmit: handleSubmitAffectiveTraitInformation,
-    formState: { errors: errorsAffectiveTraitInformation, isValid: isValidAffectiveTraitInformation },
+    formState: { errors: errorsAffectiveTraitInformation},
   } = useForm<any>();
 
   const {
     register: registerPsychomotorTraitInformation,
     handleSubmit: handleSubmitPsychomotorInformation,
-    formState: { errors: errorsPsychomotorInformation, isValid: isValidPsychomotorInformation },
+    formState: { errors: errorsPsychomotorInformation},
   } = useForm<any>();
 
   const {
-    register: registerScoreInformation,
     handleSubmit: handleSubmitScoreInformation,
-    formState: { errors: errorsScoreInformation, isValid: isValidScoreInformation },
   } = useForm<any>();
 
 
@@ -586,11 +583,6 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
     setSubjectResults(values)
   }
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<any>();
 
   const onSubmit = (data: FormData, e: any) => {
     handleSubmitResult(e)

@@ -44,7 +44,7 @@ const IndividualEResult = ({ params }: { params: Promise<any> }) => {
     SessionFunction,
   } = useContext(AllDataContext)!;
 
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  const { theme } = useContext(ThemeContext)!;
 
   const [Loading, setLoading] = useState(true)
   const [details, setDetails] = useState<any>(null)

@@ -25,7 +25,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
   const [billsDeleteModal, setBillsDeleteModal] = useState(false)
 
 
-  const router = useRouter();
+
 
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -103,21 +103,8 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
 
 
 
-  const handleShowSchoolFeesDeleteModal = () =>{
-    setSchoolFeesDeleteModal(true)
-  }
 
-  const handleCloseSchoolFeesDeleteModal = () =>{
-    setSchoolFeesDeleteModal(false)
-  }
 
-  const handleShowBillsDeleteModal = () =>{
-    setBillsDeleteModal(true)
-  }
-
-  const handleCloseBillsDeleteModal = () =>{
-    setBillsDeleteModal(false)
-  }
 
   const handleImgFile = (files: File[]) => {
     if (files.length > 0) {
@@ -128,7 +115,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
   };
 
 
-  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+  const { getRootProps, getInputProps} = useDropzone({
     onDrop: handleImgFile,
     accept: {
       'image/*': []
@@ -242,20 +229,20 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
   const {
     register: registerPersonalInformation,
     handleSubmit: handleSubmitPersonalInformation,
-    formState: {errors: errorsPersonalInformation, isValid: isValidPersonalInformation },
+    formState: {errors: errorsPersonalInformation, },
   } = useForm<any>();
 
 
   const {
    register: registerSchoolInformation,
     handleSubmit: handleSubmitSchoolInformation,
-    formState: { errors: errorsSchoolInformation, isValid: isValidSchoolInformation },
+    formState: { errors: errorsSchoolInformation,},
   } = useForm<any>();
 
   const {
    register: registerContactInformation,
     handleSubmit: handleSubmitContactInformation,
-    formState: { errors: errorsContactInformation, isValid: isValidContactInformation },
+    formState: { errors: errorsContactInformation, },
   } = useForm<any>();
 
 

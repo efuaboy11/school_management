@@ -53,7 +53,7 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
 
   // const parsedStudent = storedStudent ? JSON.parse(storedStudent) : null;
   const [isClient, setIsClient] = useState(false);
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  const { theme } = useContext(ThemeContext)!;
 
 
 

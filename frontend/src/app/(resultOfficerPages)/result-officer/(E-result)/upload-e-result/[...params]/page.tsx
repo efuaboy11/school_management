@@ -64,7 +64,7 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
     StudentFunction,
   } = useContext(AllDataContext)!;
 
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  const { theme } = useContext(ThemeContext)!;
 
 
 

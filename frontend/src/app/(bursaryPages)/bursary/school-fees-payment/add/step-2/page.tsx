@@ -38,7 +38,7 @@ const PayFees = () => {
   const storedStudent = typeof window !== "undefined" ? localStorage.getItem('student') : null
   // const parsedStudent = storedStudent ? JSON.parse(storedStudent) : null;
   const [isClient, setIsClient] = useState(false);
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  const { theme } = useContext(ThemeContext)!;
 
 
 

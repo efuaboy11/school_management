@@ -60,7 +60,7 @@ const IndividualEResult = ({ params }: { params: Promise<any> }) => {
     };
   }, [router]);
 
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  const { theme } = useContext(ThemeContext)!;
 
   const [Loading, setLoading] = useState(true)
   const [details, setDetails] = useState<any>(null)

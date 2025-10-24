@@ -24,7 +24,7 @@ const ClassNotification = () => {
 
     classNotificationSearch,
     setClassNotificationSearch,
-    ClassNotificationFunction, 
+    ClassNotificationFunction,
     FilterClassNotification,
 
     studentClassData,
@@ -53,27 +53,27 @@ const ClassNotification = () => {
 
   } = useContext(AuthContext)!;
 
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  const { theme } = useContext(ThemeContext)!;
 
 
-  
-  
-  
+
+
+
 
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
 
   const [filterOptions, setOptions] = useState(false)
 
-  const toggleFilterOptions = () =>{
+  const toggleFilterOptions = () => {
     setOptions(!filterOptions)
   }
 
-    const [hasMounted, setHasMounted] = useState(false);
-  
-    useEffect(() => {
-      setHasMounted(true);
-    }, []);
+  const [hasMounted, setHasMounted] = useState(false);
+
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
 
 
 
@@ -82,18 +82,18 @@ const ClassNotification = () => {
 
 
 
-  
+
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 
-    const {
-      register,
-      handleSubmit,
-      formState: { errors, isValid },
-    } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isValid },
+  } = useForm();
 
-  
+
   // const classNotificationData = [...Array(100).keys()];
   const startIndex = (page - 1) * itemsPerPage;
   const currentItems = classNotificationData.slice(startIndex, startIndex + itemsPerPage);
@@ -104,7 +104,7 @@ const ClassNotification = () => {
     label: `${data.first_name} ${data.last_name}`
   }));
 
-    const StudentClassOptions = studentClassData.map((data: any) => ({
+  const StudentClassOptions = studentClassData.map((data: any) => ({
     value: data.id,
     label: `${data.name}`
   }));
@@ -118,37 +118,37 @@ const ClassNotification = () => {
       boxShadow: state.isFocused ? '0 0 0 4px rgba(120, 62, 188, 0.2)' : 'none',
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     menu: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#0d0d0d' : '#fff',
       border: '1px solid #ccc',
       zIndex: 999,
     }),
-  
+
     option: (provided: any, state: any) => {
       const isDark = theme === 'dark';
-  
+
       const backgroundColor = state.isSelected
         ? '#783ebc'
         : state.isFocused
-        ? isDark
-          ? '#1a1a1a' // hover in dark
-          : '#f0f0f0' // hover in light
-        : isDark
-        ? '#0d0d0d'
-        : '#fff';
-  
+          ? isDark
+            ? '#1a1a1a' // hover in dark
+            : '#f0f0f0' // hover in light
+          : isDark
+            ? '#0d0d0d'
+            : '#fff';
+
       const color = state.isSelected
         ? '#fff'
         : state.isFocused
-        ? isDark
-          ? '#fff'
-          : '#000'
-        : isDark
-        ? '#fff'
-        : '#000';
-  
+          ? isDark
+            ? '#fff'
+            : '#000'
+          : isDark
+            ? '#fff'
+            : '#000';
+
       return {
         ...provided,
         backgroundColor,
@@ -156,27 +156,27 @@ const ClassNotification = () => {
         cursor: 'pointer',
       };
     },
-  
+
     singleValue: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     placeholder: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#aaa' : '#666',
     }),
-  
+
     input: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     dropdownIndicator: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     indicatorSeparator: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#444' : '#ccc',
@@ -184,10 +184,10 @@ const ClassNotification = () => {
   };
 
 
-  useEffect(() =>{
-    if(!classNotificationSearch){
+  useEffect(() => {
+    if (!classNotificationSearch) {
       ClassNotificationFunction()
-    }else if(classNotificationSearch){
+    } else if (classNotificationSearch) {
       const debouncedSearch = debounce(() => {
         FilterClassNotification();
       }, 300);
@@ -196,12 +196,12 @@ const ClassNotification = () => {
       return () => {
         debouncedSearch.cancel();
       };
-      
+
     }
-    
+
   }, [classNotificationSearch])
 
-  useEffect (() =>{
+  useEffect(() => {
     StudentClassFunction()
     TeacherFunction()
   }, [])
@@ -219,14 +219,14 @@ const ClassNotification = () => {
           <div>
             <p className="md-text">Class Notiffications</p>
             <p className="light-text pb-3">Total of {classNotificationCount} notification avaliable</p>
-         </div>
+          </div>
         </div>
 
         <div className="d-flex justify-content-end">
 
           <div>
             <div className="d-flex align-items-center">
-              <input type="text" className="site-search-input" placeholder="Search" value={classNotificationSearch} onChange={(e) => setClassNotificationSearch(e.target.value)}/>
+              <input type="text" className="site-search-input" placeholder="Search" value={classNotificationSearch} onChange={(e) => setClassNotificationSearch(e.target.value)} />
               <button className="site-btn px-3 ms-2"><i className="ri-search-line"></i></button>
             </div>
           </div>
@@ -268,7 +268,7 @@ const ClassNotification = () => {
                               <h6 className='py-2 font-bold me-3'>{formatName(data.subject)}</h6>
 
                             </div>
-                            
+
                             <p>{data.text || 'No message.'}</p>
                           </div>
                         </div>
@@ -277,32 +277,32 @@ const ClassNotification = () => {
 
 
                   </div>
-                  
+
 
                   {classNotificationData.length > 10 && (
-                      <div className="col-12 mb-4 mt-3">
-                        <Stack spacing={2} alignItems="center">
-                          <Pagination
-                            count={Math.ceil(classNotificationData.length / itemsPerPage)}
-                            page={page}
-                            onChange={handleChange}
-                            sx={{
-                              '& .MuiPaginationItem-root': {
-                                color: '#737b7d', // color of all numbers
-                              },
-                              '& .MuiPaginationItem-root.Mui-selected': {
-                                backgroundColor: '#783ebc', // Your custom color
-                                color: '#fff',
-                              },
-                            }}
-                          />
-                        </Stack>
-                      </div>
-                    )}
+                    <div className="col-12 mb-4 mt-3">
+                      <Stack spacing={2} alignItems="center">
+                        <Pagination
+                          count={Math.ceil(classNotificationData.length / itemsPerPage)}
+                          page={page}
+                          onChange={handleChange}
+                          sx={{
+                            '& .MuiPaginationItem-root': {
+                              color: '#737b7d', // color of all numbers
+                            },
+                            '& .MuiPaginationItem-root.Mui-selected': {
+                              backgroundColor: '#783ebc', // Your custom color
+                              color: '#fff',
+                            },
+                          }}
+                        />
+                      </Stack>
+                    </div>
+                  )}
                 </div>
 
-              
-              ): (
+
+              ) : (
                 <div className="col-12 ">
                   <div className='site-boxes text-center pb-5 d-flex justify-content-center align-items-center  mt-5 pt-5'>
                     <div>
@@ -319,7 +319,7 @@ const ClassNotification = () => {
           )}
 
 
-          
+
         </div>
       </div>
     </div>

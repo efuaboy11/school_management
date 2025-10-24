@@ -2,7 +2,6 @@
 import AuthContext from '@/context/AuthContext'
 import React, { use, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form'
 import Image from 'next/image'
 import Link from 'next/link';
 import { Pagination, Stack } from '@mui/material';
@@ -12,7 +11,6 @@ import Select from 'react-select';
 export default function UploadResultPage({ params }: { params: Promise<any> }) {
   const param = use(params);
   const [classID, termID, sessionID] = param.params || [];
-  const router = useRouter()
   const {
     authTokens,
     formatName,

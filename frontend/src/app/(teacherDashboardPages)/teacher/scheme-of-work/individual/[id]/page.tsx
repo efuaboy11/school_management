@@ -45,7 +45,7 @@ const IndivivdualSchemeOfWork = ({ params }: { params: Promise<any> }) => {
     TermFunction,
   } = useContext(AllDataContext)!;
 
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  const { theme } = useContext(ThemeContext)!;
 
   const [Loading, setLoading] = useState(true)
   const [details, setDetails] = useState<any>(null)
