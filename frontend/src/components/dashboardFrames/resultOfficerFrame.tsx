@@ -9,7 +9,7 @@ import '../../css/component/dashFrames.css'
 import Image from 'next/image'
 
 const ResultOfficerFrame = () => {
-  const { 
+  const {
     toggleShowSidebar,
     toggleCloseSidebar,
     OnbodyClick,
@@ -17,7 +17,7 @@ const ResultOfficerFrame = () => {
     LogoutUser,
     authTokens,
     formatName,
- 
+
 
   } = useContext(AuthContext)!
 
@@ -28,13 +28,13 @@ const ResultOfficerFrame = () => {
   const [studentDropdown, setStudentDropdown] = useState(false)
   const [staffDropdown, setStaffDropdown] = useState(false)
   const [parentDropdown, setParentDropdown] = useState(false)
-  const [schoolFeesDropdown, setSchoolFeesDropdown] = useState(false) 
-  const [billsDropdown, setBillsDropdown] = useState(false) 
-  const [storeDropdown, setstoreDropdown] = useState(false) 
+  const [schoolFeesDropdown, setSchoolFeesDropdown] = useState(false)
+  const [billsDropdown, setBillsDropdown] = useState(false)
+  const [storeDropdown, setstoreDropdown] = useState(false)
   const [paymentMethodDropdown, setPaymentMethodDropdown] = useState(false)
-  const [academicsDropdown, setAcademicsDropdown] = useState(false) 
-  const [classActivityDropdown, setClassActivityDropdown] = useState(false) 
-  const [notificationDropdown, setNotificationDropdown] = useState(false) 
+  const [academicsDropdown, setAcademicsDropdown] = useState(false)
+  const [classActivityDropdown, setClassActivityDropdown] = useState(false)
+  const [notificationDropdown, setNotificationDropdown] = useState(false)
   const [resultDropdown, setResultDropdown] = useState(false)
   const [EResultDropdown, setEResultDropdown] = useState(false)
   const [emailDropdown, setEmailDropdown] = useState(false)
@@ -49,7 +49,7 @@ const ResultOfficerFrame = () => {
 
 
 
-  const toggleStudent = () =>{
+  const toggleStudent = () => {
     setStudentDropdown(!studentDropdown)
     setStaffDropdown(false)
     setParentDropdown(false)
@@ -64,7 +64,7 @@ const ResultOfficerFrame = () => {
     setEResultDropdown(false)
     setEmailDropdown(false)
   }
-  const toggleStaff = () =>{
+  const toggleStaff = () => {
     setStaffDropdown(!staffDropdown)
     setStudentDropdown(false)
     setParentDropdown(false)
@@ -80,7 +80,7 @@ const ResultOfficerFrame = () => {
     setEmailDropdown(false)
   }
 
-  const toggleParent = () =>{
+  const toggleParent = () => {
     setParentDropdown(!parentDropdown)
     setStudentDropdown(false)
     setStaffDropdown(false)
@@ -96,7 +96,7 @@ const ResultOfficerFrame = () => {
     setEmailDropdown(false)
   }
 
-  const toggleSchooolFess = () =>{
+  const toggleSchooolFess = () => {
     setParentDropdown(false)
     setStudentDropdown(false)
     setStaffDropdown(false)
@@ -111,7 +111,7 @@ const ResultOfficerFrame = () => {
     setEResultDropdown(false)
   }
 
-  const toggleBills = () =>{
+  const toggleBills = () => {
     setParentDropdown(false)
     setStudentDropdown(false)
     setStaffDropdown(false)
@@ -127,7 +127,7 @@ const ResultOfficerFrame = () => {
     setEmailDropdown(false)
   }
 
-  const toggleStore = () =>{
+  const toggleStore = () => {
     setParentDropdown(false)
     setStudentDropdown(false)
     setStaffDropdown(false)
@@ -144,7 +144,7 @@ const ResultOfficerFrame = () => {
   }
 
 
-  const togglePaymentMethod = () =>{
+  const togglePaymentMethod = () => {
     setParentDropdown(false)
     setStudentDropdown(false)
     setStaffDropdown(false)
@@ -160,7 +160,7 @@ const ResultOfficerFrame = () => {
     setEmailDropdown(false)
   }
 
-  const toggleAcademics = () =>{
+  const toggleAcademics = () => {
     setParentDropdown(false)
     setStudentDropdown(false)
     setStaffDropdown(false)
@@ -177,7 +177,7 @@ const ResultOfficerFrame = () => {
 
 
 
-  const toggleClassActivity = () =>{
+  const toggleClassActivity = () => {
     setParentDropdown(false)
     setStudentDropdown(false)
     setStaffDropdown(false)
@@ -193,7 +193,7 @@ const ResultOfficerFrame = () => {
   }
 
 
-  const toggleNotiffcation = () =>{
+  const toggleNotiffcation = () => {
     setParentDropdown(false)
     setStudentDropdown(false)
     setStaffDropdown(false)
@@ -208,7 +208,7 @@ const ResultOfficerFrame = () => {
     setEResultDropdown(false)
   }
 
-  const toggleResult = () =>{
+  const toggleResult = () => {
     setParentDropdown(false)
     setStudentDropdown(false)
     setStaffDropdown(false)
@@ -223,7 +223,7 @@ const ResultOfficerFrame = () => {
     setEResultDropdown(false)
   }
 
-  const toggleEResult = () =>{
+  const toggleEResult = () => {
     setParentDropdown(false)
     setStudentDropdown(false)
     setStaffDropdown(false)
@@ -239,7 +239,7 @@ const ResultOfficerFrame = () => {
     setEmailDropdown(false)
   }
 
-  const toggleEmail = () =>{
+  const toggleEmail = () => {
     setParentDropdown(false)
     setStudentDropdown(false)
     setStaffDropdown(false)
@@ -256,12 +256,12 @@ const ResultOfficerFrame = () => {
   }
 
 
-  const toggleNavDropdown = () =>{
+  const toggleNavDropdown = () => {
     setNavDropdown(!navDropdown)
   }
 
-  const UserDetails = async () =>{
-    try{
+  const UserDetails = async () => {
+    try {
       const response = await fetch(`http://127.0.0.1:8000/api/staff/${authTokens?.user_id}/`, {
         method: 'GET',
         headers: {
@@ -272,17 +272,17 @@ const ResultOfficerFrame = () => {
       })
       const data = await response.json()
 
-      if(response.ok){
+      if (response.ok) {
         setUserDetails(data)
       }
-    }catch{
+    } catch {
       console.log('error')
     }
 
   }
   console.log(authTokens)
-  const currentUser = async () =>{
-    try{
+  const currentUser = async () => {
+    try {
       const response = await fetch(`http://127.0.0.1:8000/api/me/`, {
         method: 'GET',
         headers: {
@@ -293,33 +293,33 @@ const ResultOfficerFrame = () => {
       })
       const data = await response.json()
 
-      if(response.ok){
-        if(data.role !== 'result_officer'){
+      if (response.ok) {
+        if (data.role !== 'result_officer') {
           router.push('/login')
         }
       }
-    }catch{
+    } catch {
       console.log('error')
     }
 
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     UserDetails()
     currentUser()
   }, [])
-  
+
 
 
   return (
     <div>
       <div>
-        <div className={`dashboard-sidebar site-boxes border-radius-10px ${showSidebar ? 'show-sidebar': 'close-sidebar'}`}>
+        <div className={`dashboard-sidebar site-boxes border-radius-10px ${showSidebar ? 'show-sidebar' : 'close-sidebar'}`}>
           <div className="dashboard-sidebar-head stylish-text pt-3 mx-2">
-            <h4>ACADEMICS PANEL</h4><FontAwesomeIcon icon={faArrowLeft} onClick={toggleCloseSidebar} className="close-sidebar-btn pt-1 sm-text cursor-pointer"/></div>
+            <h4>ACADEMICS PANEL</h4><FontAwesomeIcon icon={faArrowLeft} onClick={toggleCloseSidebar} className="close-sidebar-btn pt-1 sm-text cursor-pointer" /></div>
           <hr />
 
-          
+
           <div className="pt-5 mt-4 mb-4">
             <div className="d-flex justify-content-center">
               <div className="site-border p-1 border-radius-50">
@@ -329,10 +329,10 @@ const ResultOfficerFrame = () => {
                   <Image className='border-radius-10px' src='/img/icon/user-icon.png' alt="Logo" width={75} height={75} />
                 )}
 
-                
+
               </div>
             </div>
-            
+
             <div className="text-center pt-2">
               <p>{formatName(userDetails?.first_name || 'Officer name')} {formatName(userDetails?.last_name || '')}</p>
               <p className="light-text sm-text">{userDetails?.email}</p>
@@ -340,10 +340,10 @@ const ResultOfficerFrame = () => {
 
             </div>
           </div>
-          
+
           <ul className='scroll-bar-y student-sidebar-height'>
             <li className="mt-3 py-3">
-              <Link href='/result-officer/home'  className='dashboard-link' onClick={OnbodyClick}>
+              <Link href='/result-officer/home' className='dashboard-link' onClick={OnbodyClick}>
                 <div className="d-flex ps-3">
                   <i className="ri-home-smile-line sm-text me-3"></i>
                   <p>Home</p>
@@ -392,7 +392,7 @@ const ResultOfficerFrame = () => {
               <div className="row">
                 <div className="col-8 ps-4">
                   <div className="d-flex ">
-                    <Link href='/result-officer/upload-e-result'  className='dashboard-link' onClick={OnbodyClick}>
+                    <Link href='/result-officer/upload-e-result' className='dashboard-link' onClick={OnbodyClick}>
                       <div className="d-flex">
                         <i className="ri-upload-cloud-fill me-3"></i>
                         <p>Upload E-Result</p>
@@ -401,7 +401,7 @@ const ResultOfficerFrame = () => {
                   </div>
                 </div>
               </div>
-              
+
             </li>
 
 
@@ -409,7 +409,7 @@ const ResultOfficerFrame = () => {
               <div className="row">
                 <div className="col-8 ps-4">
                   <div className="d-flex ">
-                    <Link href='/result-officer/e-result'  className='dashboard-link' onClick={OnbodyClick}>
+                    <Link href='/result-officer/e-result' className='dashboard-link' onClick={OnbodyClick}>
                       <div className="d-flex">
                         <i className="ri-search-fill me-3"></i>
                         <p>Check E-Result</p>
@@ -417,7 +417,7 @@ const ResultOfficerFrame = () => {
                     </Link>
                   </div>
                 </div>
-              </div>            
+              </div>
             </li>
 
 
@@ -425,7 +425,7 @@ const ResultOfficerFrame = () => {
               <div className="row">
                 <div className="col-8 ps-4">
                   <div className="d-flex ">
-                    <Link href='/result-officer/scratch-card'  className='dashboard-link' onClick={OnbodyClick}>
+                    <Link href='/result-officer/scratch-card' className='dashboard-link' onClick={OnbodyClick}>
                       <div className="d-flex">
                         <i className="bi bi-credit-card-2-front-fill me-3"></i>
                         <p>Scratch Card</p>
@@ -434,7 +434,7 @@ const ResultOfficerFrame = () => {
                   </div>
                 </div>
               </div>
-              
+
             </li>
 
 
@@ -442,14 +442,14 @@ const ResultOfficerFrame = () => {
               <div className="row mb-2 dashboard-sidebar-list dashboard-link" onClick={toggleNotiffcation}>
                 <div className='col-8 ps-4 y'>
                   <div className="d-flex ">
-                    <i className="ri-notification-line  me-3 "></i>                  
+                    <i className="ri-notification-line  me-3 "></i>
                     <p>Notice & Event</p>
                   </div>
                 </div>
 
                 <div className="col-4 ">
                   <div className="d-flex me-2 justify-content-end mt-1" >
-                    <p className={`${notificationDropdown ? 'rotate-90deg': ''}`}><i className="ri-arrow-right-s-line"></i></p>
+                    <p className={`${notificationDropdown ? 'rotate-90deg' : ''}`}><i className="ri-arrow-right-s-line"></i></p>
                   </div>
                 </div>
               </div>
@@ -457,40 +457,40 @@ const ResultOfficerFrame = () => {
               <div>
                 <ul className={`dashboard-dropdown-bg ${notificationDropdown ? "slide-in" : "slide-out"}`}>
 
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/result-officer/school-notification") ?"active-dash-link": ""}`}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/result-officer/school-notification") ? "active-dash-link" : ""}`}>
                     <Link className='dashboard-link' href="/result-officer/school-notification" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
-                        <p>General Notificaion</p> 
+                        <p>General Notificaion</p>
                       </div>
                     </Link>
                   </li>
 
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/result-officer/staff-notification") ?"active-dash-link": ""}`}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/result-officer/staff-notification") ? "active-dash-link" : ""}`}>
                     <Link className='dashboard-link' href="/result-officer/staff-notification" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
-                        <p>Staff Notification</p> 
+                        <p>Staff Notification</p>
                       </div>
                     </Link>
                   </li>
 
-                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/result-officer/school-event") ?"active-dash-link": ""}`}>
+                  <li className={`dashboard-sidebar-dropdown-link ${isActiveDashLink("/result-officer/school-event") ? "active-dash-link" : ""}`}>
                     <Link className='dashboard-link' href="/result-officer/school-event" onClick={OnbodyClick}>
                       <div className="d-flex ps-5 py-2">
-                        <p>School Event </p> 
+                        <p>School Event </p>
                       </div>
                     </Link>
                   </li>
                 </ul>
               </div>
 
-            </li> 
+            </li>
 
 
             <li className=" pb-4">
               <div className="row">
                 <div className="col-8 ps-4">
                   <div className="d-flex ">
-                    <Link href='/result-officer/home'  className='dashboard-link' onClick={OnbodyClick}>
+                    <Link href='/result-officer/home' className='dashboard-link' onClick={OnbodyClick}>
                       <div className="d-flex">
                         <i className="bi bi-cart4 me-3"></i>
                         <p>Store</p>
@@ -499,7 +499,7 @@ const ResultOfficerFrame = () => {
                   </div>
                 </div>
               </div>
-              
+
             </li>
 
             <li className='mb-5 mx-3'>
@@ -516,14 +516,14 @@ const ResultOfficerFrame = () => {
         <div className={`dashboard-nav`}>
           <div className="site-boxes border-bottom-dark border-radius-10px nav-box-shadow">
             <nav className="text-light d-flex align-items-center justify-content-between position-sticky">
-              <div className="mx-3 text-light"><FontAwesomeIcon icon={faBars} onClick={toggleShowSidebar} className=" dashboard-menu-bar cursor-pointer"/></div>
+              <div className="mx-3 text-light"><FontAwesomeIcon icon={faBars} onClick={toggleShowSidebar} className=" dashboard-menu-bar cursor-pointer" /></div>
               <div className="d-flex align-items-center">
 
                 <div className="d-none d-md-block">
                   <Link href='/' className='site-link dashboard-content-site-link'>
                     <div className='d-flex pe-5 me-5'>
                       <div>
-                        <FontAwesomeIcon icon={faLock}/>
+                        <FontAwesomeIcon icon={faLock} />
                       </div>
                       <p className='mx-2'>Visit website</p>
                       <i className="bi bi-box-arrow-in-up-right"></i>
@@ -533,14 +533,14 @@ const ResultOfficerFrame = () => {
                 <div className="dashboard-content-user-link cursor-pointer">
                   <div className="d-flex align-center dashboard-content-user-link-hover" onClick={toggleNavDropdown}>
                     {userDetails?.passport ? (
-                        <Image className='border-radius-50' src={userDetails?.passport} alt="Logo" width={33} height={33} />
-                      ) : (
-                        <img width='35px' src="/img/icon/user-icon.png" alt=""/>
+                      <Image className='border-radius-50' src={userDetails?.passport} alt="Logo" width={33} height={33} />
+                    ) : (
+                      <img width='35px' src="/img/icon/user-icon.png" alt="" />
 
-                      )
+                    )
                     }
                     <p className='px-2 pt-1'>{formatName(userDetails?.first_name || 'Teacher name')} {formatName(userDetails?.last_name || '')}</p>
-                    <p className='pt-1'><FontAwesomeIcon className='xsm-text' icon={faAngleDown}/></p>
+                    <p className='pt-1'><FontAwesomeIcon className='xsm-text' icon={faAngleDown} /></p>
                   </div>
                   {navDropdown &&
                     <div className="border-bottom-dark dashboard-content-user-drop-down  site-boxes">
@@ -553,7 +553,7 @@ const ResultOfficerFrame = () => {
                             </div>
                           </Link>
                         </li>
-              
+
                         <li className='pb-2'>
                           <button className='light-link Button' onClick={LogoutUser}>
                             <div className="d-flex">
@@ -571,7 +571,7 @@ const ResultOfficerFrame = () => {
           </div>
         </div>
       </div>
-    
+
     </div>
   )
 }

@@ -64,7 +64,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
     disableButton,
     setDisableButton,
     formatName,
-    formatCurrency,
+
 
     setMessage,
     showAlert,

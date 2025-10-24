@@ -67,6 +67,7 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
     formatName,
     formatCurrency,
 
+
     setMessage,
     showAlert,
     setIsSuccess,

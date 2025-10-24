@@ -19,7 +19,7 @@ const AllSchoolFeesPayment = () => {
 
     billsPaymentSearch,
     setBillsPaymentSearch,
-    BillsPaymentFunction, 
+    BillsPaymentFunction,
     FilterBillsPayment,
 
     totalPendingBillsPayment,
@@ -33,46 +33,46 @@ const AllSchoolFeesPayment = () => {
 
   } = useContext(AllDataContext)!;
 
-    const {
-      truncateText,
-      authTokens,
-      formatName,
-      loader,
-      setLoader,
-      disableButton,
-      setDisableButton,
+  const {
+    truncateText,
+    authTokens,
+    formatName,
+    loader,
+    setLoader,
+    disableButton,
+    setDisableButton,
 
-      formatCurrency,
-      formatDate,
 
-      setMessage,
-      showAlert,
-      setIsSuccess,
-  
-    } = useContext(AuthContext)!;
+    formatDate,
 
-    useEffect(() =>{
-      if(!billsPaymentSearch){
-        BillsPaymentFunction()
-      }else if(billsPaymentSearch){
-        const debouncedSearch = debounce(() => {
-          FilterBillsPayment();
-        }, 300);
-        debouncedSearch();
+    setMessage,
+    showAlert,
+    setIsSuccess,
 
-        return () => {
-          debouncedSearch.cancel();
-        };
-        
-      }
-     
-    }, [billsPaymentSearch])
+  } = useContext(AuthContext)!;
 
-    useEffect(() =>{
-      PendingBillsPaymentFunction()
-      SucessBillsPaymentFunction()
-      DeclinedBillsPaymentFunction()
-    }, [])
+  useEffect(() => {
+    if (!billsPaymentSearch) {
+      BillsPaymentFunction()
+    } else if (billsPaymentSearch) {
+      const debouncedSearch = debounce(() => {
+        FilterBillsPayment();
+      }, 300);
+      debouncedSearch();
+
+      return () => {
+        debouncedSearch.cancel();
+      };
+
+    }
+
+  }, [billsPaymentSearch])
+
+  useEffect(() => {
+    PendingBillsPaymentFunction()
+    SucessBillsPaymentFunction()
+    DeclinedBillsPaymentFunction()
+  }, [])
 
   console.log(billsPaymentSearch)
   const itemsPerPage = 10;
@@ -104,7 +104,7 @@ const AllSchoolFeesPayment = () => {
     }
   }
 
-  
+
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
@@ -114,11 +114,11 @@ const AllSchoolFeesPayment = () => {
   const currentItems = billsPaymentData.slice(startIndex, startIndex + itemsPerPage);
 
 
-  const deleteFunction = async () =>{
+  const deleteFunction = async () => {
     setDisableButton(true)
     setLoader(true)
 
-    try{
+    try {
       const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-bills-payment/', {
         method: 'POST',
         headers: {
@@ -131,7 +131,7 @@ const AllSchoolFeesPayment = () => {
 
       })
 
-      if(response.ok){
+      if (response.ok) {
         setLoader(false)
         setDisableButton(false)
         setBillsPaymentData(billsPaymentData.filter(dat => dat.id !== selectedIDs))
@@ -141,13 +141,13 @@ const AllSchoolFeesPayment = () => {
         BillsPaymentFunction()
         showAlert()
         setIsSuccess(true)
-        
-          
-      }else {
+
+
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
 
         setLoader(false)
         setDisableButton(false)
@@ -156,7 +156,7 @@ const AllSchoolFeesPayment = () => {
         setIsSuccess(false)
 
       }
-    }catch{
+    } catch {
       setLoader(false)
       setDisableButton(false)
       setMessage("An error occurred. Please try again.")
@@ -165,7 +165,7 @@ const AllSchoolFeesPayment = () => {
     }
   }
 
- 
+
 
   useEffect(() => {
     if (showDeleteModal) {
@@ -182,43 +182,43 @@ const AllSchoolFeesPayment = () => {
       {showDeleteModal && (
         <section className={` ${showDeleteModal ? 'overlay-background' : ''}`}>
           <div className='container-lg'>
-              
+
             <div className=" row justify-content-center align-center2 height-90vh">
 
-                <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
-                  <div className="site-modal-conatiner">
-                    <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
-                      <div className="d-flex justify-content-center text-center">
-                        <div>
-                          <Image src="/img/icon/warning.png" alt="empty" width={100} height={100} />
-                          <p className='md-text mt-3'>Are you sure?</p>
-                          <p className="light-text">This action cannot be undone. {selectedIDs.length} selected {selectedIDs.length === 1 ? 'data entry' : 'data entries'} will be deleted.</p>
-                          <div className='pt-4'>
-                            <button className="site-delete-btn px-3 me-2 width-100 mb-4" onClick={deleteFunction} disabled={disableButton}>
-                              <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                              <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-delete-bin-line pe-2"></i> Delete</span>
-                            </button>
-                            <button onClick={handleCloseDeleteModal} className="site-btn site-cancel-btn px-3 width-100"><i className="ri-close-circle-line pe-2"></i>Cancel</button>
-                          </div>
+              <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
+                <div className="site-modal-conatiner">
+                  <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
+                    <div className="d-flex justify-content-center text-center">
+                      <div>
+                        <Image src="/img/icon/warning.png" alt="empty" width={100} height={100} />
+                        <p className='md-text mt-3'>Are you sure?</p>
+                        <p className="light-text">This action cannot be undone. {selectedIDs.length} selected {selectedIDs.length === 1 ? 'data entry' : 'data entries'} will be deleted.</p>
+                        <div className='pt-4'>
+                          <button className="site-delete-btn px-3 me-2 width-100 mb-4" onClick={deleteFunction} disabled={disableButton}>
+                            <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                            <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-delete-bin-line pe-2"></i> Delete</span>
+                          </button>
+                          <button onClick={handleCloseDeleteModal} className="site-btn site-cancel-btn px-3 width-100"><i className="ri-close-circle-line pe-2"></i>Cancel</button>
                         </div>
                       </div>
-                    
                     </div>
+
                   </div>
                 </div>
-            
+              </div>
+
 
             </div>
 
           </div>
         </section>
       )}
-            <div className="container-xl pt-4 pb-5 mb-5">
+      <div className="container-xl pt-4 pb-5 mb-5">
         <div className="d-md-flex justify-content-between">
           <div>
             <p className="md-text">All Bills  Payment</p>
             <p className="light-text pb-3">Total of {billsPaymentCount}  payment avaliable</p>
-         </div>
+          </div>
 
           <div className='d-flex mb-4'>
             <Link href='/bursary/bills-payment/add' className="site-btn px-3 Link"><i className="ri-send-plane-fill pe-2"></i>Pay Bills</Link>
@@ -243,7 +243,7 @@ const AllSchoolFeesPayment = () => {
           ) : (
             <div className='mt-5'>
 
-              
+
               <div className="mb-5">
                 <div className="site-boxes border-radius-10px p-3">
                   <div>
@@ -258,13 +258,13 @@ const AllSchoolFeesPayment = () => {
                   />
                 </div>
               </div>
-    
-    
+
+
               <div className="d-flex justify-content-end mb-4">
 
                 <div>
                   <div className="d-flex align-items-center">
-                    <input type="text" className="f site-search-input" placeholder="Search" value={billsPaymentSearch} onChange={(e) => setBillsPaymentSearch(e.target.value)}/>
+                    <input type="text" className="f site-search-input" placeholder="Search" value={billsPaymentSearch} onChange={(e) => setBillsPaymentSearch(e.target.value)} />
                     <button className="site-btn px-3 ms-2"><i className="ri-search-line"></i></button>
                   </div>
                 </div>
@@ -275,12 +275,12 @@ const AllSchoolFeesPayment = () => {
                 <div>
 
                   {selectedIDs.length > 0 ? (
-                          <div className='pb-2'>
-                            <button onClick={handleShowDeleteModal}  className='site-delete-btn px-3'><i className="ri-delete-bin-line me-2"></i>Delete</button>
-                          </div>
-                    ): (
-                      <div></div>
-                    )
+                    <div className='pb-2'>
+                      <button onClick={handleShowDeleteModal} className='site-delete-btn px-3'><i className="ri-delete-bin-line me-2"></i>Delete</button>
+                    </div>
+                  ) : (
+                    <div></div>
+                  )
                   }
                   <div className='site-boxes site-border border-radius-5px dahboard-table non-wrap-text scroll-bar'>
                     <table className='overflow-auto light-text'>
@@ -288,11 +288,11 @@ const AllSchoolFeesPayment = () => {
                         <tr>
                           <th className='py-2'>
                             <label className="custom-checkbox cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={selectedIDs.length === billsPaymentData.length && billsPaymentData.length > 0}
-                              onChange={handleSelectAll}
-                            />
+                              <input
+                                type="checkbox"
+                                checked={selectedIDs.length === billsPaymentData.length && billsPaymentData.length > 0}
+                                onChange={handleSelectAll}
+                              />
                               <span className="checkmark"></span>
                             </label>
                           </th>
@@ -333,14 +333,14 @@ const AllSchoolFeesPayment = () => {
                                   </div>
 
                                 </div>
-                                
-                                
+
+
                               </td>
 
                               <td>{formatName(truncateText(data.bill_name.bill_name, 2))}</td>
                               <td>{formatCurrency(data.bill_name.amount)} USD</td>
                               <td>{formatDate(data.date)}</td>
-                              <td><p className={`${data.status === 'declined' && 'site-declined'}     ${data.status === "pending" && "site-pending"} ${data.status === "approved" && "site-successful"} py-2 text-center border-radius-5px`}>{formatName(data.status)}</p></td> 
+                              <td><p className={`${data.status === 'declined' && 'site-declined'}     ${data.status === "pending" && "site-pending"} ${data.status === "approved" && "site-successful"} py-2 text-center border-radius-5px`}>{formatName(data.status)}</p></td>
                               <td>
                                 <Link href={`/bursary/bills-payment/individual/${data.id}/${data.transaction_id}`} className="Link site-border box-50px d-flex  align-center justify-content-center border-radius-5px cursor-pointer">
                                   <i className="ri-eye-line"></i>
@@ -364,29 +364,29 @@ const AllSchoolFeesPayment = () => {
                   </div>
 
                   {billsPaymentData.length > 10 && (
-                      <div className="col-12 mb-4 mt-3">
-                        <Stack spacing={2} alignItems="end">
-                          <Pagination
-                            count={Math.ceil(billsPaymentData.length / itemsPerPage)}
-                            page={page}
-                            onChange={handleChange}
-                            sx={{
-                              '& .MuiPaginationItem-root': {
-                                color: '#737b7d', // color of all numbers
-                              },
-                              '& .MuiPaginationItem-root.Mui-selected': {
-                                backgroundColor: '#783ebc', // Your custom color
-                                color: '#fff',
-                              },
-                            }}
-                          />
-                        </Stack>
-                      </div>
-                    )}
+                    <div className="col-12 mb-4 mt-3">
+                      <Stack spacing={2} alignItems="end">
+                        <Pagination
+                          count={Math.ceil(billsPaymentData.length / itemsPerPage)}
+                          page={page}
+                          onChange={handleChange}
+                          sx={{
+                            '& .MuiPaginationItem-root': {
+                              color: '#737b7d', // color of all numbers
+                            },
+                            '& .MuiPaginationItem-root.Mui-selected': {
+                              backgroundColor: '#783ebc', // Your custom color
+                              color: '#fff',
+                            },
+                          }}
+                        />
+                      </Stack>
+                    </div>
+                  )}
                 </div>
 
-              
-              ): (
+
+              ) : (
                 <div className="col-12 ">
                   <div className='site-boxes text-center pb-5 d-flex justify-content-center align-items-center  mt-5 pt-5'>
                     <div>
@@ -403,7 +403,7 @@ const AllSchoolFeesPayment = () => {
           )}
 
 
-          
+
         </div>
       </div>
     </div>

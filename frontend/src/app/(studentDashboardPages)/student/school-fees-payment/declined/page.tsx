@@ -18,51 +18,51 @@ const DeclinedPayment = () => {
 
     declinedSchoolFeesPaymentSearch,
     setDeclinedSchoolFeesPaymentSearch,
-    DeclinedSchoolFeesPaymentFunction, 
+    DeclinedSchoolFeesPaymentFunction,
     FilterDeclinedSchoolFeesPayment,
   } = useContext(AllDataContext)!;
 
-    const {
-      truncateText,
-      authTokens,
-      formatName,
-      loader,
-      setLoader,
-      disableButton,
-      setDisableButton,
+  const {
+    truncateText,
+    authTokens,
+    formatName,
+    loader,
+    setLoader,
+    disableButton,
+    setDisableButton,
 
-      formatCurrency,
-      formatDate,
 
-      setMessage,
-      showAlert,
-      setIsSuccess,
-  
-    } = useContext(AuthContext)!;
+    formatDate,
 
-    useEffect(() =>{
-      if(!declinedSchoolFeesPaymentSearch){
-        DeclinedSchoolFeesPaymentFunction()
-      }else if(declinedSchoolFeesPaymentSearch){
-        const debouncedSearch = debounce(() => {
-          FilterDeclinedSchoolFeesPayment();
-        }, 300);
-        debouncedSearch();
+    setMessage,
+    showAlert,
+    setIsSuccess,
 
-        return () => {
-          debouncedSearch.cancel();
-        };
-        
-      }
-     
-    }, [declinedSchoolFeesPaymentSearch])
+  } = useContext(AuthContext)!;
+
+  useEffect(() => {
+    if (!declinedSchoolFeesPaymentSearch) {
+      DeclinedSchoolFeesPaymentFunction()
+    } else if (declinedSchoolFeesPaymentSearch) {
+      const debouncedSearch = debounce(() => {
+        FilterDeclinedSchoolFeesPayment();
+      }, 300);
+      debouncedSearch();
+
+      return () => {
+        debouncedSearch.cancel();
+      };
+
+    }
+
+  }, [declinedSchoolFeesPaymentSearch])
 
   console.log(declinedSchoolFeesPaymentSearch)
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
 
 
-  
+
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
@@ -77,12 +77,12 @@ const DeclinedPayment = () => {
   return (
     <div>
 
-            <div className="container-xl pt-4 pb-5 mb-5">
+      <div className="container-xl pt-4 pb-5 mb-5">
         <div className="d-md-flex justify-content-between">
           <div>
             <p className="md-text">Declined Payment</p>
             <p className="light-text pb-3">Total of {declinedSchoolFeesPaymentCount} declined payment avaliable</p>
-         </div>
+          </div>
 
           <div className='d-flex mb-4'>
             <Link href='/student/school-fees-payment/make-payment/step-1' className="site-btn px-3 Link"><i className="ri-send-plane-fill pe-2"></i>Pay Fees</Link>
@@ -93,7 +93,7 @@ const DeclinedPayment = () => {
 
           <div>
             <div className="d-flex align-items-center">
-              <input type="text" className="f site-search-input" placeholder="Search" value={declinedSchoolFeesPaymentSearch} onChange={(e) => setDeclinedSchoolFeesPaymentSearch(e.target.value)}/>
+              <input type="text" className="f site-search-input" placeholder="Search" value={declinedSchoolFeesPaymentSearch} onChange={(e) => setDeclinedSchoolFeesPaymentSearch(e.target.value)} />
               <button className="site-btn px-3 ms-2"><i className="ri-search-line"></i></button>
             </div>
           </div>
@@ -136,7 +136,7 @@ const DeclinedPayment = () => {
                               <td className='py-3'>{formatName(data.fee_type_name.fee_choice)}</td>
                               <td>{formatCurrency(data.fee_type_name.amount)} USD</td>
                               <td>{formatDate(data.date)}</td>
-                              <td><p className={`${data.status === 'declined' && 'site-declined'}     ${data.status === "pending" && "site-pending"} ${data.status === "approved" && "site-successful"} py-2 text-center border-radius-5px`}>{formatName(data.status)}</p></td> 
+                              <td><p className={`${data.status === 'declined' && 'site-declined'}     ${data.status === "pending" && "site-pending"} ${data.status === "approved" && "site-successful"} py-2 text-center border-radius-5px`}>{formatName(data.status)}</p></td>
                               <td>
                                 <Link href={`/student/school-fees-payment/individual/${data.id}/${data.transaction_id}`} className="Link site-border box-50px d-flex  align-center justify-content-center border-radius-5px cursor-pointer">
                                   <i className="ri-eye-line"></i>
@@ -160,29 +160,29 @@ const DeclinedPayment = () => {
                   </div>
 
                   {declinedSchoolFeesPaymentData.length > 10 && (
-                      <div className="col-12 mb-4 mt-3">
-                        <Stack spacing={2} alignItems="end">
-                          <Pagination
-                            count={Math.ceil(declinedSchoolFeesPaymentData.length / itemsPerPage)}
-                            page={page}
-                            onChange={handleChange}
-                            sx={{
-                              '& .MuiPaginationItem-root': {
-                                color: '#737b7d', // color of all numbers
-                              },
-                              '& .MuiPaginationItem-root.Mui-selected': {
-                                backgroundColor: '#783ebc', // Your custom color
-                                color: '#fff',
-                              },
-                            }}
-                          />
-                        </Stack>
-                      </div>
-                    )}
+                    <div className="col-12 mb-4 mt-3">
+                      <Stack spacing={2} alignItems="end">
+                        <Pagination
+                          count={Math.ceil(declinedSchoolFeesPaymentData.length / itemsPerPage)}
+                          page={page}
+                          onChange={handleChange}
+                          sx={{
+                            '& .MuiPaginationItem-root': {
+                              color: '#737b7d', // color of all numbers
+                            },
+                            '& .MuiPaginationItem-root.Mui-selected': {
+                              backgroundColor: '#783ebc', // Your custom color
+                              color: '#fff',
+                            },
+                          }}
+                        />
+                      </Stack>
+                    </div>
+                  )}
                 </div>
 
-              
-              ): (
+
+              ) : (
                 <div className="col-12 ">
                   <div className='site-boxes text-center pb-5 d-flex justify-content-center align-items-center  mt-5 pt-5'>
                     <div>
@@ -199,7 +199,7 @@ const DeclinedPayment = () => {
           )}
 
 
-          
+
         </div>
       </div>
     </div>

@@ -16,9 +16,9 @@ const IndivivdualAssignment = ({ params }: { params: Promise<{ id: string }> }) 
   const {
 
     authTokens,
-    formateDateTime,
     formatDate,
     formatName,
+    formateDateTime,
 
 
     loader,
@@ -708,7 +708,7 @@ const IndivivdualAssignment = ({ params }: { params: Promise<{ id: string }> }) 
 
                             <div className="pb-3 d-sm-flex justify-content-between">
                               <p className="pb-2 sm-text">Date given</p>
-                              <p>{formateDateTime(details.date)}</p>
+                              <p>{formateDateTime(formateDateTime(details.date))}</p>
                             </div>
 
 

@@ -18,44 +18,44 @@ const SuccsessfulSchoolFeesPayment = () => {
 
     sucessSchoolFeesPaymentSearch,
     setSucessSchoolFeesPaymentSearch,
-    SucessSchoolFeesPaymentFunction, 
+    SucessSchoolFeesPaymentFunction,
     FilterSucessSchoolFeesPayment,
   } = useContext(AllDataContext)!;
 
-    const {
-      truncateText,
-      authTokens,
-      formatName,
-      loader,
-      setLoader,
-      disableButton,
-      setDisableButton,
+  const {
+    truncateText,
+    authTokens,
+    formatName,
+    loader,
+    setLoader,
+    disableButton,
+    setDisableButton,
 
-      formatCurrency,
-      formatDate,
 
-      setMessage,
-      showAlert,
-      setIsSuccess,
-  
-    } = useContext(AuthContext)!;
+    formatDate,
 
-    useEffect(() =>{
-      if(!sucessSchoolFeesPaymentSearch){
-        SucessSchoolFeesPaymentFunction()
-      }else if(sucessSchoolFeesPaymentSearch){
-        const debouncedSearch = debounce(() => {
-          FilterSucessSchoolFeesPayment();
-        }, 300);
-        debouncedSearch();
+    setMessage,
+    showAlert,
+    setIsSuccess,
 
-        return () => {
-          debouncedSearch.cancel();
-        };
-        
-      }
-     
-    }, [sucessSchoolFeesPaymentSearch])
+  } = useContext(AuthContext)!;
+
+  useEffect(() => {
+    if (!sucessSchoolFeesPaymentSearch) {
+      SucessSchoolFeesPaymentFunction()
+    } else if (sucessSchoolFeesPaymentSearch) {
+      const debouncedSearch = debounce(() => {
+        FilterSucessSchoolFeesPayment();
+      }, 300);
+      debouncedSearch();
+
+      return () => {
+        debouncedSearch.cancel();
+      };
+
+    }
+
+  }, [sucessSchoolFeesPaymentSearch])
 
   console.log(sucessSchoolFeesPaymentSearch)
   const itemsPerPage = 10;
@@ -87,7 +87,7 @@ const SuccsessfulSchoolFeesPayment = () => {
     }
   }
 
-  
+
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
@@ -97,11 +97,11 @@ const SuccsessfulSchoolFeesPayment = () => {
   const currentItems = sucessSchoolFeesPaymentData.slice(startIndex, startIndex + itemsPerPage);
 
 
-  const deleteFunction = async () =>{
+  const deleteFunction = async () => {
     setDisableButton(true)
     setLoader(true)
 
-    try{
+    try {
       const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-payment-school-fees/', {
         method: 'POST',
         headers: {
@@ -114,7 +114,7 @@ const SuccsessfulSchoolFeesPayment = () => {
 
       })
 
-      if(response.ok){
+      if (response.ok) {
         setLoader(false)
         setDisableButton(false)
         setSucessSchoolFeesPaymentData(sucessSchoolFeesPaymentData.filter(dat => dat.id !== selectedIDs))
@@ -124,13 +124,13 @@ const SuccsessfulSchoolFeesPayment = () => {
         SucessSchoolFeesPaymentFunction()
         showAlert()
         setIsSuccess(true)
-        
-          
-      }else {
+
+
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
 
         setLoader(false)
         setDisableButton(false)
@@ -139,7 +139,7 @@ const SuccsessfulSchoolFeesPayment = () => {
         setIsSuccess(false)
 
       }
-    }catch{
+    } catch {
       setLoader(false)
       setDisableButton(false)
       setMessage("An error occurred. Please try again.")
@@ -148,7 +148,7 @@ const SuccsessfulSchoolFeesPayment = () => {
     }
   }
 
- 
+
 
   useEffect(() => {
     if (showDeleteModal) {
@@ -165,43 +165,43 @@ const SuccsessfulSchoolFeesPayment = () => {
       {showDeleteModal && (
         <section className={` ${showDeleteModal ? 'overlay-background' : ''}`}>
           <div className='container-lg'>
-              
+
             <div className=" row justify-content-center align-center2 height-90vh">
 
-                <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
-                  <div className="site-modal-conatiner">
-                    <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
-                      <div className="d-flex justify-content-center text-center">
-                        <div>
-                          <Image src="/img/icon/warning.png" alt="empty" width={100} height={100} />
-                          <p className='md-text mt-3'>Are you sure?</p>
-                          <p className="light-text">This action cannot be undone. {selectedIDs.length} selected {selectedIDs.length === 1 ? 'data entry' : 'data entries'} will be deleted.</p>
-                          <div className='pt-4'>
-                            <button className="site-delete-btn px-3 me-2 width-100 mb-4" onClick={deleteFunction} disabled={disableButton}>
-                              <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                              <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-delete-bin-line pe-2"></i> Delete</span>
-                            </button>
-                            <button onClick={handleCloseDeleteModal} className="site-btn site-cancel-btn px-3 width-100"><i className="ri-close-circle-line pe-2"></i>Cancel</button>
-                          </div>
+              <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
+                <div className="site-modal-conatiner">
+                  <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
+                    <div className="d-flex justify-content-center text-center">
+                      <div>
+                        <Image src="/img/icon/warning.png" alt="empty" width={100} height={100} />
+                        <p className='md-text mt-3'>Are you sure?</p>
+                        <p className="light-text">This action cannot be undone. {selectedIDs.length} selected {selectedIDs.length === 1 ? 'data entry' : 'data entries'} will be deleted.</p>
+                        <div className='pt-4'>
+                          <button className="site-delete-btn px-3 me-2 width-100 mb-4" onClick={deleteFunction} disabled={disableButton}>
+                            <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                            <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-delete-bin-line pe-2"></i> Delete</span>
+                          </button>
+                          <button onClick={handleCloseDeleteModal} className="site-btn site-cancel-btn px-3 width-100"><i className="ri-close-circle-line pe-2"></i>Cancel</button>
                         </div>
                       </div>
-                    
                     </div>
+
                   </div>
                 </div>
-            
+              </div>
+
 
             </div>
 
           </div>
         </section>
       )}
-            <div className="container-xl pt-4 pb-5 mb-5">
+      <div className="container-xl pt-4 pb-5 mb-5">
         <div className="d-md-flex justify-content-between">
           <div>
             <p className="md-text">All Successful Payment</p>
             <p className="light-text pb-3">Total of {sucessSchoolFeesPaymentCount} successful payment avaliable</p>
-         </div>
+          </div>
 
           <div className='d-flex mb-4'>
             <Link href='/admin/school-fees-payment/add/step-1' className="site-btn px-3 Link"><i className="ri-send-plane-fill pe-2"></i>Pay Fees</Link>
@@ -212,7 +212,7 @@ const SuccsessfulSchoolFeesPayment = () => {
 
           <div>
             <div className="d-flex align-items-center">
-              <input type="text" className="f site-search-input" placeholder="Search" value={sucessSchoolFeesPaymentSearch} onChange={(e) => setSucessSchoolFeesPaymentSearch(e.target.value)}/>
+              <input type="text" className="f site-search-input" placeholder="Search" value={sucessSchoolFeesPaymentSearch} onChange={(e) => setSucessSchoolFeesPaymentSearch(e.target.value)} />
               <button className="site-btn px-3 ms-2"><i className="ri-search-line"></i></button>
             </div>
           </div>
@@ -236,12 +236,12 @@ const SuccsessfulSchoolFeesPayment = () => {
               {currentItems.length > 0 ? (
                 <div>
                   {selectedIDs.length > 0 ? (
-                          <div className='pb-2'>
-                            <button onClick={handleShowDeleteModal}  className='site-delete-btn px-3'><i className="ri-delete-bin-line me-2"></i>Delete</button>
-                          </div>
-                    ): (
-                      <div></div>
-                    )
+                    <div className='pb-2'>
+                      <button onClick={handleShowDeleteModal} className='site-delete-btn px-3'><i className="ri-delete-bin-line me-2"></i>Delete</button>
+                    </div>
+                  ) : (
+                    <div></div>
+                  )
                   }
                   <div className='site-boxes site-border border-radius-5px dahboard-table non-wrap-text scroll-bar'>
                     <table className='overflow-auto light-text'>
@@ -249,11 +249,11 @@ const SuccsessfulSchoolFeesPayment = () => {
                         <tr>
                           <th className='py-2'>
                             <label className="custom-checkbox cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={selectedIDs.length === sucessSchoolFeesPaymentData.length && sucessSchoolFeesPaymentData.length > 0}
-                              onChange={handleSelectAll}
-                            />
+                              <input
+                                type="checkbox"
+                                checked={selectedIDs.length === sucessSchoolFeesPaymentData.length && sucessSchoolFeesPaymentData.length > 0}
+                                onChange={handleSelectAll}
+                              />
                               <span className="checkmark"></span>
                             </label>
                           </th>
@@ -294,14 +294,14 @@ const SuccsessfulSchoolFeesPayment = () => {
                                   </div>
 
                                 </div>
-                                
-                                
+
+
                               </td>
 
                               <td>{formatName(data.fee_type_name.fee_choice)}</td>
                               <td>{formatCurrency(data.fee_type_name.amount)} USD</td>
                               <td>{formatDate(data.date)}</td>
-                              <td><p className={`${data.status === 'declined' && 'site-declined'}     ${data.status === "pending" && "site-pending"} ${data.status === "approved" && "site-successful"} py-2 text-center border-radius-5px`}>{formatName(data.status)}</p></td> 
+                              <td><p className={`${data.status === 'declined' && 'site-declined'}     ${data.status === "pending" && "site-pending"} ${data.status === "approved" && "site-successful"} py-2 text-center border-radius-5px`}>{formatName(data.status)}</p></td>
                               <td>
                                 <Link href={`/admin/school-fees-payment/individual/${data.id}/${data.transaction_id}`} className="Link site-border box-50px d-flex  align-center justify-content-center border-radius-5px cursor-pointer">
                                   <i className="ri-eye-line"></i>
@@ -325,29 +325,29 @@ const SuccsessfulSchoolFeesPayment = () => {
                   </div>
 
                   {sucessSchoolFeesPaymentData.length > 10 && (
-                      <div className="col-12 mb-4 mt-3">
-                        <Stack spacing={2} alignItems="end">
-                          <Pagination
-                            count={Math.ceil(sucessSchoolFeesPaymentData.length / itemsPerPage)}
-                            page={page}
-                            onChange={handleChange}
-                            sx={{
-                              '& .MuiPaginationItem-root': {
-                                color: '#737b7d', // color of all numbers
-                              },
-                              '& .MuiPaginationItem-root.Mui-selected': {
-                                backgroundColor: '#783ebc', // Your custom color
-                                color: '#fff',
-                              },
-                            }}
-                          />
-                        </Stack>
-                      </div>
-                    )}
+                    <div className="col-12 mb-4 mt-3">
+                      <Stack spacing={2} alignItems="end">
+                        <Pagination
+                          count={Math.ceil(sucessSchoolFeesPaymentData.length / itemsPerPage)}
+                          page={page}
+                          onChange={handleChange}
+                          sx={{
+                            '& .MuiPaginationItem-root': {
+                              color: '#737b7d', // color of all numbers
+                            },
+                            '& .MuiPaginationItem-root.Mui-selected': {
+                              backgroundColor: '#783ebc', // Your custom color
+                              color: '#fff',
+                            },
+                          }}
+                        />
+                      </Stack>
+                    </div>
+                  )}
                 </div>
 
-              
-              ): (
+
+              ) : (
                 <div className="col-12 ">
                   <div className='site-boxes text-center pb-5 d-flex justify-content-center align-items-center  mt-5 pt-5'>
                     <div>
@@ -364,7 +364,7 @@ const SuccsessfulSchoolFeesPayment = () => {
           )}
 
 
-          
+
         </div>
       </div>
     </div>

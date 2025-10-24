@@ -31,7 +31,7 @@ const PayBills = () => {
     disableButton,
     setDisableButton,
     formatName,
-    formatCurrency,
+
 
     setMessage,
     showAlert,

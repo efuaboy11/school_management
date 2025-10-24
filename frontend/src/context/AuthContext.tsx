@@ -1,7 +1,7 @@
 "use client"
 
 import { profile } from 'console';
-import {jwtDecode} from 'jwt-decode';
+import { jwtDecode } from 'jwt-decode';
 import { createContext, useEffect, useState } from "react";
 import { ReactNode } from "react";
 import { useRouter } from 'next/navigation';
@@ -12,7 +12,7 @@ interface AuthContextType {
   authTokens: AuthTokens | null;
   setAuthToken: (token: AuthTokens | null) => void;
   captchaToken: string | null;
-  setCaptchaToken: (token: string | null) => void;  
+  setCaptchaToken: (token: string | null) => void;
   activateCaptcha: boolean;
   setActivateCaptcha: (activate: boolean) => void;
   userProfile: any;
@@ -66,15 +66,15 @@ interface AuthContextType {
   showAlert: () => void;
   updateDateTime: () => void;
   currentDateTime: string;
-  ImageHandler: (event: any) => void; 
-  handleDownload: (url:string, fileName:string) => void;
-  handleUsernameChange: (event:any) =>void;
-  handlePasswordChange: (event:any) =>void;
+  ImageHandler: (event: any) => void;
+  handleDownload: (url: string, fileName: string) => void;
+  handleUsernameChange: (event: any) => void;
+  handlePasswordChange: (event: any) => void;
   userDetails: (profileId: any) => Promise<void>;
   LoginUser: (e: any) => Promise<void>;
   LogoutUser: (e: any) => Promise<void>;
   forgotPassword: (e: any) => Promise<void>;
-  ChangePassword: (e:any) => Promise<void>
+  ChangePassword: (e: any) => Promise<void>
 
 
 }
@@ -112,13 +112,13 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const [captchaToken, setCaptchaToken] = useState<any>(null);
   const [activateCaptcha, setActivateCaptcha] = useState(false)
   const [authTokens, setAuthToken] = useState<AuthTokens | null>(() => {
-    const tokenString = typeof window !== "undefined" ?  localStorage.getItem('authTokens') : null;
+    const tokenString = typeof window !== "undefined" ? localStorage.getItem('authTokens') : null;
     return tokenString ? JSON.parse(tokenString) : null;
   });
 
 
   const [user, setUser] = useState<DecodedUser | null>(() => {
-    const tokenString = typeof window !== "undefined" ?  localStorage.getItem('authTokens') : null;
+    const tokenString = typeof window !== "undefined" ? localStorage.getItem('authTokens') : null;
     try {
       return tokenString ? jwtDecode<DecodedUser>(JSON.parse(tokenString).access) : null;
     } catch (err) {
@@ -127,7 +127,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   });
 
   console.log(authTokens)
- 
+
   const [userProfile, setUserProfile] = useState<any>(null)
   const [username, setUsername] = useState<string>('')
   const [password, setPassword] = useState<string>('')
@@ -150,18 +150,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const [currentDateTime, setCurrentDateTime] = useState<string>("");
 
-  
+
   const [usernameValidation, setUsernameValidation] = useState({
     minLength: false,
     hasUppercase: false,
   });
-  
+
   const [passwordValidation, setPasswordValidation] = useState({
     minLength: false,
     hasUppercase: false,
     hasSpecialChar: false,
   });
-  
+
   const router = useRouter();
 
   const formatDate = (dateString: string) => {
@@ -175,43 +175,43 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const formateDateTime = (dateString: string) => {
     const date = new Date(dateString);
-        
+
     const day = date.getDate();
     const month = date.toLocaleString('en-US', { month: 'short' });
     const year = date.getFullYear();
-    
+
     const hours = date.getHours();
     const minutes = date.getMinutes().toString().padStart(2, '0');
     const period = hours >= 12 ? 'PM' : 'AM';
     const formattedHours = hours % 12 || 12; // Convert to 12-hour format, making 0 into 12
-    
+
     return `${day} ${month} ${year} ${formattedHours}:${minutes} ${period}`;
-  } 
+  }
 
 
-  const formatCurrency = (amount:number) => {
+  const formatCurrency = (amount: number) => {
     return amount.toLocaleString('en-US', {
       minimumFractionDigits: 2,
       maximumFractionDigits: 2,
-    }); 
+    });
   };
 
   const roundUp = (value: number) => {
     return Math.ceil(value);
   }
 
-  const toggleShowSidebar = () =>{
+  const toggleShowSidebar = () => {
     setShowSidebar(true)
   }
 
-  const toggleCloseSidebar = () =>{
+  const toggleCloseSidebar = () => {
     setShowSidebar(false)
   }
-  const toggleClientSidebar = () =>{
+  const toggleClientSidebar = () => {
     setShowSidebar(!showSidebar)
   }
-  const OnbodyClick = () =>{
-    if (showSidebar){
+  const OnbodyClick = () => {
+    if (showSidebar) {
       setShowSidebar(false)
     }
   }
@@ -220,37 +220,37 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setAlertVisible(true);
     setTimeout(() => {
       setAlertVisible(false);
-    }, 7000); 
+    }, 7000);
   };
 
 
-  const formatName = (name:string) => {
-      return name
-        .split(" ") // Split the name by spaces
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize the first letter of each word
-        .join(" "); // Join the words back together
+  const formatName = (name: string) => {
+    return name
+      .split(" ") // Split the name by spaces
+      .map((word) => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()) // Capitalize the first letter of each word
+      .join(" "); // Join the words back together
   };
 
-  const formatNameAllCaps = (name:string) => {
-      return name
-        .split(" ") // Split the name by spaces
-        .map((word) => word.toUpperCase()) // Capitalize the first letter of each word
-        .join(" "); // Join the words back together
+  const formatNameAllCaps = (name: string) => {
+    return name
+      .split(" ") // Split the name by spaces
+      .map((word) => word.toUpperCase()) // Capitalize the first letter of each word
+      .join(" "); // Join the words back together
   };
 
-  const shortName = (name:string) => {
-      return name
-        .split(" ") // Split the name by spaces
-        .map((word) => word.charAt(0).toUpperCase()) // Take the first letter of each word
-        .join(""); // Join the letters together
+  const shortName = (name: string) => {
+    return name
+      .split(" ") // Split the name by spaces
+      .map((word) => word.charAt(0).toUpperCase()) // Take the first letter of each word
+      .join(""); // Join the letters together
   };
 
-  const formatFirstName = (name:string) =>{
-      const firstName = name.split(" ")[0]
-      return firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase()
+  const formatFirstName = (name: string) => {
+    const firstName = name.split(" ")[0]
+    return firstName.charAt(0).toUpperCase() + firstName.slice(1).toLowerCase()
   }
 
-  const truncateText = (text:string, wordLimit:number) => {
+  const truncateText = (text: string, wordLimit: number) => {
     const words = text.split(' ');
     if (words.length > wordLimit) {
       return words.slice(0, wordLimit).join(' ') + '...';
@@ -258,7 +258,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return text;
   };
 
-  const handleCopy = (text:string) => {
+  const handleCopy = (text: string) => {
     navigator.clipboard.writeText(text)
       .then(() => {
         setCopied(true)
@@ -297,7 +297,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     setCurrentDateTime(formattedDateTime);
   };
 
-  const ImageHandler = (event:any) =>{
+  const ImageHandler = (event: any) => {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
       const fileSizeInKB = file.size / 1024; // Convert bytes to KB
@@ -320,20 +320,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return false;
   }
 
-  const handleUsernameChange = (e:any) => {
+  const handleUsernameChange = (e: any) => {
     const value = e.target.value;
     setUsername(value);
-  
+
     setUsernameValidation({
       minLength: value.length >= 8,
       hasUppercase: /[A-Z]/.test(value),
     });
   };
-  
-  const handlePasswordChange = (e:any) => {
+
+  const handlePasswordChange = (e: any) => {
     const value = e.target.value;
     setPassword(value);
-  
+
     setPasswordValidation({
       minLength: value.length >= 8,
       hasUppercase: /[A-Z]/.test(value),
@@ -342,7 +342,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
 
-  const isTokenExpired = (token:any) => {
+  const isTokenExpired = (token: any) => {
     if (!token) return true;
     const decoded = jwtDecode<DecodedUser>(token); // Decode the token using jwt_decode
     const currentTime = Date.now() / 1000; // Current time in seconds
@@ -357,7 +357,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   };
 
 
-  const handleDownload = (url:string, fileName:string) => {
+  const handleDownload = (url: string, fileName: string) => {
     setLoader(true)
     fetch(url, {
       headers: {
@@ -384,20 +384,20 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       .catch((error) => {
         console.error("Error fetching the file:", error);
         setLoader(false)
-    });
+      });
   };
 
-  useEffect(() =>{
-    if(!authTokens || isTokenExpired(authTokens?.access)){
+  useEffect(() => {
+    if (!authTokens || isTokenExpired(authTokens?.access)) {
       handleTokenExpiry()
-    }else{
+    } else {
       localStorage.setItem('tokenActive', JSON.stringify(false))
     }
   }, [authTokens])
 
 
-  const userDetails = async(profileId:any)=>{
-    try{
+  const userDetails = async (profileId: any) => {
+    try {
       const response = await fetch(
         `http://127.0.0.1:8000/api/user-profile/${profileId ?? user?.profile_id ?? ''}/`,
         {
@@ -411,15 +411,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
       const data = await response.json();
 
-      if(response.status === 200){
+      if (response.status === 200) {
         setUserProfile(data)
         console.log(data)
         setDisableButton(false);
-      }else{
+      } else {
         console.error("Failed to fetch user details:", response.statusText);
       }
 
-    }catch(error){
+    } catch (error) {
       console.log(error);
     }
   }
@@ -438,15 +438,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   console.log(disableButton)
 
 
-  const LoginUser = async (e:any) => {
+  const LoginUser = async (e: any) => {
     e.preventDefault();
     setLoader(true)
 
     setDisableButton(true);
     const sanitizedUsername = validator.escape(username);
-    const sanitizedPassword = validator.escape(password); 
+    const sanitizedPassword = validator.escape(password);
 
-    try{
+    try {
       const response = await fetch('http://localhost:8000/api/login/', {
         method: 'POST',
         headers: {
@@ -459,7 +459,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       })
 
 
-      if(response.status === 200){
+      if (response.status === 200) {
         const data = await response.json();
         console.log(data);
 
@@ -471,7 +471,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setAuthToken(data)
         Cookies.set('token', data.access, { path: '/', secure: true });
         Cookies.set('role', data.role, { path: '/', secure: true });
-      
+
         const route = roleRoutes[data.role];
         if (route) {
           // await userDetails()
@@ -487,9 +487,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           console.error('Unknown role:', data.role);
           // Maybe navigate to a default page or show an error
         }
-      }else{
+      } else {
         const errorData = await response.json()
-          const errorMessages = Object.values(errorData)
+        const errorMessages = Object.values(errorData)
           .flat()
           .join(', ');
         setMessage(errorMessages)
@@ -501,7 +501,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
 
-    }catch(error){
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred. Please check your email and password or contact support');
@@ -513,14 +513,14 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   }
 
-  const forgotPassword = async (e:any) => { 
+  const forgotPassword = async (e: any) => {
     e.preventDefault()
     setLoader(true)
     setDisableButton(true)
 
     const sanitizedUsername = validator.escape(username);
-    
-    try{
+
+    try {
       const response = await fetch('http://127.0.0.1:8000/api/request-to-change-password-form/', {
         method: 'POST',
         headers: {
@@ -531,7 +531,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         })
       })
 
-      if(response.status === 200){
+      if (response.status === 200) {
         const data = await response.json()
         console.log(data)
         setMessage("success")
@@ -541,9 +541,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setDisableButton(false)
         setLoader(false)
         setUsername('')
-      }else{
+      } else {
         const errorData = await response.json()
-          const errorMessages = Object.values(errorData)
+        const errorMessages = Object.values(errorData)
           .flat()
           .join(', ');
         setMessage(errorMessages)
@@ -552,7 +552,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setLoader(false)
         showAlert()
       }
-    }catch(error){
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred. Please check your email and password or contact support');
@@ -562,16 +562,16 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  const ChangePassword = async(e:any) =>{
+  const ChangePassword = async (e: any) => {
     e.preventDefault()
     setLoader(true)
     setDisableButton(true)
 
     const sanitizedUsername = validator.escape(username);
-    const sanitizedPassword = validator.escape(password); 
+    const sanitizedPassword = validator.escape(password);
     const sanitizedChangePasswordToken = validator.escape(changePasswordToken)
 
-    try{
+    try {
       const response = await fetch('http://127.0.0.1:8000/api/change-password/', {
         method: 'POST',
         headers: {
@@ -585,7 +585,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       })
 
       const data = await response.json();
-      if(response.status === 200){
+      if (response.status === 200) {
         console.log(data);
         setMessage("New login credential saved Sucessfully")
         showAlert()
@@ -594,9 +594,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setLoader(false)
         setUsername('')
         setPassword('')
-      }else{
+      } else {
         const errorData = await response.json()
-          const errorMessages = Object.values(errorData)
+        const errorMessages = Object.values(errorData)
           .flat()
           .join(', ');
         setMessage(errorMessages)
@@ -608,7 +608,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
 
-    }catch(error){
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred. Please check your email and password or contact support');
@@ -619,7 +619,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }
   }
 
-  const LogoutUser = async() =>{
+  const LogoutUser = async () => {
     setMessage("Logout Successful. Hope to see you again")
     showAlert()
     setIsSuccess(true)
@@ -629,24 +629,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     localStorage.removeItem("authTokens")
   }
 
-  const updateToken = async () =>{
-    if(authTokens){
+  const updateToken = async () => {
+    if (authTokens) {
       if (!authTokens?.refresh) return;
       const response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
-          method: 'POST',
-          headers: {
-              "Content-Type": "application/json",
-          },
-          body: JSON.stringify({refresh: authTokens?.refresh})
+        method: 'POST',
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ refresh: authTokens?.refresh })
       })
       const data = await response.json()
 
-      if(response.status === 200){
-          console.log("token updated")
-          setAuthToken(data)
-          localStorage.setItem("authTokens", JSON.stringify(data))
-          Cookies.set('token', data.access, { path: '/', secure: true });
-          Cookies.set('role', data.role, { path: '/', secure: true });
+      if (response.status === 200) {
+        console.log("token updated")
+        setAuthToken(data)
+        localStorage.setItem("authTokens", JSON.stringify(data))
+        Cookies.set('token', data.access, { path: '/', secure: true });
+        Cookies.set('role', data.role, { path: '/', secure: true });
       }
     }
 
@@ -654,21 +654,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   console.log(authTokens)
 
-  
+
 
 
   useEffect(() => {
     const mins = 1000 * 60 * 3
     const interval = setInterval(() => {
-        if(authTokens){
-            updateToken()
-        }
+      if (authTokens) {
+        updateToken()
+      }
     }, mins)
 
     return () => clearInterval(interval)
   }, [authTokens])
 
-  useEffect(() =>{
+  useEffect(() => {
     const decoded_exp = user?.exp;
     if (decoded_exp && typeof decoded_exp === 'number' && decoded_exp * 1000 < Date.now()) {
       LogoutUser()
@@ -744,7 +744,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     forgotPassword,
     ChangePassword,
 
-    
+
 
   }
   return (

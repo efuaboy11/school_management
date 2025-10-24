@@ -19,7 +19,7 @@ const AllSchoolFeesPayment = () => {
 
     allSchoolFeesPaymentSearch,
     setAllSchoolFeesPaymentSearch,
-    AllSchoolFeesPaymentFunction, 
+    AllSchoolFeesPaymentFunction,
     FilterAllSchoolFeesPayment,
 
     totalAllSchoolFeesPayment,
@@ -32,37 +32,37 @@ const AllSchoolFeesPayment = () => {
     SucessSchoolFeesPaymentFunction,
   } = useContext(AllDataContext)!;
 
-    const {
-      formatName,
-      formatCurrency,
-      formatDate,
+  const {
+    formatName,
+
+    formatDate,
 
 
-  
-    } = useContext(AuthContext)!;
 
-    useEffect(() =>{
-      if(!allSchoolFeesPaymentSearch){
-        AllSchoolFeesPaymentFunction()
-      }else if(allSchoolFeesPaymentSearch){
-        const debouncedSearch = debounce(() => {
-          FilterAllSchoolFeesPayment();
-        }, 300);
-        debouncedSearch();
+  } = useContext(AuthContext)!;
 
-        return () => {
-          debouncedSearch.cancel();
-        };
-        
-      }
-     
-    }, [allSchoolFeesPaymentSearch])
+  useEffect(() => {
+    if (!allSchoolFeesPaymentSearch) {
+      AllSchoolFeesPaymentFunction()
+    } else if (allSchoolFeesPaymentSearch) {
+      const debouncedSearch = debounce(() => {
+        FilterAllSchoolFeesPayment();
+      }, 300);
+      debouncedSearch();
 
-    useEffect(() => {
-      PendingSchoolFeesPaymentFunction()
-      SucessSchoolFeesPaymentFunction()
-      DeclinedSchoolFeesPaymentFunction()
-    }, [])
+      return () => {
+        debouncedSearch.cancel();
+      };
+
+    }
+
+  }, [allSchoolFeesPaymentSearch])
+
+  useEffect(() => {
+    PendingSchoolFeesPaymentFunction()
+    SucessSchoolFeesPaymentFunction()
+    DeclinedSchoolFeesPaymentFunction()
+  }, [])
 
   console.log(allSchoolFeesPaymentSearch)
   const itemsPerPage = 10;
@@ -79,7 +79,7 @@ const AllSchoolFeesPayment = () => {
 
 
 
- 
+
 
 
 
@@ -91,7 +91,7 @@ const AllSchoolFeesPayment = () => {
           <div>
             <p className="md-text">All  Payment</p>
             <p className="light-text pb-3">Total of {allSchoolFeesPaymentCount}  payment avaliable</p>
-         </div>
+          </div>
 
           <div className='d-flex mb-4'>
             <Link href='/student/school-fees-payment/make-payment/step-1' className="site-btn px-3 Link"><i className="ri-send-plane-fill pe-2"></i>Pay Fees</Link>
@@ -132,7 +132,7 @@ const AllSchoolFeesPayment = () => {
 
                 <div>
                   <div className="d-flex align-items-center">
-                    <input type="text" className="f site-search-input" placeholder="Search" value={allSchoolFeesPaymentSearch} onChange={(e) => setAllSchoolFeesPaymentSearch(e.target.value)}/>
+                    <input type="text" className="f site-search-input" placeholder="Search" value={allSchoolFeesPaymentSearch} onChange={(e) => setAllSchoolFeesPaymentSearch(e.target.value)} />
                     <button className="site-btn px-3 ms-2"><i className="ri-search-line"></i></button>
                   </div>
                 </div>
@@ -161,7 +161,7 @@ const AllSchoolFeesPayment = () => {
                               <td className='py-3'>{formatName(data.fee_type_name.fee_choice)}</td>
                               <td>{formatCurrency(data.fee_type_name.amount)} USD</td>
                               <td>{formatDate(data.date)}</td>
-                              <td><p className={`${data.status === 'declined' && 'site-declined'}     ${data.status === "pending" && "site-pending"} ${data.status === "approved" && "site-successful"} py-2 text-center border-radius-5px`}>{formatName(data.status)}</p></td> 
+                              <td><p className={`${data.status === 'declined' && 'site-declined'}     ${data.status === "pending" && "site-pending"} ${data.status === "approved" && "site-successful"} py-2 text-center border-radius-5px`}>{formatName(data.status)}</p></td>
                               <td>
                                 <Link href={`/student/school-fees-payment/individual/${data.id}/${data.transaction_id}`} className="Link site-border box-50px d-flex  align-center justify-content-center border-radius-5px cursor-pointer">
                                   <i className="ri-eye-line"></i>
@@ -185,29 +185,29 @@ const AllSchoolFeesPayment = () => {
                   </div>
 
                   {allSchoolFeesPaymentData.length > 10 && (
-                      <div className="col-12 mb-4 mt-3">
-                        <Stack spacing={2} alignItems="end">
-                          <Pagination
-                            count={Math.ceil(allSchoolFeesPaymentData.length / itemsPerPage)}
-                            page={page}
-                            onChange={handleChange}
-                            sx={{
-                              '& .MuiPaginationItem-root': {
-                                color: '#737b7d', // color of all numbers
-                              },
-                              '& .MuiPaginationItem-root.Mui-selected': {
-                                backgroundColor: '#783ebc', // Your custom color
-                                color: '#fff',
-                              },
-                            }}
-                          />
-                        </Stack>
-                      </div>
-                    )}
+                    <div className="col-12 mb-4 mt-3">
+                      <Stack spacing={2} alignItems="end">
+                        <Pagination
+                          count={Math.ceil(allSchoolFeesPaymentData.length / itemsPerPage)}
+                          page={page}
+                          onChange={handleChange}
+                          sx={{
+                            '& .MuiPaginationItem-root': {
+                              color: '#737b7d', // color of all numbers
+                            },
+                            '& .MuiPaginationItem-root.Mui-selected': {
+                              backgroundColor: '#783ebc', // Your custom color
+                              color: '#fff',
+                            },
+                          }}
+                        />
+                      </Stack>
+                    </div>
+                  )}
                 </div>
 
-              
-              ): (
+
+              ) : (
                 <div className="col-12 ">
                   <div className='site-boxes text-center pb-5 d-flex justify-content-center align-items-center  mt-5 pt-5'>
                     <div>
@@ -224,7 +224,7 @@ const AllSchoolFeesPayment = () => {
           )}
 
 
-          
+
         </div>
       </div>
     </div>

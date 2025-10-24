@@ -11,19 +11,19 @@ import StoreKeeperFrame from "@/components/dashboardFrames/storeKeeperFrame";
 
 
 
-const RootLayout = ({ children }: { children: React.ReactNode }) => { 
-  const { 
+const RootLayout = ({ children }: { children: React.ReactNode }) => {
+  const {
     alertVisible,
     setAlertVisible,
     isSuccess,
     messages,
-    showSidebar,
+
     OnbodyClick,
   } = useContext(AuthContext)!
-  
-  
+
+
   return (
-   <div>  
+    <div>
       <div>
         <FloatingAlert
           message={messages}
@@ -37,24 +37,24 @@ const RootLayout = ({ children }: { children: React.ReactNode }) => {
       </div>
 
 
-      
+
       <div className={`dashboard-main-content `}>
         <div className="mt-4" onClick={OnbodyClick}>
 
           <div>
             {children}
 
-              {/* <DashboardFooter /> */}
-           
+            {/* <DashboardFooter /> */}
+
 
           </div>
-  
+
 
 
         </div>
-        
+
       </div>
-   </div>
+    </div>
   );
 }
 

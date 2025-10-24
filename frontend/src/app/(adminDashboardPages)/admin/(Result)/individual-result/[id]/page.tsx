@@ -147,20 +147,20 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
   const {
     register: registerSummaryInformation,
     handleSubmit: handleSubmitSummaryInformation,
-    formState: { errors: errorsSummaryInformation,},
+    formState: { errors: errorsSummaryInformation, },
   } = useForm<any>();
 
 
   const {
     register: registerAffectiveTraitInformation,
     handleSubmit: handleSubmitAffectiveTraitInformation,
-    formState: { errors: errorsAffectiveTraitInformation},
+    formState: { errors: errorsAffectiveTraitInformation },
   } = useForm<any>();
 
   const {
     register: registerPsychomotorTraitInformation,
     handleSubmit: handleSubmitPsychomotorInformation,
-    formState: { errors: errorsPsychomotorInformation},
+    formState: { errors: errorsPsychomotorInformation },
   } = useForm<any>();
 
   const {
@@ -509,7 +509,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
 
   const IndividualDetailsFunction = async () => {
     try {
-      let response = await fetch(`http://127.0.0.1:8000/api/student-result/${id}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/student-result/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

@@ -50,7 +50,7 @@ const PayFees = () => {
     disableButton,
     setDisableButton,
     formatName,
-    formatCurrency,
+
 
     setMessage,
     showAlert,
