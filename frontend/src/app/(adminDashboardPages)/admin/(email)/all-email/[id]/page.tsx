@@ -12,7 +12,7 @@ const IndivivdualEmail = ({ params }: { params: Promise<{ id: string }> }) => {
   const {
     truncateText,
     authTokens,
-    ,
+  
     formatDate,
     formatName,
 

@@ -15,11 +15,9 @@ const IndivivdualSchemeOfWork = ({ params }: { params: Promise<any> }) => {
   const { id } = use(params)
 
   const {
-    truncateText,
     authTokens,
-    ,
-    formatDate,
     formatName,
+    formateDateTime,
 
 
     loader,

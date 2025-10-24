@@ -48,7 +48,7 @@ const SchemeOfWorkPage = () => {
   const {
     truncateText,
     authTokens,
-    ,
+  
     formatDate,
     formatName,
 

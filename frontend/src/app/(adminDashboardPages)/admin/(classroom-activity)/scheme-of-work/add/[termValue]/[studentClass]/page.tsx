@@ -36,11 +36,7 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
   }, []);
 
   const {
-
-    truncateText,
     authTokens,
-    ,
-    formatDate,
     formatName,
 
 
