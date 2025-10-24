@@ -13,6 +13,7 @@ const IndivivdualBill = ({ params }: { params: Promise<{ id: string }> }) => {
 
 
     formatName,
+    formatCurrency,
 
 
     loader,
