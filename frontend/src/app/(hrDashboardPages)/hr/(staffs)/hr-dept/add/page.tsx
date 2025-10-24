@@ -3,7 +3,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
-import { useDropzone } from 'react-dropzone';
+
 import AllDataContext from '@/context/AllData';
 import AuthContext from '@/context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -32,10 +32,10 @@ const AddHr = () => {
 
 
 
-  const[ showPassword, setShowPassword] = useState(false)
-  
+  const [showPassword, setShowPassword] = useState(false)
 
-  const toogleShowPassword = () =>{
+
+  const toogleShowPassword = () => {
     setShowPassword(!showPassword)
   }
 
@@ -43,7 +43,7 @@ const AddHr = () => {
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<any>();
 
   const {
@@ -51,18 +51,18 @@ const AddHr = () => {
     studentClassData
   } = useContext(AllDataContext)!;
 
-    const { 
-      username,
-      password,
-      setUsername,  
-      setPassword,
-  
-      usernameValidation,
-      passwordValidation,
-      handlePasswordChange,
-      handleUsernameChange,
+  const {
+    username,
+    password,
+    setUsername,
+    setPassword,
 
-      truncateText,
+    usernameValidation,
+    passwordValidation,
+    handlePasswordChange,
+    handleUsernameChange,
+
+    truncateText,
     authTokens,
     formateDateTime,
     formatDate,
@@ -78,23 +78,23 @@ const AddHr = () => {
     showAlert,
     setIsSuccess,
 
-    
 
-  
-    } = useContext(AuthContext)!
 
-  useEffect(() =>{
+
+  } = useContext(AuthContext)!
+
+  useEffect(() => {
     StudentClassFunction()
 
   }, [])
 
 
-  const handleCV = (event:any) => {
+  const handleCV = (event: any) => {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      setCV(file); 
+      setCV(file);
     } else {
-      setCV(null); 
+      setCV(null);
     }
   };
 
@@ -114,12 +114,12 @@ const AddHr = () => {
     }
   });
 
-  const onSubmit = (data: FormData, e:any) => {
+  const onSubmit = (data: FormData, e: any) => {
     addTeacher(e)
   }
 
 
-  const addTeacher = async(e:any) =>{
+  const addTeacher = async (e: any) => {
     e.preventDefault()
     setLoader(true)
     setDisableButton(true)
@@ -127,7 +127,7 @@ const AddHr = () => {
     const formData = new FormData()
     formData.append('first_name', firstName)
     formData.append('last_name', lastName)
-    formData.append('email', email) 
+    formData.append('email', email)
     formData.append('date_of_birth', dateOfBirth)
     formData.append('office_location', officeLocation)
     formData.append('home_address', homeAddress)
@@ -138,12 +138,12 @@ const AddHr = () => {
     formData.append('disability', disability)
     formData.append('disability_note', disabilityNote)
     formData.append('city_or_town', cityOrTown)
-    if(passport){
+    if (passport) {
       formData.append('passport', passport as any)
     }
 
 
-    if(CV){
+    if (CV) {
       formData.append('cv', CV as any)
     }
     formData.append('username', username)
@@ -154,17 +154,17 @@ const AddHr = () => {
 
 
 
-    try{
+    try {
       const response = await fetch(`http://127.0.0.1:8000/api/hr/`, {
         method: 'POST',
         body: formData,
-        headers:{
+        headers: {
           Authorization: `Bearer ${authTokens?.access}`
         }
       })
 
 
-      if(response.ok){
+      if (response.ok) {
         showAlert()
         setMessage('Staff added successfully')
         setIsSuccess(true)
@@ -189,11 +189,11 @@ const AddHr = () => {
 
 
 
-      }else{
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setDisableButton(false)
         setIsSuccess(false)
@@ -201,8 +201,8 @@ const AddHr = () => {
         showAlert()
       }
 
-      
-    }catch(error){
+
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred.');
@@ -210,14 +210,14 @@ const AddHr = () => {
       setIsSuccess(false)
       setLoader(false)
 
-    }  
+    }
   }
 
 
 
 
-    
-  
+
+
 
   return (
     <div>
@@ -234,57 +234,57 @@ const AddHr = () => {
           <div className="col-md-9">
             <div className="site-boxes py-4 border-radius-5px">
               <form onSubmit={handleSubmit(onSubmit)}>
-        
+
                 <div className='border-bottom1 px-4 mb-4'>
                   <p className="stylish-text pb-3">1. Personal Information</p>
                 </div>
-                
+
                 <div className="row g-4 px-4">
                   <div className="col-md-6">
                     <label htmlFor="firstName" className="form-label">First Name <span className="text-danger">*</span></label>
-                    <input type="text" className={`site-input ${errors.firstName ? 'error-input' : ''}`} {...register('firstName', {required: true})}  placeholder='First Name' value={firstName}  onChange={(e) => setFirstName(e.target.value)}/>
+                    <input type="text" className={`site-input ${errors.firstName ? 'error-input' : ''}`} {...register('firstName', { required: true })} placeholder='First Name' value={firstName} onChange={(e) => setFirstName(e.target.value)} />
                     {errors.firstName && <p className="error-text">This field is required</p>}
                   </div>
 
                   <div className="col-md-6">
                     <label htmlFor="lastName" className="form-label">Last Name <span className="text-danger">*</span></label>
-                    <input type="text" className={`site-input ${errors.lastName ? 'error-input' : ''}`} {...register('lastName', {required: true})}   value={lastName}  onChange={(e) => setLastName(e.target.value)} placeholder='Last Name' />
+                    <input type="text" className={`site-input ${errors.lastName ? 'error-input' : ''}`} {...register('lastName', { required: true })} value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder='Last Name' />
                     {errors.lastName && <p className="error-text">This field is required</p>}
                   </div>
 
 
                   <div className="col-md-6">
                     <label htmlFor="email" className="form-label">Email <span className="text-danger">*</span></label>
-                    <input type="email" className={`site-input ${errors.email ? 'error-input' : ''}`} {...register('email', {required: true})}  value={email}  onChange={(e) => setEmail(e.target.value)} placeholder='Email' />
+                    <input type="email" className={`site-input ${errors.email ? 'error-input' : ''}`} {...register('email', { required: true })} value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Email' />
                     {errors.email && <p className="error-text">This field is required</p>}
                   </div>
 
 
                   <div className="col-md-6">
                     <label htmlFor="phoneNumber" className="form-label">Date of Birth <span className="text-danger">*</span></label>
-                    <input type="date"  className={`site-input ${errors.dateOfBirth ? 'error-input' : ''}`} {...register('dateOfBirth', {required: true})}  value={dateOfBirth}  onChange={(e) => setDateOfBirth(e.target.value)}  placeholder='Date of Birth' />
+                    <input type="date" className={`site-input ${errors.dateOfBirth ? 'error-input' : ''}`} {...register('dateOfBirth', { required: true })} value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} placeholder='Date of Birth' />
                     {errors.dateOfBirth && <p className="error-text">This field is required</p>}
                   </div>
 
                   <div className="col-md-6">
                     <label htmlFor="phoneNumber" className="form-label">Gender <span className="text-danger">*</span></label>
-                    <select   className={`site-input ${errors.gender ? 'error-input' : ''}`} {...register('gender', {required: true})}  value={gender}  onChange={(e) => setGender(e.target.value)}>
+                    <select className={`site-input ${errors.gender ? 'error-input' : ''}`} {...register('gender', { required: true })} value={gender} onChange={(e) => setGender(e.target.value)}>
                       <option value="">Select</option>
                       <option value="male">Male</option>
                       <option value="female">Female</option>
                     </select>
-                    {errors.gender && <p className="error-text">This field is required</p>}                 
+                    {errors.gender && <p className="error-text">This field is required</p>}
                   </div>
 
                   <div className="col-md-6">
                     <label htmlFor="phoneNumber" className="form-label">Office Location <span className="text-danger">*</span></label>
-                    <input type="text"  className={`site-input ${errors.officeLocation ? 'error-input' : ''}`} {...register('officeLocation', {required: true})}  value={officeLocation}  onChange={(e) => setOfficeLocation(e.target.value)}  placeholder='Office location' />
+                    <input type="text" className={`site-input ${errors.officeLocation ? 'error-input' : ''}`} {...register('officeLocation', { required: true })} value={officeLocation} onChange={(e) => setOfficeLocation(e.target.value)} placeholder='Office location' />
                     {errors.officeLocation && <p className="error-text">This field is required</p>}
                   </div>
 
                   <div className="col-md-6">
                     <label htmlFor="phoneNumber" className="form-label">Disability <span className="text-danger">*</span></label>
-                    <select   className={`site-input ${errors.disability ? 'error-input' : ''}`} {...register('disability', {required: true})}  value={disability}  onChange={(e) => setDisability(e.target.value)}>
+                    <select className={`site-input ${errors.disability ? 'error-input' : ''}`} {...register('disability', { required: true })} value={disability} onChange={(e) => setDisability(e.target.value)}>
                       <option value="">Select</option>
                       <option value="yes">Yes</option>
                       <option value="no">No</option>
@@ -292,23 +292,23 @@ const AddHr = () => {
                     {errors.disability && <p className="error-text">This field is required</p>}
                   </div>
 
-                  
+
 
                   <div className="col-md-6">
                     <label htmlFor="phoneNumber" className="form-label">Religion <span className="text-danger">*</span></label>
-                    <select   className={`site-input ${errors.religion ? 'error-input' : ''}`} {...register('religion', {required: true})}  value={religion}  onChange={(e) => setReligion(e.target.value)}>
+                    <select className={`site-input ${errors.religion ? 'error-input' : ''}`} {...register('religion', { required: true })} value={religion} onChange={(e) => setReligion(e.target.value)}>
                       <option value="">Select</option>
                       <option value="muslim">Muslim</option>
                       <option value="christian">Christian</option>
                       <option value="others">Others</option>
                     </select>
-                    {errors.religion && <p className="error-text">This field is required</p>}                 
+                    {errors.religion && <p className="error-text">This field is required</p>}
 
                   </div>
 
                   <div className="col-12">
                     <label htmlFor="" className='form-label'>Disability Note</label>
-                    <textarea rows={6} className={`site-input ${errors.disabilityNote ? 'error-input' : ''}`} {...register('disabilityNote')}  value={disabilityNote}  onChange={(e) => setDisabilityNote(e.target.value)}  placeholder='Disability Note' />
+                    <textarea rows={6} className={`site-input ${errors.disabilityNote ? 'error-input' : ''}`} {...register('disabilityNote')} value={disabilityNote} onChange={(e) => setDisabilityNote(e.target.value)} placeholder='Disability Note' />
                   </div>
 
 
@@ -339,7 +339,7 @@ const AddHr = () => {
 
                     <div {...getRootProps({ className: 'dropzone-box' })}>
                       <input {...getInputProps()} />
-                      
+
                       {passport ? (
                         <div className="preview-box">
                           <img
@@ -369,25 +369,25 @@ const AddHr = () => {
                 <div className="row g-4 px-4">
                   <div className="col-md-6">
                     <label htmlFor="firstName" className="form-label">State Of Origin <span className="text-danger">*</span></label>
-                    <input type="text"  className={`site-input ${errors.stateOfOrigin ? 'error-input' : ''}`} {...register('stateOfOrigin', {required: true})}  value={stateOfOrigin}  onChange={(e) => setStateOfOrigin(e.target.value)}  placeholder='State of Origin' />
+                    <input type="text" className={`site-input ${errors.stateOfOrigin ? 'error-input' : ''}`} {...register('stateOfOrigin', { required: true })} value={stateOfOrigin} onChange={(e) => setStateOfOrigin(e.target.value)} placeholder='State of Origin' />
                     {errors.stateOfOrigin && <p className="error-text">This field is required</p>}
                   </div>
 
                   <div className="col-md-6">
                     <label htmlFor="lastName" className="form-label">City / Town  <span className="text-danger">*</span></label>
-                    <input type="text"  className={`site-input ${errors.cityOrTown ? 'error-input' : ''}`} {...register('cityOrTown', {required: true})}  value={cityOrTown}  onChange={(e) => setCityOrTown(e.target.value)} placeholder='City or Origin' />
+                    <input type="text" className={`site-input ${errors.cityOrTown ? 'error-input' : ''}`} {...register('cityOrTown', { required: true })} value={cityOrTown} onChange={(e) => setCityOrTown(e.target.value)} placeholder='City or Origin' />
                     {errors.cityOrTown && <p className="error-text">This field is required</p>}
                   </div>
 
                   <div className="col-md-6">
                     <label htmlFor="lastName" className="form-label">Home Address  <span className="text-danger">*</span></label>
-                    <input type="text"  className={`site-input ${errors.homeAddress ? 'error-input' : ''}`} {...register('homeAddress', {required: true})}  value={homeAddress}  onChange={(e) => setHomeAddress(e.target.value)} placeholder='Home Address' />
+                    <input type="text" className={`site-input ${errors.homeAddress ? 'error-input' : ''}`} {...register('homeAddress', { required: true })} value={homeAddress} onChange={(e) => setHomeAddress(e.target.value)} placeholder='Home Address' />
                     {errors.homeAddress && <p className="error-text">This field is required</p>}
                   </div>
 
                   <div className="col-md-6">
                     <label htmlFor="lastName" className="form-label">Phone Number  <span className="text-danger">*</span></label>
-                    <input type="text"  className={`site-input ${errors.phoneNumber ? 'error-input' : ''}`} {...register('phoneNumber', {required: true})}  value={phoneNumber}  onChange={(e) => setPhoneNumber(e.target.value)} placeholder='Phone Number' />
+                    <input type="text" className={`site-input ${errors.phoneNumber ? 'error-input' : ''}`} {...register('phoneNumber', { required: true })} value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} placeholder='Phone Number' />
                     {errors.phoneNumber && <p className="error-text">This field is required</p>}
                   </div>
 
@@ -404,7 +404,7 @@ const AddHr = () => {
 
                   <div className="col-lg-3 col-md-6">
                     <label htmlFor="cv" className="form-label">CV</label>
-                    
+
                     <input
                       type="file"
                       id="cv"
@@ -432,7 +432,7 @@ const AddHr = () => {
                 <div className="row g-4 px-4">
                   <div className="col-md-6">
                     <label className="form-label">Username <span className="text-danger">*</span></label>
-                    <input 
+                    <input
                       type="text"
                       className={`${errors.username ? 'error-input' : ''} site-input`}
                       {...register("username", {
@@ -450,7 +450,7 @@ const AddHr = () => {
                       onChange={handleUsernameChange}
                       placeholder="Enter your username"
                     />
-                    {username &&(
+                    {username && (
                       <div>
                         <div>
                           <div className="d-flex">
@@ -468,7 +468,7 @@ const AddHr = () => {
                           </div>
                         </div>
                       </div>
-                      )
+                    )
                     }
                     {errors.username && <p className="error-text xsm-text">{String(errors.username.message)}</p>}
                   </div>
@@ -476,9 +476,9 @@ const AddHr = () => {
                   <div className="col-md-6">
                     <label className="form-label">Password <span className="text-danger">*</span></label>
                     <div className="password-container">
-                      <input 
+                      <input
                         type={showPassword ? "text" : "password"}
-                        className={`site-input password-input ${errors.password ? 'error-input' : ''}`} 
+                        className={`site-input password-input ${errors.password ? 'error-input' : ''}`}
                         {...register("password", {
                           required: "Password is required",
                           minLength: {
@@ -498,7 +498,7 @@ const AddHr = () => {
                         <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} onClick={toogleShowPassword} />
                       </span>
                     </div>
-                    {password &&(
+                    {password && (
                       <div>
                         <div className="d-flex">
                           <i className={passwordValidation.minLength ? 'ri-check-fill success-text' : 'ri-close-line error-text'}></i>
@@ -522,7 +522,7 @@ const AddHr = () => {
                         </div>
                       </div>
                     )}
-                  
+
 
                     {errors.password && <p className="error-text xsm-text">{String(errors.password.message)}</p>}
                   </div>
@@ -530,17 +530,17 @@ const AddHr = () => {
                   <div className="col-12">
                     <div>
                       <button disabled={disableButton} type="submit" className={`Button site-btn px-3`}>
-                        <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                        <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
+                        <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                        <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
                       </button>
                     </div>
-                   
+
                   </div>
 
 
                 </div>
 
-                
+
 
               </form>
 

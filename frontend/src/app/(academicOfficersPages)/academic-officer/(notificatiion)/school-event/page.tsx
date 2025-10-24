@@ -1,6 +1,4 @@
 "use client"
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -16,9 +14,7 @@ const SchoolEventPage = () => {
   const {
     schoolEventCount,
     schoolEventData,
-    setSchoolEventData,
     schoolEventLoader,
-
     schoolEventSearch,
     setSchoolEventSearch,
     SchoolEventFunction, 
@@ -28,20 +24,8 @@ const SchoolEventPage = () => {
 
     const {
       truncateText,
-      authTokens,
-      formateDateTime,
       formatDate,
       formatName,
-      formatCurrency,
-      showSidebar,
-      loader,
-      setLoader,
-      disableButton,
-      setDisableButton,
-
-      setMessage,
-      showAlert,
-      setIsSuccess,
   
     } = useContext(AuthContext)!;
 

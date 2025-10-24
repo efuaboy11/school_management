@@ -46,7 +46,7 @@ const HrHome = () => {
 
   const UserDetailsFunction = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/hr/${authTokens?.user_id}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/hr/${authTokens?.user_id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

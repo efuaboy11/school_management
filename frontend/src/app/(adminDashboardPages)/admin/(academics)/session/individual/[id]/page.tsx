@@ -4,22 +4,16 @@ import React, { use, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form'
 import Image from 'next/image'
-import { useDropzone } from 'react-dropzone';
 import AllDataContext from '@/context/AllData';
-import Link from 'next/link';
 import { debounce } from "lodash";
 
 const IndivivdualSession = ({ params }: { params: Promise<{ id: string }> }) => {
   const {id} = use(params)
   
   const {
-    truncateText,
+
     authTokens,
-    formateDateTime,
-    formatDate,
     formatName,
-    formatCurrency,
-    showSidebar,
     loader,
     setLoader,
     disableButton,
@@ -94,7 +88,7 @@ const IndivivdualSession = ({ params }: { params: Promise<{ id: string }> }) => 
 
   const IndividualDetailsFunction = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/session/${id}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/session/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -108,7 +102,8 @@ const IndivivdualSession = ({ params }: { params: Promise<{ id: string }> }) => 
         setDetails(data)
         
         setSessionValue(data?.name || '')
-        let datas:[] = data?.term
+
+        const datas:[] = data?.term
         console.log(datas)
         setTermIDs(datas)
         
@@ -131,7 +126,7 @@ const IndivivdualSession = ({ params }: { params: Promise<{ id: string }> }) => 
     setLoader(true)
 
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/session/${id}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/session/${id}/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`
@@ -236,7 +231,6 @@ const IndivivdualSession = ({ params }: { params: Promise<{ id: string }> }) => 
 
     useEffect(() =>{
       IndividualDetailsFunction()
-      termIDs
     }, [])
 
     useEffect(() =>{

@@ -1,6 +1,5 @@
 "use client"
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import React, { useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -14,7 +13,7 @@ import { DownloadLink } from '@/components/downloadLink'
 
 const EResultPage = () => {
 
-  const { theme, toggleTheme } = useContext(ThemeContext)!
+  const { theme} = useContext(ThemeContext)!
   ;
   const {
     eResultCount,
@@ -53,13 +52,11 @@ const EResultPage = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
+
     authTokens,
-    formateDateTime,
-    formatDate,
+
     formatName,
-    formatCurrency,
-    showSidebar,
+  
     loader,
     setLoader,
     disableButton,
@@ -104,11 +101,7 @@ const EResultPage = () => {
   const [filterOptions, setOptions] = useState(false)
 
 
-  const [hasMounted, setHasMounted] = useState(false);
-  
-    useEffect(() => {
-      setHasMounted(true);
-    }, []);
+
 
   const toggleFilterOptions = () =>{
     setOptions(!filterOptions)
@@ -247,7 +240,7 @@ const EResultPage = () => {
     setLoader(true)
 
     try{
-      let response = await fetch('http://127.0.0.1:8000/api/delete-multiple-e-result/', {
+      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-e-result/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -284,7 +277,7 @@ const EResultPage = () => {
         setIsSuccess(false)
 
       }
-    }catch(error){
+    }catch{
       setLoader(false)
       setDisableButton(false)
       setMessage("An error occurred. Please try again.")

@@ -22,48 +22,37 @@ const UploadEResultPage = () => {
   
 
   const { 
-  
-    authTokens,
-  
     loader,
     setLoader,
     disableButton,
-    setDisableButton,
   
     setMessage,
     showAlert,
     setIsSuccess,
-  
-    
-  
-  
   } = useContext(AuthContext)!
 
 
   const {  
     studentClassData,
     StudentClassFunction,
-
-
     termData,
     TermFunction,
-
     sessionData,
     SessionFunction,
 
   } = useContext(AllDataContext)!;
 
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  const { theme} = useContext(ThemeContext)!;
  
 
 
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: {errors},
   } = useForm<any>();
 
-  const onSubmit = (data: FormData, e:any) => {
+  const onSubmit = () => {
     setLoader(true)
     if(classID && termID && sessionID){
       router.push(`/admin/upload-e-result/${classID}/${termID}/${sessionID}`)

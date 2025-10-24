@@ -4,7 +4,7 @@ import AuthContext from '@/context/AuthContext'
 import ThemeContext from '@/context/ThemeContext'
 import Link from 'next/link'
 import React, { use, useContext, useEffect, useState } from 'react'
-import { useDropzone } from 'react-dropzone';
+
 import { useForm } from 'react-hook-form'
 import Select from 'react-select';
 import Image from 'next/image'
@@ -14,7 +14,7 @@ import { debounce } from "lodash";
 
 const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
 
-  const { termValue, studentClass} = use(params);
+  const { termValue, studentClass } = use(params);
 
 
   const [teacherName, setTeacherName] = useState('')
@@ -30,13 +30,13 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
   const [studentClassDetails, setStudentClassDetails] = useState<any>(null)
 
   const [hasMounted, setHasMounted] = useState(false);
-  
+
   useEffect(() => {
     setHasMounted(true);
   }, []);
 
-  const { 
-  
+  const {
+
     truncateText,
     authTokens,
     formateDateTime,
@@ -52,10 +52,10 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
     setMessage,
     showAlert,
     setIsSuccess,
-  
-    
-  
-  
+
+
+
+
   } = useContext(AuthContext)!
 
 
@@ -68,13 +68,13 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
   } = useContext(AllDataContext)!;
 
   const { theme, toggleTheme } = useContext(ThemeContext)!;
- 
+
 
 
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<any>();
 
   console.log(termValue, subjectName, studentClass)
@@ -96,7 +96,7 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
   };
   const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const allIDs = schemeOfWorkData.map((data:any) => data.id);
+      const allIDs = schemeOfWorkData.map((data: any) => data.id);
       setSelectedIDs(allIDs);
     } else {
       setSelectedIDs([]);
@@ -110,7 +110,7 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
     }
   }
 
-  
+
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
@@ -122,12 +122,12 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
 
 
 
-  const handleFile = (event:any) => {
+  const handleFile = (event: any) => {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      setFile(file); 
+      setFile(file);
     } else {
-      setFile(null); 
+      setFile(null);
     }
   };
 
@@ -153,37 +153,37 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
       boxShadow: state.isFocused ? '0 0 0 4px rgba(120, 62, 188, 0.2)' : 'none',
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     menu: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#0d0d0d' : '#fff',
       border: '1px solid #ccc',
       zIndex: 999,
     }),
-  
+
     option: (provided: any, state: any) => {
       const isDark = theme === 'dark';
-  
+
       const backgroundColor = state.isSelected
         ? '#783ebc'
         : state.isFocused
-        ? isDark
-          ? '#1a1a1a' // hover in dark
-          : '#f0f0f0' // hover in light
-        : isDark
-        ? '#0d0d0d'
-        : '#fff';
-  
+          ? isDark
+            ? '#1a1a1a' // hover in dark
+            : '#f0f0f0' // hover in light
+          : isDark
+            ? '#0d0d0d'
+            : '#fff';
+
       const color = state.isSelected
         ? '#fff'
         : state.isFocused
-        ? isDark
-          ? '#fff'
-          : '#000'
-        : isDark
-        ? '#fff'
-        : '#000';
-  
+          ? isDark
+            ? '#fff'
+            : '#000'
+          : isDark
+            ? '#fff'
+            : '#000';
+
       return {
         ...provided,
         backgroundColor,
@@ -191,27 +191,27 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
         cursor: 'pointer',
       };
     },
-  
+
     singleValue: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     placeholder: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#aaa' : '#666',
     }),
-  
+
     input: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     dropdownIndicator: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     indicatorSeparator: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#444' : '#ccc',
@@ -221,19 +221,19 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
 
 
 
-  const onSubmit = (data: FormData, e:any) => {
-    if(teacherName &&   subjectName && file != null){
+  const onSubmit = (data: FormData, e: any) => {
+    if (teacherName && subjectName && file != null) {
       CreateScheme(e)
-    }else{
+    } else {
       showAlert()
       setMessage('A field is empty')
       setIsSuccess(false)
     }
-    
+
   }
 
 
-  const CreateScheme = async(e:any) =>{
+  const CreateScheme = async (e: any) => {
     e.preventDefault()
     setLoader(true)
     setDisableButton(true)
@@ -243,23 +243,23 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
     formData.append('student_class', studentClass)
     formData.append('term', termValue)
     formData.append('subject', subjectName)
-    if(file){
-      formData.append('scheme', file)  
+    if (file) {
+      formData.append('scheme', file)
     }
 
 
 
-    try{
+    try {
       const response = await fetch(`http://127.0.0.1:8000/api/scheme-of-work/`, {
         method: 'POST',
         body: formData,
-        headers:{
+        headers: {
           Authorization: `Bearer ${authTokens?.access}`
         }
       })
 
 
-      if(response.ok){
+      if (response.ok) {
         showAlert()
         setMessage('Scheme of work created')
         setIsSuccess(true)
@@ -273,11 +273,11 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
 
 
 
-      }else{
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setDisableButton(false)
         setIsSuccess(false)
@@ -285,8 +285,8 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
         showAlert()
       }
 
-      
-    }catch(error){
+
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred.');
@@ -294,13 +294,13 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
       setIsSuccess(false)
       setLoader(false)
 
-    }  
+    }
   }
 
 
 
-  const SchemeOFWorkFunction = async() =>{
-    let response = await fetch(`http://127.0.0.1:8000/api/scheme-of-work-filter/?student_class=${studentClass}&term=${termValue}`, {
+  const SchemeOFWorkFunction = async () => {
+    const response = await fetch(`http://127.0.0.1:8000/api/scheme-of-work-filter/?student_class=${studentClass}&term=${termValue}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -309,18 +309,18 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setSchemeOfWorkCount(data.length)
       }
-      
-      
+
+
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setSchemeOfWorkData(sortedData)
       setSchemeOfWorkLoader(false)
 
 
-    }else{
+    } else {
       setSchemeOfWorkLoader(false)
     }
 
@@ -330,12 +330,12 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
 
 
 
-  const deleteFunction = async () =>{
+  const deleteFunction = async () => {
     setDisableButton(true)
     setLoader(true)
 
-    try{
-      let response = await fetch('http://127.0.0.1:8000/api/delete-multiple-scheme-of-work/', {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-scheme-of-work/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -347,7 +347,7 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
 
       })
 
-      if(response.ok){
+      if (response.ok) {
         setLoader(false)
         setDisableButton(false)
         setShowDeleteModal(false)
@@ -356,13 +356,13 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
         SchemeOFWorkFunction()
         showAlert()
         setIsSuccess(true)
-        
-          
-      }else {
+
+
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
 
         setLoader(false)
         setDisableButton(false)
@@ -371,7 +371,7 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
         setIsSuccess(false)
 
       }
-    }catch(error){
+    } catch {
       setLoader(false)
       setDisableButton(false)
       setMessage("An error occurred. Please try again.")
@@ -380,9 +380,9 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
     }
   }
 
-  const IndividualTerm = async () =>{
-    try{
-      let response = await fetch(`http://127.0.0.1:8000/api/term/${termValue}/`, {
+  const IndividualTerm = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/term/${termValue}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -392,19 +392,19 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
       })
       const data = await response.json()
 
-      if(response.ok){
+      if (response.ok) {
         setTermDetails(data)
-        console.log('data', data)      
+        console.log('data', data)
       }
-    }catch{
+    } catch {
       console.log('error')
     }
 
   }
 
-  const IndividualClass = async () =>{
-    try{
-      let response = await fetch(`http://127.0.0.1:8000/api/student-class/${studentClass}/`, {
+  const IndividualClass = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/student-class/${studentClass}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -414,27 +414,27 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
       })
       const data = await response.json()
 
-      if(response.ok){
+      if (response.ok) {
         setStudentClassDetails(data)
-        console.log('data', data)      
+        console.log('data', data)
       }
-    }catch{
+    } catch {
       console.log('error')
     }
 
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     TeacherFunction()
     SubjectFunction()
     IndividualClass()
     IndividualTerm()
     setLoader(false)
-            SchemeOFWorkFunction()
+    SchemeOFWorkFunction()
 
   }, [])
 
- 
+
   useEffect(() => {
     if (showDeleteModal) {
       setAnimateModal(true)
@@ -442,10 +442,10 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
       setAnimateModal(false);
     }
   }, [showDeleteModal]);
-  
 
 
-  
+
+
 
 
 
@@ -457,34 +457,34 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
         {showDeleteModal && (
           <section className={` ${showDeleteModal ? 'overlay-background' : ''}`}>
             <div className='container-lg'>
-                
+
               <div className=" row justify-content-center align-center2 height-90vh">
-  
-                  <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
-                    <div className="site-modal-conatiner">
-                      <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
-                        <div className="d-flex justify-content-center text-center">
-                          <div>
-                            <Image src="/img/icon/warning.png" alt="empty" width={100} height={100} />
-                            <p className='md-text mt-3'>Are you sure?</p>
-                            <p className="light-text">This action cannot be undone. {selectedIDs.length} selected {selectedIDs.length === 1 ? 'data entry' : 'data entries'} will be deleted.</p>
-                            <div className='pt-4'>
-                              <button className="site-delete-btn px-3 me-2 width-100 mb-4" onClick={deleteFunction} disabled={disableButton}>
-                                <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                                <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-delete-bin-line pe-2"></i> Delete</span>
-                              </button>
-                              <button onClick={handleCloseDeleteModal} className="site-btn site-cancel-btn px-3 width-100"><i className="ri-close-circle-line pe-2"></i>Cancel</button>
-                            </div>
+
+                <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
+                  <div className="site-modal-conatiner">
+                    <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
+                      <div className="d-flex justify-content-center text-center">
+                        <div>
+                          <Image src="/img/icon/warning.png" alt="empty" width={100} height={100} />
+                          <p className='md-text mt-3'>Are you sure?</p>
+                          <p className="light-text">This action cannot be undone. {selectedIDs.length} selected {selectedIDs.length === 1 ? 'data entry' : 'data entries'} will be deleted.</p>
+                          <div className='pt-4'>
+                            <button className="site-delete-btn px-3 me-2 width-100 mb-4" onClick={deleteFunction} disabled={disableButton}>
+                              <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                              <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-delete-bin-line pe-2"></i> Delete</span>
+                            </button>
+                            <button onClick={handleCloseDeleteModal} className="site-btn site-cancel-btn px-3 width-100"><i className="ri-close-circle-line pe-2"></i>Cancel</button>
                           </div>
                         </div>
-                      
                       </div>
+
                     </div>
                   </div>
-              
-  
+                </div>
+
+
               </div>
-  
+
             </div>
           </section>
         )}
@@ -528,7 +528,7 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
                       </div>
                       <div className="col-lg-3 col-md-6">
                         <label htmlFor="cv" className="form-label">Scheme of work</label>
-                        
+
                         <input
                           type="file"
                           id="cv"
@@ -549,30 +549,30 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
                       </div>
 
                       <div className="col-12">
-                        <p className="light-text sm-text italic-text">Note: This scheme you are about to upload will go to Scheme of work for {studentClassDetails &&  formatName(studentClassDetails?.name)} <i className="bi bi-dash-lg"></i>  {termDetails && formatName(termDetails?.name)} database</p>
+                        <p className="light-text sm-text italic-text">Note: This scheme you are about to upload will go to Scheme of work for {studentClassDetails && formatName(studentClassDetails?.name)} <i className="bi bi-dash-lg"></i>  {termDetails && formatName(termDetails?.name)} database</p>
                       </div>
-                  
+
 
 
                       <div className="col-12 mt-4">
                         <button type='submit' className='site-btn px-4'>
-                          <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                          <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill pe-2"></i> Sumbit</span>
+                          <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                          <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill pe-2"></i> Sumbit</span>
                         </button>
-                    
+
                       </div>
                     </div>
 
                   </form>
-              )}
-  
+                )}
+
               </div>
             </div>
           </div>
         </div>
 
         <div className='mt-5'>
-          <p className='text-center light-text pb-3'>Scheme of work for {studentClassDetails &&  formatName(studentClassDetails?.name)} <i className="bi bi-dash-lg"></i>  {termDetails && formatName(termDetails?.name)}</p>
+          <p className='text-center light-text pb-3'>Scheme of work for {studentClassDetails && formatName(studentClassDetails?.name)} <i className="bi bi-dash-lg"></i>  {termDetails && formatName(termDetails?.name)}</p>
           {schemeOfWorkLoader ? (
             <div className="site-boxes border-radius-10px p-5 d-flex justify-content-center">
               <div className="site-content-loader"></div>
@@ -582,12 +582,12 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
               {currentItems.length > 0 ? (
                 <div>
                   {selectedIDs.length > 0 ? (
-                          <div className='pb-2'>
-                            <button onClick={handleShowDeleteModal}  className='site-delete-btn px-3'><i className="ri-delete-bin-line me-2"></i>Delete</button>
-                          </div>
-                    ): (
-                      <div></div>
-                    )
+                    <div className='pb-2'>
+                      <button onClick={handleShowDeleteModal} className='site-delete-btn px-3'><i className="ri-delete-bin-line me-2"></i>Delete</button>
+                    </div>
+                  ) : (
+                    <div></div>
+                  )
                   }
                   <div className='site-boxes  site-border border-radius-5px dahboard-table non-wrap-text scroll-bar'>
                     <table className='overflow-auto light-text'>
@@ -595,11 +595,11 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
                         <tr>
                           <th className='py-2'>
                             <label className="custom-checkbox cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={selectedIDs.length === schemeOfWorkData.length && schemeOfWorkData.length > 0}
-                              onChange={handleSelectAll}
-                            />
+                              <input
+                                type="checkbox"
+                                checked={selectedIDs.length === schemeOfWorkData.length && schemeOfWorkData.length > 0}
+                                onChange={handleSelectAll}
+                              />
                               <span className="checkmark"></span>
                             </label>
                           </th>
@@ -611,17 +611,17 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
 
                       <tbody>
                         {currentItems.length > 0 ? (
-                          currentItems.map((data:any) => (
+                          currentItems.map((data: any) => (
                             <tr key={data.id}>
                               <td className='py-3'>
-                                  <label className="custom-checkbox cursor-pointer">
-                                    <input
-                                      type="checkbox"
-                                      checked={selectedIDs.includes(data.id)}
-                                      onChange={() => handleCheckboxChange(data.id)}
-                                    />
-                                    <span className="checkmark"></span>
-                                  </label>
+                                <label className="custom-checkbox cursor-pointer">
+                                  <input
+                                    type="checkbox"
+                                    checked={selectedIDs.includes(data.id)}
+                                    onChange={() => handleCheckboxChange(data.id)}
+                                  />
+                                  <span className="checkmark"></span>
+                                </label>
                               </td>
                               <td className='py-3'>
                                 {formatName(data.subject_name.name)}
@@ -657,29 +657,29 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
                   </div>
 
                   {schemeOfWorkData.length > 10 && (
-                      <div className="col-12 mb-4 mt-3">
-                        <Stack spacing={2} alignItems="end">
-                          <Pagination
-                            count={Math.ceil(schemeOfWorkData.length / itemsPerPage)}
-                            page={page}
-                            onChange={handleChange}
-                            sx={{
-                              '& .MuiPaginationItem-root': {
-                                color: '#737b7d', // color of all numbers
-                              },
-                              '& .MuiPaginationItem-root.Mui-selected': {
-                                backgroundColor: '#783ebc', // Your custom color
-                                color: '#fff',
-                              },
-                            }}
-                          />
-                        </Stack>
-                      </div>
-                    )}
+                    <div className="col-12 mb-4 mt-3">
+                      <Stack spacing={2} alignItems="end">
+                        <Pagination
+                          count={Math.ceil(schemeOfWorkData.length / itemsPerPage)}
+                          page={page}
+                          onChange={handleChange}
+                          sx={{
+                            '& .MuiPaginationItem-root': {
+                              color: '#737b7d', // color of all numbers
+                            },
+                            '& .MuiPaginationItem-root.Mui-selected': {
+                              backgroundColor: '#783ebc', // Your custom color
+                              color: '#fff',
+                            },
+                          }}
+                        />
+                      </Stack>
+                    </div>
+                  )}
                 </div>
 
-              
-              ): (
+
+              ) : (
                 <div className="col-12 ">
                   <div className='site-boxes text-center pb-5 d-flex justify-content-center align-items-center   pt-5'>
                     <div>

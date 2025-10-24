@@ -16,7 +16,6 @@ const AddStudentClass = () => {
   
     loader,
     setLoader,
-    disableButton,
     setDisableButton,
   
     setMessage,
@@ -45,7 +44,7 @@ const AddStudentClass = () => {
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: {errors},
   } = useForm<any>();
 
   const handleCheckboxChange = (id: number) => {

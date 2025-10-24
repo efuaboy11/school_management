@@ -3,7 +3,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
-import { useDropzone } from 'react-dropzone';
+
 import AllDataContext from '@/context/AllData';
 import AuthContext from '@/context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -41,10 +41,10 @@ const AddTeacher = () => {
 
 
 
-  const[ showPassword, setShowPassword] = useState(false)
-  
+  const [showPassword, setShowPassword] = useState(false)
 
-  const toogleShowPassword = () =>{
+
+  const toogleShowPassword = () => {
     setShowPassword(!showPassword)
   }
 
@@ -52,7 +52,7 @@ const AddTeacher = () => {
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<any>();
 
   const {
@@ -60,18 +60,18 @@ const AddTeacher = () => {
     studentClassData
   } = useContext(AllDataContext)!;
 
-    const { 
-      username,
-      password,
-      setUsername,  
-      setPassword,
-  
-      usernameValidation,
-      passwordValidation,
-      handlePasswordChange,
-      handleUsernameChange,
+  const {
+    username,
+    password,
+    setUsername,
+    setPassword,
 
-      truncateText,
+    usernameValidation,
+    passwordValidation,
+    handlePasswordChange,
+    handleUsernameChange,
+
+    truncateText,
     authTokens,
     formateDateTime,
     formatDate,
@@ -87,49 +87,49 @@ const AddTeacher = () => {
     showAlert,
     setIsSuccess,
 
-    
 
-  
-    } = useContext(AuthContext)!
 
-  useEffect(() =>{
+
+  } = useContext(AuthContext)!
+
+  useEffect(() => {
     StudentClassFunction()
 
   }, [])
 
-  const handleflsc = (event:any) => {
+  const handleflsc = (event: any) => {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      setFirstLeavingSchoolCert(file); 
+      setFirstLeavingSchoolCert(file);
     } else {
-      setFirstLeavingSchoolCert(null); 
+      setFirstLeavingSchoolCert(null);
     }
   };
 
-  const handleSsce = (event:any) => {
+  const handleSsce = (event: any) => {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      setSecondarySchoolCert(file); 
+      setSecondarySchoolCert(file);
     } else {
-      setSecondarySchoolCert(null); 
+      setSecondarySchoolCert(null);
     }
   };
 
-  const handleDegree = (event:any) => {
+  const handleDegree = (event: any) => {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      setDegreeCert(file); 
+      setDegreeCert(file);
     } else {
-      setDegreeCert(null); 
+      setDegreeCert(null);
     }
   };
 
-  const handleCV = (event:any) => {
+  const handleCV = (event: any) => {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      setCV(file); 
+      setCV(file);
     } else {
-      setCV(null); 
+      setCV(null);
     }
   };
 
@@ -149,12 +149,12 @@ const AddTeacher = () => {
     }
   });
 
-  const onSubmit = (data: FormData, e:any) => {
+  const onSubmit = (data: FormData, e: any) => {
     addTeacher(e)
   }
 
 
-  const addTeacher = async(e:any) =>{
+  const addTeacher = async (e: any) => {
     e.preventDefault()
     setLoader(true)
     setDisableButton(true)
@@ -162,7 +162,7 @@ const AddTeacher = () => {
     const formData = new FormData()
     formData.append('first_name', firstName)
     formData.append('last_name', lastName)
-    formData.append('email', email) 
+    formData.append('email', email)
     formData.append('date_of_birth', dateOfBirth)
     formData.append('gender', gender)
     formData.append('maritial_status', maritalStatus)
@@ -178,23 +178,23 @@ const AddTeacher = () => {
     formData.append('disability_note', disabilityNote)
     formData.append('city_or_town', cityOrTown)
     formData.append('student_class', studentClass)
-    if(passport){
+    if (passport) {
       formData.append('passport', passport as any)
     }
 
-    if(firstLeavingSchoolCert){
+    if (firstLeavingSchoolCert) {
       formData.append('flsc', firstLeavingSchoolCert as any)
     }
 
-    if(secondarySchoolCert){
+    if (secondarySchoolCert) {
       formData.append('waec_neco_nabteb_gce', secondarySchoolCert as any)
     }
 
-    if(degreeCert){
+    if (degreeCert) {
       formData.append('degree', degreeCert as any)
     }
 
-    if(CV){
+    if (CV) {
       formData.append('cv', CV as any)
     }
     formData.append('username', username)
@@ -205,17 +205,17 @@ const AddTeacher = () => {
 
 
 
-    try{
+    try {
       const response = await fetch(`http://127.0.0.1:8000/api/staff/`, {
         method: 'POST',
         body: formData,
-        headers:{
+        headers: {
           Authorization: `Bearer ${authTokens?.access}`
         }
       })
 
 
-      if(response.ok){
+      if (response.ok) {
         showAlert()
         setMessage('Staff added successfully')
         setIsSuccess(true)
@@ -248,11 +248,11 @@ const AddTeacher = () => {
 
 
 
-      }else{
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setDisableButton(false)
         setIsSuccess(false)
@@ -260,8 +260,8 @@ const AddTeacher = () => {
         showAlert()
       }
 
-      
-    }catch(error){
+
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred.');
@@ -269,14 +269,14 @@ const AddTeacher = () => {
       setIsSuccess(false)
       setLoader(false)
 
-    }  
+    }
   }
 
 
 
 
-    
-  
+
+
 
   return (
     <div>
@@ -293,64 +293,64 @@ const AddTeacher = () => {
           <div className="col-md-9">
             <div className="site-boxes py-4 border-radius-5px">
               <form onSubmit={handleSubmit(onSubmit)}>
-        
+
                 <div className='border-bottom1 px-4 mb-4'>
                   <p className="stylish-text pb-3">1. Personal Information</p>
                 </div>
-                
+
                 <div className="row g-4 px-4">
                   <div className="col-md-6">
                     <label htmlFor="firstName" className="form-label">First Name <span className="text-danger">*</span></label>
-                    <input type="text" className={`site-input ${errors.firstName ? 'error-input' : ''}`} {...register('firstName', {required: true})}  placeholder='First Name' value={firstName}  onChange={(e) => setFirstName(e.target.value)}/>
+                    <input type="text" className={`site-input ${errors.firstName ? 'error-input' : ''}`} {...register('firstName', { required: true })} placeholder='First Name' value={firstName} onChange={(e) => setFirstName(e.target.value)} />
                     {errors.firstName && <p className="error-text">This field is required</p>}
                   </div>
 
                   <div className="col-md-6">
                     <label htmlFor="lastName" className="form-label">Last Name <span className="text-danger">*</span></label>
-                    <input type="text" className={`site-input ${errors.lastName ? 'error-input' : ''}`} {...register('lastName', {required: true})}   value={lastName}  onChange={(e) => setLastName(e.target.value)} placeholder='Last Name' />
+                    <input type="text" className={`site-input ${errors.lastName ? 'error-input' : ''}`} {...register('lastName', { required: true })} value={lastName} onChange={(e) => setLastName(e.target.value)} placeholder='Last Name' />
                     {errors.lastName && <p className="error-text">This field is required</p>}
                   </div>
 
 
                   <div className="col-md-6">
                     <label htmlFor="email" className="form-label">Email <span className="text-danger">*</span></label>
-                    <input type="email" className={`site-input ${errors.email ? 'error-input' : ''}`} {...register('email', {required: true})}  value={email}  onChange={(e) => setEmail(e.target.value)} placeholder='Email' />
+                    <input type="email" className={`site-input ${errors.email ? 'error-input' : ''}`} {...register('email', { required: true })} value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Email' />
                     {errors.email && <p className="error-text">This field is required</p>}
                   </div>
 
 
                   <div className="col-md-6">
                     <label htmlFor="phoneNumber" className="form-label">Date of Birth <span className="text-danger">*</span></label>
-                    <input type="date"  className={`site-input ${errors.dateOfBirth ? 'error-input' : ''}`} {...register('dateOfBirth', {required: true})}  value={dateOfBirth}  onChange={(e) => setDateOfBirth(e.target.value)}  placeholder='Date of Birth' />
+                    <input type="date" className={`site-input ${errors.dateOfBirth ? 'error-input' : ''}`} {...register('dateOfBirth', { required: true })} value={dateOfBirth} onChange={(e) => setDateOfBirth(e.target.value)} placeholder='Date of Birth' />
                     {errors.dateOfBirth && <p className="error-text">This field is required</p>}
 
                   </div>
 
                   <div className="col-md-6">
                     <label htmlFor="phoneNumber" className="form-label">Gender <span className="text-danger">*</span></label>
-                    <select   className={`site-input ${errors.gender ? 'error-input' : ''}`} {...register('gender', {required: true})}  value={gender}  onChange={(e) => setGender(e.target.value)}>
+                    <select className={`site-input ${errors.gender ? 'error-input' : ''}`} {...register('gender', { required: true })} value={gender} onChange={(e) => setGender(e.target.value)}>
                       <option value="">Select</option>
                       <option value="male">Male</option>
                       <option value="female">Female</option>
                     </select>
-                    {errors.gender && <p className="error-text">This field is required</p>}                 
+                    {errors.gender && <p className="error-text">This field is required</p>}
                   </div>
 
                   <div className="col-md-6">
                     <label htmlFor="phoneNumber" className="form-label">Marital Status <span className="text-danger">*</span></label>
-                    <input type="text"  className={`site-input ${errors.maritalStatus ? 'error-input' : ''}`} {...register('maritalStatus', {required: true})}  value={maritalStatus}  onChange={(e) => setMartialStatus(e.target.value)}  placeholder='Marital status' />
+                    <input type="text" className={`site-input ${errors.maritalStatus ? 'error-input' : ''}`} {...register('maritalStatus', { required: true })} value={maritalStatus} onChange={(e) => setMartialStatus(e.target.value)} placeholder='Marital status' />
                     {errors.maritalStatus && <p className="error-text">This field is required</p>}
                   </div>
 
                   <div className="col-md-6">
                     <label htmlFor="phoneNumber" className="form-label">Years of Experience <span className="text-danger">*</span></label>
-                    <input type="text"  className={`site-input ${errors.yearsOfExperience ? 'error-input' : ''}`} {...register('yearsOfExperience', {required: true})}  value={yearsOfExperience}  onChange={(e) => setYearsOfExperience(e.target.value)}  placeholder='Years of Experience' />
+                    <input type="text" className={`site-input ${errors.yearsOfExperience ? 'error-input' : ''}`} {...register('yearsOfExperience', { required: true })} value={yearsOfExperience} onChange={(e) => setYearsOfExperience(e.target.value)} placeholder='Years of Experience' />
                     {errors.yearsOfExperience && <p className="error-text">This field is required</p>}
                   </div>
 
                   <div className="col-md-6">
                     <label htmlFor="phoneNumber" className="form-label">Disability <span className="text-danger">*</span></label>
-                    <select   className={`site-input ${errors.disability ? 'error-input' : ''}`} {...register('disability', {required: true})}  value={disability}  onChange={(e) => setDisability(e.target.value)}>
+                    <select className={`site-input ${errors.disability ? 'error-input' : ''}`} {...register('disability', { required: true })} value={disability} onChange={(e) => setDisability(e.target.value)}>
                       <option value="">Select</option>
                       <option value="yes">Yes</option>
                       <option value="no">No</option>
@@ -358,23 +358,23 @@ const AddTeacher = () => {
                     {errors.disability && <p className="error-text">This field is required</p>}
                   </div>
 
-                  
+
 
                   <div className="col-md-6">
                     <label htmlFor="phoneNumber" className="form-label">Religion <span className="text-danger">*</span></label>
-                    <select   className={`site-input ${errors.religion ? 'error-input' : ''}`} {...register('religion', {required: true})}  value={religion}  onChange={(e) => setReligion(e.target.value)}>
+                    <select className={`site-input ${errors.religion ? 'error-input' : ''}`} {...register('religion', { required: true })} value={religion} onChange={(e) => setReligion(e.target.value)}>
                       <option value="">Select</option>
                       <option value="muslim">Muslim</option>
                       <option value="christian">Christian</option>
                       <option value="others">Others</option>
                     </select>
-                    {errors.religion && <p className="error-text">This field is required</p>}                 
+                    {errors.religion && <p className="error-text">This field is required</p>}
 
                   </div>
 
                   <div className="col-12">
                     <label htmlFor="" className='form-label'>Disability Note</label>
-                    <textarea rows={6} className={`site-input ${errors.disabilityNote ? 'error-input' : ''}`} {...register('disabilityNote')}  value={disabilityNote}  onChange={(e) => setDisabilityNote(e.target.value)}  placeholder='Disability Note' />
+                    <textarea rows={6} className={`site-input ${errors.disabilityNote ? 'error-input' : ''}`} {...register('disabilityNote')} value={disabilityNote} onChange={(e) => setDisabilityNote(e.target.value)} placeholder='Disability Note' />
                   </div>
 
 
@@ -405,7 +405,7 @@ const AddTeacher = () => {
 
                     <div {...getRootProps({ className: 'dropzone-box' })}>
                       <input {...getInputProps()} />
-                      
+
                       {passport ? (
                         <div className="preview-box">
                           <img
@@ -432,9 +432,9 @@ const AddTeacher = () => {
                 <div className="row g-4 px-4">
                   <div className="col-md-6">
                     <label htmlFor="firstName" className="form-label"> Class Assigned</label>
-                    <select   className={`site-input ${errors.studentClass ? 'error-input' : ''}`} {...register('studentClass')}  value={studentClass}  onChange={(e) => setStudentClass(e.target.value)}>
+                    <select className={`site-input ${errors.studentClass ? 'error-input' : ''}`} {...register('studentClass')} value={studentClass} onChange={(e) => setStudentClass(e.target.value)}>
                       <option value="">Select</option>
-                      {studentClassData.map((data:any) => (
+                      {studentClassData.map((data: any) => (
                         <option key={data.id} value={data.id}>{data.name}</option>
                       ))}
                     </select>
@@ -442,7 +442,7 @@ const AddTeacher = () => {
 
                   <div className="col-md-6">
                     <label htmlFor="lastName" className="form-label">Employment Status  <span className="text-danger">*</span></label>
-                    <select   className={`site-input ${errors.employmentStatus ? 'error-input' : ''}`} {...register('employmentStatus', {required: true})}  value={employmentStatus}  onChange={(e) => setEmploymentStatus(e.target.value)}>
+                    <select className={`site-input ${errors.employmentStatus ? 'error-input' : ''}`} {...register('employmentStatus', { required: true })} value={employmentStatus} onChange={(e) => setEmploymentStatus(e.target.value)}>
                       <option value="">Select</option>
                       <option value="full_time">Full Time</option>
                       <option value="part_time">Part time</option>
@@ -452,7 +452,7 @@ const AddTeacher = () => {
 
                   <div className="col-md-6">
                     <label htmlFor="lastName" className="form-label">Department <span className="text-danger">*</span></label>
-                    <input type="text"  className={`site-input ${errors.cityOrTown ? 'error-input' : ''}`} {...register('department', {required: true})}  value={department}  onChange={(e) => setDepartment(e.target.value)} placeholder='City or Origin' />
+                    <input type="text" className={`site-input ${errors.cityOrTown ? 'error-input' : ''}`} {...register('department', { required: true })} value={department} onChange={(e) => setDepartment(e.target.value)} placeholder='City or Origin' />
                     {errors.department && <p className="error-text">This field is required</p>}
                   </div>
 
@@ -461,7 +461,7 @@ const AddTeacher = () => {
 
                   <div className="col-md-6">
                     <label htmlFor="lastName" className="form-label">Computer Skills <span className="text-danger">*</span></label>
-                    <select   className={`site-input ${errors.computerSkills ? 'error-input' : ''}`} {...register('computerSkills', {required: true})}  value={computerSkills}  onChange={(e) => setComputerSkills(e.target.value)}>
+                    <select className={`site-input ${errors.computerSkills ? 'error-input' : ''}`} {...register('computerSkills', { required: true })} value={computerSkills} onChange={(e) => setComputerSkills(e.target.value)}>
                       <option value="">Select</option>
                       <option value="yes">Yes</option>
                       <option value="no">No</option>
@@ -471,7 +471,7 @@ const AddTeacher = () => {
 
                   <div className="col-md-6">
                     <label htmlFor="lastName" className="form-label">Role <span className="text-danger">*</span></label>
-                    <select   className={`site-input ${errors.role ? 'error-input' : ''}`} {...register('role', {required: true})}  value={role}  onChange={(e) => setRole(e.target.value)}>
+                    <select className={`site-input ${errors.role ? 'error-input' : ''}`} {...register('role', { required: true })} value={role} onChange={(e) => setRole(e.target.value)}>
                       <option value="">Select</option>
                       <option value="teacher">Teacher</option>
                       <option value="bursary">Bursary</option>
@@ -495,25 +495,25 @@ const AddTeacher = () => {
                 <div className="row g-4 px-4">
                   <div className="col-md-6">
                     <label htmlFor="firstName" className="form-label">State Of Origin <span className="text-danger">*</span></label>
-                    <input type="text"  className={`site-input ${errors.stateOfOrigin ? 'error-input' : ''}`} {...register('stateOfOrigin', {required: true})}  value={stateOfOrigin}  onChange={(e) => setStateOfOrigin(e.target.value)}  placeholder='State of Origin' />
+                    <input type="text" className={`site-input ${errors.stateOfOrigin ? 'error-input' : ''}`} {...register('stateOfOrigin', { required: true })} value={stateOfOrigin} onChange={(e) => setStateOfOrigin(e.target.value)} placeholder='State of Origin' />
                     {errors.stateOfOrigin && <p className="error-text">This field is required</p>}
                   </div>
 
                   <div className="col-md-6">
                     <label htmlFor="lastName" className="form-label">City / Town  <span className="text-danger">*</span></label>
-                    <input type="text"  className={`site-input ${errors.cityOrTown ? 'error-input' : ''}`} {...register('cityOrTown', {required: true})}  value={cityOrTown}  onChange={(e) => setCityOrTown(e.target.value)} placeholder='City or Origin' />
+                    <input type="text" className={`site-input ${errors.cityOrTown ? 'error-input' : ''}`} {...register('cityOrTown', { required: true })} value={cityOrTown} onChange={(e) => setCityOrTown(e.target.value)} placeholder='City or Origin' />
                     {errors.cityOrTown && <p className="error-text">This field is required</p>}
                   </div>
 
                   <div className="col-md-6">
                     <label htmlFor="lastName" className="form-label">Home Address  <span className="text-danger">*</span></label>
-                    <input type="text"  className={`site-input ${errors.homeAddress ? 'error-input' : ''}`} {...register('homeAddress', {required: true})}  value={homeAddress}  onChange={(e) => setHomeAddress(e.target.value)} placeholder='Home Address' />
+                    <input type="text" className={`site-input ${errors.homeAddress ? 'error-input' : ''}`} {...register('homeAddress', { required: true })} value={homeAddress} onChange={(e) => setHomeAddress(e.target.value)} placeholder='Home Address' />
                     {errors.homeAddress && <p className="error-text">This field is required</p>}
                   </div>
 
                   <div className="col-md-6">
                     <label htmlFor="lastName" className="form-label">Phone Number  <span className="text-danger">*</span></label>
-                    <input type="text"  className={`site-input ${errors.phoneNumber ? 'error-input' : ''}`} {...register('phoneNumber', {required: true})}  value={phoneNumber}  onChange={(e) => setPhoneNumber(e.target.value)} placeholder='Phone Number' />
+                    <input type="text" className={`site-input ${errors.phoneNumber ? 'error-input' : ''}`} {...register('phoneNumber', { required: true })} value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} placeholder='Phone Number' />
                     {errors.phoneNumber && <p className="error-text">This field is required</p>}
                   </div>
 
@@ -527,7 +527,7 @@ const AddTeacher = () => {
                 <div className="row g-4 px-4">
                   <div className="col-lg-3 col-md-6">
                     <label htmlFor="flsc-upload" className="form-label">First leaving school cert</label>
-                    
+
                     <input
                       type="file"
                       id="flsc-upload"
@@ -550,7 +550,7 @@ const AddTeacher = () => {
 
                   <div className="col-lg-3 col-md-6">
                     <label htmlFor="ssce-upload" className="form-label">Secondary school cert</label>
-                    
+
                     <input
                       type="file"
                       id="ssce-upload"
@@ -572,7 +572,7 @@ const AddTeacher = () => {
 
                   <div className="col-lg-3 col-md-6">
                     <label htmlFor="degree-upload" className="form-label">Secondary school cert</label>
-                    
+
                     <input
                       type="file"
                       id="degree-upload"
@@ -594,7 +594,7 @@ const AddTeacher = () => {
 
                   <div className="col-lg-3 col-md-6">
                     <label htmlFor="cv" className="form-label">CV</label>
-                    
+
                     <input
                       type="file"
                       id="cv"
@@ -622,7 +622,7 @@ const AddTeacher = () => {
                 <div className="row g-4 px-4">
                   <div className="col-md-6">
                     <label className="form-label">Username <span className="text-danger">*</span></label>
-                    <input 
+                    <input
                       type="text"
                       className={`${errors.username ? 'error-input' : ''} site-input`}
                       {...register("username", {
@@ -640,7 +640,7 @@ const AddTeacher = () => {
                       onChange={handleUsernameChange}
                       placeholder="Enter your username"
                     />
-                    {username &&(
+                    {username && (
                       <div>
                         <div>
                           <div className="d-flex">
@@ -658,7 +658,7 @@ const AddTeacher = () => {
                           </div>
                         </div>
                       </div>
-                      )
+                    )
                     }
                     {errors.username && <p className="error-text xsm-text">{String(errors.username.message)}</p>}
                   </div>
@@ -666,9 +666,9 @@ const AddTeacher = () => {
                   <div className="col-md-6">
                     <label className="form-label">Password <span className="text-danger">*</span></label>
                     <div className="password-container">
-                      <input 
+                      <input
                         type={showPassword ? "text" : "password"}
-                        className={`site-input password-input ${errors.password ? 'error-input' : ''}`} 
+                        className={`site-input password-input ${errors.password ? 'error-input' : ''}`}
                         {...register("password", {
                           required: "Password is required",
                           minLength: {
@@ -688,7 +688,7 @@ const AddTeacher = () => {
                         <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} onClick={toogleShowPassword} />
                       </span>
                     </div>
-                    {password &&(
+                    {password && (
                       <div>
                         <div className="d-flex">
                           <i className={passwordValidation.minLength ? 'ri-check-fill success-text' : 'ri-close-line error-text'}></i>
@@ -712,7 +712,7 @@ const AddTeacher = () => {
                         </div>
                       </div>
                     )}
-                  
+
 
                     {errors.password && <p className="error-text xsm-text">{String(errors.password.message)}</p>}
                   </div>
@@ -720,17 +720,17 @@ const AddTeacher = () => {
                   <div className="col-12">
                     <div>
                       <button disabled={disableButton} type="submit" className={`Button site-btn px-3`}>
-                        <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                        <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
+                        <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                        <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
                       </button>
                     </div>
-                   
+
                   </div>
 
 
                 </div>
 
-                
+
 
               </form>
 

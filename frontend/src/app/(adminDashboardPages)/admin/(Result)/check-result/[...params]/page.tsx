@@ -4,7 +4,6 @@ import React, { use, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form'
 import Image from 'next/image'
-import { useDropzone } from 'react-dropzone';
 import Link from 'next/link';
 import { Pagination, Stack } from '@mui/material';
 import ThemeContext from '@/context/ThemeContext';
@@ -15,18 +14,12 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
   const [classID, termID, sessionID] = param.params || [];
   const router = useRouter()
   const {
-    truncateText,
     authTokens,
-    formateDateTime,
-    formatDate,
     formatName,
-    formatCurrency,
-    showSidebar,
     loader,
     setLoader,
     disableButton,
     setDisableButton,
-    handleDownload,
 
     setMessage,
     showAlert,
@@ -39,7 +32,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
   const [resultCount, setResultCount] = useState(0)
   const [resultData, setResultData] = useState<any[]>([])
   const [resultLoader, setResultLoader] = useState(true)
-  const [resultSearch, setResultSearch] = useState('')
+
 
 
 
@@ -48,9 +41,6 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
   const [termDetails, setTermDetails] = useState<any>(null)
   const [studentData, setStudentData] = useState<any[]>([])
 
-  const [classLoader, setClassLoader] = useState(true)
-  const [sessionLoader, setSessionLoader] = useState(true)
-  const [termLoader, setTermLoader] = useState(true)
 
   const [studentQuery, setStudentQuery] = useState<string>('');
 
@@ -182,7 +172,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
   };
 
   const ResultFunction = async() =>{
-    let response = await fetch(`http://127.0.0.1:8000/api/student-result/?student=${studentQuery}&student_class=${classID}&term=${termID}&session=${sessionID}`, {
+    const response = await fetch(`http://127.0.0.1:8000/api/student-result/?student=${studentQuery}&student_class=${classID}&term=${termID}&session=${sessionID}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -214,7 +204,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
   const IndividualClassFunction = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/student-class/${classID}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/student-class/${classID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -226,20 +216,17 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
       if(response.ok){
         setClassDetails(data)
-        setClassLoader(false)
-      }else{
-        setClassLoader(false)
+
       }
     }catch{
       console.log('error')
-      setClassLoader(false)
     }
 
   }
 
   const IndividualTermFunction = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/term/${termID}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/term/${termID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -251,13 +238,9 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
       if(response.ok){
         setTermDetails(data)
-        setTermLoader(false)
-      }else{
-        setTermLoader(false)
       }
     }catch{
       console.log('error')
-      setTermLoader(false)
     }
 
   }
@@ -265,7 +248,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
   const IndividualSessionFunction = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/session/${sessionID}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/session/${sessionID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -277,19 +260,16 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
       if(response.ok){
         setSessionDetails(data)
-        setSessionLoader(false)
-      }else{
-        setSessionLoader(false)
+
       }
     }catch{
       console.log('error')
-      setSessionLoader(false)
     }
 
   }
 
   const StudentFunction = async() =>{
-    let response = await fetch(`http://127.0.0.1:8000/api/student-in-class/?student_class=${classID}`, {
+    const response = await fetch(`http://127.0.0.1:8000/api/student-in-class/?student_class=${classID}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -317,7 +297,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
     setLoader(true)
 
     try{
-      let response = await fetch('http://127.0.0.1:8000/api/delete-multiple-student-result/', {
+      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-student-result/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -353,7 +333,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
         setIsSuccess(false)
 
       }
-    }catch(error){
+    }catch{
       setLoader(false)
       setDisableButton(false)
       setMessage("An error occurred. Please try again.")
@@ -363,11 +343,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
   }
 
 
-  const {
-    register,
-    handleSubmit,
-    formState: {errors, isValid},
-  } = useForm<any>();
+
 
 
 

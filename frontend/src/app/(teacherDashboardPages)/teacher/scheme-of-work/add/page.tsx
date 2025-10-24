@@ -3,7 +3,7 @@ import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
 import ThemeContext from '@/context/ThemeContext'
 import React, { useContext, useEffect, useState } from 'react'
-import { useDropzone } from 'react-dropzone';
+
 import { useForm } from 'react-hook-form'
 import Select from 'react-select';
 import { useRouter } from 'next/navigation';
@@ -19,22 +19,22 @@ const CreateShemeOfWork1 = () => {
     setHasMounted(true);
   }, []);
 
-  const { 
-  
+  const {
+
     authTokens,
-  
+
     loader,
     setLoader,
     disableButton,
     setDisableButton,
-  
+
     setMessage,
     showAlert,
     setIsSuccess,
-  
-    
-  
-  
+
+
+
+
   } = useContext(AuthContext)!
 
 
@@ -48,13 +48,13 @@ const CreateShemeOfWork1 = () => {
   } = useContext(AllDataContext)!;
 
   const { theme, toggleTheme } = useContext(ThemeContext)!;
- 
+
 
 
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<any>();
 
 
@@ -78,37 +78,37 @@ const CreateShemeOfWork1 = () => {
       boxShadow: state.isFocused ? '0 0 0 4px rgba(120, 62, 188, 0.2)' : 'none',
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     menu: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#0d0d0d' : '#fff',
       border: '1px solid #ccc',
       zIndex: 999,
     }),
-  
+
     option: (provided: any, state: any) => {
       const isDark = theme === 'dark';
-  
+
       const backgroundColor = state.isSelected
         ? '#783ebc'
         : state.isFocused
-        ? isDark
-          ? '#1a1a1a' // hover in dark
-          : '#f0f0f0' // hover in light
-        : isDark
-        ? '#0d0d0d'
-        : '#fff';
-  
+          ? isDark
+            ? '#1a1a1a' // hover in dark
+            : '#f0f0f0' // hover in light
+          : isDark
+            ? '#0d0d0d'
+            : '#fff';
+
       const color = state.isSelected
         ? '#fff'
         : state.isFocused
-        ? isDark
-          ? '#fff'
-          : '#000'
-        : isDark
-        ? '#fff'
-        : '#000';
-  
+          ? isDark
+            ? '#fff'
+            : '#000'
+          : isDark
+            ? '#fff'
+            : '#000';
+
       return {
         ...provided,
         backgroundColor,
@@ -116,27 +116,27 @@ const CreateShemeOfWork1 = () => {
         cursor: 'pointer',
       };
     },
-  
+
     singleValue: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     placeholder: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#aaa' : '#666',
     }),
-  
+
     input: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     dropdownIndicator: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     indicatorSeparator: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#444' : '#ccc',
@@ -146,20 +146,20 @@ const CreateShemeOfWork1 = () => {
 
 
 
-  const onSubmit = (data: FormData, e:any) => {
+  const onSubmit = (data: FormData, e: any) => {
     setLoader(true)
     router.push(`/teacher/scheme-of-work/add/${termValue}/${studentClass}`)
-    
+
   }
 
 
-  useEffect(() =>{
+  useEffect(() => {
     StudentClassFunction()
     TermFunction()
   }, [])
 
 
-  
+
 
 
 
@@ -194,28 +194,28 @@ const CreateShemeOfWork1 = () => {
 
                       <div className="col-md-6">
                         <label htmlFor="" className='form-label'>Term</label>
-                        <select   className={`site-input`}   value={termValue}  onChange={(e) => setTermValue(e.target.value)}>
+                        <select className={`site-input`} value={termValue} onChange={(e) => setTermValue(e.target.value)}>
                           <option value="">Select</option>
-                          {termData.map((data:any) => (
+                          {termData.map((data: any) => (
                             <option key={data.id} value={data.id}>{data.name}</option>
                           ))}
                         </select>
                       </div>
-                  
+
 
 
                       <div className="col-12 mt-4">
                         <button type='submit' className='site-btn px-4'>
-                          <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                          <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill pe-2"></i> Sumbit</span>
+                          <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                          <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill pe-2"></i> Sumbit</span>
                         </button>
-                    
+
                       </div>
                     </div>
 
                   </form>
-              )}
-  
+                )}
+
               </div>
             </div>
           </div>

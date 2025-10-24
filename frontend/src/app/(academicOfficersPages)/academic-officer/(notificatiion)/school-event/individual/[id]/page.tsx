@@ -4,55 +4,26 @@ import React, { use, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form'
 import Image from 'next/image'
-import { useDropzone } from 'react-dropzone';
 const IndivivdualEvent = ({ params }: { params: Promise<{ id: string }> }) => {
   const {id} = use(params)
   
   const {
-    truncateText,
     authTokens,
-    formateDateTime,
     formatDate,
     formatName,
-    formatCurrency,
-    showSidebar,
-    loader,
-    setLoader,
-    disableButton,
-    setDisableButton,
-
-    setMessage,
-    showAlert,
-    setIsSuccess,
 
   } = useContext(AuthContext)!;
 
 
-  const router = useRouter();
 
   const [loading, setLoading] = useState(true)
   const [details, setDetails] = useState<any>(null)
 
 
 
-
-
-
-
-
-
-
-  const {
-    register,
-    handleSubmit,
-    formState: {errors},
-  } = useForm<any>();
-
-
-
   const IndividualDetailsFunction = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/school-event/${id}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/school-event/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

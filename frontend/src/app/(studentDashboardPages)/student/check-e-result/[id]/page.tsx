@@ -4,16 +4,16 @@ import React, { use, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form'
 import Image from 'next/image'
-import { useDropzone } from 'react-dropzone';
+
 import AllDataContext from '@/context/AllData';
 import ThemeContext from '@/context/ThemeContext';
 import Select from 'react-select';
 import { DownloadLink } from '@/components/downloadLink';
 
 
-const IndividualEResult =  ({ params }: { params: Promise<any> }) => {
-  const {id} = use(params)
-  
+const IndividualEResult = ({ params }: { params: Promise<any> }) => {
+  const { id } = use(params)
+
   const {
     truncateText,
     authTokens,
@@ -68,9 +68,9 @@ const IndividualEResult =  ({ params }: { params: Promise<any> }) => {
 
 
 
-  const IndividualDetailsFunction = async () =>{
-    try{
-      let response = await fetch(`http://127.0.0.1:8000/api/e-result/${id}/`, {
+  const IndividualDetailsFunction = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/e-result/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -80,14 +80,14 @@ const IndividualEResult =  ({ params }: { params: Promise<any> }) => {
       })
       const data = await response.json()
 
-      if(response.ok){
+      if (response.ok) {
         setDetails(data)
         console.log('data', data)
         setLoading(false)
-      }else{
+      } else {
         setLoading(false)
       }
-    }catch{
+    } catch {
       console.log('error')
       setLoading(false)
     }
@@ -97,7 +97,7 @@ const IndividualEResult =  ({ params }: { params: Promise<any> }) => {
 
 
 
-  useEffect(() =>{
+  useEffect(() => {
     IndividualDetailsFunction()
 
   }, [])
@@ -107,7 +107,7 @@ const IndividualEResult =  ({ params }: { params: Promise<any> }) => {
 
   return (
     <div>
-      {allowAccess && (      
+      {allowAccess && (
         <div>
           {Loading ? (
             <div>
@@ -134,7 +134,7 @@ const IndividualEResult =  ({ params }: { params: Promise<any> }) => {
                         <div className="site-boxes border-radius-10px">
                           <div className="border-bottom1 p-3">
                             <p>Result Details</p>
-                        
+
                           </div>
 
                           <div className='light-text p-3'>
@@ -163,7 +163,7 @@ const IndividualEResult =  ({ params }: { params: Promise<any> }) => {
                             <div className="pb-3 d-sm-flex justify-content-between">
                               <p className="pb-2 sm-text">Date created</p>
                               <p>{formateDateTime(details.date)}</p>
-                            </div>     
+                            </div>
 
 
                             <div className="site-border border-radius-10px py-3">
@@ -179,13 +179,13 @@ const IndividualEResult =  ({ params }: { params: Promise<any> }) => {
                                 <div className="site-light-boxes px-3 py-4 m-3 cursor-pointer">
                                   <p className='light-text text-center'>No file attached </p>
                                 </div>
-                              )} 
+                              )}
 
 
 
-                            </div>                     
+                            </div>
 
-                            
+
                           </div>
                         </div>
                       </div>
@@ -203,14 +203,14 @@ const IndividualEResult =  ({ params }: { params: Promise<any> }) => {
                 </div>
               )}
 
-              
-            </div> 
+
+            </div>
           )}
         </div>
       )}
 
 
-    </div> 
+    </div>
   )
 }
 

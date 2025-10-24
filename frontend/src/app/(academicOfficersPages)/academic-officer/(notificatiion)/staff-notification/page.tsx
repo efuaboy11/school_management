@@ -1,16 +1,12 @@
 "use client"
-import { faEllipsis, faX } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { Pagination, Stack } from '@mui/material';
 import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
 import { debounce } from "lodash";
 import { useForm } from 'react-hook-form'
 import ThemeContext from '@/context/ThemeContext'
-import Select from 'react-select';
 
 const StafflNotification = () => {
 
@@ -28,25 +24,10 @@ const StafflNotification = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
-    authTokens,
-    formateDateTime,
     formatDate,
     formatName,
-    formatCurrency,
-    showSidebar,
-    loader,
-    setLoader,
-    disableButton,
-    setDisableButton,
-
-    setMessage,
-    showAlert,
-    setIsSuccess,
 
   } = useContext(AuthContext)!;
-
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
 
 
   
@@ -56,36 +37,12 @@ const StafflNotification = () => {
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
 
-  const [filterOptions, setOptions] = useState(false)
-
-  const toggleFilterOptions = () =>{
-    setOptions(!filterOptions)
-  }
-
-    const [hasMounted, setHasMounted] = useState(false);
-  
-    useEffect(() => {
-      setHasMounted(true);
-    }, []);
-
-
-
-
-
-
 
 
   
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
-
-    const {
-      register,
-      handleSubmit,
-      formState: { errors, isValid },
-    } = useForm();
-
   
   // const staffNotificationData = [...Array(100).keys()];
   const startIndex = (page - 1) * itemsPerPage;

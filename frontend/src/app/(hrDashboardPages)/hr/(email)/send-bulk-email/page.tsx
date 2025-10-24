@@ -115,7 +115,7 @@ const SendBulkEmailPage = () => {
   }
 
   const StudentEmailFuncton = async() =>{
-    let response = await fetch(`http://127.0.0.1:8000/api/list-emails/student/`, {
+    const response = await fetch(`http://127.0.0.1:8000/api/list-emails/student/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -136,7 +136,7 @@ const SendBulkEmailPage = () => {
 
 
   const TeacherEmailFunction = async() =>{
-    let response = await fetch(`http://127.0.0.1:8000/api/list-emails/teacher/`, {
+    const response = await fetch(`http://127.0.0.1:8000/api/list-emails/teacher/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -157,7 +157,7 @@ const SendBulkEmailPage = () => {
 
 
   const BursaryEmailFunction = async() =>{
-    let response = await fetch(`http://127.0.0.1:8000/api/list-emails/bursary/`, {
+    const response = await fetch(`http://127.0.0.1:8000/api/list-emails/bursary/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -177,7 +177,7 @@ const SendBulkEmailPage = () => {
   }
 
   const ResultOfficerEmailFunction = async() =>{
-    let response = await fetch(`http://127.0.0.1:8000/api/list-emails/result-officer/`, {
+    const response = await fetch(`http://127.0.0.1:8000/api/list-emails/result-officer/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -197,7 +197,7 @@ const SendBulkEmailPage = () => {
   }
 
   const StaffEmailFunction = async() =>{
-    let response = await fetch(`http://127.0.0.1:8000/api/list-emails/staff/`, {
+    const response = await fetch(`http://127.0.0.1:8000/api/list-emails/staff/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -217,7 +217,7 @@ const SendBulkEmailPage = () => {
   }
 
   const AllEmailFunction = async() =>{
-    let response = await fetch(`http://127.0.0.1:8000/api/list-emails/all/`, {
+    const response = await fetch(`http://127.0.0.1:8000/api/list-emails/all/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

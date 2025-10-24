@@ -4,14 +4,14 @@ import React, { use, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form'
 import Image from 'next/image'
-import { useDropzone } from 'react-dropzone';
+
 import Link from 'next/link';
 import { set } from 'lodash';
 import AllDataContext from '@/context/AllData';
 import { on } from 'events';
 
 export default function IndividualResultPage({ params }: { params: Promise<any> }) {
-  const {id} = use(params);
+  const { id } = use(params);
 
 
   const {
@@ -44,7 +44,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
 
     sessionData,
     SessionFunction,
-    
+
   } = useContext(AllDataContext)!;
 
 
@@ -86,9 +86,9 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
 
 
 
-  const IndividualDetailsFunction = async () =>{
-    try{
-      let response = await fetch(`http://127.0.0.1:8000/api/student-result/${id}/`, {
+  const IndividualDetailsFunction = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/student-result/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -98,11 +98,11 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
       })
       const data = await response.json()
 
-      if(response.ok){
+      if (response.ok) {
         setDetails(data)
         console.log('data', data)
         setSubjectResults(
-          data.subject_result.map((subject:any) => ({
+          data.subject_result.map((subject: any) => ({
             subject: subject.subject_name.id,
             subject_name: subject.subject_name.name,
             total_ca: subject.total_ca,
@@ -112,13 +112,13 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
             position: subject.position,
             cgpa: subject.cgpa
           }))
-        )  
+        )
 
         setLoading(false)
-      }else{
+      } else {
         setLoading(false)
       }
-    }catch{
+    } catch {
       console.log('error')
       setLoading(false)
     }
@@ -127,7 +127,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
 
 
 
-  const handleSubjectChange = (index:any, e:any) =>{
+  const handleSubjectChange = (index: any, e: any) => {
     const values = [...subjectResults]
     values[index][e.target.name] = e.target.value;
     setSubjectResults(values)
@@ -176,11 +176,11 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
                             <p className='light-text'>No Image</p>
                           </div>
                         )}
-                        
+
                       </div>
                     )}
 
-                    
+
                   </div>
 
                   <div className="col-md-8 col-12 text-center">
@@ -265,20 +265,20 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
                           <div className="col-xl-3 col-lg-4 col-md-6 d-flex align-center">
                             <p className=" pe-3">Total student:</p>
                             <p className='light-text'>{details.total_students}</p>
-                          </div>  
+                          </div>
 
 
                           <div className="col-xl-3 col-lg-4 col-md-6 d-flex align-center">
                             <p className=" pe-3">Position:</p>
                             <p className='light-text'>{details.position}</p>
-                          </div> 
+                          </div>
 
                           <div className="col-xl-3 col-lg-4 col-md-6 d-flex align-center">
                             <p className=" pe-3">Decision:</p>
                             <p className='light-text'>{details.decision}</p>
-                          </div>                   
+                          </div>
                         </div>
-                        
+
 
                       </div>
 
@@ -288,7 +288,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
                             <div className="site-boxes  border-radius-10px result-table non-wrap-text scroll-bar ">
                               <div className="border-bottom1 px-3 py-2 d-flex justify-content-between align-center">
                                 <p className='font-bold'>RESULTS SCORES</p>
-                                
+
                               </div>
 
                               <div className="p-3">
@@ -305,8 +305,8 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
                                   </thead>
 
                                   <tbody>
-                                    {subjectResults.map((subject:any, index:any) =>{
-                                      const subjectn = subjectData.find((s:any) => s.id === subject.subject)
+                                    {subjectResults.map((subject: any, index: any) => {
+                                      const subjectn = subjectData.find((s: any) => s.id === subject.subject)
                                       console.log(subjectn)
                                       console.log(subjectData)
                                       const subjectName = subjectn ? subjectn.name : ''
@@ -336,73 +336,73 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
                               <p>GRADE INTERPRETATION</p>
                             </div>
 
-                          <div className="row  flex-wrap align-center p-3">
-                            <div className='col-sm-3  col-lg-2 col-6 mb-3'>
-                              <div>
+                            <div className="row  flex-wrap align-center p-3">
+                              <div className='col-sm-3  col-lg-2 col-6 mb-3'>
                                 <div>
-                                  <p className="light-text xsm-text">A1 = 80 - 100</p>
-                                  <p className='sm-text'>EXCELLENT</p>
+                                  <div>
+                                    <p className="light-text xsm-text">A1 = 80 - 100</p>
+                                    <p className='sm-text'>EXCELLENT</p>
+                                  </div>
+                                </div>
+                              </div>
+
+                              <div className='col-sm-3  col-lg-2 col-6 mb-3'>
+                                <div>
+                                  <p className="light-text xsm-text">B2 = 70 - 79</p>
+                                  <p className='sm-text'>VERY GOOD</p>
+                                </div>
+                              </div>
+
+
+                              <div className='col-sm-3  col-lg-2 col-6 mb-3'>
+                                <div>
+                                  <p className="light-text xsm-text">B2 = 65 - 69</p>
+                                  <p className='sm-text'>GOOD</p>
+                                </div>
+                              </div>
+
+                              <div className='col-sm-3  col-lg-2 col-6 mb-3'>
+                                <div>
+                                  <p className="light-text xsm-text">C4 = G9 - 64</p>
+                                  <p className='sm-text'>CREDIT</p>
+                                </div>
+                              </div>
+
+                              <div className='col-sm-3  col-lg-2 col-6 mb-3'>
+                                <div>
+                                  <p className="light-text xsm-text">C5 = 55 - 59</p>
+                                  <p className='sm-text'>CREDIT</p>
+                                </div>
+                              </div>
+
+                              <div className='col-sm-3  col-lg-2 col-6 mb-3'>
+                                <div>
+                                  <p className="light-text xsm-text">C6 = 59 - 54</p>
+                                  <p className='sm-text'>CREDIT</p>
+                                </div>
+                              </div>
+
+                              <div className='col-sm-3  col-lg-2 col-6 mb-3'>
+                                <div>
+                                  <p className="light-text xsm-text">D7 = 45 - 49</p>
+                                  <p className='sm-text'>PASS</p>
+                                </div>
+                              </div>
+
+                              <div className='col-sm-3  col-lg-2 col-6 mb-3'>
+                                <div>
+                                  <p className="light-text xsm-text">E8 = 40 -44</p>
+                                  <p className='sm-text'>PASS</p>
+                                </div>
+                              </div>
+
+                              <div className='col-sm-3  col-lg-2 col-6 mb-3'>
+                                <div>
+                                  <p className="light-text xsm-text">F9 = 1 -39</p>
+                                  <p className='sm-text'>FAIL</p>
                                 </div>
                               </div>
                             </div>
-
-                            <div className='col-sm-3  col-lg-2 col-6 mb-3'>
-                              <div>
-                                <p className="light-text xsm-text">B2 = 70 - 79</p>
-                                <p className='sm-text'>VERY GOOD</p>
-                              </div>
-                            </div>
-
-
-                            <div className='col-sm-3  col-lg-2 col-6 mb-3'>
-                              <div>
-                                <p className="light-text xsm-text">B2 = 65 - 69</p>
-                                <p className='sm-text'>GOOD</p>
-                              </div>
-                            </div>
-
-                            <div className='col-sm-3  col-lg-2 col-6 mb-3'>
-                              <div>
-                                <p className="light-text xsm-text">C4 = G9 - 64</p>
-                                <p className='sm-text'>CREDIT</p>
-                              </div>
-                            </div>
-
-                            <div className='col-sm-3  col-lg-2 col-6 mb-3'>
-                              <div>
-                                <p className="light-text xsm-text">C5 = 55 - 59</p>
-                                <p className='sm-text'>CREDIT</p>
-                              </div>
-                            </div>
-
-                            <div className='col-sm-3  col-lg-2 col-6 mb-3'>
-                              <div>
-                                <p className="light-text xsm-text">C6 = 59 - 54</p>
-                                <p className='sm-text'>CREDIT</p>
-                              </div>
-                            </div>
-
-                            <div className='col-sm-3  col-lg-2 col-6 mb-3'>
-                              <div>
-                                <p className="light-text xsm-text">D7 = 45 - 49</p>
-                                <p className='sm-text'>PASS</p>
-                              </div>
-                            </div>
-
-                            <div className='col-sm-3  col-lg-2 col-6 mb-3'>
-                              <div>
-                                <p className="light-text xsm-text">E8 = 40 -44</p>
-                                <p className='sm-text'>PASS</p>
-                              </div>
-                            </div>
-
-                            <div className='col-sm-3  col-lg-2 col-6 mb-3'>
-                              <div>
-                                <p className="light-text xsm-text">F9 = 1 -39</p>
-                                <p className='sm-text'>FAIL</p>
-                              </div>
-                            </div>
-                          </div>
                           </div>
                         </div>
 
@@ -420,7 +420,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
                                   <p className="light-text">{details.agility}</p>
                                 </div>
                               </div>
-                              
+
                               <div className="col-sm-6 col-xl-4">
                                 <div className="d-flex align-center">
                                   <p className='pe-2'>Caring:</p>
@@ -508,7 +508,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
                           <div className='site-boxes  border-radius-10px  non-wrap-text  mb-4'>
                             <div className="border-bottom1 px-3 py-2 d-flex justify-content-between align-center">
                               <p>PSYCHOMOTOR  TRAIT</p>
-                              
+
                             </div>
 
                             <div className="d-flex flex-wrap g-4 p-3 light-text">
@@ -518,7 +518,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
                                   <p className="light-text">{details.attentiveness}</p>
                                 </div>
                               </div>
-                              
+
                               <div className="me-4 mb-2">
                                 <div className="d-flex align-center">
                                   <p className='pe-2'>Handling of tools:</p>
@@ -553,30 +553,30 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
                           <div className='site-boxes  border-radius-10px  non-wrap-text py-3'>
                             <div className="border-bottom1 px-3 py-1">
                               <p>TRAIT SCALE</p>
-                            </div>     
+                            </div>
 
-                                <div className=" p-3 light-text row g-4">
-                                  <div className='col-6 col-xl-3'>
-                                    <p>A = EXCELLENT</p>
-                                  </div>
+                            <div className=" p-3 light-text row g-4">
+                              <div className='col-6 col-xl-3'>
+                                <p>A = EXCELLENT</p>
+                              </div>
 
-                                  <div className='col-6 col-xl-3'>
-                                    <p>B = VERY GOOD</p>
-                                  </div>
+                              <div className='col-6 col-xl-3'>
+                                <p>B = VERY GOOD</p>
+                              </div>
 
-                                  <div className='col-6 col-xl-3'>
-                                    <p>C = GOOD</p>
-                                  </div>
-                                  
-                                  <div className='col-6 col-xl-3'>
-                                    <p>D = FAIR</p>
-                                  </div>
+                              <div className='col-6 col-xl-3'>
+                                <p>C = GOOD</p>
+                              </div>
 
-                                  <div className='col-6 col-xl-3'>
-                                    <p>E = POOR</p>
-                                  </div>
-                                  
-                                </div>
+                              <div className='col-6 col-xl-3'>
+                                <p>D = FAIR</p>
+                              </div>
+
+                              <div className='col-6 col-xl-3'>
+                                <p>E = POOR</p>
+                              </div>
+
+                            </div>
                           </div>
 
                         </div>
@@ -585,9 +585,9 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
                           <div className='site-boxes  border-radius-10px pb-4'>
                             <div className="border-bottom1 px-3 py-2 d-flex justify-content-between align-center">
                               <p>REMARKS</p>
-                              
+
                             </div>
-                            
+
                             <div className="pt-3 light-text">
                               <div className="d-sm-flex non-wrap-text px-3 pb-3">
                                 <p className="pe-3">Teacher comment</p>
@@ -604,12 +604,12 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
                                 <p className="light-text">{details.next_term_begins}</p>
                               </div>
                             </div>
-                            
+
                           </div>
                         </div>
                       </div>
 
-                      
+
                     </section>
                   </div>
                 ) : (

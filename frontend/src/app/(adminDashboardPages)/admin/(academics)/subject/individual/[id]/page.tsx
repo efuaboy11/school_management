@@ -4,20 +4,16 @@ import React, { use, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form'
 import Image from 'next/image'
-import { useDropzone } from 'react-dropzone';
+
 
 
 const IndivivdualSubject = ({ params }: { params: Promise<{ id: string }> }) => {
   const {id} = use(params)
   
   const {
-    truncateText,
+
     authTokens,
-    formateDateTime,
-    formatDate,
     formatName,
-    formatCurrency,
-    showSidebar,
     loader,
     setLoader,
     disableButton,
@@ -77,7 +73,7 @@ const IndivivdualSubject = ({ params }: { params: Promise<{ id: string }> }) => 
 
   const IndividualDetailsFunction = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/subjects/${id}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/subjects/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -111,7 +107,7 @@ const IndivivdualSubject = ({ params }: { params: Promise<{ id: string }> }) => 
     setLoader(true)
 
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/subjects/${id}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/subjects/${id}/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`

@@ -1,7 +1,6 @@
 "use client"
-import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext,  useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 const CreateTerm = () => {
@@ -31,7 +30,7 @@ const CreateTerm = () => {
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: {errors},
   } = useForm<any>();
 
   const onSubmit = (data: FormData, e:any) => {

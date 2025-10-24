@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import React, { use, useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Select from 'react-select';
-import { useDropzone } from 'react-dropzone';
+
 import Link from 'next/link'
 import { ProcessingSpiner } from '@/components/spin'
 import Image from 'next/image'
@@ -23,13 +23,13 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
     first_name: string;
     last_name: string;
     email: string;
-    [key: string]: any; 
+    [key: string]: any;
   }
 
-  const [selectedID, setSelectedID] = useState<any>(null) 
+  const [selectedID, setSelectedID] = useState<any>(null)
 
-  
- 
+
+
   const [paymentMethodDetails, setPaymentMethodDetails] = useState<any>(null)
   const [billsDetails, setBillsDetails] = useState<any>(null)
   const [bankAcountdDetails, setBankAcountdDetails] = useState<any[]>([])
@@ -54,22 +54,22 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
   const [isClient, setIsClient] = useState(false);
   const { theme, toggleTheme } = useContext(ThemeContext)!;
 
-  
 
-  const { 
+
+  const {
     authTokens,
-  
+
     loader,
     setLoader,
     disableButton,
     setDisableButton,
     formatName,
     formatCurrency,
-  
+
     setMessage,
     showAlert,
     setIsSuccess,
-  
+
   } = useContext(AuthContext)!
 
 
@@ -80,18 +80,18 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
   } = useContext(AllDataContext)!;
 
 
-  const handleSelectedID = (id:any) =>{
+  const handleSelectedID = (id: any) => {
     setSelectedID(id)
-    
+
   }
 
-  
+
 
 
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<any>();
 
   const handleImgFile = (files: File[]) => {
@@ -102,7 +102,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
     }
   };
 
-  const handleCancel = () =>{
+  const handleCancel = () => {
     setProcessText('Canceling payment')
     setGenerateFeeLoader(true)
     const timer = setTimeout(() => {
@@ -119,9 +119,9 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
   });
 
 
-  const IndividualPaymentMethodFunction = async () =>{
-    try{
-      let response = await fetch(`http://127.0.0.1:8000/api/payment-method/${paymentMethodID}/`, {
+  const IndividualPaymentMethodFunction = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/payment-method/${paymentMethodID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -131,14 +131,14 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
       })
       const data = await response.json()
 
-      if(response.ok){
+      if (response.ok) {
         setPaymentMethodDetails(data)
 
         setLoading(false)
-      }else{
+      } else {
         setLoading(false)
       }
-    }catch{
+    } catch {
       console.log('error')
       setLoading(false)
     }
@@ -146,9 +146,9 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
   }
 
 
-  const IndividualBillFunction = async () =>{
-    try{
-      let response = await fetch(`http://127.0.0.1:8000/api/bills/${billID}/`, {
+  const IndividualBillFunction = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/bills/${billID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -158,23 +158,23 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
       })
       const data = await response.json()
 
-      if(response.ok){
+      if (response.ok) {
         setBillsDetails(data)
 
         setBillsLoading(false)
-      }else{
+      } else {
         setBillsLoading(false)
       }
-    }catch{
+    } catch {
       console.log('error')
       setBillsLoading(false)
     }
 
   }
 
-  const IndividualBankAccountFunction = async () =>{
-    try{
-      let response = await fetch(`http://127.0.0.1:8000/api/bank-account/`, {
+  const IndividualBankAccountFunction = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/bank-account/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -184,25 +184,25 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
       })
       const data = await response.json()
 
-      if(response.ok){
+      if (response.ok) {
         setBankAcountdDetails(data)
 
         setBankAccountLoading(false)
-      }else{
+      } else {
         setBankAccountLoading(false)
       }
-    }catch{
+    } catch {
       console.log('error')
       setBankAccountLoading(false)
     }
 
   }
 
-  const onSubmit = (data: FormData, e:any) => {
+  const onSubmit = (data: FormData, e: any) => {
     PayBills(e)
   }
 
-  const PayBills = async(e:any) =>{
+  const PayBills = async (e: any) => {
     e.preventDefault()
     setLoader(true)
     setDisableButton(true)
@@ -211,23 +211,23 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
     formData.append('student', `${studentData?.id}`)
     formData.append('bill', `${billsDetails?.id}`)
     formData.append('payment_method', paymentMethodDetails?.id)
-    if(reciept){
+    if (reciept) {
       formData.append('bill_receipt', reciept as any)
     }
 
 
 
-    try{
+    try {
       const response = await fetch(`http://127.0.0.1:8000/api/bills-payment/`, {
         method: 'POST',
         body: formData,
-        headers:{
+        headers: {
           Authorization: `Bearer ${authTokens?.access}`
         }
       })
-      
 
-      if(response.ok){
+
+      if (response.ok) {
         const data = await response.json();
         showAlert()
         setMessage('Payment sucessful')
@@ -238,11 +238,11 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
         router.push('/student/bills-payment/make-payment/step-3')
 
 
-      }else{
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setDisableButton(false)
         setIsSuccess(false)
@@ -250,8 +250,8 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
         showAlert()
       }
 
-      
-    }catch(error){
+
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred.');
@@ -259,32 +259,32 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
       setIsSuccess(false)
       setLoader(false)
 
-    }  
+    }
   }
 
-  
-  const GeneratePayment = async(e:any) =>{
+
+  const GeneratePayment = async (e: any) => {
     e.preventDefault()
     setProcessText('Generating payment gatway')
     setGenerateFeeLoader(true)
     setDisableButton(true)
 
 
-    try{
+    try {
       const response = await fetch(`http://127.0.0.1:8000/api/initialize-payment/`, {
         method: 'POST',
         body: JSON.stringify({
           email: studentData?.email,
           amount: billsDetails?.amount,
         }),
-        headers:{
+        headers: {
           Authorization: `Bearer ${authTokens?.access}`,
           'Content-Type': 'application/json',
         }
       })
 
 
-      if(response.ok){
+      if (response.ok) {
         const data = await response.json();
         setGenerateFeeLoader(false)
         setDisableButton(false)
@@ -292,11 +292,11 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
 
 
-      }else{
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setDisableButton(false)
         setIsSuccess(false)
@@ -304,8 +304,8 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
         showAlert()
       }
 
-      
-    }catch(error){
+
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred.');
@@ -313,13 +313,13 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
       setIsSuccess(false)
       setGenerateFeeLoader(false)
 
-    }  
+    }
   }
 
 
-  const IndividualStudentFunction = async() =>{
+  const IndividualStudentFunction = async () => {
 
-    let response = await fetch(`http://127.0.0.1:8000/api/students/${authTokens?.user_id}`, {
+    const response = await fetch(`http://127.0.0.1:8000/api/students/${authTokens?.user_id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -327,13 +327,13 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
       },
     })
 
-    if(response.ok){
+    if (response.ok) {
       const data = await response.json()
       setStudentData(data as StudentDataType)
       setStudentLoader(false)
 
 
-    }else{
+    } else {
       setStudentLoader(false)
     }
 
@@ -341,7 +341,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
   }
 
-  
+
   useEffect(() => {
     PaymentMethodFunction()
     IndividualStudentFunction()
@@ -382,7 +382,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
           {paymentMethodDetails.name === 'online payment' && (
             <div>
               {generateFeeLoader ? (
-                <ProcessingSpiner text={processText}/>
+                <ProcessingSpiner text={processText} />
               ) : (
                 <div className="row g-3 justify-content-center">
                   <div className="col-md-6">
@@ -411,14 +411,14 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
                         <div className="d-sm-flex flex-wrap justify-content-between pb-3 align-center">
                           <p className='sm-text'>Amount to be paid:</p>
                           <p className='white-text font-bold'>{formatCurrency(billsDetails.amount)} NGN</p>
-                        </div>                        
+                        </div>
 
                         <div className="d-sm-flex flex-wrap justify-content-between pb-3 align-center">
                           <p className='sm-text'>Description:</p>
                           <p>{formatName(billsDetails?.description || '')}</p>
                         </div>
 
-                        
+
 
 
                       </div>
@@ -427,7 +427,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
 
 
-                    
+
                   </div>
 
                   <div className="col-md-5">
@@ -437,16 +437,16 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
                       <div className="border-bottom1 p-3">
                         <p className='text-center'>Make Payment</p>
                       </div>
-                      
+
 
                       <div className="p-3">
                         <p className="light-text">If you have read, understood, and agreed to the terms, please proceed to make your payment by clicking the link below.</p>
                         <p className="light-text italic-text">Note: Once your payment is complete, return to this page and upload your payment receipt in the Finalize Payment section.</p>
                       </div>
-                      
+
                       <div className="px-3 pb-4 pt-2">
-                        
-                        <button onClick={GeneratePayment}  className="site-btn width-100">Pay now</button>
+
+                        <button onClick={GeneratePayment} className="site-btn width-100">Pay now</button>
                       </div>
                     </div>
 
@@ -459,53 +459,53 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
                       </div>
 
                       <div className='mt- p-3'>
-                          <form onSubmit={handleSubmit(onSubmit)}>
-                            <div className="row g-4"> 
-                              <div className="col-xxl-5">
-                                <label className="form-label">Reciept <span className="text-danger">*</span></label>
+                        <form onSubmit={handleSubmit(onSubmit)}>
+                          <div className="row g-4">
+                            <div className="col-xxl-5">
+                              <label className="form-label">Reciept <span className="text-danger">*</span></label>
 
-                                <div {...getRootProps({ className: 'dropzone-box' })}>
-                                  <input {...getInputProps()} />
-                                  
-                                  {reciept ? (
-                                    <div className="preview-box">
-                                      <img
-                                        src={URL.createObjectURL(reciept)}
-                                        alt="Selected reciept"
-                                        className="preview-image"
-                                      />
-                                      <p className="file-name">{reciept.name}</p>
-                                    </div>
-                                  ) : (
-                                    <p className="m-0">Drag & drop reciept here, or click to select file</p>
-                                  )}
-                                </div>
-                                <p className="light-text italic-text sm-text pt-2">You will upload the reciept u get after making payment in the make payment box</p>
-                                {errors.reciept && <p className="error-text">Passport is required</p>}
+                              <div {...getRootProps({ className: 'dropzone-box' })}>
+                                <input {...getInputProps()} />
+
+                                {reciept ? (
+                                  <div className="preview-box">
+                                    <img
+                                      src={URL.createObjectURL(reciept)}
+                                      alt="Selected reciept"
+                                      className="preview-image"
+                                    />
+                                    <p className="file-name">{reciept.name}</p>
+                                  </div>
+                                ) : (
+                                  <p className="m-0">Drag & drop reciept here, or click to select file</p>
+                                )}
                               </div>
-
-                              <div className="col-12 d-flex">
-                                <div className='me-4'>
-                                  <button disabled={disableButton} type="submit" className={`Button site-btn px-3`}>
-                                    <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                                    <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
-                                  </button>
-                                </div>
-                                
-                                <div>
-                                  <button onClick={handleCancel} className="site-delete-btn px-3 width-100"><i className="ri-close-circle-line pe-2"></i>Cancel</button>
-                                </div>
-                              </div>
-
-
+                              <p className="light-text italic-text sm-text pt-2">You will upload the reciept u get after making payment in the make payment box</p>
+                              {errors.reciept && <p className="error-text">Passport is required</p>}
                             </div>
 
-                          </form>
-                        </div>
+                            <div className="col-12 d-flex">
+                              <div className='me-4'>
+                                <button disabled={disableButton} type="submit" className={`Button site-btn px-3`}>
+                                  <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                                  <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
+                                </button>
+                              </div>
+
+                              <div>
+                                <button onClick={handleCancel} className="site-delete-btn px-3 width-100"><i className="ri-close-circle-line pe-2"></i>Cancel</button>
+                              </div>
+                            </div>
+
+
+                          </div>
+
+                        </form>
+                      </div>
                     </div>
                   </div>
 
-                  
+
                 </div>
               )}
             </div>
@@ -529,43 +529,43 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
                   <div className="row mt-4 mb-5 justify-content-center">
                     <div className="col-md-6">
-                    <div className="site-boxes border-radius-10px">
-                      <div className="border-bottom1 p-3">
-                        <p className='text-center'>Fee payment summary</p>
+                      <div className="site-boxes border-radius-10px">
+                        <div className="border-bottom1 p-3">
+                          <p className='text-center'>Fee payment summary</p>
+                        </div>
+
+                        <div className="px-3 py-4 light-text">
+                          <div className="d-sm-flex justify-content-between pb-3 align-center">
+                            <p className='sm-text'>Student name:</p>
+                            <p className=''>{formatName(studentData?.first_name || '')} {formatName(studentData?.last_name || '')}</p>
+                          </div>
+
+                          <div className="d-sm-flex justify-content-between pb-3 align-center">
+                            <p className='sm-text'>Email:</p>
+                            <p>{studentData?.email}</p>
+                          </div>
+
+
+                          <div className="d-sm-flex justify-content-between pb-3 align-center">
+                            <p className='sm-text'>Bill Type:</p>
+                            <p>{formatName(billsDetails?.bill_name || '')}</p>
+                          </div>
+
+                          <div className="d-sm-flex justify-content-between pb-3 align-center">
+                            <p className='sm-text'>Amount to be paid:</p>
+                            <p className='white-text font-bold'>{formatCurrency(billsDetails.amount)} NGN</p>
+                          </div>
+
+                          <div className="d-sm-flex flex-wrap justify-content-between pb-3 align-center">
+                            <p className='sm-text'>Description:</p>
+                            <p>{formatName(billsDetails?.description || '')}</p>
+                          </div>
+                        </div>
+
                       </div>
 
-                      <div className="px-3 py-4 light-text">
-                        <div className="d-sm-flex justify-content-between pb-3 align-center">
-                          <p className='sm-text'>Student name:</p>
-                          <p className=''>{formatName(studentData?.first_name || '')} {formatName(studentData?.last_name || '')}</p>
-                        </div>
-
-                        <div className="d-sm-flex justify-content-between pb-3 align-center">
-                          <p className='sm-text'>Email:</p>
-                          <p>{studentData?.email}</p>
-                        </div>
 
 
-                        <div className="d-sm-flex justify-content-between pb-3 align-center">
-                          <p className='sm-text'>Bill Type:</p>
-                          <p>{formatName(billsDetails?.bill_name || '')}</p>
-                        </div>
-
-                        <div className="d-sm-flex justify-content-between pb-3 align-center">
-                          <p className='sm-text'>Amount to be paid:</p>
-                          <p className='white-text font-bold'>{formatCurrency(billsDetails.amount)} NGN</p>
-                        </div>
-
-                        <div className="d-sm-flex flex-wrap justify-content-between pb-3 align-center">
-                          <p className='sm-text'>Description:</p>
-                          <p>{formatName(billsDetails?.description || '')}</p>
-                        </div>
-                      </div>
-
-                    </div>
-
-
-                      
                     </div>
                   </div>
 
@@ -581,7 +581,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
                   <div className='mt-5'>
                     <div className="row g-3">
                       {bankAcountdDetails.length > 0 ? (
-                        bankAcountdDetails.map((data:any) => (
+                        bankAcountdDetails.map((data: any) => (
                           <div className="col-md-6" key={data.id}>
                             <div className="site-boxes border-radius-10px">
                               <div className="row p-4" onClick={handleSelectedID}>
@@ -593,7 +593,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
                                     <h5 className="ps-4">{data.bank_name}</h5>
                                   </div>
-                                  
+
                                 </div>
 
                                 <div className={`col-12 p-3 `}>
@@ -620,17 +620,17 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
                               <p className='light-text md-text'>No details available</p>
                               <p className="light-text">There is no  details right now. Check again later</p>
                             </div>
-        
+
                           </div>
-        
+
                         </div>
                       )}
-                      
+
                     </div>
                   </div>
                 </div>
               )}
-              
+
             </div>
           )}
 
@@ -673,7 +673,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
                 </div>
 
 
-                
+
               </div>
 
               <div className="col-md-6">
@@ -693,16 +693,16 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
                 </div>
 
 
-                
+
               </div>
-              
+
 
             </div>
           )}
 
-          
-          
-      </div>
+
+
+        </div>
       )}
 
     </div>

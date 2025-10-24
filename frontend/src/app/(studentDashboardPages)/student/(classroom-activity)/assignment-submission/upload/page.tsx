@@ -3,7 +3,7 @@ import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
 import ThemeContext from '@/context/ThemeContext'
 import React, { useContext, useEffect, useState } from 'react'
-import { useDropzone } from 'react-dropzone';
+
 import { useForm } from 'react-hook-form'
 import Select from 'react-select';
 
@@ -23,22 +23,22 @@ const CreateAssignmentSubmission = () => {
   }, []);
 
 
-  const { 
-  
+  const {
+
     authTokens,
-  
+
     loader,
     setLoader,
     disableButton,
     setDisableButton,
-  
+
     setMessage,
     showAlert,
     setIsSuccess,
-  
-    
-  
-  
+
+
+
+
   } = useContext(AuthContext)!
 
 
@@ -53,16 +53,16 @@ const CreateAssignmentSubmission = () => {
   } = useContext(AllDataContext)!;
 
   const { theme, toggleTheme } = useContext(ThemeContext)!;
- 
+
 
 
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<any>();
 
-    const handleImgFile = (files: File[]) => {
+  const handleImgFile = (files: File[]) => {
     if (files.length > 0) {
       setImg(files[0]);
     } else {
@@ -70,21 +70,21 @@ const CreateAssignmentSubmission = () => {
     }
   };
 
-  const handleFile = (event:any) => {
+  const handleFile = (event: any) => {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      setFile(file); 
+      setFile(file);
     } else {
-      setFile(null); 
+      setFile(null);
     }
   };
 
-    const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
-      onDrop: handleImgFile,
-      accept: {
-        'image/*': []
-      }
-    });
+  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+    onDrop: handleImgFile,
+    accept: {
+      'image/*': []
+    }
+  });
 
   const TeachersOptions = teacherData.map((data: any) => ({
     value: data.id,
@@ -112,37 +112,37 @@ const CreateAssignmentSubmission = () => {
       boxShadow: state.isFocused ? '0 0 0 4px rgba(120, 62, 188, 0.2)' : 'none',
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     menu: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#0d0d0d' : '#fff',
       border: '1px solid #ccc',
       zIndex: 999,
     }),
-  
+
     option: (provided: any, state: any) => {
       const isDark = theme === 'dark';
-  
+
       const backgroundColor = state.isSelected
         ? '#783ebc'
         : state.isFocused
-        ? isDark
-          ? '#1a1a1a' // hover in dark
-          : '#f0f0f0' // hover in light
-        : isDark
-        ? '#0d0d0d'
-        : '#fff';
-  
+          ? isDark
+            ? '#1a1a1a' // hover in dark
+            : '#f0f0f0' // hover in light
+          : isDark
+            ? '#0d0d0d'
+            : '#fff';
+
       const color = state.isSelected
         ? '#fff'
         : state.isFocused
-        ? isDark
-          ? '#fff'
-          : '#000'
-        : isDark
-        ? '#fff'
-        : '#000';
-  
+          ? isDark
+            ? '#fff'
+            : '#000'
+          : isDark
+            ? '#fff'
+            : '#000';
+
       return {
         ...provided,
         backgroundColor,
@@ -150,27 +150,27 @@ const CreateAssignmentSubmission = () => {
         cursor: 'pointer',
       };
     },
-  
+
     singleValue: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     placeholder: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#aaa' : '#666',
     }),
-  
+
     input: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     dropdownIndicator: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     indicatorSeparator: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#444' : '#ccc',
@@ -180,12 +180,12 @@ const CreateAssignmentSubmission = () => {
 
 
 
-  const onSubmit = (data: FormData, e:any) => {
+  const onSubmit = (data: FormData, e: any) => {
     CreatAssignment(e)
   }
 
 
-  const CreatAssignment = async(e:any) =>{
+  const CreatAssignment = async (e: any) => {
     e.preventDefault()
     setLoader(true)
     setDisableButton(true)
@@ -197,26 +197,26 @@ const CreateAssignmentSubmission = () => {
     formData.append('assignment_code', assignmentCode)
     formData.append('assignment_note', note)
 
-    if(file){
-      formData.append('submission_file', file)  
+    if (file) {
+      formData.append('submission_file', file)
     }
-    if(img){
+    if (img) {
       formData.append('submission_photo', img)
     }
 
 
 
-    try{
+    try {
       const response = await fetch(`http://127.0.0.1:8000/api/assignment-submission/`, {
         method: 'POST',
         body: formData,
-        headers:{
+        headers: {
           Authorization: `Bearer ${authTokens?.access}`
         }
       })
 
 
-      if(response.ok){
+      if (response.ok) {
         showAlert()
         setMessage('Assignment submitted')
         setIsSuccess(true)
@@ -231,11 +231,11 @@ const CreateAssignmentSubmission = () => {
 
 
 
-      }else{
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setDisableButton(false)
         setIsSuccess(false)
@@ -243,8 +243,8 @@ const CreateAssignmentSubmission = () => {
         showAlert()
       }
 
-      
-    }catch(error){
+
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred.');
@@ -252,7 +252,7 @@ const CreateAssignmentSubmission = () => {
       setIsSuccess(false)
       setLoader(false)
 
-    }  
+    }
   }
 
   useEffect(() => {
@@ -263,7 +263,7 @@ const CreateAssignmentSubmission = () => {
   }, [])
 
 
-  
+
 
 
 
@@ -296,7 +296,7 @@ const CreateAssignmentSubmission = () => {
                         />
                         <p className="light-text sm-text italic-text pt-2">Select the teacher you want to submit this assignment to</p>
                       </div>
-                      
+
 
 
 
@@ -313,21 +313,21 @@ const CreateAssignmentSubmission = () => {
                           isSearchable
                           isClearable
                         />
-                                                <p className="light-text sm-text italic-text pt-2">Select the subject assignment you want to submit</p>
+                        <p className="light-text sm-text italic-text pt-2">Select the subject assignment you want to submit</p>
                       </div>
 
                       <div className="col-12">
                         <label htmlFor="assignmentCode" className="form-label">Assignment Code <span className="text-danger">*</span></label>
-                        <input type="text" className={`site-input ${errors.assignmentCode ? 'error-input' : ''}`} {...register('assignmentCode', {required: true})}  placeholder='assignmentCode' value={assignmentCode}  onChange={(e) => setAssignmentCode(e.target.value)}/>
+                        <input type="text" className={`site-input ${errors.assignmentCode ? 'error-input' : ''}`} {...register('assignmentCode', { required: true })} placeholder='assignmentCode' value={assignmentCode} onChange={(e) => setAssignmentCode(e.target.value)} />
                         <p className="light-text sm-text italic-text pt-2">Enter Assignment Code given by your teacher or check your assignment page for the asignment code</p>
                         {errors.assignmentCode && <p className="error-text">This field is required</p>}
                       </div>
 
-                                
+
 
                       <div className="col-md-12">
                         <label htmlFor="note" className="form-label">Submission Note</label>
-                        <textarea rows={6}  className={`site-input ${errors.note ? 'error-input' : ''}`} {...register('note')}   value={note}  onChange={(e) => setNote(e.target.value)} placeholder='Instuctions'></textarea>
+                        <textarea rows={6} className={`site-input ${errors.note ? 'error-input' : ''}`} {...register('note')} value={note} onChange={(e) => setNote(e.target.value)} placeholder='Instuctions'></textarea>
                         <p className="light-text sm-text italic-text pt-2">Any note about the assignment</p>
 
                       </div>
@@ -337,7 +337,7 @@ const CreateAssignmentSubmission = () => {
 
                         <div {...getRootProps({ className: 'dropzone-box' })}>
                           <input {...getInputProps()} />
-                          
+
                           {img ? (
                             <div className="preview-box">
                               <img
@@ -355,7 +355,7 @@ const CreateAssignmentSubmission = () => {
 
                       <div className="col-lg-3 col-12">
                         <label htmlFor="cv" className="form-label">Assignment File</label>
-                        
+
                         <input
                           type="file"
                           id="cv"
@@ -374,19 +374,19 @@ const CreateAssignmentSubmission = () => {
                           }
                         </label>
                       </div>
-                  
+
 
 
                       <div className="col-12 mt-4">
                         <button type='submit' className='site-btn px-4'>
-                          <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                          <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill pe-2"></i> Sumbit</span>
+                          <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                          <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill pe-2"></i> Sumbit</span>
                         </button>
-                    
+
                       </div>
                     </div>
                   )}
-  
+
 
                 </form>
               </div>

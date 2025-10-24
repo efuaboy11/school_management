@@ -4,10 +4,10 @@ import React, { use, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form'
 import Image from 'next/image'
-import { useDropzone } from 'react-dropzone';
+
 const IndivivdualEvent = ({ params }: { params: Promise<{ id: string }> }) => {
-  const {id} = use(params)
-  
+  const { id } = use(params)
+
   const {
     truncateText,
     authTokens,
@@ -45,14 +45,14 @@ const IndivivdualEvent = ({ params }: { params: Promise<{ id: string }> }) => {
   const {
     register,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
   } = useForm<any>();
 
 
 
-  const IndividualDetailsFunction = async () =>{
-    try{
-      let response = await fetch(`http://127.0.0.1:8000/api/school-event/${id}/`, {
+  const IndividualDetailsFunction = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/school-event/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -62,13 +62,13 @@ const IndivivdualEvent = ({ params }: { params: Promise<{ id: string }> }) => {
       })
       const data = await response.json()
 
-      if(response.ok){
+      if (response.ok) {
         setDetails(data)
         setLoading(false)
-      }else{
+      } else {
         setLoading(false)
       }
-    }catch{
+    } catch {
       console.log('error')
       setLoading(false)
     }
@@ -78,9 +78,9 @@ const IndivivdualEvent = ({ params }: { params: Promise<{ id: string }> }) => {
 
 
 
-    useEffect(() =>{
-      IndividualDetailsFunction()
-    }, [])
+  useEffect(() => {
+    IndividualDetailsFunction()
+  }, [])
 
 
 
@@ -89,7 +89,7 @@ const IndivivdualEvent = ({ params }: { params: Promise<{ id: string }> }) => {
   return (
     <div>
 
-          
+
       {loading ? (
         <div>
           <div className="mt-5 pt-5">
@@ -114,7 +114,7 @@ const IndivivdualEvent = ({ params }: { params: Promise<{ id: string }> }) => {
                     <div className="site-boxes border-radius-10px">
                       <div className="border-bottom1 p-3">
                         <p>Event Details</p>
-                    
+
                       </div>
 
                       <div className='light-text p-3'>
@@ -132,7 +132,7 @@ const IndivivdualEvent = ({ params }: { params: Promise<{ id: string }> }) => {
                           <p className="pb-2 sm-text">End Date</p>
                           <p>{formatDate(details.end_date)}</p>
                         </div>
-                        
+
                       </div>
                     </div>
                   </div>
@@ -143,7 +143,7 @@ const IndivivdualEvent = ({ params }: { params: Promise<{ id: string }> }) => {
                         <div className="p-3">
                           <p>Description</p>
                         </div>
-                        
+
                       </div>
                       <div className='p-3'>
                         {details.description ? (
@@ -151,7 +151,7 @@ const IndivivdualEvent = ({ params }: { params: Promise<{ id: string }> }) => {
                         ) : (
                           <p className="light-text">No description Placed</p>
                         )}
-                       
+
                       </div>
                     </div>
                   </div>
@@ -169,14 +169,14 @@ const IndivivdualEvent = ({ params }: { params: Promise<{ id: string }> }) => {
             </div>
           )}
 
-          
-        </div> 
+
+        </div>
       )}
 
 
-    </div> 
+    </div>
 
-   
+
   )
 }
 

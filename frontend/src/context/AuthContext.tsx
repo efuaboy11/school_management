@@ -447,7 +447,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const sanitizedPassword = validator.escape(password); 
 
     try{
-      let response = await fetch('http://localhost:8000/api/login/', {
+      const response = await fetch('http://localhost:8000/api/login/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -521,7 +521,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const sanitizedUsername = validator.escape(username);
     
     try{
-      let response = await fetch('http://127.0.0.1:8000/api/request-to-change-password-form/', {
+      const response = await fetch('http://127.0.0.1:8000/api/request-to-change-password-form/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -572,7 +572,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const sanitizedChangePasswordToken = validator.escape(changePasswordToken)
 
     try{
-      let response = await fetch('http://127.0.0.1:8000/api/change-password/', {
+      const response = await fetch('http://127.0.0.1:8000/api/change-password/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -632,7 +632,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const updateToken = async () =>{
     if(authTokens){
       if (!authTokens?.refresh) return;
-      let response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
+      const response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
           method: 'POST',
           headers: {
               "Content-Type": "application/json",

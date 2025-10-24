@@ -1,11 +1,10 @@
 
 "use client"
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import React, { useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
-import { Pagination, Stack } from '@mui/material';
+
 import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
 import { debounce } from "lodash";
@@ -27,11 +26,10 @@ const Subjects = () => {
     const {
       truncateText,
       authTokens,
-      formateDateTime,
-      formatDate,
+  
       formatName,
-      formatCurrency,
-      showSidebar,
+  
+
       loader,
       setLoader,
       disableButton,
@@ -95,7 +93,7 @@ const Subjects = () => {
     setLoader(true)
 
     try{
-      let response = await fetch('http://127.0.0.1:8000/api/delete-multiple-subjects/', {
+      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-subjects/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -133,7 +131,7 @@ const Subjects = () => {
         setIsSuccess(false)
 
       }
-    }catch(error){
+    }catch{
       setLoader(false)
       setDisableButton(false)
       setMessage("An error occurred. Please try again.")

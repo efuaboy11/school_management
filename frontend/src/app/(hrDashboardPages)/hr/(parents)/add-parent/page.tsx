@@ -3,7 +3,7 @@
 import React, { useContext, useEffect, useState } from 'react'
 import Link from 'next/link'
 import { useForm } from 'react-hook-form'
-import { useDropzone } from 'react-dropzone';
+
 import AllDataContext from '@/context/AllData';
 import AuthContext from '@/context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -25,7 +25,7 @@ const AddParent = () => {
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<any>();
 
   const {
@@ -33,7 +33,7 @@ const AddParent = () => {
     studentClassData
   } = useContext(AllDataContext)!;
 
-    const { 
+  const {
     authTokens,
     loader,
     setLoader,
@@ -44,12 +44,12 @@ const AddParent = () => {
     showAlert,
     setIsSuccess,
 
-    
 
-  
-    } = useContext(AuthContext)!
 
-  useEffect(() =>{
+
+  } = useContext(AuthContext)!
+
+  useEffect(() => {
     StudentClassFunction()
 
   }, [])
@@ -78,12 +78,12 @@ const AddParent = () => {
     }
   });
 
-  const onSubmit = (data: FormData, e:any) => {
+  const onSubmit = (data: FormData, e: any) => {
     addParentFunction(e)
   }
 
 
-  const addParentFunction = async(e:any) =>{
+  const addParentFunction = async (e: any) => {
     e.preventDefault()
     setLoader(true)
     setDisableButton(true)
@@ -91,10 +91,10 @@ const AddParent = () => {
     const formData = new FormData()
     formData.append('name', fullName)
     formData.append('children_name', childrenName)
-    formData.append('email', email) 
+    formData.append('email', email)
     formData.append('address', homeAddress)
     formData.append('phone_number', phoneNumber)
-    if(passport){
+    if (passport) {
       formData.append('image', passport as any)
     }
 
@@ -102,17 +102,17 @@ const AddParent = () => {
 
 
 
-    try{
+    try {
       const response = await fetch(`http://127.0.0.1:8000/api/parents/`, {
         method: 'POST',
         body: formData,
-        headers:{
+        headers: {
           Authorization: `Bearer ${authTokens?.access}`
         }
       })
 
 
-      if(response.ok){
+      if (response.ok) {
         showAlert()
         setMessage('Parent added successfully')
         setIsSuccess(true)
@@ -126,11 +126,11 @@ const AddParent = () => {
         setPassport(null)
 
 
-      }else{
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setDisableButton(false)
         setIsSuccess(false)
@@ -138,8 +138,8 @@ const AddParent = () => {
         showAlert()
       }
 
-      
-    }catch(error){
+
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred.');
@@ -147,14 +147,14 @@ const AddParent = () => {
       setIsSuccess(false)
       setLoader(false)
 
-    }  
+    }
   }
 
 
 
 
-    
-  
+
+
 
   return (
     <div>
@@ -171,28 +171,28 @@ const AddParent = () => {
           <div className="col-md-9">
             <div className="site-boxes py-4 border-radius-5px">
               <form onSubmit={handleSubmit(onSubmit)}>
-        
+
                 <div className='border-bottom1 px-4 mb-4'>
                   <p className="stylish-text pb-3">1. Personal Information</p>
                 </div>
-                
+
                 <div className="row g-4 px-4">
                   <div className="col-md-6">
                     <label htmlFor="fullName" className="form-label">Full Name <span className="text-danger">*</span></label>
-                    <input type="text" className={`site-input ${errors.fullName ? 'error-input' : ''}`} {...register('fullName', {required: true})}  placeholder='First Name' value={fullName}  onChange={(e) => setFullName(e.target.value)}/>
+                    <input type="text" className={`site-input ${errors.fullName ? 'error-input' : ''}`} {...register('fullName', { required: true })} placeholder='First Name' value={fullName} onChange={(e) => setFullName(e.target.value)} />
                     {errors.fullName && <p className="error-text">This field is required</p>}
                   </div>
 
                   <div className="col-md-6">
                     <label htmlFor="childrenName" className="form-label">Phone Number  <span className="text-danger">*</span></label>
-                    <input type="text"  className={`site-input ${errors.phoneNumber ? 'error-input' : ''}`} {...register('phoneNumber', {required: true})}  value={phoneNumber}  onChange={(e) => setPhoneNumber(e.target.value)} placeholder='Phone Number' />
+                    <input type="text" className={`site-input ${errors.phoneNumber ? 'error-input' : ''}`} {...register('phoneNumber', { required: true })} value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} placeholder='Phone Number' />
                     {errors.phoneNumber && <p className="error-text">This field is required</p>}
                   </div>
 
-                  
+
                   <div className="col-md-6">
                     <label htmlFor="childrenName" className="form-label">Home Address  <span className="text-danger">*</span></label>
-                    <input type="text"  className={`site-input ${errors.homeAddress ? 'error-input' : ''}`} {...register('homeAddress', {required: true})}  value={homeAddress}  onChange={(e) => setHomeAddress(e.target.value)} placeholder='Home Address' />
+                    <input type="text" className={`site-input ${errors.homeAddress ? 'error-input' : ''}`} {...register('homeAddress', { required: true })} value={homeAddress} onChange={(e) => setHomeAddress(e.target.value)} placeholder='Home Address' />
                     {errors.homeAddress && <p className="error-text">This field is required</p>}
                   </div>
 
@@ -200,13 +200,13 @@ const AddParent = () => {
 
                   <div className="col-md-6">
                     <label htmlFor="email" className="form-label">Email <span className="text-danger">*</span></label>
-                    <input type="email" className={`site-input ${errors.email ? 'error-input' : ''}`} {...register('email', {required: true})}  value={email}  onChange={(e) => setEmail(e.target.value)} placeholder='Email' />
+                    <input type="email" className={`site-input ${errors.email ? 'error-input' : ''}`} {...register('email', { required: true })} value={email} onChange={(e) => setEmail(e.target.value)} placeholder='Email' />
                     {errors.email && <p className="error-text">This field is required</p>}
                   </div>
 
                   <div className="col-12">
                     <label htmlFor="childrenName" className="form-label">Offspring Name<span className="text-danger">*</span></label>
-                    <textarea rows={6} className={`site-input ${errors.childrenName ? 'error-input' : ''}`} {...register('childrenName', {required: true})}   value={childrenName}  onChange={(e) => setChildrenName(e.target.value)} placeholder='Offsprings' ></textarea>
+                    <textarea rows={6} className={`site-input ${errors.childrenName ? 'error-input' : ''}`} {...register('childrenName', { required: true })} value={childrenName} onChange={(e) => setChildrenName(e.target.value)} placeholder='Offsprings' ></textarea>
                     {errors.childrenName && <p className="error-text">This field is required</p>}
                   </div>
 
@@ -216,7 +216,7 @@ const AddParent = () => {
 
                     <div {...getRootProps({ className: 'dropzone-box' })}>
                       <input {...getInputProps()} />
-                      
+
                       {passport ? (
                         <div className="preview-box">
                           <img
@@ -235,21 +235,21 @@ const AddParent = () => {
                   </div>
 
                   <div className="col-12">
-                  <div>
-                    <button disabled={disableButton} type="submit" className={`Button site-btn px-3`}>
-                      <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                      <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
-                    </button>
+                    <div>
+                      <button disabled={disableButton} type="submit" className={`Button site-btn px-3`}>
+                        <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                        <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
+                      </button>
+                    </div>
+
                   </div>
-                  
-                </div>
 
 
                 </div>
 
 
 
-                
+
 
               </form>
 

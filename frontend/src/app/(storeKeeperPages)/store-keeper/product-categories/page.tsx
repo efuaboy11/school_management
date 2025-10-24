@@ -153,7 +153,7 @@ const ProductCategories = () => {
     setLoader(true)
 
     try{
-      let response = await fetch('http://127.0.0.1:8000/api/delete-multiple-product-categories/', {
+      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-product-categories/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -190,7 +190,7 @@ const ProductCategories = () => {
         setIsSuccess(false)
 
       }
-    }catch(error){
+    }catch{
       setLoader(false)
       setDisableButton(false)
       setMessage("An error occurred. Please try again.")

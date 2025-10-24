@@ -1,6 +1,5 @@
 "use client"
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import React, { use, useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -176,7 +175,7 @@ const SchemeOfWorkPage = ({ params }: { params: Promise<any> }) => {
 
 
   const SchemeOFWorkFunction = async() =>{
-    let response = await fetch(`http://127.0.0.1:8000/api/scheme-of-work/?student_class=${classID}&term=${termID}&subject=${subjectQuery}`, {
+    const response = await fetch(`http://127.0.0.1:8000/api/scheme-of-work/?student_class=${classID}&term=${termID}&subject=${subjectQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -207,7 +206,7 @@ const SchemeOfWorkPage = ({ params }: { params: Promise<any> }) => {
 
   const UserDetails = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/students/${authTokens?.user_id}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/students/${authTokens?.user_id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

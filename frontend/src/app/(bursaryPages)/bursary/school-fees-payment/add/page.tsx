@@ -5,7 +5,7 @@ import ThemeContext from '@/context/ThemeContext'
 import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Select from 'react-select';
-import { useDropzone } from 'react-dropzone';
+
 
 const CreateSchoolFees = () => {
   const [feeType, setFeeType] = useState('')
@@ -21,25 +21,25 @@ const CreateSchoolFees = () => {
   useEffect(() => {
     setIsClient(true);
   }, []);
-  
+
   const { theme, toggleTheme } = useContext(ThemeContext)!;
 
-  const { 
-  
+  const {
+
     authTokens,
-  
+
     loader,
     setLoader,
     disableButton,
     setDisableButton,
-  
+
     setMessage,
     showAlert,
     setIsSuccess,
-  
-    
-  
-  
+
+
+
+
   } = useContext(AuthContext)!
 
 
@@ -61,24 +61,24 @@ const CreateSchoolFees = () => {
     SchoolFeesFunction
   } = useContext(AllDataContext)!;
 
-  
+
 
 
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<any>();
 
 
   const studentOptions = studentData.map((data: any) => ({
     value: data.id,
-    label: `${data.first_name} ${data.last_name}` 
+    label: `${data.first_name} ${data.last_name}`
   }));
 
   const feeTypeOptions = schoolFeesData.map((data: any) => ({
     value: data.id,
-    label: `${data.student_class_name.name} -   ${data.fee_choice} ${data.term_name.name} ${data.session_name.name}` 
+    label: `${data.student_class_name.name} -   ${data.fee_choice} ${data.term_name.name} ${data.session_name.name}`
   }));
 
   const handleImgFile = (files: File[]) => {
@@ -97,12 +97,12 @@ const CreateSchoolFees = () => {
     }
   });
 
-  const onSubmit = (data: FormData, e:any) => {
+  const onSubmit = (data: FormData, e: any) => {
     CreatBill(e)
   }
 
 
-  const CreatBill = async(e:any) =>{
+  const CreatBill = async (e: any) => {
     e.preventDefault()
     setLoader(true)
     setDisableButton(true)
@@ -114,17 +114,17 @@ const CreateSchoolFees = () => {
     // formData.append('reciept', reciept)
 
 
-    try{
+    try {
       const response = await fetch(`http://127.0.0.1:8000/api/school-fees/`, {
         method: 'POST',
         body: formData,
-        headers:{
+        headers: {
           Authorization: `Bearer ${authTokens?.access}`
         }
       })
 
 
-      if(response.ok){
+      if (response.ok) {
         showAlert()
         setMessage('School fees bill created')
         setIsSuccess(true)
@@ -135,11 +135,11 @@ const CreateSchoolFees = () => {
         setStudent('')
 
 
-      }else{
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setDisableButton(false)
         setIsSuccess(false)
@@ -147,8 +147,8 @@ const CreateSchoolFees = () => {
         showAlert()
       }
 
-      
-    }catch(error){
+
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred.');
@@ -156,7 +156,7 @@ const CreateSchoolFees = () => {
       setIsSuccess(false)
       setLoader(false)
 
-    }  
+    }
   }
 
 
@@ -168,37 +168,37 @@ const CreateSchoolFees = () => {
       boxShadow: state.isFocused ? '0 0 0 4px rgba(120, 62, 188, 0.2)' : 'none',
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     menu: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#0d0d0d' : '#fff',
       border: '1px solid #ccc',
       zIndex: 999,
     }),
-  
+
     option: (provided: any, state: any) => {
       const isDark = theme === 'dark';
-  
+
       const backgroundColor = state.isSelected
         ? '#783ebc'
         : state.isFocused
-        ? isDark
-          ? '#1a1a1a' // hover in dark
-          : '#f0f0f0' // hover in light
-        : isDark
-        ? '#0d0d0d'
-        : '#fff';
-  
+          ? isDark
+            ? '#1a1a1a' // hover in dark
+            : '#f0f0f0' // hover in light
+          : isDark
+            ? '#0d0d0d'
+            : '#fff';
+
       const color = state.isSelected
         ? '#fff'
         : state.isFocused
-        ? isDark
-          ? '#fff'
-          : '#000'
-        : isDark
-        ? '#fff'
-        : '#000';
-  
+          ? isDark
+            ? '#fff'
+            : '#000'
+          : isDark
+            ? '#fff'
+            : '#000';
+
       return {
         ...provided,
         backgroundColor,
@@ -206,27 +206,27 @@ const CreateSchoolFees = () => {
         cursor: 'pointer',
       };
     },
-  
+
     singleValue: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     placeholder: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#aaa' : '#666',
     }),
-  
+
     input: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     dropdownIndicator: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     indicatorSeparator: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#444' : '#ccc',
@@ -235,7 +235,7 @@ const CreateSchoolFees = () => {
 
 
 
-  
+
   useEffect(() => {
     StudentClassFunction()
     TermFunction()
@@ -259,7 +259,7 @@ const CreateSchoolFees = () => {
               </div>
 
               <div className="p-3">
-                <form  onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="row g-3">
 
                     <div className="col-md-6">
@@ -296,20 +296,20 @@ const CreateSchoolFees = () => {
                       </div>
                     )}
 
-   
-                    
+
+
 
 
                     <div className="col-md-6">
                       <label htmlFor="firstName" className="form-label">Payment Method <span className="text-danger">*</span></label>
-                      <select   className={`site-input ${errors.paymentMethod ? 'error-input' : ''}`} {...register('paymentMethod', {required: true})}  value={paymentMethod}  onChange={(e) => setPaymentMethod(e.target.value)}>
+                      <select className={`site-input ${errors.paymentMethod ? 'error-input' : ''}`} {...register('paymentMethod', { required: true })} value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
                         <option value="">Select</option>
-                        {paymentMethodData?.map((data:any) => (
+                        {paymentMethodData?.map((data: any) => (
                           <option key={data.id} value={data.id}>{data.name}</option>
                         ))}
                       </select>
                       {errors.paymentMethod && <p className="error-text">This field is required</p>}
-                    </div> 
+                    </div>
 
 
                     <div className="col-md-3">
@@ -317,7 +317,7 @@ const CreateSchoolFees = () => {
 
                       <div {...getRootProps({ className: 'dropzone-box' })}>
                         <input {...getInputProps()} />
-                        
+
                         {reciept ? (
                           <div className="preview-box">
                             <img
@@ -339,11 +339,11 @@ const CreateSchoolFees = () => {
                     <div className="col-12">
                       <div className='mb-3'>
                         <button disabled={disableButton} type="submit" className={`Button site-btn px-3`}>
-                          <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                          <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
+                          <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                          <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
                         </button>
                       </div>
-                    
+
                     </div>
 
                   </div>

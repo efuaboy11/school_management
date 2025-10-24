@@ -1,11 +1,11 @@
 "use client"
 import React, { use, useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons'
+
+
 import AuthContext from '@/context/AuthContext'
 import { useForm } from 'react-hook-form'
-import { Pagination, Stack } from '@mui/material';
+
 import { useRouter } from 'next/navigation';
 import AllDataContext from '@/context/AllData'
 import { useDropzone } from 'react-dropzone';
@@ -20,7 +20,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
   const [showContactInformationModal, setShowContactInformationModal] = useState(false);
   const [animateModal, setAnimateModal] = useState(false);
   const [userData, setUserData] = useState<any>(null)
-  const [userDeleteModal, setUserDeleteModal] = useState(false)
+
   const [schoolFeesDeleteModal, setSchoolFeesDeleteModal] = useState(false)
   const [billsDeleteModal, setBillsDeleteModal] = useState(false)
 
@@ -44,23 +44,23 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
   const [homeAddress, setHomeAddress] = useState('')
   const [yearsOfExperience, setYearsOfExperience] = useState('')
   const [computerSkills, setComputerSkills] = useState('')
-  const [staffSpeech, setStaffSpeech] = useState('')
+
   const [passport, setPassport] = useState<File | null>(null)
   const [studentClass, setStudentClass] = useState('')
 
   const [Loading, setLoading] = useState(true)
 
   const {
-    truncateText,
+
     authTokens,
-    formateDateTime,
+
     formatDate,
     formatName,
-    formatCurrency,
-    showSidebar,
+
+
     loader,
     setLoader,
-    disableButton,
+
     setDisableButton,
 
     setMessage,
@@ -72,7 +72,6 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
     const {
       StudentClassFunction,
       studentClassData,
-      setStudentClassData,
     } = useContext(AllDataContext)!;
   
 
@@ -139,7 +138,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
 
   const IndividualUserDataFunction = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/staff/${id}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/staff/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -237,13 +236,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
     }
   }, [billsDeleteModal]);
 
-  useEffect(() => {
-    if (userDeleteModal) {
-      setAnimateModal(true)
-    } else {
-      setAnimateModal(false);
-    }
-  }, [userDeleteModal]);
+
 
 
   const {

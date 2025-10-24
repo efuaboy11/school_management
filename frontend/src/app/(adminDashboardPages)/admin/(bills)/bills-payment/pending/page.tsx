@@ -1,5 +1,5 @@
 "use client"
-import { faEllipsis, faX } from '@fortawesome/free-solid-svg-icons'
+import {faX } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
@@ -126,13 +126,13 @@ const PendingPayment = () => {
 
 
 
-  const onSubmit = (e:any) =>{
-    UpdateStatus(e)
+  const onSubmit = () =>{
+    UpdateStatus()
       
   }
 
 
-  const UpdateStatus = async(e:any) =>{
+  const UpdateStatus = async() =>{
     setStatusLoader(true)
     setDisableButton(true)
 
@@ -184,7 +184,7 @@ const PendingPayment = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors},
   } = useForm();
 
 
@@ -194,7 +194,7 @@ const PendingPayment = () => {
     setLoader(true)
 
     try{
-      let response = await fetch('http://127.0.0.1:8000/api/delete-multiple-payment-school-fees/', {
+      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-payment-school-fees/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -231,7 +231,7 @@ const PendingPayment = () => {
         setIsSuccess(false)
 
       }
-    }catch(error){
+    }catch{
       setLoader(false)
       setDisableButton(false)
       setMessage("An error occurred. Please try again.")

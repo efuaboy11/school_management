@@ -4,13 +4,13 @@ import AuthContext from '@/context/AuthContext'
 import ThemeContext from '@/context/ThemeContext'
 import Link from 'next/link'
 import React, { use, useContext, useEffect, useState } from 'react'
-import { useDropzone } from 'react-dropzone';
+
 import { useForm } from 'react-hook-form'
 import Select from 'react-select';
 import Image from 'next/image'
 import { Pagination, Stack } from '@mui/material';
 import { DownloadLink } from '@/components/downloadLink'
-import { debounce } from "lodash";
+
 
 const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
 
@@ -21,7 +21,7 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
   const [studentValue, setStudentValue] = useState('')
   const [file, setFile] = useState<File | null>(null)
 
-  const [resultCount, setResultCount] = useState(0)
+  
   const [resultData, setResultData] = useState<any>([])
   const [resultLoader, setResultLoader] = useState(true)
 
@@ -37,13 +37,13 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
 
   const { 
   
-    truncateText,
+    
     authTokens,
-    formateDateTime,
-    formatDate,
+    
+
     formatName,
-    formatCurrency,
-    showSidebar,
+    
+    
     loader,
     setLoader,
     disableButton,
@@ -64,14 +64,14 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
     StudentFunction,
   } = useContext(AllDataContext)!;
 
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  const { theme} = useContext(ThemeContext)!;
  
 
 
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    
   } = useForm<any>();
 
 
@@ -299,7 +299,7 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
 
 
   const ResultFunction = async() =>{
-    let response = await fetch(`http://127.0.0.1:8000/api/e-result/?student=${studentQuery}&student_class=${classID}&term=${termID}&session=${sessionID}`, {
+    const response = await fetch(`http://127.0.0.1:8000/api/e-result/?student=${studentQuery}&student_class=${classID}&term=${termID}&session=${sessionID}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -308,12 +308,7 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
-        setResultCount(data.length)
-      }
-      
-      
+    if(response.ok){    
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setResultData(sortedData)
       setResultLoader(false)
@@ -335,7 +330,7 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
     setLoader(true)
 
     try{
-      let response = await fetch('http://127.0.0.1:8000/api/delete-multiple-e-result/', {
+      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-e-result/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -371,7 +366,7 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
         setIsSuccess(false)
 
       }
-    }catch(error){
+    }catch{
       setLoader(false)
       setDisableButton(false)
       setMessage("An error occurred. Please try again.")
@@ -382,7 +377,7 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
 
   const IndividualTerm = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/term/${termID}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/term/${termID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -404,7 +399,7 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
 
   const IndividualClass = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/student-class/${classID}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/student-class/${classID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -426,7 +421,7 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
 
     const IndividualSessionFunction = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/session/${sessionID}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/session/${sessionID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

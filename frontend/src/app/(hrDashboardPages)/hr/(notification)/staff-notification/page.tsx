@@ -145,7 +145,7 @@ const StaffNotification = () => {
     setLoader(true)
 
     try{
-      let response = await fetch('http://127.0.0.1:8000/api/delete-multiple-staff-notification/', {
+      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-staff-notification/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -182,7 +182,7 @@ const StaffNotification = () => {
         setIsSuccess(false)
 
       }
-    }catch(error){
+    }catch{
       setLoader(false)
       setDisableButton(false)
       setMessage("An error occurred. Please try again.")

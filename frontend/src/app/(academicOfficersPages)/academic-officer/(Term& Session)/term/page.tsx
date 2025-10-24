@@ -1,5 +1,5 @@
 "use client"
-import { faEllipsis, faX } from '@fortawesome/free-solid-svg-icons'
+import {faX } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
@@ -28,13 +28,8 @@ const TermPage = () => {
   } = useContext(AllDataContext)!;
 
     const {
-      truncateText,
       authTokens,
-      formateDateTime,
-      formatDate,
       formatName,
-      formatCurrency,
-      showSidebar,
       loader,
       setLoader,
       disableButton,
@@ -71,7 +66,6 @@ const TermPage = () => {
   }, [])
   
   
-  
 
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
@@ -80,7 +74,7 @@ const TermPage = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [animateModal, setAnimateModal] = useState(false);
 
-  const [status, setStatus] = useState('')
+
   const [statusLoader, setStatusLoader] = useState(false)
   const statusModal = useRef<any>(null)
   const [statusOverlay, setStatusOverlay] = useState(false)
@@ -137,20 +131,20 @@ const TermPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors},
   } = useForm();
 
   // const termData = [...Array(100).keys()];
   const startIndex = (page - 1) * itemsPerPage;
   const currentItems = termData.slice(startIndex, startIndex + itemsPerPage);
 
-  const onSubmit = (e:any) =>{
-    UpdateTerm(e)
+  const onSubmit = () =>{
+    UpdateTerm()
       
   }
 
 
-    const UpdateTerm = async(e:any) =>{
+  const UpdateTerm = async() =>{
     setStatusLoader(true)
     setDisableButton(true)
 
@@ -170,7 +164,6 @@ const TermPage = () => {
         showAlert()
         setMessage("Status updated sucessfully")
         setDisableButton(false)
-        setStatus('')
         setIsSuccess(true)
         setStatusLoader(false)
         hideStatusModal()
@@ -203,7 +196,7 @@ const TermPage = () => {
     setLoader(true)
 
     try{
-      let response = await fetch('http://127.0.0.1:8000/api/delete-multiple-term/', {
+      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-term/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -243,7 +236,7 @@ const TermPage = () => {
     }catch(error){
       setLoader(false)
       setDisableButton(false)
-      setMessage("An error occurred. Please try again.")
+      setMessage(`An error occurred. Please try again.${error}`)
       showAlert()
       setIsSuccess(false)
     }

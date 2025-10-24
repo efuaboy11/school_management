@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Select from 'react-select';
-import { useDropzone } from 'react-dropzone';
+
 import Link from 'next/link'
 
 const PayFees = () => {
@@ -22,7 +22,7 @@ const PayFees = () => {
     first_name: string;
     last_name: string;
     email: string;
-    [key: string]: any; 
+    [key: string]: any;
   }
 
   const [paymentMethod, setPaymentMethod] = useState('')
@@ -35,27 +35,27 @@ const PayFees = () => {
   const [studentLoader, setStudentLoader] = useState(true)
   const router = useRouter();
 
-  const storedStudent = typeof window !== "undefined" ?  localStorage.getItem('student') : null
+  const storedStudent = typeof window !== "undefined" ? localStorage.getItem('student') : null
   // const parsedStudent = storedStudent ? JSON.parse(storedStudent) : null;
   const [isClient, setIsClient] = useState(false);
   const { theme, toggleTheme } = useContext(ThemeContext)!;
 
-  
 
-  const { 
+
+  const {
     authTokens,
-  
+
     loader,
     setLoader,
     disableButton,
     setDisableButton,
     formatName,
     formatCurrency,
-  
+
     setMessage,
     showAlert,
     setIsSuccess,
-  
+
   } = useContext(AuthContext)!
 
 
@@ -65,13 +65,13 @@ const PayFees = () => {
 
   } = useContext(AllDataContext)!;
 
-  
+
 
 
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<any>();
 
   const handleImgFile = (files: File[]) => {
@@ -91,11 +91,11 @@ const PayFees = () => {
 
 
 
-  const onSubmit = (data: FormData, e:any) => {
+  const onSubmit = (data: FormData, e: any) => {
     PayFeeDeyails(e)
   }
 
-  const PayFeeDeyails = async(e:any) =>{
+  const PayFeeDeyails = async (e: any) => {
     e.preventDefault()
     setLoader(true)
     setDisableButton(true)
@@ -106,23 +106,23 @@ const PayFees = () => {
     formData.append('fee_type', `${feeDetails?.id}`)
     formData.append('payment_method', paymentMethod)
     formData.append('status', status)
-    if(reciept){
+    if (reciept) {
       formData.append('fee_receipt', reciept as any)
     }
 
 
 
-    try{
+    try {
       const response = await fetch(`http://127.0.0.1:8000/api/payment-school-fees/`, {
         method: 'POST',
         body: formData,
-        headers:{
+        headers: {
           Authorization: `Bearer ${authTokens?.access}`
         }
       })
-      
 
-      if(response.ok){
+
+      if (response.ok) {
         const data = await response.json();
         showAlert()
         setMessage('Payment sucessful')
@@ -137,11 +137,11 @@ const PayFees = () => {
         localStorage.removeItem('student')
 
 
-      }else{
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setDisableButton(false)
         setIsSuccess(false)
@@ -149,8 +149,8 @@ const PayFees = () => {
         showAlert()
       }
 
-      
-    }catch(error){
+
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred.');
@@ -158,12 +158,12 @@ const PayFees = () => {
       setIsSuccess(false)
       setLoader(false)
 
-    }  
+    }
   }
 
-  const IndividualStudentFunction = async() =>{
+  const IndividualStudentFunction = async () => {
 
-    let response = await fetch(`http://127.0.0.1:8000/api/students/${storedStudent}`, {
+    const response = await fetch(`http://127.0.0.1:8000/api/students/${storedStudent}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -171,13 +171,13 @@ const PayFees = () => {
       },
     })
 
-    if(response.ok){
+    if (response.ok) {
       const data = await response.json()
       setStudentData(data as StudentDataType)
       setStudentLoader(false)
 
 
-    }else{
+    } else {
       setStudentLoader(false)
     }
 
@@ -185,7 +185,7 @@ const PayFees = () => {
 
   }
 
-  
+
   useEffect(() => {
     PaymentMethodFunction()
     IndividualStudentFunction()
@@ -270,7 +270,7 @@ const PayFees = () => {
               </div>
 
 
-              
+
             </div>
 
             <div className="col-md-5">
@@ -280,67 +280,67 @@ const PayFees = () => {
                 </div>
 
                 <div className='mt- p-3'>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                      <div className="row g-4">
-                        <div className="col-12">
-                          <label htmlFor="firstName" className="form-label">Payment Method <span className="text-danger">*</span></label>
-                          <select   className={`site-input ${errors.paymentMethod ? 'error-input' : ''}`} {...register('paymentMethod', {required: true})}  value={paymentMethod}  onChange={(e) => setPaymentMethod(e.target.value)}>
-                            <option value="">Select</option>
-                            {paymentMethodData?.map((data:any) => (
-                              <option key={data.id} value={data.id}>{data.name}</option>
-                            ))}
-                          </select>
-                          {errors.paymentMethod && <p className="error-text">This field is required</p>}
-                        </div> 
-
-                        <div className="col-12">
-                          <label htmlFor="firstName" className="form-label">Status <span className="text-danger">*</span></label>
-                          <select   className={`site-input ${errors.status ? 'error-input' : ''}`} {...register('status', {required: true})}  value={status}  onChange={(e) => setStatus(e.target.value)}>
-                            <option value="">Select</option>
-                            <option value="pending">Pending</option>
-                            <option value="approved">Approve</option>
-                            <option value="declined">Declined</option>
-                          </select>
-                          {errors.status && <p className="error-text">This field is required</p>}
-                        </div> 
-
-                        <div className="col-xxl-5">
-                          <label className="form-label">Reciept <span className="text-danger">*</span></label>
-
-                          <div {...getRootProps({ className: 'dropzone-box' })}>
-                            <input {...getInputProps()} />
-                            
-                            {reciept ? (
-                              <div className="preview-box">
-                                <img
-                                  src={URL.createObjectURL(reciept)}
-                                  alt="Selected reciept"
-                                  className="preview-image"
-                                />
-                                <p className="file-name">{reciept.name}</p>
-                              </div>
-                            ) : (
-                              <p className="m-0">Drag & drop reciept here, or click to select file</p>
-                            )}
-                          </div>
-
-                          {errors.reciept && <p className="error-text">Passport is required</p>}
-                        </div>
-
-                        <div className="col-12">
-                          <button disabled={disableButton} type="submit" className={`Button site-btn px-3`}>
-                            <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                            <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
-                          </button>
-                        </div>
+                  <form onSubmit={handleSubmit(onSubmit)}>
+                    <div className="row g-4">
+                      <div className="col-12">
+                        <label htmlFor="firstName" className="form-label">Payment Method <span className="text-danger">*</span></label>
+                        <select className={`site-input ${errors.paymentMethod ? 'error-input' : ''}`} {...register('paymentMethod', { required: true })} value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
+                          <option value="">Select</option>
+                          {paymentMethodData?.map((data: any) => (
+                            <option key={data.id} value={data.id}>{data.name}</option>
+                          ))}
+                        </select>
+                        {errors.paymentMethod && <p className="error-text">This field is required</p>}
                       </div>
 
-                    </form>
-                  </div>
+                      <div className="col-12">
+                        <label htmlFor="firstName" className="form-label">Status <span className="text-danger">*</span></label>
+                        <select className={`site-input ${errors.status ? 'error-input' : ''}`} {...register('status', { required: true })} value={status} onChange={(e) => setStatus(e.target.value)}>
+                          <option value="">Select</option>
+                          <option value="pending">Pending</option>
+                          <option value="approved">Approve</option>
+                          <option value="declined">Declined</option>
+                        </select>
+                        {errors.status && <p className="error-text">This field is required</p>}
+                      </div>
+
+                      <div className="col-xxl-5">
+                        <label className="form-label">Reciept <span className="text-danger">*</span></label>
+
+                        <div {...getRootProps({ className: 'dropzone-box' })}>
+                          <input {...getInputProps()} />
+
+                          {reciept ? (
+                            <div className="preview-box">
+                              <img
+                                src={URL.createObjectURL(reciept)}
+                                alt="Selected reciept"
+                                className="preview-image"
+                              />
+                              <p className="file-name">{reciept.name}</p>
+                            </div>
+                          ) : (
+                            <p className="m-0">Drag & drop reciept here, or click to select file</p>
+                          )}
+                        </div>
+
+                        {errors.reciept && <p className="error-text">Passport is required</p>}
+                      </div>
+
+                      <div className="col-12">
+                        <button disabled={disableButton} type="submit" className={`Button site-btn px-3`}>
+                          <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                          <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
+                        </button>
+                      </div>
+                    </div>
+
+                  </form>
+                </div>
               </div>
             </div>
           </div>
-      </div>
+        </div>
       )}
 
     </div>

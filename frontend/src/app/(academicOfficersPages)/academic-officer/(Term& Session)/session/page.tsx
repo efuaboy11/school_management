@@ -1,6 +1,4 @@
 "use client"
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -27,13 +25,8 @@ const SessionPage = () => {
   } = useContext(AllDataContext)!;
 
     const {
-      truncateText,
       authTokens,
-      formateDateTime,
-      formatDate,
       formatName,
-      formatCurrency,
-      showSidebar,
       loader,
       setLoader,
       disableButton,
@@ -116,7 +109,7 @@ const SessionPage = () => {
     setLoader(true)
 
     try{
-      let response = await fetch('http://127.0.0.1:8000/api/delete-multiple-session/', {
+      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-session/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -159,6 +152,7 @@ const SessionPage = () => {
       setMessage("An error occurred. Please try again.")
       showAlert()
       setIsSuccess(false)
+      console.log(error)
     }
   }
 

@@ -1,6 +1,5 @@
 "use client"
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+
 import React, { useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
@@ -247,7 +246,7 @@ const EResultPage = () => {
     setLoader(true)
 
     try{
-      let response = await fetch('http://127.0.0.1:8000/api/delete-multiple-e-result/', {
+      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-e-result/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -284,7 +283,7 @@ const EResultPage = () => {
         setIsSuccess(false)
 
       }
-    }catch(error){
+    }catch{
       setLoader(false)
       setDisableButton(false)
       setMessage("An error occurred. Please try again.")

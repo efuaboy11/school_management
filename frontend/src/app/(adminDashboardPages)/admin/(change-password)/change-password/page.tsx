@@ -1,5 +1,4 @@
 "use client"
-import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
@@ -63,7 +62,7 @@ const ChangePasswordPage = () => {
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: {errors},
   } = useForm<FormData>();
 
   const onSubmit = (data: FormData, e:any) => {
@@ -134,7 +133,7 @@ const ChangePasswordPage = () => {
   
   const UserDetailsFunction = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/me/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/me/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

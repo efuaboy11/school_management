@@ -4,18 +4,16 @@ import React, { use, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form'
 import Image from 'next/image'
-import { useDropzone } from 'react-dropzone';
 const IndivivdualBill = ({ params }: { params: Promise<{ id: string }> }) => {
   const {id} = use(params)
   
   const {
-    truncateText,
+
     authTokens,
-    formateDateTime,
-    formatDate,
+
+
     formatName,
     formatCurrency,
-    showSidebar,
     loader,
     setLoader,
     disableButton,
@@ -33,7 +31,6 @@ const IndivivdualBill = ({ params }: { params: Promise<{ id: string }> }) => {
   const [billName, setBillName] = useState('')
   const [amount, setAmount] = useState(0)
   const [description, setDescription] = useState('')
-  const [passport, setPassport] = useState<File | null>(null)
   const [deleteModal, setDeleteModal] = useState(false)
 
   const [showModal, setShowModal] = useState(false);
@@ -76,7 +73,7 @@ const IndivivdualBill = ({ params }: { params: Promise<{ id: string }> }) => {
 
   const IndividualDetailsFunction = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/bills/${id}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/bills/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -110,7 +107,7 @@ const IndivivdualBill = ({ params }: { params: Promise<{ id: string }> }) => {
     setLoader(true)
 
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/bills/${id}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/bills/${id}/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`

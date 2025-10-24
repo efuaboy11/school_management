@@ -1022,7 +1022,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
 
   const StudentFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/students/', {
+    const response = await fetch('http://127.0.0.1:8000/api/students/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1093,7 +1093,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -1114,7 +1114,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Teacher
   const TeacherFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/teachers/', {
+    const response = await fetch('http://127.0.0.1:8000/api/teachers/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1162,7 +1162,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -1181,7 +1181,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
 
   const ParentFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/parents/', {
+    const response = await fetch('http://127.0.0.1:8000/api/parents/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1230,7 +1230,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -1251,7 +1251,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   // Staff
   const StaffFunction = async() =>{
     console.log('lpadign')
-    let response = await fetch('http://127.0.0.1:8000/api/staff/', {
+    const response = await fetch('http://127.0.0.1:8000/api/staff/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1300,7 +1300,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -1320,7 +1320,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // HR
   const HrFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/hr/', {
+    const response = await fetch('http://127.0.0.1:8000/api/hr/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1368,7 +1368,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -1388,7 +1388,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Bursary
   const BursaryFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/bursary/', {
+    const response = await fetch('http://127.0.0.1:8000/api/bursary/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1429,7 +1429,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -1448,7 +1448,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Store Keeper
   const StoreKeeperFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/store_keeper/', {
+    const response = await fetch('http://127.0.0.1:8000/api/store_keeper/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1489,7 +1489,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -1508,7 +1508,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Exam Officer
   const ResultOfficerFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/result_officer/', {
+    const response = await fetch('http://127.0.0.1:8000/api/result_officer/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1549,7 +1549,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -1568,7 +1568,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Academic Officer
   const AcademicOfficerFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/academic-officer/', {
+    const response = await fetch('http://127.0.0.1:8000/api/academic-officer/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1609,7 +1609,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -1628,7 +1628,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   //  other Staff
   const OtherStaffFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/other-staff/', {
+    const response = await fetch('http://127.0.0.1:8000/api/other-staff/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1669,7 +1669,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -1688,7 +1688,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // email
   const EmailFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/email/', {
+    const response = await fetch('http://127.0.0.1:8000/api/email/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1733,7 +1733,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -1753,7 +1753,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   //subject
   const SubjectFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/subjects/', {
+    const response = await fetch('http://127.0.0.1:8000/api/subjects/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1814,7 +1814,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -1841,7 +1841,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Term
   const TermFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/term/', {
+    const response = await fetch('http://127.0.0.1:8000/api/term/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1885,7 +1885,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -1904,7 +1904,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
  // session
   const SessionFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/session/', {
+    const response = await fetch('http://127.0.0.1:8000/api/session/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1950,7 +1950,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -1971,7 +1971,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
    // Student Class
    const StudentClassFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/student-class/', {
+    const response = await fetch('http://127.0.0.1:8000/api/student-class/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2021,7 +2021,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -2041,7 +2041,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Admin or hr Notification
   const AdminHrNotificationFunction = async() =>{
-    let response = await fetch(`http://127.0.0.1:8000/api/admin-or-hr-notification/?seen=${statusQuery}`, {
+    const response = await fetch(`http://127.0.0.1:8000/api/admin-or-hr-notification/?seen=${statusQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2087,7 +2087,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -2106,7 +2106,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   //School Notification
   const SchoolNotificationFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/school-notification/', {
+    const response = await fetch('http://127.0.0.1:8000/api/school-notification/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2152,7 +2152,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -2171,7 +2171,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
  // class Notififcatiion
   const ClassNotificationFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/class-notification/', {
+    const response = await fetch('http://127.0.0.1:8000/api/class-notification/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2217,7 +2217,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -2237,7 +2237,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // staff Notification
   const StaffNotificationFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/staff-notification/', {
+    const response = await fetch('http://127.0.0.1:8000/api/staff-notification/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2283,7 +2283,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -2303,7 +2303,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // School Event
   const SchoolEventFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/school-event/', {
+    const response = await fetch('http://127.0.0.1:8000/api/school-event/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2349,7 +2349,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -2369,7 +2369,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Assignment
   const AssignmentFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/assignment/', {
+    const response = await fetch('http://127.0.0.1:8000/api/assignment/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2415,7 +2415,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -2435,7 +2435,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Asignment Submission
   const AssignmentSubmissionFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/assignment-submission/', {
+    const response = await fetch('http://127.0.0.1:8000/api/assignment-submission/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2481,7 +2481,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -2501,7 +2501,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Class Timetable
   const ClassTimetableFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/class-timetable/', {
+    const response = await fetch('http://127.0.0.1:8000/api/class-timetable/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2547,7 +2547,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -2569,7 +2569,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
     // Class Timetable
   const SchemeOFWorkFunction = async() =>{
-    let response = await fetch(`http://127.0.0.1:8000/api/scheme-of-work/?student_class=${studentClassQuery}&term=${termQuery}&subject=${subjectQuery}`, {
+    const response = await fetch(`http://127.0.0.1:8000/api/scheme-of-work/?student_class=${studentClassQuery}&term=${termQuery}&subject=${subjectQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2611,7 +2611,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -2633,7 +2633,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
 
    const ScratchCardFunction = async() =>{
-    let response = await fetch(`http://127.0.0.1:8000/api/scratch-cards/?status=${statusQuery}`, {
+    const response = await fetch(`http://127.0.0.1:8000/api/scratch-cards/?status=${statusQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2675,7 +2675,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -2696,7 +2696,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   //E Result
 
   const EResultFunction = async() =>{
-    let response = await fetch(`http://127.0.0.1:8000/api/e-result/?student=${studentQuery}&student_class=${studentClassQuery}&term=${termQuery}&session=${sessionQuery}`, {
+    const response = await fetch(`http://127.0.0.1:8000/api/e-result/?student=${studentQuery}&student_class=${studentClassQuery}&term=${termQuery}&session=${sessionQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2743,7 +2743,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -2764,7 +2764,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Payment Mehthod
   const PaymentMethodFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/payment-method/', {
+    const response = await fetch('http://127.0.0.1:8000/api/payment-method/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2810,7 +2810,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -2830,7 +2830,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // school fees
   const SchoolFeesFunction = async() =>{
-    let response = await fetch(`http://127.0.0.1:8000/api/school-fees/?student_class=${studentClassQuery}&term=${termQuery}&session=${sessionQuery}&fee_type=${feeTypeQuery}`, {
+    const response = await fetch(`http://127.0.0.1:8000/api/school-fees/?student_class=${studentClassQuery}&term=${termQuery}&session=${sessionQuery}&fee_type=${feeTypeQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2874,7 +2874,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -2894,7 +2894,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
     //All  School Fees Payment
   const AllSchoolFeesPaymentFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/payment-school-fees/', {
+    const response = await fetch('http://127.0.0.1:8000/api/payment-school-fees/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2942,7 +2942,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -2961,7 +2961,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   //pending  School Fees Payment
   const PendingSchoolFeesPaymentFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/payment-school-fees/pending/', {
+    const response = await fetch('http://127.0.0.1:8000/api/payment-school-fees/pending/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3009,7 +3009,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -3028,7 +3028,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // success school Fees payment
   const SucessSchoolFeesPaymentFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/payment-school-fees/approved/', {
+    const response = await fetch('http://127.0.0.1:8000/api/payment-school-fees/approved/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3076,7 +3076,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -3095,7 +3095,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // declined school Fees payment
   const DeclinedSchoolFeesPaymentFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/payment-school-fees/declined/', {
+    const response = await fetch('http://127.0.0.1:8000/api/payment-school-fees/declined/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3143,7 +3143,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -3163,7 +3163,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // bills
   const BillsFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/bills/', {
+    const response = await fetch('http://127.0.0.1:8000/api/bills/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3209,7 +3209,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -3227,7 +3227,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
   const BillsPaymentFunction = async() =>{
-      let response = await fetch('http://127.0.0.1:8000/api/bills-payment/', {
+      const response = await fetch('http://127.0.0.1:8000/api/bills-payment/', {
         method: "GET",
         headers: {
           "Content-Type": "application/json",
@@ -3267,7 +3267,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -3286,7 +3286,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // pending Bills
   const PendingBillsPaymentFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/bills-payment/pending/', {
+    const response = await fetch('http://127.0.0.1:8000/api/bills-payment/pending/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3334,7 +3334,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -3354,7 +3354,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // success Bills
   const SucessBillsPaymentFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/bills-payment/approved/', {
+    const response = await fetch('http://127.0.0.1:8000/api/bills-payment/approved/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3403,7 +3403,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -3422,7 +3422,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // declined Bills'
   const DeclinedBillsPaymentFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/bills-payment/declined/', {
+    const response = await fetch('http://127.0.0.1:8000/api/bills-payment/declined/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3459,7 +3459,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // Bank Account'
   const BankAccountFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/bank-account/', {
+    const response = await fetch('http://127.0.0.1:8000/api/bank-account/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3505,7 +3505,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -3537,7 +3537,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -3557,7 +3557,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   //product categories
   const ProductCatergoriesFunction = async() =>{
-    let response = await fetch(`http://127.0.0.1:8000/api/product-categories/`, {
+    const response = await fetch(`http://127.0.0.1:8000/api/product-categories/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3601,7 +3601,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -3621,7 +3621,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // product
   const ProductFunction = async() =>{
-    let response = await fetch(`http://127.0.0.1:8000/api/product/?product_category=${productCategoriesQuery}&status=${statusQuery}`, {
+    const response = await fetch(`http://127.0.0.1:8000/api/product/?product_category=${productCategoriesQuery}&status=${statusQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3667,7 +3667,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -3686,7 +3686,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
     // favourite product
   const FavouriteProductFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/favorite-products/', {
+    const response = await fetch('http://127.0.0.1:8000/api/favorite-products/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3732,7 +3732,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -3751,7 +3751,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   // order product
   const OrderProductFunction = async() =>{
-    let response = await fetch('http://127.0.0.1:8000/api/order-products/', {
+    const response = await fetch('http://127.0.0.1:8000/api/order-products/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3797,7 +3797,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",

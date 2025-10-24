@@ -6,7 +6,7 @@ import { useRouter } from 'next/navigation'
 import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Select from 'react-select';
-import { useDropzone } from 'react-dropzone';
+
 import Link from 'next/link'
 
 const PayBills = () => {
@@ -19,24 +19,24 @@ const PayBills = () => {
   useEffect(() => {
     setIsClient(true);
   }, []);
-  
 
-  
 
-  const { 
+
+
+  const {
     authTokens,
-  
+
     loader,
     setLoader,
     disableButton,
     setDisableButton,
     formatName,
     formatCurrency,
-  
+
     setMessage,
     showAlert,
     setIsSuccess,
-  
+
   } = useContext(AuthContext)!
 
 
@@ -51,13 +51,13 @@ const PayBills = () => {
 
   } = useContext(AllDataContext)!;
 
-  
+
 
 
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<any>();
 
 
@@ -74,37 +74,37 @@ const PayBills = () => {
       boxShadow: state.isFocused ? '0 0 0 4px rgba(120, 62, 188, 0.2)' : 'none',
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     menu: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#0d0d0d' : '#fff',
       border: '1px solid #ccc',
       zIndex: 999,
     }),
-  
+
     option: (provided: any, state: any) => {
       const isDark = theme === 'dark';
-  
+
       const backgroundColor = state.isSelected
         ? '#783ebc'
         : state.isFocused
-        ? isDark
-          ? '#1a1a1a' // hover in dark
-          : '#f0f0f0' // hover in light
-        : isDark
-        ? '#0d0d0d'
-        : '#fff';
-  
+          ? isDark
+            ? '#1a1a1a' // hover in dark
+            : '#f0f0f0' // hover in light
+          : isDark
+            ? '#0d0d0d'
+            : '#fff';
+
       const color = state.isSelected
         ? '#fff'
         : state.isFocused
-        ? isDark
-          ? '#fff'
-          : '#000'
-        : isDark
-        ? '#fff'
-        : '#000';
-  
+          ? isDark
+            ? '#fff'
+            : '#000'
+          : isDark
+            ? '#fff'
+            : '#000';
+
       return {
         ...provided,
         backgroundColor,
@@ -112,27 +112,27 @@ const PayBills = () => {
         cursor: 'pointer',
       };
     },
-  
+
     singleValue: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     placeholder: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#aaa' : '#666',
     }),
-  
+
     input: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     dropdownIndicator: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     indicatorSeparator: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#444' : '#ccc',
@@ -140,13 +140,13 @@ const PayBills = () => {
   };
 
 
-  const onSubmit = (data: FormData, e:any) => {
+  const onSubmit = (data: FormData, e: any) => {
     setLoader(true)
     router.push(`/student/bills-payment/make-payment/step-2/${bills}/${paymentMethod}`)
   }
 
 
-  
+
   useEffect(() => {
     PaymentMethodFunction()
     BillsFunction()
@@ -169,49 +169,49 @@ const PayBills = () => {
               </div>
 
               <div className='mt- p-3'>
-                  <form onSubmit={handleSubmit(onSubmit)}>
-                    <div className="row g-4">
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <div className="row g-4">
 
 
-                      <div className="col-12">
-                        <label htmlFor="firstName" className="form-label">Bill Type <span className="text-danger">*</span></label>
-                        <select   className={`site-input ${errors.bills ? 'error-input' : ''}`} {...register('bills', {required: true})}  value={bills}  onChange={(e) => setBills(e.target.value)}>
-                          <option value="">Select</option>
-                          {billsData?.map((data:any) => (
-                            <option key={data.id} value={data.id}>{data.bill_name}</option>
-                          ))}
-                        </select>
-                        <p className="pt-2 italic-text light-text sm-text">Select the bill you want to pay for</p>
-                        {errors.bills && <p className="error-text">This field is required</p>}
-                      </div> 
-
-
-                      <div className="col-12">
-                        <label htmlFor="firstName" className="form-label">Payment Method <span className="text-danger">*</span></label>
-                        <select   className={`site-input ${errors.paymentMethod ? 'error-input' : ''}`} {...register('paymentMethod', {required: true})}  value={paymentMethod}  onChange={(e) => setPaymentMethod(e.target.value)}>
-                          <option value="">Select</option>
-                          {paymentMethodData?.map((data:any) => (
-                            <option key={data.id} value={data.id}>{data.name}</option>
-                          ))}
-                        </select>
-                        <p className="pt-2 italic-text light-text sm-text">Select payment method you would like to use</p>
-                        {errors.paymentMethod && <p className="error-text">This field is required</p>}
-                      </div> 
-
-
-                      <div className="col-12">
-                        <button disabled={disableButton} type="submit" className={`Button site-btn px-3`}>
-                          <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                          <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
-                        </button>
-                      </div>
+                    <div className="col-12">
+                      <label htmlFor="firstName" className="form-label">Bill Type <span className="text-danger">*</span></label>
+                      <select className={`site-input ${errors.bills ? 'error-input' : ''}`} {...register('bills', { required: true })} value={bills} onChange={(e) => setBills(e.target.value)}>
+                        <option value="">Select</option>
+                        {billsData?.map((data: any) => (
+                          <option key={data.id} value={data.id}>{data.bill_name}</option>
+                        ))}
+                      </select>
+                      <p className="pt-2 italic-text light-text sm-text">Select the bill you want to pay for</p>
+                      {errors.bills && <p className="error-text">This field is required</p>}
                     </div>
 
-                  </form>
-                </div>
+
+                    <div className="col-12">
+                      <label htmlFor="firstName" className="form-label">Payment Method <span className="text-danger">*</span></label>
+                      <select className={`site-input ${errors.paymentMethod ? 'error-input' : ''}`} {...register('paymentMethod', { required: true })} value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
+                        <option value="">Select</option>
+                        {paymentMethodData?.map((data: any) => (
+                          <option key={data.id} value={data.id}>{data.name}</option>
+                        ))}
+                      </select>
+                      <p className="pt-2 italic-text light-text sm-text">Select payment method you would like to use</p>
+                      {errors.paymentMethod && <p className="error-text">This field is required</p>}
+                    </div>
+
+
+                    <div className="col-12">
+                      <button disabled={disableButton} type="submit" className={`Button site-btn px-3`}>
+                        <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                        <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
+                      </button>
+                    </div>
+                  </div>
+
+                </form>
+              </div>
             </div>
           </div>
-     
+
         </div>
 
       </div>

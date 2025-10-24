@@ -4,24 +4,22 @@ import React, { use, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form'
 import Image from 'next/image'
-import { useDropzone } from 'react-dropzone';
+
 import AllDataContext from '@/context/AllData';
 import ThemeContext from '@/context/ThemeContext';
 import Select from 'react-select';
-import { DownloadLink } from '@/components/downloadLink';
+
 
 
 const IndividualEResult =  ({ params }: { params: Promise<any> }) => {
   const {id} = use(params)
   
   const {
-    truncateText,
+
     authTokens,
     formateDateTime,
-    formatDate,
+
     formatName,
-    formatCurrency,
-    showSidebar,
     loader,
     setLoader,
     disableButton,
@@ -44,7 +42,9 @@ const IndividualEResult =  ({ params }: { params: Promise<any> }) => {
     SessionFunction,
   } = useContext(AllDataContext)!;
 
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  
+
+  const { theme} = useContext(ThemeContext)!;
 
   const [Loading, setLoading] = useState(true)
   const [details, setDetails] = useState<any>(null)
@@ -176,7 +176,6 @@ const IndividualEResult =  ({ params }: { params: Promise<any> }) => {
   const {
     register,
     handleSubmit,
-    formState: {errors},
   } = useForm<any>();
 
   const onSubmit = (data: any, e:any) => {
@@ -193,7 +192,7 @@ const IndividualEResult =  ({ params }: { params: Promise<any> }) => {
 
   const IndividualDetailsFunction = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/e-result/${id}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/e-result/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -227,7 +226,7 @@ const IndividualEResult =  ({ params }: { params: Promise<any> }) => {
     setLoader(true)
 
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/e-result/${id}/`, {
+      const response = await fetch(`http://127.0.0.1:8000/api/e-result/${id}/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`

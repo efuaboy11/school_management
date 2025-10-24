@@ -3,7 +3,6 @@ import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
 import ThemeContext from '@/context/ThemeContext'
 import React, { useContext, useEffect, useState } from 'react'
-import { useDropzone } from 'react-dropzone';
 import { useForm } from 'react-hook-form'
 import Select from 'react-select';
 
@@ -24,7 +23,6 @@ const CreateClassTImetable = () => {
   
     loader,
     setLoader,
-    disableButton,
     setDisableButton,
   
     setMessage,
@@ -45,14 +43,13 @@ const CreateClassTImetable = () => {
     StudentClassFunction,
   } = useContext(AllDataContext)!;
 
-  const { theme, toggleTheme } = useContext(ThemeContext)!;
+  const {theme} = useContext(ThemeContext)!;
  
 
 
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
   } = useForm<any>();
 
 

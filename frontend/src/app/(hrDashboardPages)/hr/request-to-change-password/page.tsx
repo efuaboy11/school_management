@@ -47,7 +47,7 @@ const Product = () => {
 
 
   const ChangePasswordRequestFunction = async() =>{
-    let response = await fetch(`http://127.0.0.1:8000/api/request-to-change-password/`, {
+    const response = await fetch(`http://127.0.0.1:8000/api/request-to-change-password/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -91,7 +91,7 @@ const Product = () => {
       return;
     }
 
-    let response = await fetch(url, {
+    const response = await fetch(url, {
       method: "GET",
       headers: {
         "Content-Type":"application/json",
@@ -211,7 +211,7 @@ const Product = () => {
     setLoader(true)
 
     try{
-      let response = await fetch('http://127.0.0.1:8000/api/delete-multiple-request-to-change-password/', {
+      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-request-to-change-password/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -248,7 +248,7 @@ const Product = () => {
         setIsSuccess(false)
 
       }
-    }catch(error){
+    }catch{
       setLoader(false)
       setDisableButton(false)
       setMessage("An error occurred. Please try again.")

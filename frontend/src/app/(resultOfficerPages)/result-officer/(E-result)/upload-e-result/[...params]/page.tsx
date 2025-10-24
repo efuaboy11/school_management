@@ -4,7 +4,7 @@ import AuthContext from '@/context/AuthContext'
 import ThemeContext from '@/context/ThemeContext'
 import Link from 'next/link'
 import React, { use, useContext, useEffect, useState } from 'react'
-import { useDropzone } from 'react-dropzone';
+
 import { useForm } from 'react-hook-form'
 import Select from 'react-select';
 import Image from 'next/image'
@@ -30,13 +30,13 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
   const [sessionDetails, setSessionDetails] = useState<any>(null)
 
   const [hasMounted, setHasMounted] = useState(false);
-  
+
   useEffect(() => {
     setHasMounted(true);
   }, []);
 
-  const { 
-  
+  const {
+
     truncateText,
     authTokens,
     formateDateTime,
@@ -52,10 +52,10 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
     setMessage,
     showAlert,
     setIsSuccess,
-  
-    
-  
-  
+
+
+
+
   } = useContext(AuthContext)!
 
 
@@ -65,13 +65,13 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
   } = useContext(AllDataContext)!;
 
   const { theme, toggleTheme } = useContext(ThemeContext)!;
- 
+
 
 
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<any>();
 
 
@@ -93,7 +93,7 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
   };
   const handleSelectAll = (event: React.ChangeEvent<HTMLInputElement>) => {
     if (event.target.checked) {
-      const allIDs = resultData.map((data:any) => data.id);
+      const allIDs = resultData.map((data: any) => data.id);
       setSelectedIDs(allIDs);
     } else {
       setSelectedIDs([]);
@@ -107,7 +107,7 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
     }
   }
 
-  
+
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
@@ -119,19 +119,19 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
 
 
 
-  const handleFile = (event:any) => {
+  const handleFile = (event: any) => {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      setFile(file); 
+      setFile(file);
     } else {
-      setFile(null); 
+      setFile(null);
     }
   };
 
   const [studentQuery, setStudentQuery] = useState('')
   const [filterOptions, setOptions] = useState(false)
 
-  const toggleFilterOptions = () =>{
+  const toggleFilterOptions = () => {
     setOptions(!filterOptions)
   }
 
@@ -142,7 +142,7 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
     label: `${data.first_name} ${data.last_name}`
   }));
 
-  
+
 
 
   const customStyles = {
@@ -153,37 +153,37 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
       boxShadow: state.isFocused ? '0 0 0 4px rgba(120, 62, 188, 0.2)' : 'none',
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     menu: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#0d0d0d' : '#fff',
       border: '1px solid #ccc',
       zIndex: 999,
     }),
-  
+
     option: (provided: any, state: any) => {
       const isDark = theme === 'dark';
-  
+
       const backgroundColor = state.isSelected
         ? '#783ebc'
         : state.isFocused
-        ? isDark
-          ? '#1a1a1a' // hover in dark
-          : '#f0f0f0' // hover in light
-        : isDark
-        ? '#0d0d0d'
-        : '#fff';
-  
+          ? isDark
+            ? '#1a1a1a' // hover in dark
+            : '#f0f0f0' // hover in light
+          : isDark
+            ? '#0d0d0d'
+            : '#fff';
+
       const color = state.isSelected
         ? '#fff'
         : state.isFocused
-        ? isDark
-          ? '#fff'
-          : '#000'
-        : isDark
-        ? '#fff'
-        : '#000';
-  
+          ? isDark
+            ? '#fff'
+            : '#000'
+          : isDark
+            ? '#fff'
+            : '#000';
+
       return {
         ...provided,
         backgroundColor,
@@ -191,27 +191,27 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
         cursor: 'pointer',
       };
     },
-  
+
     singleValue: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     placeholder: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#aaa' : '#666',
     }),
-  
+
     input: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     dropdownIndicator: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     indicatorSeparator: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#444' : '#ccc',
@@ -221,19 +221,19 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
 
 
 
-  const onSubmit = (data: FormData, e:any) => {
-    if(studentValue && file != null){
+  const onSubmit = (data: FormData, e: any) => {
+    if (studentValue && file != null) {
       UploadResult(e)
-    }else{
+    } else {
       showAlert()
       setMessage('A field is empty')
       setIsSuccess(false)
     }
-    
+
   }
 
 
-  const UploadResult = async(e:any) =>{
+  const UploadResult = async (e: any) => {
     e.preventDefault()
     setLoader(true)
     setDisableButton(true)
@@ -243,23 +243,23 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
     formData.append('student_class', classID)
     formData.append('term', termID)
     formData.append('session', sessionID)
-    if(file){
-      formData.append('result', file)  
+    if (file) {
+      formData.append('result', file)
     }
 
 
 
-    try{
+    try {
       const response = await fetch(`http://127.0.0.1:8000/api/e-result/`, {
         method: 'POST',
         body: formData,
-        headers:{
+        headers: {
           Authorization: `Bearer ${authTokens?.access}`
         }
       })
 
 
-      if(response.ok){
+      if (response.ok) {
         showAlert()
         setMessage('Result uploaded successfully')
         setIsSuccess(true)
@@ -272,11 +272,11 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
 
 
 
-      }else{
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setDisableButton(false)
         setIsSuccess(false)
@@ -284,8 +284,8 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
         showAlert()
       }
 
-      
-    }catch(error){
+
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred.');
@@ -293,13 +293,13 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
       setIsSuccess(false)
       setLoader(false)
 
-    }  
+    }
   }
 
 
 
-  const ResultFunction = async() =>{
-    let response = await fetch(`http://127.0.0.1:8000/api/e-result/?student=${studentQuery}&student_class=${classID}&term=${termID}&session=${sessionID}`, {
+  const ResultFunction = async () => {
+    const response = await fetch(`http://127.0.0.1:8000/api/e-result/?student=${studentQuery}&student_class=${classID}&term=${termID}&session=${sessionID}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -308,18 +308,18 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setResultCount(data.length)
       }
-      
-      
+
+
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setResultData(sortedData)
       setResultLoader(false)
 
 
-    }else{
+    } else {
       setResultLoader(false)
       setResultData([])
     }
@@ -330,12 +330,12 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
 
 
 
-  const deleteFunction = async () =>{
+  const deleteFunction = async () => {
     setDisableButton(true)
     setLoader(true)
 
-    try{
-      let response = await fetch('http://127.0.0.1:8000/api/delete-multiple-e-result/', {
+    try {
+      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-e-result/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -347,7 +347,7 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
 
       })
 
-      if(response.ok){
+      if (response.ok) {
         setLoader(false)
         setDisableButton(false)
         setShowDeleteModal(false)
@@ -356,13 +356,13 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
         ResultFunction()
         showAlert()
         setIsSuccess(true)
-        
-          
-      }else {
+
+
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
 
         setLoader(false)
         setDisableButton(false)
@@ -371,7 +371,7 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
         setIsSuccess(false)
 
       }
-    }catch(error){
+    } catch {
       setLoader(false)
       setDisableButton(false)
       setMessage("An error occurred. Please try again.")
@@ -380,9 +380,9 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
     }
   }
 
-  const IndividualTerm = async () =>{
-    try{
-      let response = await fetch(`http://127.0.0.1:8000/api/term/${termID}/`, {
+  const IndividualTerm = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/term/${termID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -392,19 +392,19 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
       })
       const data = await response.json()
 
-      if(response.ok){
+      if (response.ok) {
         setTermDetails(data)
-        console.log('data', data)      
+        console.log('data', data)
       }
-    }catch{
+    } catch {
       console.log('error')
     }
 
   }
 
-  const IndividualClass = async () =>{
-    try{
-      let response = await fetch(`http://127.0.0.1:8000/api/student-class/${classID}/`, {
+  const IndividualClass = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/student-class/${classID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -414,19 +414,19 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
       })
       const data = await response.json()
 
-      if(response.ok){
+      if (response.ok) {
         setStudentClassDetails(data)
-        console.log('data', data)      
+        console.log('data', data)
       }
-    }catch{
+    } catch {
       console.log('error')
     }
 
   }
 
-    const IndividualSessionFunction = async () =>{
-    try{
-      let response = await fetch(`http://127.0.0.1:8000/api/session/${sessionID}/`, {
+  const IndividualSessionFunction = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/session/${sessionID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -436,18 +436,18 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
       })
       const data = await response.json()
 
-      if(response.ok){
+      if (response.ok) {
         setSessionDetails(data)
-  
+
       }
-    }catch{
+    } catch {
       console.log('error')
 
     }
 
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     StudentFunction()
     IndividualSessionFunction()
     IndividualClass()
@@ -457,11 +457,11 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
 
   }, [])
 
-  useEffect(() =>{
+  useEffect(() => {
     ResultFunction()
   }, [studentQuery])
 
- 
+
   useEffect(() => {
     if (showDeleteModal) {
       setAnimateModal(true)
@@ -469,10 +469,10 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
       setAnimateModal(false);
     }
   }, [showDeleteModal]);
-  
 
 
-  
+
+
 
 
 
@@ -484,34 +484,34 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
         {showDeleteModal && (
           <section className={` ${showDeleteModal ? 'overlay-background' : ''}`}>
             <div className='container-lg'>
-                
+
               <div className=" row justify-content-center align-center2 height-90vh">
-  
-                  <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
-                    <div className="site-modal-conatiner">
-                      <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
-                        <div className="d-flex justify-content-center text-center">
-                          <div>
-                            <Image src="/img/icon/warning.png" alt="empty" width={100} height={100} />
-                            <p className='md-text mt-3'>Are you sure?</p>
-                            <p className="light-text">This action cannot be undone. {selectedIDs.length} selected {selectedIDs.length === 1 ? 'data entry' : 'data entries'} will be deleted.</p>
-                            <div className='pt-4'>
-                              <button className="site-delete-btn px-3 me-2 width-100 mb-4" onClick={deleteFunction} disabled={disableButton}>
-                                <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                                <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-delete-bin-line pe-2"></i> Delete</span>
-                              </button>
-                              <button onClick={handleCloseDeleteModal} className="site-btn site-cancel-btn px-3 width-100"><i className="ri-close-circle-line pe-2"></i>Cancel</button>
-                            </div>
+
+                <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
+                  <div className="site-modal-conatiner">
+                    <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
+                      <div className="d-flex justify-content-center text-center">
+                        <div>
+                          <Image src="/img/icon/warning.png" alt="empty" width={100} height={100} />
+                          <p className='md-text mt-3'>Are you sure?</p>
+                          <p className="light-text">This action cannot be undone. {selectedIDs.length} selected {selectedIDs.length === 1 ? 'data entry' : 'data entries'} will be deleted.</p>
+                          <div className='pt-4'>
+                            <button className="site-delete-btn px-3 me-2 width-100 mb-4" onClick={deleteFunction} disabled={disableButton}>
+                              <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                              <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-delete-bin-line pe-2"></i> Delete</span>
+                            </button>
+                            <button onClick={handleCloseDeleteModal} className="site-btn site-cancel-btn px-3 width-100"><i className="ri-close-circle-line pe-2"></i>Cancel</button>
                           </div>
                         </div>
-                      
                       </div>
+
                     </div>
                   </div>
-              
-  
+                </div>
+
+
               </div>
-  
+
             </div>
           </section>
         )}
@@ -540,11 +540,11 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
                         />
                       </div>
 
-                    
+
 
                       <div className="col-lg-3 col-md-6">
                         <label htmlFor="cv" className="form-label">Result</label>
-                        
+
                         <input
                           type="file"
                           id="cv"
@@ -565,45 +565,45 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
                       </div>
 
                       <div className="col-12">
-                        <p className="light-text sm-text italic-text">Note: This result you are about to upload will go to Result for <br /> {studentClassDetails &&  formatName(studentClassDetails?.name)} <i className="bi bi-dash-lg"></i>  {termDetails && formatName(termDetails?.name)} <i className="bi bi-dash-lg"></i>  {sessionDetails && formatName(sessionDetails?.name)}  database</p>
+                        <p className="light-text sm-text italic-text">Note: This result you are about to upload will go to Result for <br /> {studentClassDetails && formatName(studentClassDetails?.name)} <i className="bi bi-dash-lg"></i>  {termDetails && formatName(termDetails?.name)} <i className="bi bi-dash-lg"></i>  {sessionDetails && formatName(sessionDetails?.name)}  database</p>
                       </div>
-                  
+
 
 
                       <div className="col-12 mt-4">
                         <button type='submit' className='site-btn px-4'>
-                          <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                          <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill pe-2"></i> Sumbit</span>
+                          <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                          <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill pe-2"></i> Sumbit</span>
                         </button>
-                    
+
                       </div>
                     </div>
 
                   </form>
-              )}
-  
+                )}
+
               </div>
             </div>
           </div>
         </div>
 
         <div className='mt-5'>
-          
+
 
           <div className='pt-5'>
             <div className='row'>
               <div className="col-2 d-flex align-items-center">
                 <p className='pe-2 light-text'>Filter</p>
                 <label className="site-switch">
-                  <input type="checkbox" onChange={toggleFilterOptions}/>
+                  <input type="checkbox" onChange={toggleFilterOptions} />
                   <span className="site-switch-slider"></span>
                 </label>
               </div>
 
               <div className="col-10">
-                <p className='text-center light-text pb-3'>Scheme of work for {studentClassDetails &&  formatName(studentClassDetails?.name)} <i className="bi bi-dash-lg"></i>  {termDetails && formatName(termDetails?.name)}</p>
+                <p className='text-center light-text pb-3'>Scheme of work for {studentClassDetails && formatName(studentClassDetails?.name)} <i className="bi bi-dash-lg"></i>  {termDetails && formatName(termDetails?.name)}</p>
               </div>
-              
+
 
             </div>
             {filterOptions && (
@@ -623,7 +623,7 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
                     />
                   </div>
 
-        
+
                 </div>
               </div>
             )}
@@ -638,12 +638,12 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
               {currentItems.length > 0 ? (
                 <div>
                   {selectedIDs.length > 0 ? (
-                          <div className='pb-2'>
-                            <button onClick={handleShowDeleteModal}  className='site-delete-btn px-3'><i className="ri-delete-bin-line me-2"></i>Delete</button>
-                          </div>
-                    ): (
-                      <div></div>
-                    )
+                    <div className='pb-2'>
+                      <button onClick={handleShowDeleteModal} className='site-delete-btn px-3'><i className="ri-delete-bin-line me-2"></i>Delete</button>
+                    </div>
+                  ) : (
+                    <div></div>
+                  )
                   }
                   <div className='site-boxes  site-border border-radius-5px dahboard-table non-wrap-text scroll-bar'>
                     <table className='overflow-auto light-text'>
@@ -651,11 +651,11 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
                         <tr>
                           <th className='py-2'>
                             <label className="custom-checkbox cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={selectedIDs.length === resultData.length && resultData.length > 0}
-                              onChange={handleSelectAll}
-                            />
+                              <input
+                                type="checkbox"
+                                checked={selectedIDs.length === resultData.length && resultData.length > 0}
+                                onChange={handleSelectAll}
+                              />
                               <span className="checkmark"></span>
                             </label>
                           </th>
@@ -667,17 +667,17 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
 
                       <tbody>
                         {currentItems.length > 0 ? (
-                          currentItems.map((data:any) => (
+                          currentItems.map((data: any) => (
                             <tr key={data.id}>
                               <td className='py-3'>
-                                  <label className="custom-checkbox cursor-pointer">
-                                    <input
-                                      type="checkbox"
-                                      checked={selectedIDs.includes(data.id)}
-                                      onChange={() => handleCheckboxChange(data.id)}
-                                    />
-                                    <span className="checkmark"></span>
-                                  </label>
+                                <label className="custom-checkbox cursor-pointer">
+                                  <input
+                                    type="checkbox"
+                                    checked={selectedIDs.includes(data.id)}
+                                    onChange={() => handleCheckboxChange(data.id)}
+                                  />
+                                  <span className="checkmark"></span>
+                                </label>
                               </td>
                               <td className='py-3'>
                                 {formatName(data.student_name.first_name)} {formatName(data.student_name.last_name)}
@@ -713,29 +713,29 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
                   </div>
 
                   {resultData.length > 10 && (
-                      <div className="col-12 mb-4 mt-3">
-                        <Stack spacing={2} alignItems="end">
-                          <Pagination
-                            count={Math.ceil(resultData.length / itemsPerPage)}
-                            page={page}
-                            onChange={handleChange}
-                            sx={{
-                              '& .MuiPaginationItem-root': {
-                                color: '#737b7d', // color of all numbers
-                              },
-                              '& .MuiPaginationItem-root.Mui-selected': {
-                                backgroundColor: '#783ebc', // Your custom color
-                                color: '#fff',
-                              },
-                            }}
-                          />
-                        </Stack>
-                      </div>
-                    )}
+                    <div className="col-12 mb-4 mt-3">
+                      <Stack spacing={2} alignItems="end">
+                        <Pagination
+                          count={Math.ceil(resultData.length / itemsPerPage)}
+                          page={page}
+                          onChange={handleChange}
+                          sx={{
+                            '& .MuiPaginationItem-root': {
+                              color: '#737b7d', // color of all numbers
+                            },
+                            '& .MuiPaginationItem-root.Mui-selected': {
+                              backgroundColor: '#783ebc', // Your custom color
+                              color: '#fff',
+                            },
+                          }}
+                        />
+                      </Stack>
+                    </div>
+                  )}
                 </div>
 
-              
-              ): (
+
+              ) : (
                 <div className="col-12 ">
                   <div className='site-boxes text-center pb-5 d-flex justify-content-center align-items-center   pt-5'>
                     <div>

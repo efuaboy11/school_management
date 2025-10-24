@@ -4,7 +4,7 @@ import AuthContext from '@/context/AuthContext'
 import ThemeContext from '@/context/ThemeContext'
 import Link from 'next/link'
 import React, { use, useContext, useEffect, useState } from 'react'
-import { useDropzone } from 'react-dropzone';
+
 import { useForm } from 'react-hook-form'
 import Select from 'react-select';
 import Image from 'next/image'
@@ -30,13 +30,13 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
   const [studentClassDetails, setStudentClassDetails] = useState<any>(null)
 
   const [hasMounted, setHasMounted] = useState(false);
-  
+
   useEffect(() => {
     setHasMounted(true);
   }, []);
 
-  const { 
-  
+  const {
+
     truncateText,
     authTokens,
     formateDateTime,
@@ -52,10 +52,10 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
     setMessage,
     showAlert,
     setIsSuccess,
-  
-    
-  
-  
+
+
+
+
   } = useContext(AuthContext)!
 
 
@@ -68,13 +68,13 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
   } = useContext(AllDataContext)!;
 
   const { theme, toggleTheme } = useContext(ThemeContext)!;
- 
+
 
 
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<any>();
 
 
@@ -95,7 +95,7 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
 
 
 
-  
+
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
@@ -110,7 +110,7 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
   const [studentQuery, setStudentQuery] = useState('')
   const [filterOptions, setOptions] = useState(false)
 
-  const toggleFilterOptions = () =>{
+  const toggleFilterOptions = () => {
     setOptions(!filterOptions)
   }
 
@@ -126,7 +126,7 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
     label: `${data.name}`
   }));
 
-  
+
 
 
   const customStyles = {
@@ -137,37 +137,37 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
       boxShadow: state.isFocused ? '0 0 0 4px rgba(120, 62, 188, 0.2)' : 'none',
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     menu: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#0d0d0d' : '#fff',
       border: '1px solid #ccc',
       zIndex: 999,
     }),
-  
+
     option: (provided: any, state: any) => {
       const isDark = theme === 'dark';
-  
+
       const backgroundColor = state.isSelected
         ? '#783ebc'
         : state.isFocused
-        ? isDark
-          ? '#1a1a1a' // hover in dark
-          : '#f0f0f0' // hover in light
-        : isDark
-        ? '#0d0d0d'
-        : '#fff';
-  
+          ? isDark
+            ? '#1a1a1a' // hover in dark
+            : '#f0f0f0' // hover in light
+          : isDark
+            ? '#0d0d0d'
+            : '#fff';
+
       const color = state.isSelected
         ? '#fff'
         : state.isFocused
-        ? isDark
-          ? '#fff'
-          : '#000'
-        : isDark
-        ? '#fff'
-        : '#000';
-  
+          ? isDark
+            ? '#fff'
+            : '#000'
+          : isDark
+            ? '#fff'
+            : '#000';
+
       return {
         ...provided,
         backgroundColor,
@@ -175,27 +175,27 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
         cursor: 'pointer',
       };
     },
-  
+
     singleValue: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     placeholder: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#aaa' : '#666',
     }),
-  
+
     input: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     dropdownIndicator: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     indicatorSeparator: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#444' : '#ccc',
@@ -205,19 +205,19 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
 
 
 
-  const onSubmit = (data: FormData, e:any) => {
-    if(studentValue){
-        ChangeStudentCurrentClass(e)
-    }else{
+  const onSubmit = (data: FormData, e: any) => {
+    if (studentValue) {
+      ChangeStudentCurrentClass(e)
+    } else {
       showAlert()
       setMessage('A field is empty')
       setIsSuccess(false)
     }
-    
+
   }
 
 
-  const ChangeStudentCurrentClass = async(e:any) =>{
+  const ChangeStudentCurrentClass = async (e: any) => {
     e.preventDefault()
     setLoader(true)
     setDisableButton(true)
@@ -227,17 +227,17 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
     formData.append('student_new_class', classValue)
 
 
-    try{
+    try {
       const response = await fetch(`http://127.0.0.1:8000/api/update-student-current-class/`, {
         method: 'POST',
         body: formData,
-        headers:{
+        headers: {
           Authorization: `Bearer ${authTokens?.access}`
         }
       })
 
 
-      if(response.ok){
+      if (response.ok) {
         showAlert()
         setMessage('Student class updated successfully')
         setIsSuccess(true)
@@ -249,11 +249,11 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
 
 
 
-      }else{
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setDisableButton(false)
         setIsSuccess(false)
@@ -261,8 +261,8 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
         showAlert()
       }
 
-      
-    }catch(error){
+
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred.');
@@ -270,12 +270,12 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
       setIsSuccess(false)
       setLoader(false)
 
-    }  
+    }
   }
 
 
-  const StudentInClassFunction = async() =>{
-    let response = await fetch(`http://127.0.0.1:8000/api/student-in-class/?student_class=${classID}&student=${studentQuery}`, {
+  const StudentInClassFunction = async () => {
+    const response = await fetch(`http://127.0.0.1:8000/api/student-in-class/?student_class=${classID}&student=${studentQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -284,12 +284,12 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setStudentInClassCount(data.length)
       }
-      
-      
+
+
       const sortedData = [...data].sort((a, b) =>
         a.first_name.localeCompare(b.first_name)
       );
@@ -298,7 +298,7 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
       setStudentInClassLoader(false)
 
 
-    }else{
+    } else {
       setStudentInClassLoader(false)
       setStudentInClassData([])
     }
@@ -311,9 +311,9 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
 
 
 
-  const IndividualClass = async () =>{
-    try{
-      let response = await fetch(`http://127.0.0.1:8000/api/student-class/${classID}/`, {
+  const IndividualClass = async () => {
+    try {
+      const response = await fetch(`http://127.0.0.1:8000/api/student-class/${classID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -323,11 +323,11 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
       })
       const data = await response.json()
 
-      if(response.ok){
+      if (response.ok) {
         setStudentClassDetails(data)
-        console.log('data', data)      
+        console.log('data', data)
       }
-    }catch{
+    } catch {
       console.log('error')
     }
 
@@ -335,7 +335,7 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
 
 
 
-  useEffect(() =>{
+  useEffect(() => {
     StudentFunction()
     IndividualClass()
     StudentClassFunction()
@@ -343,11 +343,11 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
 
   }, [])
 
-  useEffect(() =>{
+  useEffect(() => {
     StudentInClassFunction()
   }, [studentQuery])
 
- 
+
   useEffect(() => {
     if (showDeleteModal) {
       setAnimateModal(true)
@@ -355,10 +355,10 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
       setAnimateModal(false);
     }
   }, [showDeleteModal]);
-  
 
 
-  
+
+
 
 
 
@@ -411,38 +411,38 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
                     <div className="d-flex justify-content-end">
                       <div className='pt-3'>
                         <button disabled={disableButton} type="submit" className={`Button site-btn px-3`}>
-                          <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                          <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill me-2"></i>Submit</span>
+                          <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                          <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill me-2"></i>Submit</span>
                         </button>
                       </div>
                     </div>
 
 
                   </form>
-              )}
-  
+                )}
+
               </div>
             </div>
           </div>
         </div>
 
         <div className='mt-5'>
-          
+
 
           <div className='pt-5'>
             <div className='row'>
               <div className="col-md-2 d-flex align-items-center pb-3">
                 <p className='pe-2 light-text'>Filter</p>
                 <label className="site-switch">
-                  <input type="checkbox" onChange={toggleFilterOptions}/>
+                  <input type="checkbox" onChange={toggleFilterOptions} />
                   <span className="site-switch-slider"></span>
                 </label>
               </div>
 
               <div className="col-md-10">
-                <p className='text-center light-text pt-2'>Students in  {studentClassDetails &&  formatName(studentClassDetails?.name)}</p>
+                <p className='text-center light-text pt-2'>Students in  {studentClassDetails && formatName(studentClassDetails?.name)}</p>
               </div>
-              
+
 
             </div>
             {filterOptions && (
@@ -462,7 +462,7 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
                     />
                   </div>
 
-        
+
                 </div>
               </div>
             )}
@@ -477,12 +477,12 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
               {currentItems.length > 0 ? (
                 <div>
                   {selectedIDs.length > 0 ? (
-                          <div className='pb-2'>
-                            <button onClick={handleShowDeleteModal}  className='site-delete-btn px-3'><i className="ri-delete-bin-line me-2"></i>Delete</button>
-                          </div>
-                    ): (
-                      <div></div>
-                    )
+                    <div className='pb-2'>
+                      <button onClick={handleShowDeleteModal} className='site-delete-btn px-3'><i className="ri-delete-bin-line me-2"></i>Delete</button>
+                    </div>
+                  ) : (
+                    <div></div>
+                  )
                   }
                   <div className='site-boxes  site-border border-radius-5px dahboard-table non-wrap-text scroll-bar'>
                     <table className='overflow-auto light-text'>
@@ -495,7 +495,7 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
 
                       <tbody>
                         {currentItems.length > 0 ? (
-                          currentItems.map((data:any) => (
+                          currentItems.map((data: any) => (
                             <tr key={data.id}>
                               <td className='py-3'>
                                 {formatName(data.first_name)} {formatName(data.last_name)}
@@ -525,29 +525,29 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
                   </div>
 
                   {studentInClassData.length > 10 && (
-                      <div className="col-12 mb-4 mt-3">
-                        <Stack spacing={2} alignItems="end">
-                          <Pagination
-                            count={Math.ceil(studentInClassData.length / itemsPerPage)}
-                            page={page}
-                            onChange={handleChange}
-                            sx={{
-                              '& .MuiPaginationItem-root': {
-                                color: '#737b7d', // color of all numbers
-                              },
-                              '& .MuiPaginationItem-root.Mui-selected': {
-                                backgroundColor: '#783ebc', // Your custom color
-                                color: '#fff',
-                              },
-                            }}
-                          />
-                        </Stack>
-                      </div>
-                    )}
+                    <div className="col-12 mb-4 mt-3">
+                      <Stack spacing={2} alignItems="end">
+                        <Pagination
+                          count={Math.ceil(studentInClassData.length / itemsPerPage)}
+                          page={page}
+                          onChange={handleChange}
+                          sx={{
+                            '& .MuiPaginationItem-root': {
+                              color: '#737b7d', // color of all numbers
+                            },
+                            '& .MuiPaginationItem-root.Mui-selected': {
+                              backgroundColor: '#783ebc', // Your custom color
+                              color: '#fff',
+                            },
+                          }}
+                        />
+                      </Stack>
+                    </div>
+                  )}
                 </div>
 
-              
-              ): (
+
+              ) : (
                 <div className="col-12 ">
                   <div className='site-boxes text-center pb-5 d-flex justify-content-center align-items-center   pt-5'>
                     <div>
