@@ -39,7 +39,7 @@ const TeacherHome = () => {
 
     // BillsPaymentFunction,
     // PendingBillsPaymentFunction,
-    SucessBillsPaymentFunction,
+    // SucessBillsPaymentFunction,
     DeclinedBillsPaymentFunction,
 
   } = useContext(AllDataContext)!;
@@ -88,7 +88,7 @@ const TeacherHome = () => {
 
     // BillsPaymentFunction(),
       // PendingBillsPaymentFunction(),
-      SucessBillsPaymentFunction(),
+      // SucessBillsPaymentFunction(),
       DeclinedBillsPaymentFunction()
 
 
