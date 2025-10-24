@@ -3,12 +3,11 @@ import AuthContext from '@/context/AuthContext'
 import React, { use, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form'
-import Image from 'next/image'
 
-import Link from 'next/link';
-import { set } from 'lodash';
+
+
 import AllDataContext from '@/context/AllData';
-import { on } from 'events';
+
 
 export default function IndividualResultPage({ params }: { params: Promise<any> }) {
   const { id } = use(params);
@@ -17,18 +16,18 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
 
 
   const {
-    truncateText,
+
     authTokens,
 
-    formatDate,
+
     formatName,
 
 
     loader,
     setLoader,
-    disableButton,
+
     setDisableButton,
-    handleDownload,
+
 
     setMessage,
     showAlert,
@@ -53,17 +52,12 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
   const [details, setDetails] = useState<any>(null)
 
   const [loading, setLoading] = useState(true)
-  const [classData, setClassData] = useState<any[]>([])
-
-  const [studentLoader, setStudentLoader] = useState(true)
-  const [classLoader, setClassLoader] = useState(true)
-  const [sessionLoader, setSessionLoader] = useState(true)
-  const [termLoader, setTermLoader] = useState(true)
 
 
-  const [subjectData, setSubjectData] = useState<any>([])
+
+
   const [subjectResults, setSubjectResults] = useState<any>([]);
-
+  const [subjectData, setSubjectData] = useState<any>([])
   console.log('subjectResults', subjectResults)
 
   const [classValue, setClassValue] = useState("")
@@ -148,60 +142,58 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
   const {
     register: registerSummaryInformation,
     handleSubmit: handleSubmitSummaryInformation,
-    formState: { errors: errorsSummaryInformation, isValid: isValidSummaryInformation },
+    formState: { errors: errorsSummaryInformation, },
   } = useForm<any>();
 
 
   const {
     register: registerAffectiveTraitInformation,
     handleSubmit: handleSubmitAffectiveTraitInformation,
-    formState: { errors: errorsAffectiveTraitInformation, isValid: isValidAffectiveTraitInformation },
+    formState: { errors: errorsAffectiveTraitInformation},
   } = useForm<any>();
 
   const {
     register: registerPsychomotorTraitInformation,
     handleSubmit: handleSubmitPsychomotorInformation,
-    formState: { errors: errorsPsychomotorInformation, isValid: isValidPsychomotorInformation },
+    formState: { errors: errorsPsychomotorInformation},
   } = useForm<any>();
 
   const {
-    register: registerScoreInformation,
     handleSubmit: handleSubmitScoreInformation,
-    formState: { errors: errorsScoreInformation, isValid: isValidScoreInformation },
   } = useForm<any>();
 
 
   const {
     register: registerRemarkInformation,
     handleSubmit: handleSubmitRemarkInformation,
-    formState: { errors: errorsRemarkInformation, isValid: isValidRemarkInformation },
+    formState: { errors: errorsRemarkInformation},
   } = useForm<any>();
 
 
-  const onSummaryInformationSubmit = (data: any, e: any) => {
+  const onSummaryInformationSubmit = (e: any) => {
     EditSummaryInformationInformation(e)
   }
 
-  const onAffectiveTraitInformationSubmit = (data: any, e: any) => {
+  const onAffectiveTraitInformationSubmit = ( e: any) => {
     EditAffectiveTraitInformation(e)
 
   }
-  const onContactInformationSubmit = (data: any, e: any) => {
+  const onContactInformationSubmit = (e: any) => {
     // EditContactInformation(e)
 
   }
 
-  const onPsychomotorInformationSubmit = (data: any, e: any) => {
+  const onPsychomotorInformationSubmit = (e: any) => {
     EditPsychomotorInformation(e)
 
   }
 
-  const onRemarkInformationSubmit = (data: any, e: any) => {
+  const onRemarkInformationSubmit = (e: any) => {
     EditRemarkInformation(e)
 
   }
 
-  const onScoreInformationSubmit = (data: any, e: any) => {
+  const onScoreInformationSubmit = (e: any) => {
     EditScoreInformation(e)
 
   }

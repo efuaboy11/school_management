@@ -43,7 +43,7 @@ const ChangePassword = ({ params }: { params: Promise<{ token: string }> }) => {
   }
 
 
-  const {register, handleSubmit, formState: { errors, isValid }} = useForm<FormData>();
+  const {register, handleSubmit, formState: { errors}} = useForm<FormData>();
 
   const onSubmit = (data: FormData, e:any) => {
     ChangePassword(e)
@@ -66,8 +66,8 @@ const ChangePassword = ({ params }: { params: Promise<{ token: string }> }) => {
                     <div>
                       <Image  className='logo' src="/img/logo.png" alt="Logo" width={100} height={100} />
                       <p className='pt-4 lg-text font-bold auth-header'>Modern Tools for Modern Schools</p>
-                      <p className='light-text'>"Bring teachers, students, and parents together with seamless digital solutions."</p>
-                      <p className="light-text xsm-text italic-text">"Intelligence plus character — that is the goal of true education." — Martin Luther King Jr.</p>
+                      <p className='light-text'>Bring teachers, students, and parents together with seamless digital solutions.</p>
+                      <p className="light-text xsm-text italic-text">Intelligence plus character — that is the goal of true education. — Martin Luther King Jr.</p>
                     </div>
                   </div>
                 </div>

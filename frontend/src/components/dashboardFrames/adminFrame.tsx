@@ -1,9 +1,9 @@
 "use client"
 
-import { fa0, faAngleDown, faArrowLeft, faBars, faLock } from '@fortawesome/free-solid-svg-icons'
+import { faAngleDown, faArrowLeft, faBars, faLock } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Link from 'next/link'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { usePathname, useRouter } from 'next/navigation'
 import AuthContext from '@/context/AuthContext'
 import '../../css/component/dashFrames.css'
@@ -253,29 +253,7 @@ const AdminFrame = () => {
     setNavDropdown(!navDropdown)
   }
 
-  const currentUser = async () => {
-    try {
-      const response = await fetch(`http://school.amanilightequity.com/api/me/`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${authTokens?.access}`,
-        },
-
-      })
-      const data = await response.json()
-
-      if (response.ok) {
-        if (data.role !== 'admin') {
-          router.push('/login')
-        }
-      }
-    } catch {
-      console.log('error')
-    }
-
-  }
-
+  
   // useEffect(() =>{
   //   currentUser()
   // }, [])

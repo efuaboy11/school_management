@@ -155,7 +155,7 @@ const DisableStudentAccount = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors},
   } = useForm<any>();
 
 
@@ -178,7 +178,7 @@ const DisableStudentAccount = () => {
   }
 
 
-  const handlesShowDiactivateModal = (id: any) => {
+  const handlesShowDiactivateModal = () => {
     setDiactivateModal(true)
   }
   const handlesCloseDiactivateModal = () => {

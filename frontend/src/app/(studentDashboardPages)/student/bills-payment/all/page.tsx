@@ -14,7 +14,6 @@ const AllBillsPayment = () => {
   const {
     billsPaymentCount,
     billsPaymentData,
-    setBillsPaymentData,
     billsPaymentLoader,
 
     billsPaymentSearch,

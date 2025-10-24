@@ -46,7 +46,6 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
 
   const [loading, setLoading] = useState(true)
 
-  const [subjectData, setSubjectData] = useState<any>([])
   const [subjectResults, setSubjectResults] = useState<any>([]);
 
   console.log('subjectResults', subjectResults)
@@ -90,14 +89,6 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
       setLoading(false)
     }
 
-  }
-
-
-
-  const handleSubjectChange = (index: any, e: any) => {
-    const values = [...subjectResults]
-    values[index][e.target.name] = e.target.value;
-    setSubjectResults(values)
   }
 
 
@@ -272,10 +263,6 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
 
                                   <tbody>
                                     {subjectResults.map((subject: any, index: any) => {
-                                      const subjectn = subjectData.find((s: any) => s.id === subject.subject)
-                                      console.log(subjectn)
-                                      console.log(subjectData)
-                                      const subjectName = subjectn ? subjectn.name : ''
                                       return (
                                         <tr key={index}>
                                           <td className='light-text'>{formatName(subject.subject_name)}</td>

@@ -186,6 +186,7 @@ const BankAccount = () => {
   }
 
   const UpdateStatus = async (e: any) => {
+    e.preventDefault()
     setStatusLoader(true)
     setDisableButton(true)
 

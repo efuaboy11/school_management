@@ -8,7 +8,7 @@ import { Pagination, Stack } from '@mui/material';
 import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
 import { debounce } from "lodash";
-import { useForm } from 'react-hook-form'
+
 
 const ProductCategories = () => {
 
@@ -134,11 +134,7 @@ const ProductCategories = () => {
     setPage(value);
   };
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm();
+
   // const productCatergoriesData = [...Array(100).keys()];
   const startIndex = (page - 1) * itemsPerPage;
   const currentItems = productCatergoriesData.slice(startIndex, startIndex + itemsPerPage);
@@ -197,6 +193,7 @@ const ProductCategories = () => {
 
 
   const UpdateStatus = async (e: any) => {
+    e.preventDefault()
     setStatusLoader(true)
     setDisableButton(true)
 

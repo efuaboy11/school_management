@@ -1,6 +1,5 @@
 "use client"
 
-import { profile } from 'console';
 import { jwtDecode } from 'jwt-decode';
 import { createContext, useEffect, useState } from "react";
 import { ReactNode } from "react";
@@ -99,10 +98,6 @@ type DecodedUser = {
 };
 
 
-interface DownloadLinkProps {
-  url: string;
-  fileName: string;
-}
 
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -121,7 +116,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const tokenString = typeof window !== "undefined" ? localStorage.getItem('authTokens') : null;
     try {
       return tokenString ? jwtDecode<DecodedUser>(JSON.parse(tokenString).access) : null;
-    } catch (err) {
+    } catch{
       return null;
     }
   });

@@ -9,10 +9,9 @@ const IndivivdualBill = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params)
 
   const {
-    truncateText,
     authTokens,
 
-    formatDate,
+
     formatName,
 
 
@@ -33,7 +32,6 @@ const IndivivdualBill = ({ params }: { params: Promise<{ id: string }> }) => {
   const [billName, setBillName] = useState('')
   const [amount, setAmount] = useState(0)
   const [description, setDescription] = useState('')
-  const [passport, setPassport] = useState<File | null>(null)
   const [deleteModal, setDeleteModal] = useState(false)
 
   const [showModal, setShowModal] = useState(false);
@@ -76,7 +74,7 @@ const IndivivdualBill = ({ params }: { params: Promise<{ id: string }> }) => {
 
   const IndividualDetailsFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//bills/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/bills/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -110,7 +108,7 @@ const IndivivdualBill = ({ params }: { params: Promise<{ id: string }> }) => {
     setLoader(true)
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//bills/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/bills/${id}/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`
@@ -162,7 +160,7 @@ const IndivivdualBill = ({ params }: { params: Promise<{ id: string }> }) => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//bills/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/bills/${id}/`, {
         method: 'PATCH',
         body: formData,
         headers: {

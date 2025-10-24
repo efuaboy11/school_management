@@ -1,5 +1,5 @@
 "use client"
-import React, { useContext, useEffect, useRef, useState } from 'react';
+import React, { useContext, useEffect, useRef} from 'react';
 import Chart from 'chart.js/auto';
 import {
   PolarAreaController,

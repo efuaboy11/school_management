@@ -46,10 +46,10 @@ const SchemeOfWorkPage = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
+
     authTokens,
 
-    formatDate,
+
     formatName,
 
 
@@ -96,11 +96,7 @@ const SchemeOfWorkPage = () => {
   const [filterOptions, setOptions] = useState(false)
 
 
-  const [hasMounted, setHasMounted] = useState(false);
 
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
 
   const toggleFilterOptions = () => {
     setOptions(!filterOptions)

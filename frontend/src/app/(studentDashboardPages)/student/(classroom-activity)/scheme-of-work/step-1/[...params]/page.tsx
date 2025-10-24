@@ -6,15 +6,12 @@ import { Pagination, Stack } from '@mui/material';
 import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
 
-import ThemeContext from '@/context/ThemeContext'
+
 import { DownloadLink } from '@/components/downloadLink'
 
 const SchemeOfWorkPage = ({ params }: { params: Promise<any> }) => {
   const param = use(params);
   const [termID, classID,] = param.params || [];
-
-  const { theme } = useContext(ThemeContext)!
-    ;
   const {
 
 
@@ -52,9 +49,9 @@ const SchemeOfWorkPage = ({ params }: { params: Promise<any> }) => {
   const [schemeOfWorkCount, setSchemeOfWorkCount] = useState(0)
   const [schemeOfWorkData, setSchemeOfWorkData] = useState<any[]>([])
   const [schemeOfWorkLoader, setSchemeOfWorkLoader] = useState(true)
-  const [schemeOfWorkSearch, setSchemeOfWorkSearch] = useState('')
 
-  const [userDetails, setUserDetails] = useState<any>(null)
+
+
 
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
@@ -70,82 +67,6 @@ const SchemeOfWorkPage = ({ params }: { params: Promise<any> }) => {
   const startIndex = (page - 1) * itemsPerPage;
   const currentItems = schemeOfWorkData.slice(startIndex, startIndex + itemsPerPage);
 
-
-
-
-
-  const customStyles = {
-    control: (provided: any, state: any) => ({
-      ...provided,
-      backgroundColor: theme === 'dark' ? '#0d0d0d' : '#fff',
-      borderColor: state.isFocused ? '#783ebc' : theme === 'light' ? '#ccc' : '#333',
-      boxShadow: state.isFocused ? '0 0 0 4px rgba(120, 62, 188, 0.2)' : 'none',
-      color: theme === 'dark' ? '#fff' : '#000',
-    }),
-
-    menu: (provided: any) => ({
-      ...provided,
-      backgroundColor: theme === 'dark' ? '#0d0d0d' : '#fff',
-      border: '1px solid #ccc',
-      zIndex: 999,
-    }),
-
-    option: (provided: any, state: any) => {
-      const isDark = theme === 'dark';
-
-      const backgroundColor = state.isSelected
-        ? '#783ebc'
-        : state.isFocused
-          ? isDark
-            ? '#1a1a1a' // hover in dark
-            : '#f0f0f0' // hover in light
-          : isDark
-            ? '#0d0d0d'
-            : '#fff';
-
-      const color = state.isSelected
-        ? '#fff'
-        : state.isFocused
-          ? isDark
-            ? '#fff'
-            : '#000'
-          : isDark
-            ? '#fff'
-            : '#000';
-
-      return {
-        ...provided,
-        backgroundColor,
-        color,
-        cursor: 'pointer',
-      };
-    },
-
-    singleValue: (provided: any) => ({
-      ...provided,
-      color: theme === 'dark' ? '#fff' : '#000',
-    }),
-
-    placeholder: (provided: any) => ({
-      ...provided,
-      color: theme === 'dark' ? '#aaa' : '#666',
-    }),
-
-    input: (provided: any) => ({
-      ...provided,
-      color: theme === 'dark' ? '#fff' : '#000',
-    }),
-
-    dropdownIndicator: (provided: any) => ({
-      ...provided,
-      color: theme === 'dark' ? '#fff' : '#000',
-    }),
-
-    indicatorSeparator: (provided: any) => ({
-      ...provided,
-      backgroundColor: theme === 'dark' ? '#444' : '#ccc',
-    }),
-  };
 
 
 
@@ -182,31 +103,11 @@ const SchemeOfWorkPage = ({ params }: { params: Promise<any> }) => {
 
   }
 
-  const UserDetails = async () => {
-    try {
-      const response = await fetch(`http://school.amanilightequity.com/api/students/${authTokens?.user_id}/`, {
-        method: 'GET',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${authTokens?.access}`,
-        },
-
-      })
-      const data = await response.json()
-
-      if (response.ok) {
-        setUserDetails(data)
-      }
-    } catch {
-      console.log('error')
-    }
-
-  }
+  
 
 
   useEffect(() => {
     TermFunction()
-    UserDetails()
   }, [])
 
   useEffect(() => {

@@ -98,7 +98,7 @@ const StoreKeeperHome = () => {
           <div className="d-flex justify-content-between align-center pb-4 pt-3">
             <div>
               <p className='stylish-text md-text  mt-5'>Hi {formatName(userDetails.first_name)}</p>
-              <p className="light-text italic-text">"Education is the most powerful weapon which you can use to change the world."</p>
+              <p className="light-text italic-text">Education is the most powerful weapon which you can use to change the world.</p>
               <p className="italic-text light-text pb-4">— Nelson Mandela</p>
             </div>
 

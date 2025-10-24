@@ -1,8 +1,8 @@
 "use client"
 import React, { use, useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons'
+
+
 import AuthContext from '@/context/AuthContext'
 import { useForm } from 'react-hook-form'
 import { Pagination, Stack } from '@mui/material';
@@ -507,20 +507,20 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
   const {
     register: registerPersonalInformation,
     handleSubmit: handleSubmitPersonalInformation,
-    formState: { errors: errorsPersonalInformation, isValid: isValidPersonalInformation },
+    formState: { errors: errorsPersonalInformation},
   } = useForm<any>();
 
 
   const {
     register: registerSchoolInformation,
     handleSubmit: handleSubmitSchoolInformation,
-    formState: { errors: errorsSchoolInformation, isValid: isValidSchoolInformation },
+    formState: { errors: errorsSchoolInformation,},
   } = useForm<any>();
 
   const {
     register: registerContactInformation,
     handleSubmit: handleSubmitContactInformation,
-    formState: { errors: errorsContactInformation, isValid: isValidContactInformation },
+    formState: { errors: errorsContactInformation},
   } = useForm<any>();
 
 

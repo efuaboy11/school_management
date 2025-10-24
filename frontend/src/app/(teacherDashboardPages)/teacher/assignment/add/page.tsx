@@ -33,7 +33,6 @@ const CreateAssignment = () => {
 
     loader,
     setLoader,
-    disableButton,
     setDisableButton,
 
     setMessage,
@@ -61,7 +60,7 @@ const CreateAssignment = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors},
   } = useForm<any>();
 
   const handleImgFile = (files: File[]) => {

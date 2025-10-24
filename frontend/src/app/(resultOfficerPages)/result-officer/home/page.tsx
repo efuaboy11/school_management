@@ -1,5 +1,5 @@
 "use client"
-import { BillsChart, SchoolFeesBarChart, SchoolFeesChart, UsersChart } from '@/components/chatFrames'
+
 import AllDataContext from '@/context/AllData'
 import Link from 'next/link'
 import '../../../../css/adminCss/adminHome.css'
@@ -10,7 +10,7 @@ import AuthContext from '@/context/AuthContext'
 
 const ResultOfficerHomePage = () => {
 
-  const [timeofDay, setTimeOfDay] = useState('')
+  // const [timeofDay, setTimeOfDay] = useState('')
   const [userDetails, setUserDetails] = useState<any>(null)
 
 
@@ -21,8 +21,7 @@ const ResultOfficerHomePage = () => {
     staffNotificationLoader,
     StaffNotificationFunction,
 
-    recentEResultData,
-    eResultLoader,
+
     EResultFunction,
 
 
@@ -33,10 +32,10 @@ const ResultOfficerHomePage = () => {
     truncateText,
     authTokens,
 
-    formatDate,
+  
     formatName,
 
-    showSidebar
+
 
   } = useContext(AuthContext)!;
 
@@ -108,26 +107,26 @@ const ResultOfficerHomePage = () => {
 
 
 
-  useEffect(() => {
-    const updateGreeting = () => {
-      const currentHour = new Date().getHours()
-      console.log(currentHour)
+  // useEffect(() => {
+  //   const updateGreeting = () => {
+  //     const currentHour = new Date().getHours()
+  //     console.log(currentHour)
 
-      if (currentHour >= 0 && currentHour < 12) {
-        setTimeOfDay('Bonjour')
-      } else if (currentHour >= 12 && currentHour < 16) {
-        setTimeOfDay('Bonjour')
-      } else if (currentHour >= 16 && currentHour < 24) {
-        setTimeOfDay('Bonsoir')
-      }
-    }
+  //     if (currentHour >= 0 && currentHour < 12) {
+  //       setTimeOfDay('Bonjour')
+  //     } else if (currentHour >= 12 && currentHour < 16) {
+  //       setTimeOfDay('Bonjour')
+  //     } else if (currentHour >= 16 && currentHour < 24) {
+  //       setTimeOfDay('Bonsoir')
+  //     }
+  //   }
 
-    updateGreeting()
+  //   updateGreeting()
 
-    const interval = setInterval(updateGreeting, 60 * 60 * 1000)
+  //   const interval = setInterval(updateGreeting, 60 * 60 * 1000)
 
-    return () => clearInterval(interval)
-  }, [])
+  //   return () => clearInterval(interval)
+  // }, [])
 
 
   return (
@@ -137,7 +136,7 @@ const ResultOfficerHomePage = () => {
           <div className="d-flex justify-content-between align-center pb-4 pt-3">
             <div>
               <p className='stylish-text md-text  mt-5'>Hi {formatName(userDetails.first_name)}</p>
-              <p className="light-text italic-text">"Education is the most powerful weapon which you can use to change the world."</p>
+              <p className="light-text italic-text">Education is the most powerful weapon which you can use to change the world.</p>
               <p className="italic-text light-text pb-4">— Nelson Mandela</p>
             </div>
 

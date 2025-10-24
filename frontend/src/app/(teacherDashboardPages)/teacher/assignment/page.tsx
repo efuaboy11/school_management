@@ -29,7 +29,7 @@ const AssignmentPage = () => {
   const {
     truncateText,
     authTokens,
-    formatDate,
+    
     formatName,
 
 

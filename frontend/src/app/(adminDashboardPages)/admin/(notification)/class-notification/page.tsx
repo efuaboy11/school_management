@@ -35,7 +35,7 @@ const SchoolNotification = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
+
     authTokens,
     formatDate,
     formatName,
@@ -62,11 +62,6 @@ const SchoolNotification = () => {
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
 
-  const [filterOptions, setOptions] = useState(false)
-
-  const toggleFilterOptions = () => {
-    setOptions(!filterOptions)
-  }
 
   const [notificationMessage, setNotificationMessage] = useState('')
   const [notificationSubject, setNotificationSubject] = useState('')
@@ -77,7 +72,7 @@ const SchoolNotification = () => {
   const [statusLoader, setStatusLoader] = useState(false)
   const statusModal = useRef<any>(null)
   const [statusOverlay, setStatusOverlay] = useState(false)
-  const [seen, setSeen] = useState(false)
+
 
   const [selectedIDs, setSelectedIDs] = useState<number[]>([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -148,12 +143,12 @@ const SchoolNotification = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors},
   } = useForm();
 
 
-  const onSubmit = (e: any) => {
-    UpdateDetails(e)
+  const onSubmit = () => {
+    UpdateDetails()
 
   }
   // const classNotificationData = [...Array(100).keys()];
@@ -299,7 +294,7 @@ const SchoolNotification = () => {
   }
 
 
-  const UpdateDetails = async (e: any) => {
+  const UpdateDetails = async () => {
     setStatusLoader(true)
     setDisableButton(true)
 

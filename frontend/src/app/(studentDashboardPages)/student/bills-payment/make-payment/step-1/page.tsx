@@ -41,11 +41,11 @@ const PayBills = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors},
   } = useForm<any>();
 
 
-  const onSubmit = (data: FormData, e: any) => {
+  const onSubmit = () => {
     setLoader(true)
     router.push(`/student/bills-payment/make-payment/step-2/${bills}/${paymentMethod}`)
   }

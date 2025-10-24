@@ -8,7 +8,7 @@ import AuthContext from '@/context/AuthContext';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import "../../../../../../css/authCss/auth.css"
-import { add } from 'lodash';
+
 import { useDropzone } from 'react-dropzone';
 
 
@@ -43,7 +43,7 @@ const AddHr = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors},
   } = useForm<any>();
 
   const {

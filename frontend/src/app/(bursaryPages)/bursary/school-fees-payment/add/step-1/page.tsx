@@ -16,7 +16,7 @@ const VerifyDetails = () => {
   const [term, setTerm] = useState('')
 
   const router = useRouter();
-  const [studentErrorMessage, setStudentErrorMessage] = useState('')
+
 
   const [isClient, setIsClient] = useState(false);
   const { theme } = useContext(ThemeContext)!;
@@ -60,7 +60,7 @@ const VerifyDetails = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors},
   } = useForm<any>();
 
 
@@ -163,7 +163,7 @@ const VerifyDetails = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//get-school-fees-amount/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/get-school-fees-amount/`, {
         method: 'POST',
         body: formData,
         headers: {
@@ -260,7 +260,6 @@ const VerifyDetails = () => {
                           isClearable
                         />
                       )}
-                      {studentErrorMessage && <p className="error-text">This field is required</p>}
                     </div>
 
                     <div className="col-md-6">

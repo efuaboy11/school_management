@@ -115,10 +115,6 @@ const IndivivdualAssignment = ({ params }: { params: Promise<{ id: string }> }) 
   }));
 
 
-  const StudentClassOptions = studentClassData.map((data: any) => ({
-    value: data.id,
-    label: `${data.name}`
-  }));
 
 
   const customStyles = {

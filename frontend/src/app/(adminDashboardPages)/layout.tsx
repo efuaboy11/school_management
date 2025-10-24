@@ -1,11 +1,11 @@
 'use client';
 import React from "react";
-import AuthNavbar from "@/components/authNavbar";
+
 import FloatingAlert from "@/components/alert";
 import { useContext } from "react";
 import AuthContext from "@/context/AuthContext";
 import AdminFrame from "@/components/dashboardFrames/adminFrame";
-import { DashboardFooter } from "@/components/dashFooter";
+
 import "../../css/adminCss/staff.css"
 import '../../css/adminCss/adminResult.css'
 

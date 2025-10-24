@@ -38,8 +38,8 @@ const Product = () => {
   const {
     truncateText,
     authTokens,
-    formatDate,
     formatName,
+    formatCurrency,
 
 
     loader,
@@ -93,7 +93,7 @@ const Product = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [animateModal, setAnimateModal] = useState(false);
 
-  const [status, setStatus] = useState('')
+
   const [statusLoader, setStatusLoader] = useState(false)
   const statusModal = useRef<any>(null)
   const [statusOverlay, setStatusOverlay] = useState(false)
@@ -154,7 +154,7 @@ const Product = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://school.amanilightequity.com/api//delete-multiple-product/', {
+      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-product/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -201,11 +201,12 @@ const Product = () => {
   }
 
   const UpdateStatus = async (e: any) => {
+    e.preventDefault()
     setStatusLoader(true)
     setDisableButton(true)
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//product/${selectedDataId}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/product/${selectedDataId}/`, {
         method: 'PATCH',
         body: JSON.stringify({
           is_active: !isProductActive,
@@ -220,7 +221,6 @@ const Product = () => {
         showAlert()
         setMessage("Status updated sucessfully")
         setDisableButton(false)
-        setStatus('')
         setIsSuccess(true)
         setStatusLoader(false)
         hideStatusModal()

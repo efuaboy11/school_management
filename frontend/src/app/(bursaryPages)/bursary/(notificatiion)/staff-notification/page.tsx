@@ -1,11 +1,11 @@
 "use client"
-import React, { useContext, useEffect, useRef, useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
 import { Pagination, Stack } from '@mui/material';
 import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
 import { debounce } from "lodash";
-import ThemeContext from '@/context/ThemeContext'
+
 
 const StafflNotification = () => {
 
@@ -23,14 +23,13 @@ const StafflNotification = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    authTokens,
+   
 
     formatDate,
     formatName,
 
   } = useContext(AuthContext)!;
 
-  const { theme } = useContext(ThemeContext)!;
 
 
 

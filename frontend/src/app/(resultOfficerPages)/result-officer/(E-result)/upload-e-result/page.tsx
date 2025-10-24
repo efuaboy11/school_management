@@ -56,10 +56,10 @@ const UploadEResultPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors},
   } = useForm<any>();
 
-  const onSubmit = (data: FormData, e: any) => {
+  const onSubmit = () => {
     setLoader(true)
     if (classID && termID && sessionID) {
       router.push(`/result-officer/upload-e-result/${classID}/${termID}/${sessionID}`)

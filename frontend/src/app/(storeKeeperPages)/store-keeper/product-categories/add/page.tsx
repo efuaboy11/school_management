@@ -1,6 +1,6 @@
 "use client"
 import AuthContext from '@/context/AuthContext'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext,  useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 const AddProductCategories = () => {
@@ -32,7 +32,7 @@ const AddProductCategories = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors},
   } = useForm<any>();
 
   const onSubmit = (data: FormData, e: any) => {

@@ -76,7 +76,7 @@ const IndivivdualParent = ({ params }: { params: Promise<{ id: string }> }) => {
   const {
     register: registerPersonalInformation,
     handleSubmit: handleSubmitPersonalInformation,
-    formState: { errors: errorsPersonalInformation, isValid: isValidPersonalInformation },
+    formState: { errors: errorsPersonalInformation},
   } = useForm<any>();
 
   const onPersonalInformationSubmit = (data: any, e: any) => {

@@ -1,7 +1,7 @@
 "use client"
 import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
-import ThemeContext from '@/context/ThemeContext'
+
 import { useRouter } from 'next/navigation'
 import React, { use, useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -70,7 +70,7 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
 
   const {
     PaymentMethodFunction,
-    paymentMethodData,
+
 
   } = useContext(AllDataContext)!;
 
@@ -79,9 +79,9 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
 
 
   const {
-    register,
+
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors},
   } = useForm<any>();
 
   const handleImgFile = (files: File[]) => {
@@ -191,7 +191,6 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
 
 
       if (response.ok) {
-        const data = await response.json();
         showAlert()
         setMessage('Payment sucessful')
         setIsSuccess(true)

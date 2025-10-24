@@ -38,8 +38,7 @@ const PayFees = () => {
 
   const storedStudent = typeof window !== "undefined" ? localStorage.getItem('student') : null
   // const parsedStudent = storedStudent ? JSON.parse(storedStudent) : null;
-  const [isClient, setIsClient] = useState(false);
-  const { theme } = useContext(ThemeContext)!;
+
 
 
 
@@ -74,7 +73,7 @@ const PayFees = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<any>();
 
   const handleImgFile = (files: File[]) => {
@@ -126,7 +125,6 @@ const PayFees = () => {
 
 
       if (response.ok) {
-        const data = await response.json();
         showAlert()
         setMessage('Payment sucessful')
         setIsSuccess(true)
@@ -195,7 +193,6 @@ const PayFees = () => {
   }, [])
 
   useEffect(() => {
-    setIsClient(true);
     const storedFeeDetails = localStorage.getItem('schoolFeesDetails');
     setFeeDetails(storedFeeDetails ? JSON.parse(storedFeeDetails) : null);
   }, []);

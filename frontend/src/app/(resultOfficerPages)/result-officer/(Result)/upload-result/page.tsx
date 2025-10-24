@@ -24,12 +24,12 @@ const UploadResultPage = () => {
 
   const {
 
-    authTokens,
+
 
     loader,
     setLoader,
     disableButton,
-    setDisableButton,
+
 
     setMessage,
     showAlert,
@@ -63,10 +63,10 @@ const UploadResultPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors},
   } = useForm<any>();
 
-  const onSubmit = (data: FormData, e: any) => {
+  const onSubmit = () => {
     setLoader(true)
     if (studentID && classID && termID && sessionID) {
       router.push(`/result-officer/upload-result/${studentID}/${classID}/${termID}/${sessionID}`)

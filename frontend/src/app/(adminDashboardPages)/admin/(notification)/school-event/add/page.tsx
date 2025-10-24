@@ -1,7 +1,6 @@
 "use client"
-import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 const CreateSchoolEventPage = () => {
@@ -16,7 +15,6 @@ const CreateSchoolEventPage = () => {
 
     loader,
     setLoader,
-    disableButton,
     setDisableButton,
 
     setMessage,
@@ -35,7 +33,7 @@ const CreateSchoolEventPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<any>();
 
   const onSubmit = (data: FormData, e: any) => {
@@ -56,7 +54,7 @@ const CreateSchoolEventPage = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//school-event/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/school-event/`, {
         method: 'POST',
         body: formData,
         headers: {

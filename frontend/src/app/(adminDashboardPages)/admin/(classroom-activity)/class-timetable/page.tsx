@@ -28,7 +28,6 @@ const ClassTimetablePage = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
     authTokens,
 
     formatDate,

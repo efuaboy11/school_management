@@ -173,7 +173,6 @@ const IndividualEResult = ({ params }: { params: Promise<any> }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
   } = useForm<any>();
 
   const onSubmit = (data: any, e: any) => {

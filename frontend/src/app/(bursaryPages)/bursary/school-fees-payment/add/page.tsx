@@ -14,8 +14,7 @@ const CreateSchoolFees = () => {
   const [paymentMethod, setPaymentMethod] = useState('')
   const [reciept, setReciept] = useState<File | null>(null)
 
-  const [studentErrorMessage, setStudentErrorMessage] = useState('')
-  const [feeTypeErrorMessage, setFeeTypeErrorMessage] = useState('')
+
 
   const [isClient, setIsClient] = useState(false);
 
@@ -46,12 +45,10 @@ const CreateSchoolFees = () => {
 
   const {
     StudentClassFunction,
-    studentClassData,
 
-    termData,
     TermFunction,
 
-    sessionData,
+
     SessionFunction,
 
     schoolFeesData,
@@ -68,7 +65,7 @@ const CreateSchoolFees = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors},
   } = useForm<any>();
 
 
@@ -277,7 +274,6 @@ const CreateSchoolFees = () => {
                           isClearable
                         />
                       )}
-                      {studentErrorMessage && <p className="error-text">This field is required</p>}
                     </div>
 
                     {isClient && (
@@ -293,7 +289,6 @@ const CreateSchoolFees = () => {
                           isSearchable
                           isClearable
                         />
-                        {feeTypeErrorMessage && <p className="error-text">This field is required</p>}
                       </div>
                     )}
 

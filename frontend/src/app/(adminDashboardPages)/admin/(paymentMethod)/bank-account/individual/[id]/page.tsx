@@ -13,10 +13,10 @@ const IndivivdualBankAccount = ({ params }: { params: Promise<{ id: string }> })
   const { id } = use(params)
 
   const {
-    truncateText,
+
     authTokens,
 
-    formatDate,
+
     formatName,
 
 
@@ -32,7 +32,7 @@ const IndivivdualBankAccount = ({ params }: { params: Promise<{ id: string }> })
   } = useContext(AuthContext)!;
 
   const {
-    productCatergoriesData,
+
     ProductCatergoriesFunction
   } = useContext(AllDataContext)!;
 
@@ -43,7 +43,7 @@ const IndivivdualBankAccount = ({ params }: { params: Promise<{ id: string }> })
   const [description, setDescription] = useState('')
   const [accountName, setAccountName] = useState('')
   const [accountNumber, setAccountNumber] = useState('')
-  const [isActive, setIsActive] = useState(true)
+
   const [img, setImg] = useState<File | null>(null)
   const [deleteModal, setDeleteModal] = useState(false)
 
@@ -120,7 +120,7 @@ const IndivivdualBankAccount = ({ params }: { params: Promise<{ id: string }> })
         setDescription(data?.description || '')
         setAccountName(data?.account_name || '')
         setAccountNumber(data?.account_number || '')
-        setIsActive(data?.is_active || true)
+
         setLoading(false)
       } else {
         setLoading(false)

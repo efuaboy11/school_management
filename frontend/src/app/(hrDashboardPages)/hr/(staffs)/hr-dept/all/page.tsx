@@ -23,7 +23,7 @@ const AllHr = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
+
     authTokens,
     formatDate,
     formatName,
@@ -199,8 +199,8 @@ const AllHr = () => {
       <div className="container-xl pt-4">
         <div className="d-md-flex justify-content-between">
           <div>
-            <p className="md-text">HR's</p>
-            <p className="light-text pb-3">Total of {hrCount} HR's avaliable</p>
+            <p className="md-text">HRs</p>
+            <p className="light-text pb-3">Total of {hrCount} HRs avaliable</p>
           </div>
 
           <div className='d-flex mb-4'>

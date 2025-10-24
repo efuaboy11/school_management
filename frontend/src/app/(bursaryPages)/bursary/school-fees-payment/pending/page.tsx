@@ -133,6 +133,7 @@ const PendingPayment = () => {
 
 
   const UpdateStatus = async (e: any) => {
+    e.preventDefault()
     setStatusLoader(true)
     setDisableButton(true)
 
@@ -184,7 +185,7 @@ const PendingPayment = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm();
 
 

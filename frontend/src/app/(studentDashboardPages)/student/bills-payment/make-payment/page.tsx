@@ -30,7 +30,7 @@ const PayBills = () => {
     setLoader,
     disableButton,
     setDisableButton,
-    formatName,
+
 
 
     setMessage,
@@ -58,7 +58,7 @@ const PayBills = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors},
   } = useForm<any>();
 
   const studentOptions = studentData.map((data: any) => ({
@@ -188,7 +188,6 @@ const PayBills = () => {
 
 
       if (response.ok) {
-        const data = await response.json();
         showAlert()
         setMessage('Payment sucessful')
         setIsSuccess(true)

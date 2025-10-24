@@ -1,8 +1,8 @@
 "use client"
 import React, { use, useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons'
+
+
 import AuthContext from '@/context/AuthContext'
 import { useForm } from 'react-hook-form'
 import { Pagination, Stack } from '@mui/material';
@@ -13,13 +13,13 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
   const { id } = use(params)
 
   const [showPersonalInformationModal, setShowPersonalInformationModal] = useState(false);
-  const [showSchoolInformationModal, setShowSchoolInformationModal] = useState(false);
+
   const [showContactInformationModal, setShowContactInformationModal] = useState(false);
   const [animateModal, setAnimateModal] = useState(false);
   const [userData, setUserData] = useState<any>(null)
-  const [userDeleteModal, setUserDeleteModal] = useState(false)
+
   const [schoolFeesDeleteModal, setSchoolFeesDeleteModal] = useState(false)
-  const [billsDeleteModal, setBillsDeleteModal] = useState(false)
+
 
 
   const [schoolFeesPaymentData, setSchoolFeesPaymentData] = useState<any[]>([])
@@ -28,7 +28,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
   const [billsPaymentData, setBillsPaymentData] = useState<any[]>([])
   const [billsPaymentLoader, setBillsPaymentLoader] = useState(true)
 
-  const router = useRouter();
+
 
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -44,12 +44,11 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
   const [stateOfOrigin, setStateOfOrigin] = useState('')
   const [cityOrTown, setCityOrTown] = useState('')
   const [homeAddress, setHomeAddress] = useState('')
-  const [admissionNumber, setAdmissionNumber] = useState('')
-  const [passport, setPassport] = useState(null)
-  const [studentClass, setStudentClass] = useState('')
 
-  const [selectedIDs, setSelectedIDs] = useState<number[]>([]);
-  const [billsSelectedIDs, setBillsSelectedIDs] = useState<number[]>([]);
+  const [passport, setPassport] = useState(null)
+
+
+
 
 
   const [Loading, setLoading] = useState(true)
@@ -60,6 +59,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
 
     formatDate,
     formatName,
+    formatCurrency,
 
 
     loader,
@@ -96,13 +96,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
     setShowPersonalInformationModal(true);
   };
 
-  const handleCloseStudentInformationModal = () => {
-    setShowSchoolInformationModal(false);
-  }
 
-  const handleShowStudentInformationModal = () => {
-    setShowSchoolInformationModal(true);
-  }
 
 
   const handleCloseContactInformationModal = () => {
@@ -112,17 +106,6 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
   const handleShowContactInformationModal = () => {
     setShowContactInformationModal(true);
   }
-
-
-
-  const handleShowSchoolFeesDeleteModal = () => {
-    setSchoolFeesDeleteModal(true)
-  }
-
-  const handleCloseSchoolFeesDeleteModal = () => {
-    setSchoolFeesDeleteModal(false)
-  }
-
 
 
 
@@ -178,8 +161,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
         setStateOfOrigin(data?.state_of_origin || '')
         setCityOrTown(data?.city_or_town || '')
         setHomeAddress(data?.home_address || '')
-        setAdmissionNumber(data?.admission_number || '')
-        setStudentClass(data?.student_class || '')
+
 
         setLoading(false)
       } else {
@@ -270,15 +252,6 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
 
 
   useEffect(() => {
-    if (showSchoolInformationModal) {
-      setAnimateModal(true)
-    } else {
-      setAnimateModal(false);
-    }
-  }, [showSchoolInformationModal]);
-
-
-  useEffect(() => {
     if (showContactInformationModal) {
       setAnimateModal(true)
     } else {
@@ -294,21 +267,8 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
     }
   }, [schoolFeesDeleteModal]);
 
-  useEffect(() => {
-    if (billsDeleteModal) {
-      setAnimateModal(true)
-    } else {
-      setAnimateModal(false);
-    }
-  }, [billsDeleteModal]);
 
-  useEffect(() => {
-    if (userDeleteModal) {
-      setAnimateModal(true)
-    } else {
-      setAnimateModal(false);
-    }
-  }, [userDeleteModal]);
+
 
 
   const {
@@ -912,14 +872,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
                 <div className="site-boxes border-radius-10px p-3">
                   <div className="d-flex justify-content-between">
                     <p className='pb-4'>School Fees Payment</p>
-                    {selectedIDs.length > 0 ? (
-                      <div>
-                        <button onClick={handleShowSchoolFeesDeleteModal} className='site-delete-btn px-3'><i className="ri-delete-bin-line me-2"></i>Delete</button>
-                      </div>
-                    ) : (
-                      <div></div>
-                    )
-                    }
+                    
                   </div>
 
                   <div>

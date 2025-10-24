@@ -1,7 +1,7 @@
 "use client"
-import AllDataContext from '@/context/AllData'
+
 import AuthContext from '@/context/AuthContext'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 const SendEmailPage = () => {

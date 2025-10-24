@@ -20,7 +20,7 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
   const [studentValue, setStudentValue] = useState('')
   const [file, setFile] = useState<File | null>(null)
 
-  const [resultCount, setResultCount] = useState(0)
+
   const [resultData, setResultData] = useState<any>([])
   const [resultLoader, setResultLoader] = useState(true)
 
@@ -303,9 +303,6 @@ const UploadEResult2Page = ({ params }: { params: Promise<any> }) => {
 
     const data = await response.json()
     if (response.ok) {
-      if (Array.isArray(data) && data.length > 0) {
-        setResultCount(data.length)
-      }
 
 
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);

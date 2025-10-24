@@ -55,7 +55,7 @@ const SchoolNotification = () => {
   const [statusLoader, setStatusLoader] = useState(false)
   const statusModal = useRef<any>(null)
   const [statusOverlay, setStatusOverlay] = useState(false)
-  const [seen, setSeen] = useState(false)
+
 
   const [selectedIDs, setSelectedIDs] = useState<number[]>([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -117,7 +117,7 @@ const SchoolNotification = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors},
   } = useForm();
 
 
@@ -183,6 +183,7 @@ const SchoolNotification = () => {
 
 
   const UpdateDetails = async (e: any) => {
+    e.preventDefault()
     setStatusLoader(true)
     setDisableButton(true)
 

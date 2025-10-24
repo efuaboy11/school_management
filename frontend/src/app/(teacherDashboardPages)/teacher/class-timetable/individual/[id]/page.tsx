@@ -164,7 +164,6 @@ const IndivivdualClassTimeTable = ({ params }: { params: Promise<{ id: string }>
   const {
     register,
     handleSubmit,
-    formState: { errors },
   } = useForm<any>();
 
   const onSubmit = (data: any, e: any) => {

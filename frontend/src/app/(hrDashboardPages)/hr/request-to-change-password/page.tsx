@@ -129,7 +129,7 @@ const Product = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [animateModal, setAnimateModal] = useState(false);
 
-  const [status, setStatus] = useState('')
+
   const [statusLoader, setStatusLoader] = useState(false)
   const statusModal = useRef<any>(null)
   const [statusOverlay, setStatusOverlay] = useState(false)
@@ -158,7 +158,7 @@ const Product = () => {
     }
   }
 
-  const showStatusModal = (id: any, status: boolean) => {
+  const showStatusModal = (id: any) => {
     if (statusModal.current) {
       statusModal.current.style.transform = `translateY(${0}px)`
       statusModal.current.style.transition = `all ${1.5}s ease`
@@ -186,11 +186,11 @@ const Product = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors},
   } = useForm();
 
-  const onSubmit = (e: any) => {
-    UpdateStatus(e)
+  const onSubmit = () => {
+    UpdateStatus()
 
   }
   const deleteFunction = async () => {
@@ -244,7 +244,7 @@ const Product = () => {
     }
   }
 
-  const UpdateStatus = async (e: any) => {
+  const UpdateStatus = async () => {
     setStatusLoader(true)
     setDisableButton(true)
 
@@ -264,7 +264,6 @@ const Product = () => {
         showAlert()
         setMessage("Status updated sucessfully")
         setDisableButton(false)
-        setStatus('')
         setIsSuccess(true)
         setStatusLoader(false)
         hideStatusModal()
@@ -480,7 +479,7 @@ const Product = () => {
                               <td>
                                 {data.approved_status === "pending" && (
                                   <div className="d-flex align-center">
-                                    <div onClick={() => showStatusModal(data.id, data.is_active)} className='ms-3 cursor-pointer'>
+                                    <div onClick={() => showStatusModal(data.id)} className='ms-3 cursor-pointer'>
                                       <i className="ri-edit-line"></i>
                                     </div>
                                   </div>

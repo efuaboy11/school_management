@@ -9,7 +9,6 @@ interface DownloadLinkProps {
 export const DownloadLink = ({ url, fileName }: DownloadLinkProps) => {
     const {
       authTokens,
-      loader2,
       setLoader2,
       disableButton,
       setDisableButton,

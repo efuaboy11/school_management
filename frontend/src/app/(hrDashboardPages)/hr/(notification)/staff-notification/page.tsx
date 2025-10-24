@@ -26,7 +26,6 @@ const StaffNotification = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
     authTokens,
     formatDate,
     formatName,
@@ -58,7 +57,6 @@ const StaffNotification = () => {
   const [statusLoader, setStatusLoader] = useState(false)
   const statusModal = useRef<any>(null)
   const [statusOverlay, setStatusOverlay] = useState(false)
-  const [seen, setSeen] = useState(false)
 
   const [selectedIDs, setSelectedIDs] = useState<number[]>([]);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -120,7 +118,7 @@ const StaffNotification = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm();
 
 
@@ -186,6 +184,7 @@ const StaffNotification = () => {
 
 
   const UpdateDetails = async (e: any) => {
+    e.preventDefault()
     setStatusLoader(true)
     setDisableButton(true)
 

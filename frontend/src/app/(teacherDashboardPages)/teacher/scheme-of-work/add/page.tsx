@@ -45,9 +45,7 @@ const CreateShemeOfWork1 = () => {
 
 
   const {
-    register,
     handleSubmit,
-    formState: { errors, isValid },
   } = useForm<any>();
 
 
@@ -139,7 +137,7 @@ const CreateShemeOfWork1 = () => {
 
 
 
-  const onSubmit = (data: FormData, e: any) => {
+  const onSubmit = () => {
     setLoader(true)
     router.push(`/teacher/scheme-of-work/add/${termValue}/${studentClass}`)
 

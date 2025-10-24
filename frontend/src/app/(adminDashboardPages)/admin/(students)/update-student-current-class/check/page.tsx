@@ -21,12 +21,12 @@ const CheckStudentsInClass = () => {
 
   const {
 
-    authTokens,
+
 
     loader,
     setLoader,
     disableButton,
-    setDisableButton,
+
 
     setMessage,
     showAlert,
@@ -49,12 +49,12 @@ const CheckStudentsInClass = () => {
 
 
   const {
-    register,
+
     handleSubmit,
-    formState: { errors, isValid },
+
   } = useForm<any>();
 
-  const onSubmit = (data: FormData, e: any) => {
+  const onSubmit = () => {
     setLoader(true)
     if (classID) {
       router.push(`/admin/update-student-current-class/check/${classID}`)

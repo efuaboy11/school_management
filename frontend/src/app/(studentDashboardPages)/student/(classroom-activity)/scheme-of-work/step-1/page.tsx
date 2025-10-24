@@ -1,7 +1,7 @@
 "use client"
 import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
-import ThemeContext from '@/context/ThemeContext'
+
 import { useRouter } from 'next/navigation'
 import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -62,7 +62,7 @@ const PayBills = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<any>();
 
 
@@ -74,7 +74,7 @@ const PayBills = () => {
 
 
 
-  const onSubmit = (data: FormData, e: any) => {
+  const onSubmit = () => {
     setLoader(true)
     router.push(`/student/scheme-of-work/step-1/${term}/${classID}`)
   }

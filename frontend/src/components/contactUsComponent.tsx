@@ -1,7 +1,7 @@
 "use client"
-import AllDataContext from '@/context/AllData'
+
 import AuthContext from '@/context/AuthContext'
-import React, { useContext, useEffect, useState } from 'react'
+import React, { useContext,  useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 const ContactUsComponent = () => {
@@ -29,22 +29,11 @@ const ContactUsComponent = () => {
   } = useContext(AuthContext)!
 
 
-  const {
-    StudentClassFunction,
-    studentClassData,
-
-    termData,
-    TermFunction,
-
-    sessionData,
-    SessionFunction
-  } = useContext(AllDataContext)!;
-
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<any>();
 
   const onSubmit = (data: FormData, e: any) => {
@@ -65,7 +54,7 @@ const ContactUsComponent = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//contact-us/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/contact-us/`, {
         method: 'POST',
         body: formData,
         headers: {

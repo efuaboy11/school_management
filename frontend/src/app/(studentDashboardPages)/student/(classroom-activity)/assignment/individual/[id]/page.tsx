@@ -4,7 +4,7 @@ import React, { use, useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
 
 import AllDataContext from '@/context/AllData';
-import ThemeContext from '@/context/ThemeContext';
+
 
 
 const IndivivdualAssignment = ({ params }: { params: Promise<{ id: string }> }) => {
@@ -26,7 +26,6 @@ const IndivivdualAssignment = ({ params }: { params: Promise<{ id: string }> }) 
     SubjectFunction
   } = useContext(AllDataContext)!;
 
-  const { theme } = useContext(ThemeContext)!;
 
   const [Loading, setLoading] = useState(true)
   const [details, setDetails] = useState<any>(null)

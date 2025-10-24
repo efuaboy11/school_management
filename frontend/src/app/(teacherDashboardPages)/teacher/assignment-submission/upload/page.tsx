@@ -59,7 +59,7 @@ const CreateAssignmentSubmission = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<any>();
 
   const handleImgFile = (files: File[]) => {
@@ -98,10 +98,6 @@ const CreateAssignmentSubmission = () => {
   }));
 
 
-  const StudentClassOptions = studentClassData.map((data: any) => ({
-    value: data.id,
-    label: `${data.name}`
-  }));
 
 
   const customStyles = {

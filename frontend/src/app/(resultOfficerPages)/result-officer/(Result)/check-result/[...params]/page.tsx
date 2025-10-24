@@ -346,11 +346,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
   }
 
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm<any>();
+
 
 
 

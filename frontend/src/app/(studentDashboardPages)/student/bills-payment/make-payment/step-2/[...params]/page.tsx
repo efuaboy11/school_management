@@ -74,9 +74,9 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
 
   const {
-    register,
+    
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<any>();
 
   const handleImgFile = (files: File[]) => {
@@ -213,7 +213,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
 
       if (response.ok) {
-        const data = await response.json();
+
         showAlert()
         setMessage('Payment sucessful')
         setIsSuccess(true)

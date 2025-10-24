@@ -23,7 +23,6 @@ const Bursary = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
     authTokens,
     formatDate,
     formatName,

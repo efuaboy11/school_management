@@ -10,7 +10,6 @@ import Select from 'react-select';
 import Image from 'next/image'
 import { Pagination, Stack } from '@mui/material';
 import { DownloadLink } from '@/components/downloadLink'
-import { debounce } from "lodash";
 
 const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
 
@@ -21,10 +20,10 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
   const [subjectName, setSubjectName] = useState('')
   const [file, setFile] = useState<File | null>(null)
 
-  const [schemeOfWorkCount, setSchemeOfWorkCount] = useState(0)
+
   const [schemeOfWorkData, setSchemeOfWorkData] = useState<any>([])
   const [schemeOfWorkLoader, setSchemeOfWorkLoader] = useState(true)
-  const [schemeOfWorkSearch, setSchemeOfWorkSearch] = useState('')
+
 
   const [termDetails, setTermDetails] = useState<any>(null)
   const [studentClassDetails, setStudentClassDetails] = useState<any>(null)
@@ -70,7 +69,6 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
   } = useForm<any>();
 
   console.log(termValue, subjectName, studentClass)
@@ -306,9 +304,6 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
 
     const data = await response.json()
     if (response.ok) {
-      if (Array.isArray(data) && data.length > 0) {
-        setSchemeOfWorkCount(data.length)
-      }
 
 
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);

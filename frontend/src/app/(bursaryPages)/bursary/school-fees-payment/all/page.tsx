@@ -33,7 +33,6 @@ const AllSchoolFeesPayment = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
     authTokens,
     formatName,
     loader,

@@ -3,7 +3,6 @@ import { faX } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { Pagination, Stack } from '@mui/material';
 import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
@@ -30,10 +29,9 @@ const AdminHrNotificationPage = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
     authTokens,
     formatDate,
-    formatName,
+
 
 
     loader,
@@ -61,7 +59,6 @@ const AdminHrNotificationPage = () => {
     setOptions(!filterOptions)
   }
 
-  const [status, setStatus] = useState('')
   const [statusLoader, setStatusLoader] = useState(false)
   const statusModal = useRef<any>(null)
   const [statusOverlay, setStatusOverlay] = useState(false)
@@ -123,11 +120,6 @@ const AdminHrNotificationPage = () => {
     setPage(value);
   };
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm();
   // const adminHrNotificationData = [...Array(100).keys()];
   const startIndex = (page - 1) * itemsPerPage;
   const currentItems = adminHrNotificationData.slice(startIndex, startIndex + itemsPerPage);
@@ -185,7 +177,7 @@ const AdminHrNotificationPage = () => {
   }
 
 
-  const UpdateStatus = async (e: any) => {
+  const UpdateStatus = async () => {
     setStatusLoader(true)
     setDisableButton(true)
 
@@ -205,7 +197,6 @@ const AdminHrNotificationPage = () => {
         showAlert()
         setMessage("Status updated sucessfully")
         setDisableButton(false)
-        setStatus('')
         setIsSuccess(true)
         setStatusLoader(false)
         hideStatusModal()

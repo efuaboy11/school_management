@@ -23,7 +23,7 @@ const OtherStaff = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
+ 
     authTokens,
     formatDate,
     formatName,

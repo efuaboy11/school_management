@@ -49,7 +49,7 @@ const CreateClassTImetable = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+
   } = useForm<any>();
 
 

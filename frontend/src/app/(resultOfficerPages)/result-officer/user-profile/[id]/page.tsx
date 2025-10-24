@@ -17,7 +17,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
   const [showContactInformationModal, setShowContactInformationModal] = useState(false);
   const [animateModal, setAnimateModal] = useState(false);
   const [userData, setUserData] = useState<any>(null)
-  const [userDeleteModal, setUserDeleteModal] = useState(false)
+
   const [schoolFeesDeleteModal, setSchoolFeesDeleteModal] = useState(false)
   const [billsDeleteModal, setBillsDeleteModal] = useState(false)
 
@@ -38,7 +38,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
   const [homeAddress, setHomeAddress] = useState('')
   const [yearsOfExperience, setYearsOfExperience] = useState('')
   const [computerSkills, setComputerSkills] = useState('')
-  const [staffSpeech, setStaffSpeech] = useState('')
+
   const [passport, setPassport] = useState<File | null>(null)
   const [studentClass, setStudentClass] = useState('')
 
@@ -95,21 +95,6 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
 
 
 
-  const handleShowSchoolFeesDeleteModal = () => {
-    setSchoolFeesDeleteModal(true)
-  }
-
-  const handleCloseSchoolFeesDeleteModal = () => {
-    setSchoolFeesDeleteModal(false)
-  }
-
-  const handleShowBillsDeleteModal = () => {
-    setBillsDeleteModal(true)
-  }
-
-  const handleCloseBillsDeleteModal = () => {
-    setBillsDeleteModal(false)
-  }
 
   const handleImgFile = (files: File[]) => {
     if (files.length > 0) {
@@ -228,32 +213,25 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
     }
   }, [billsDeleteModal]);
 
-  useEffect(() => {
-    if (userDeleteModal) {
-      setAnimateModal(true)
-    } else {
-      setAnimateModal(false);
-    }
-  }, [userDeleteModal]);
 
 
   const {
     register: registerPersonalInformation,
     handleSubmit: handleSubmitPersonalInformation,
-    formState: { errors: errorsPersonalInformation, isValid: isValidPersonalInformation },
+    formState: { errors: errorsPersonalInformation, },
   } = useForm<any>();
 
 
   const {
     register: registerSchoolInformation,
     handleSubmit: handleSubmitSchoolInformation,
-    formState: { errors: errorsSchoolInformation, isValid: isValidSchoolInformation },
+    formState: { errors: errorsSchoolInformation,},
   } = useForm<any>();
 
   const {
     register: registerContactInformation,
     handleSubmit: handleSubmitContactInformation,
-    formState: { errors: errorsContactInformation, isValid: isValidContactInformation },
+    formState: { errors: errorsContactInformation},
   } = useForm<any>();
 
 

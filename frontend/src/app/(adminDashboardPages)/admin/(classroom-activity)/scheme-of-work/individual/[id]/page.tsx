@@ -8,7 +8,6 @@ import Image from 'next/image'
 import AllDataContext from '@/context/AllData';
 import ThemeContext from '@/context/ThemeContext';
 import Select from 'react-select';
-import { DownloadLink } from '@/components/downloadLink';
 
 
 const IndivivdualSchemeOfWork = ({ params }: { params: Promise<any> }) => {
@@ -186,7 +185,6 @@ const IndivivdualSchemeOfWork = ({ params }: { params: Promise<any> }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
   } = useForm<any>();
 
   const onSubmit = (data: any, e: any) => {

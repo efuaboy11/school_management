@@ -75,7 +75,7 @@ const IndivivdualFees = ({ params }: { params: Promise<{ id: string }> }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<any>();
 
   const onSubmit = (data: any, e: any) => {
@@ -85,7 +85,7 @@ const IndivivdualFees = ({ params }: { params: Promise<{ id: string }> }) => {
 
   const IndividualDataFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//school-fees/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/school-fees/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -122,7 +122,7 @@ const IndivivdualFees = ({ params }: { params: Promise<{ id: string }> }) => {
     setLoader(true)
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//school-fees/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/school-fees/${id}/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`
@@ -179,7 +179,7 @@ const IndivivdualFees = ({ params }: { params: Promise<{ id: string }> }) => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//school-fees/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/school-fees/${id}/`, {
         method: 'PATCH',
         body: formData,
         headers: {

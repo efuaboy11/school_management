@@ -3,12 +3,7 @@ import AuthContext from '@/context/AuthContext'
 import React, { use, useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
 
-type ParamsType = {
-  params: {
-    id: string;
-    transactionId: string;
-  };
-};
+
 
 interface DetailsInterface {
   student_name: { userID: string, first_name: string, last_name: string, email: string }

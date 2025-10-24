@@ -23,7 +23,6 @@ const Store = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
     authTokens,
     formatDate,
     formatName,

@@ -1,5 +1,5 @@
 "use client"
-import { fa0, faAngleDown, faArrowLeft, faBars, faLock } from '@fortawesome/free-solid-svg-icons'
+import { faAngleDown, faArrowLeft, faBars, faLock } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Link from 'next/link'
 import React, { useContext, useEffect, useState } from 'react'
@@ -49,116 +49,9 @@ const AcademicOfficerFrame = () => {
 
 
 
-  const toggleStudent = () => {
-    setStudentDropdown(!studentDropdown)
-    setStaffDropdown(false)
-    setParentDropdown(false)
-    setSchoolFeesDropdown(false)
-    setBillsDropdown(false)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(false)
-    setAcademicsDropdown(false)
-    setClassActivityDropdown(false)
-    setNotificationDropdown(false)
-    setResultDropdown(false)
-    setEResultDropdown(false)
-    setEmailDropdown(false)
-  }
-  const toggleStaff = () => {
-    setStaffDropdown(!staffDropdown)
-    setStudentDropdown(false)
-    setParentDropdown(false)
-    setSchoolFeesDropdown(false)
-    setBillsDropdown(false)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(false)
-    setAcademicsDropdown(false)
-    setClassActivityDropdown(false)
-    setNotificationDropdown(false)
-    setResultDropdown(false)
-    setEResultDropdown(false)
-    setEmailDropdown(false)
-  }
-
-  const toggleParent = () => {
-    setParentDropdown(!parentDropdown)
-    setStudentDropdown(false)
-    setStaffDropdown(false)
-    setSchoolFeesDropdown(false)
-    setBillsDropdown(false)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(false)
-    setAcademicsDropdown(false)
-    setClassActivityDropdown(false)
-    setNotificationDropdown(false)
-    setResultDropdown(false)
-    setEResultDropdown(false)
-    setEmailDropdown(false)
-  }
-
-  const toggleSchooolFess = () => {
-    setParentDropdown(false)
-    setStudentDropdown(false)
-    setStaffDropdown(false)
-    setSchoolFeesDropdown(!schoolFeesDropdown)
-    setBillsDropdown(false)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(false)
-    setAcademicsDropdown(false)
-    setClassActivityDropdown(false)
-    setNotificationDropdown(false)
-    setResultDropdown(false)
-    setEResultDropdown(false)
-  }
-
-  const toggleBills = () => {
-    setParentDropdown(false)
-    setStudentDropdown(false)
-    setStaffDropdown(false)
-    setSchoolFeesDropdown(false)
-    setBillsDropdown(!billsDropdown)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(false)
-    setAcademicsDropdown(false)
-    setClassActivityDropdown(false)
-    setNotificationDropdown(false)
-    setResultDropdown(false)
-    setEResultDropdown(false)
-    setEmailDropdown(false)
-  }
-
-  const toggleStore = () => {
-    setParentDropdown(false)
-    setStudentDropdown(false)
-    setStaffDropdown(false)
-    setSchoolFeesDropdown(false)
-    setBillsDropdown(false)
-    setstoreDropdown(!storeDropdown)
-    setPaymentMethodDropdown(false)
-    setAcademicsDropdown(false)
-    setClassActivityDropdown(false)
-    setNotificationDropdown(false)
-    setResultDropdown(false)
-    setEResultDropdown(false)
-    setEmailDropdown(false)
-  }
+ 
 
 
-  const togglePaymentMethod = () => {
-    setParentDropdown(false)
-    setStudentDropdown(false)
-    setStaffDropdown(false)
-    setSchoolFeesDropdown(false)
-    setBillsDropdown(false)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(!paymentMethodDropdown)
-    setAcademicsDropdown(false)
-    setClassActivityDropdown(false)
-    setNotificationDropdown(false)
-    setResultDropdown(false)
-    setEResultDropdown(false)
-    setEmailDropdown(false)
-  }
 
   const toggleAcademics = () => {
     setParentDropdown(false)
@@ -177,20 +70,6 @@ const AcademicOfficerFrame = () => {
 
 
 
-  const toggleClassActivity = () => {
-    setParentDropdown(false)
-    setStudentDropdown(false)
-    setStaffDropdown(false)
-    setSchoolFeesDropdown(false)
-    setBillsDropdown(false)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(false)
-    setAcademicsDropdown(false)
-    setClassActivityDropdown(!classActivityDropdown)
-    setNotificationDropdown(false)
-    setResultDropdown(false)
-    setEResultDropdown(false)
-  }
 
 
   const toggleNotiffcation = () => {
@@ -208,52 +87,7 @@ const AcademicOfficerFrame = () => {
     setEResultDropdown(false)
   }
 
-  const toggleResult = () => {
-    setParentDropdown(false)
-    setStudentDropdown(false)
-    setStaffDropdown(false)
-    setSchoolFeesDropdown(false)
-    setBillsDropdown(false)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(false)
-    setAcademicsDropdown(false)
-    setClassActivityDropdown(false)
-    setNotificationDropdown(false)
-    setResultDropdown(!resultDropdown)
-    setEResultDropdown(false)
-  }
 
-  const toggleEResult = () => {
-    setParentDropdown(false)
-    setStudentDropdown(false)
-    setStaffDropdown(false)
-    setSchoolFeesDropdown(false)
-    setBillsDropdown(false)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(false)
-    setAcademicsDropdown(false)
-    setClassActivityDropdown(false)
-    setNotificationDropdown(false)
-    setResultDropdown(false)
-    setEResultDropdown(!EResultDropdown)
-    setEmailDropdown(false)
-  }
-
-  const toggleEmail = () => {
-    setParentDropdown(false)
-    setStudentDropdown(false)
-    setStaffDropdown(false)
-    setSchoolFeesDropdown(false)
-    setBillsDropdown(false)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(false)
-    setAcademicsDropdown(false)
-    setClassActivityDropdown(false)
-    setNotificationDropdown(false)
-    setResultDropdown(false)
-    setEResultDropdown(false)
-    setEmailDropdown(!emailDropdown)
-  }
 
 
   const toggleNavDropdown = () => {

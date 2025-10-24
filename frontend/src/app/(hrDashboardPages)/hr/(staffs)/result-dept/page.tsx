@@ -23,7 +23,7 @@ const ResultDept = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
+
     authTokens,
     formatDate,
     formatName,

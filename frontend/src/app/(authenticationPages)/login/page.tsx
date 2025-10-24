@@ -11,18 +11,12 @@ const Login = () => {
   
   const { 
     username,
-    setUsername,
+
     password,
-    setPassword,
 
     disableButton,
-    setDisableButton,
+ 
     loader,
-    setLoader,
-
-    alertVisible,
-    setAlertVisible,
-    isSuccess,
 
     usernameValidation,
     passwordValidation,
@@ -71,8 +65,8 @@ const Login = () => {
                     <div>
                       <Image  className='logo' src="/img/logo.png" alt="Logo" width={100} height={100} />
                       <p className='pt-4 lg-text font-bold auth-header'>My School Management System</p>
-                      <p className='light-text'>"Easily manage student records, attendance, grades, and more — all in one place."</p>
-                      <p className="light-text xsm-text italic-text">"Education is the passport to the future, for tomorrow belongs to those who prepare for it today." — Malcolm X</p>
+                      <p className='light-text'>Easily manage student records, attendance, grades, and more — all in one place.</p>
+                      <p className="light-text xsm-text italic-text">Education is the passport to the future, for tomorrow belongs to those who prepare for it today. — Malcolm X</p>
                     </div>
                   </div>
                 </div>

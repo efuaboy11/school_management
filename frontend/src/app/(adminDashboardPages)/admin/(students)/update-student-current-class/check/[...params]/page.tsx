@@ -9,8 +9,7 @@ import { useForm } from 'react-hook-form'
 import Select from 'react-select';
 import Image from 'next/image'
 import { Pagination, Stack } from '@mui/material';
-import { DownloadLink } from '@/components/downloadLink'
-import { debounce } from "lodash";
+
 
 const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
 
@@ -22,7 +21,8 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
   const [classValue, setClassValue] = useState(classID)
 
 
-  const [studentInClassCount, setStudentInClassCount] = useState(0)
+
+
   const [studentInClassData, setStudentInClassData] = useState<any>([])
   const [studentInClassLoader, setStudentInClassLoader] = useState(true)
 
@@ -37,10 +37,10 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
 
   const {
 
-    truncateText,
+
     authTokens,
 
-    formatDate,
+
     formatName,
 
 
@@ -72,9 +72,8 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
 
 
   const {
-    register,
+
     handleSubmit,
-    formState: { errors, isValid },
   } = useForm<any>();
 
 
@@ -84,9 +83,9 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
 
-  const [selectedIDs, setSelectedIDs] = useState<number[]>([]);
+
   const [showDeleteModal, setShowDeleteModal] = useState(false);
-  const [animateModal, setAnimateModal] = useState(false);
+
 
 
   const handleShowDeleteModal = () => {
@@ -228,7 +227,7 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//update-student-current-class/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/update-student-current-class/`, {
         method: 'POST',
         body: formData,
         headers: {
@@ -275,7 +274,7 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
 
 
   const StudentInClassFunction = async () => {
-    const response = await fetch(`http://school.amanilightequity.com/api//student-in-class/?student_class=${classID}&student=${studentQuery}`, {
+    const response = await fetch(`http://school.amanilightequity.com/api/student-in-class/?student_class=${classID}&student=${studentQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -285,9 +284,7 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
 
     const data = await response.json()
     if (response.ok) {
-      if (Array.isArray(data) && data.length > 0) {
-        setStudentInClassCount(data.length)
-      }
+
 
 
       const sortedData = [...data].sort((a, b) =>
@@ -313,7 +310,7 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
 
   const IndividualClass = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//student-class/${classID}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/student-class/${classID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -347,14 +344,6 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
     StudentInClassFunction()
   }, [studentQuery])
 
-
-  useEffect(() => {
-    if (showDeleteModal) {
-      setAnimateModal(true)
-    } else {
-      setAnimateModal(false);
-    }
-  }, [showDeleteModal]);
 
 
 
@@ -476,14 +465,7 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
             <div>
               {currentItems.length > 0 ? (
                 <div>
-                  {selectedIDs.length > 0 ? (
-                    <div className='pb-2'>
-                      <button onClick={handleShowDeleteModal} className='site-delete-btn px-3'><i className="ri-delete-bin-line me-2"></i>Delete</button>
-                    </div>
-                  ) : (
-                    <div></div>
-                  )
-                  }
+
                   <div className='site-boxes  site-border border-radius-5px dahboard-table non-wrap-text scroll-bar'>
                     <table className='overflow-auto light-text'>
                       <thead className='sm-text'>

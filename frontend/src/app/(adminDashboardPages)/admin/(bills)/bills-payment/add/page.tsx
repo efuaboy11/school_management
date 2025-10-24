@@ -17,7 +17,7 @@ const PayBills = () => {
   const [status, setStatus] = useState('')
 
 
-  const router = useRouter();
+
   const [isClient, setIsClient] = useState(false);
   const { theme } = useContext(ThemeContext)!;
   useEffect(() => {
@@ -63,7 +63,7 @@ const PayBills = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors},
   } = useForm<any>();
 
   const studentOptions = studentData.map((data: any) => ({

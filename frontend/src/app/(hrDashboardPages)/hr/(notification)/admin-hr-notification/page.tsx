@@ -7,7 +7,7 @@ import { Pagination, Stack } from '@mui/material';
 import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
 import { debounce } from "lodash";
-import { useForm } from 'react-hook-form'
+
 
 const AdminHrNotificationPage = () => {
 
@@ -58,7 +58,7 @@ const AdminHrNotificationPage = () => {
     setOptions(!filterOptions)
   }
 
-  const [status, setStatus] = useState('')
+
   const [statusLoader, setStatusLoader] = useState(false)
   const statusModal = useRef<any>(null)
   const [statusOverlay, setStatusOverlay] = useState(false)
@@ -177,6 +177,7 @@ const AdminHrNotificationPage = () => {
 
 
   const UpdateStatus = async (e: any) => {
+    e.preventDefault()
     setStatusLoader(true)
     setDisableButton(true)
 
@@ -196,7 +197,6 @@ const AdminHrNotificationPage = () => {
         showAlert()
         setMessage("Status updated sucessfully")
         setDisableButton(false)
-        setStatus('')
         setIsSuccess(true)
         setStatusLoader(false)
         hideStatusModal()

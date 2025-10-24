@@ -1,18 +1,9 @@
 "use client"
 import AuthContext from '@/context/AuthContext'
 import React, { use, useContext, useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form'
+
 import Image from 'next/image'
 
-import Link from 'next/link';
-
-type ParamsType = {
-  params: {
-    id: string;
-    transactionId: string;
-  };
-};
 
 interface DetailsInterface {
   student_name: { userID: string, first_name: string, last_name: string, email: string }
@@ -29,22 +20,12 @@ interface DetailsInterface {
 const IndividualPayment = ({ params }: { params: Promise<any> }) => {
 
   const {
-    truncateText,
+    formatCurrency,
     authTokens,
+    formateDateTime,
 
     formatDate,
     formatName,
-
-
-    loader,
-    setLoader,
-    disableButton,
-    setDisableButton,
-
-    setMessage,
-    showAlert,
-    setIsSuccess,
-
   } = useContext(AuthContext)!;
 
 
@@ -55,7 +36,7 @@ const IndividualPayment = ({ params }: { params: Promise<any> }) => {
 
   const IndividualDataFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//payment-school-fees/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/payment-school-fees/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

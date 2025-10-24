@@ -1,12 +1,12 @@
 'use client';
 import { useForm } from "react-hook-form";
-import React, { useContext, useState } from 'react'
+import React, { useContext} from 'react'
 import Image from 'next/image';
 import "../../../css/authCss/auth.css"
 import Link from 'next/link';
 import AuthContext from "@/context/AuthContext";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faEye, faEyeSlash } from "@fortawesome/free-solid-svg-icons";
+
+
 const ForgetPassword = () => {
   
   const { 
@@ -15,13 +15,9 @@ const ForgetPassword = () => {
 
 
     disableButton,
-    setDisableButton,
+  
     loader,
-    setLoader,
 
-    alertVisible,
-    setAlertVisible,
-    isSuccess,
 
     forgotPasswordSuccess,
 
@@ -38,7 +34,7 @@ const ForgetPassword = () => {
   }
 
 
-  const {register, handleSubmit, formState: { errors, isValid }} = useForm<FormData>();
+  const {register, handleSubmit, formState: { errors }} = useForm<FormData>();
 
   const onSubmit = (data: FormData, e:any) => {
     forgotPassword(e)
@@ -84,8 +80,8 @@ const ForgetPassword = () => {
                       <div>
                         <Image  className='logo' src="/img/logo.png" alt="Logo" width={100} height={100} />
                         <p className='pt-4 lg-text font-bold auth-header'>Empowering Education with Smart Management</p>
-                        <p className='light-text'>""Simplify student enrollment, performance tracking, and communication in one powerful platform."</p>
-                        <p className="light-text xsm-text italic-text">"The function of education is to teach one to think intensively and to think critically." — Martin Luther King Jr.</p>
+                        <p className='light-text'>Simplify student enrollment, performance tracking, and communication in one powerful platform.</p>
+                        <p className="light-text xsm-text italic-text">The function of education is to teach one to think intensively and to think critically. — Martin Luther King Jr.</p>
                       </div>
                     </div>
                   </div>

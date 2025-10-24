@@ -1,5 +1,5 @@
 "use client"
-import AllDataContext from '@/context/AllData'
+
 import AuthContext from '@/context/AuthContext'
 import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -25,16 +25,6 @@ const SendBulkEmailPage = () => {
   } = useContext(AuthContext)!
 
 
-  const {
-    StudentClassFunction,
-    studentClassData,
-
-    termData,
-    TermFunction,
-
-    sessionData,
-    SessionFunction
-  } = useContext(AllDataContext)!;
 
 
 
@@ -242,7 +232,7 @@ const SendBulkEmailPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<any>();
 
 

@@ -58,7 +58,7 @@ const CreateAssignmentSubmission = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<any>();
 
   const handleImgFile = (files: File[]) => {

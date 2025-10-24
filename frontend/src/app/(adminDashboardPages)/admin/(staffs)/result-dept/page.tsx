@@ -23,7 +23,6 @@ const ResultDept = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
     authTokens,
     formatDate,
     formatName,
@@ -102,7 +101,7 @@ const ResultDept = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://school.amanilightequity.com/api//delete-multiple-staff/', {
+      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-staff/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

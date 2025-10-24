@@ -64,7 +64,6 @@ const CreateShemeOfWork2 = ({ params }: { params: Promise<any> }) => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
   } = useForm<any>();
 
   console.log(termValue, subjectName, studentClass)

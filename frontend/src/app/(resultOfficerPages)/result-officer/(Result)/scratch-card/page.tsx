@@ -3,7 +3,7 @@ import { faX } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
+
 import { Pagination, Stack } from '@mui/material';
 import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
@@ -33,11 +33,10 @@ const ScratchCardPage = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
+
     authTokens,
 
-    formatDate,
-    formatName,
+
 
 
     loader,
@@ -119,7 +118,7 @@ const ScratchCardPage = () => {
   const statusModal = useRef<any>(null)
   const [statusOverlay, setStatusOverlay] = useState(false)
   const [modalNavigator, setModalNavigator] = useState<any>(false);
-  const [isProductActive, setIsProductActive] = useState(true)
+
 
   const handleCloseDeleteModal = () => {
     setShowDeleteModal(false);
@@ -223,7 +222,7 @@ const ScratchCardPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors},
   } = useForm<any>();
 
 
@@ -232,6 +231,7 @@ const ScratchCardPage = () => {
   }
 
   const GenerateCardNumber = async (e: any) => {
+    e.preventDefault()
     setLoader(true)
     setDisableButton(true)
 

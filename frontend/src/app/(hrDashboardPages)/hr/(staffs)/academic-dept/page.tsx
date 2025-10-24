@@ -23,7 +23,6 @@ const AcademicDept = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
     authTokens,
     formatDate,
     formatName,

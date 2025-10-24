@@ -25,10 +25,10 @@ const DisableStudentAccount = () => {
   const [messageError, setMessageError] = useState(false)
 
   const {
-    truncateText,
+
     authTokens,
 
-    formatDate,
+
     formatName,
 
 
@@ -56,7 +56,7 @@ const DisableStudentAccount = () => {
 
   const StudentDisableAccountList = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//disable-account/?=user_role=student`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/disable-account/?=user_role=student`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ const DisableStudentAccount = () => {
     setLoader(true)
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//disable-account/${selectedDataId}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/disable-account/${selectedDataId}/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`
@@ -158,7 +158,7 @@ const DisableStudentAccount = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<any>();
 
 
@@ -181,7 +181,7 @@ const DisableStudentAccount = () => {
   }
 
 
-  const handlesShowDiactivateModal = (id: any) => {
+  const handlesShowDiactivateModal = () => {
     setDiactivateModal(true)
   }
   const handlesCloseDiactivateModal = () => {
@@ -286,7 +286,7 @@ const DisableStudentAccount = () => {
     setLoader(true)
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//disable-account/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/disable-account/`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`,

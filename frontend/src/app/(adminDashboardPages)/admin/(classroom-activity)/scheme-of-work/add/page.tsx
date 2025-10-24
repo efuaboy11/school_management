@@ -21,18 +21,8 @@ const CreateShemeOfWork1 = () => {
 
   const {
 
-    authTokens,
-
     loader,
     setLoader,
-    disableButton,
-    setDisableButton,
-
-    setMessage,
-    showAlert,
-    setIsSuccess,
-
-
 
 
   } = useContext(AuthContext)!
@@ -52,9 +42,7 @@ const CreateShemeOfWork1 = () => {
 
 
   const {
-    register,
     handleSubmit,
-    formState: { errors, isValid },
   } = useForm<any>();
 
 
@@ -146,7 +134,7 @@ const CreateShemeOfWork1 = () => {
 
 
 
-  const onSubmit = (data: FormData, e: any) => {
+  const onSubmit = () => {
     setLoader(true)
     router.push(`/admin/scheme-of-work/add/${termValue}/${studentClass}`)
 

@@ -75,7 +75,7 @@ const ProductCategories = () => {
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
 
-  const [status, setStatus] = useState('')
+
   const [statusLoader, setStatusLoader] = useState(false)
   const statusModal = useRef<any>(null)
   const [statusOverlay, setStatusOverlay] = useState(false)
@@ -137,11 +137,7 @@ const ProductCategories = () => {
     setPage(value);
   };
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm();
+
   // const productCatergoriesData = [...Array(100).keys()];
   const startIndex = (page - 1) * itemsPerPage;
   const currentItems = productCatergoriesData.slice(startIndex, startIndex + itemsPerPage);
@@ -152,7 +148,7 @@ const ProductCategories = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://school.amanilightequity.com/api//delete-multiple-product-categories/', {
+      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-product-categories/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -200,11 +196,12 @@ const ProductCategories = () => {
 
 
   const UpdateStatus = async (e: any) => {
+    e.preventDefault()
     setStatusLoader(true)
     setDisableButton(true)
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//product-categories/${selectedDataId}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/product-categories/${selectedDataId}/`, {
         method: 'PATCH',
         body: JSON.stringify({
           is_active: !isProductActive,
@@ -219,7 +216,6 @@ const ProductCategories = () => {
         showAlert()
         setMessage("Status updated sucessfully")
         setDisableButton(false)
-        setStatus('')
         setIsSuccess(true)
         setStatusLoader(false)
         hideStatusModal()

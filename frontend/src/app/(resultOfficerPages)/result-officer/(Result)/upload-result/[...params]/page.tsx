@@ -3,19 +3,17 @@ import AuthContext from '@/context/AuthContext'
 import React, { use, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form'
-import Image from 'next/image'
 
-import Link from 'next/link';
 
 export default function UploadResultPage({ params }: { params: Promise<any> }) {
   const param = use(params);
   const [studentID, classID, termID, sessionID] = param.params || [];
   const router = useRouter()
   const {
-    truncateText,
+
     authTokens,
 
-    formatDate,
+
     formatName,
 
 
@@ -23,7 +21,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
     setLoader,
     disableButton,
     setDisableButton,
-    handleDownload,
+
 
     setMessage,
     showAlert,
@@ -36,10 +34,6 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
   const [sessionDetails, setSessionDetails] = useState<any>(null)
   const [termDetails, setTermDetails] = useState<any>(null)
 
-  const [studentLoader, setStudentLoader] = useState(true)
-  const [classLoader, setClassLoader] = useState(true)
-  const [sessionLoader, setSessionLoader] = useState(true)
-  const [termLoader, setTermLoader] = useState(true)
 
 
   const [subjectData, setSubjectData] = useState<any>([])
@@ -72,7 +66,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
   const [teacherComment, setTeacherComment] = useState("")
   const [principalComment, setPrincipalComment] = useState("")
   const [nextTermBegins, setNextTermBegins] = useState("")
-  const [nextTermSchoolFees, setNextTermSchoolFees] = useState("")
+
 
 
 
@@ -90,13 +84,11 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
       if (response.ok) {
         setStudentDetails(data)
-        setStudentLoader(false)
-      } else {
-        setStudentLoader(false)
+        
       }
     } catch {
       console.log('error')
-      setStudentLoader(false)
+      
     }
 
   }
@@ -128,13 +120,11 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
           }))
         )
-        setClassLoader(false)
-      } else {
-        setClassLoader(false)
-      }
+        
+      } 
     } catch {
       console.log('error')
-      setClassLoader(false)
+      
     }
 
   }
@@ -153,13 +143,11 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
       if (response.ok) {
         setTermDetails(data)
-        setTermLoader(false)
-      } else {
-        setTermLoader(false)
-      }
+        
+      } 
     } catch {
       console.log('error')
-      setTermLoader(false)
+      
     }
 
   }
@@ -179,13 +167,11 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
       if (response.ok) {
         setSessionDetails(data)
-        setSessionLoader(false)
-      } else {
-        setSessionLoader(false)
-      }
+        
+      } 
     } catch {
       console.log('error')
-      setSessionLoader(false)
+      
     }
 
   }
@@ -199,7 +185,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors},
   } = useForm<any>();
 
   const onSubmit = (data: FormData, e: any) => {

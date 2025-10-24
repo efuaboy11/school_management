@@ -1,11 +1,10 @@
 "use client"
 import AuthContext from '@/context/AuthContext'
 import React, { use, useContext, useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form'
+
 import Image from 'next/image'
 
-import Link from 'next/link';
+
 
 
 interface DetailsInterface {
@@ -23,8 +22,9 @@ interface DetailsInterface {
 const IndividualBills = ({ params }: { params: Promise<any> }) => {
 
   const {
-    truncateText,
+    formatCurrency,
     authTokens,
+    formateDateTime,
 
     formatDate,
     formatName,
@@ -40,7 +40,7 @@ const IndividualBills = ({ params }: { params: Promise<any> }) => {
 
   const IndividualDataFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//bills-payment/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/bills-payment/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

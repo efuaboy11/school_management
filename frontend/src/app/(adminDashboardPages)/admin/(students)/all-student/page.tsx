@@ -22,7 +22,6 @@ const AllStudents = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
     authTokens,
     formatDate,
     formatName,
@@ -101,7 +100,7 @@ const AllStudents = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://school.amanilightequity.com/api//delete-multiple-students/', {
+      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-students/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

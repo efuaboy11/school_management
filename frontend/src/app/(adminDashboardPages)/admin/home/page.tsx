@@ -161,7 +161,7 @@ const AdminHome = () => {
 
     recentStudent,
     studentLoader,
-    sessionLoader,
+
 
     recentEmail,
     emailLoader,
@@ -184,12 +184,11 @@ const AdminHome = () => {
 
   const {
     truncateText,
-    authTokens,
 
     formatDate,
     formatName,
 
-    showSidebar
+    formatCurrency,
 
   } = useContext(AuthContext)!;
 

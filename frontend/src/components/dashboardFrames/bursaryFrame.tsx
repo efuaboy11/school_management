@@ -1,5 +1,5 @@
 "use client"
-import { fa0, faAngleDown, faArrowLeft, faBars, faLock } from '@fortawesome/free-solid-svg-icons'
+import { faAngleDown, faArrowLeft, faBars, faLock } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Link from 'next/link'
 import React, { useContext, useEffect, useState } from 'react'
@@ -25,19 +25,10 @@ const BursaryFrame = () => {
   const [userDetails, setUserDetails] = useState<any>(null)
 
 
-  const [studentDropdown, setStudentDropdown] = useState(false)
-  const [staffDropdown, setStaffDropdown] = useState(false)
-  const [parentDropdown, setParentDropdown] = useState(false)
   const [schoolFeesDropdown, setSchoolFeesDropdown] = useState(false)
   const [billsDropdown, setBillsDropdown] = useState(false)
-  const [storeDropdown, setstoreDropdown] = useState(false)
-  const [paymentMethodDropdown, setPaymentMethodDropdown] = useState(false)
-  const [academicsDropdown, setAcademicsDropdown] = useState(false)
-  const [classActivityDropdown, setClassActivityDropdown] = useState(false)
+
   const [notificationDropdown, setNotificationDropdown] = useState(false)
-  const [resultDropdown, setResultDropdown] = useState(false)
-  const [EResultDropdown, setEResultDropdown] = useState(false)
-  const [emailDropdown, setEmailDropdown] = useState(false)
 
   const [navDropdown, setNavDropdown] = useState(false)
   const pathname = usePathname()
@@ -48,212 +39,31 @@ const BursaryFrame = () => {
   const router = useRouter()
 
 
-
-  const toggleStudent = () => {
-    setStudentDropdown(!studentDropdown)
-    setStaffDropdown(false)
-    setParentDropdown(false)
-    setSchoolFeesDropdown(false)
-    setBillsDropdown(false)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(false)
-    setAcademicsDropdown(false)
-    setClassActivityDropdown(false)
-    setNotificationDropdown(false)
-    setResultDropdown(false)
-    setEResultDropdown(false)
-    setEmailDropdown(false)
-  }
-  const toggleStaff = () => {
-    setStaffDropdown(!staffDropdown)
-    setStudentDropdown(false)
-    setParentDropdown(false)
-    setSchoolFeesDropdown(false)
-    setBillsDropdown(false)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(false)
-    setAcademicsDropdown(false)
-    setClassActivityDropdown(false)
-    setNotificationDropdown(false)
-    setResultDropdown(false)
-    setEResultDropdown(false)
-    setEmailDropdown(false)
-  }
-
-  const toggleParent = () => {
-    setParentDropdown(!parentDropdown)
-    setStudentDropdown(false)
-    setStaffDropdown(false)
-    setSchoolFeesDropdown(false)
-    setBillsDropdown(false)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(false)
-    setAcademicsDropdown(false)
-    setClassActivityDropdown(false)
-    setNotificationDropdown(false)
-    setResultDropdown(false)
-    setEResultDropdown(false)
-    setEmailDropdown(false)
-  }
-
   const toggleSchooolFess = () => {
-    setParentDropdown(false)
-    setStudentDropdown(false)
-    setStaffDropdown(false)
     setSchoolFeesDropdown(!schoolFeesDropdown)
     setBillsDropdown(false)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(false)
-    setAcademicsDropdown(false)
-    setClassActivityDropdown(false)
     setNotificationDropdown(false)
-    setResultDropdown(false)
-    setEResultDropdown(false)
   }
 
   const toggleBills = () => {
-    setParentDropdown(false)
-    setStudentDropdown(false)
-    setStaffDropdown(false)
     setSchoolFeesDropdown(false)
     setBillsDropdown(!billsDropdown)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(false)
-    setAcademicsDropdown(false)
-    setClassActivityDropdown(false)
     setNotificationDropdown(false)
-    setResultDropdown(false)
-    setEResultDropdown(false)
-    setEmailDropdown(false)
-  }
-
-  const toggleStore = () => {
-    setParentDropdown(false)
-    setStudentDropdown(false)
-    setStaffDropdown(false)
-    setSchoolFeesDropdown(false)
-    setBillsDropdown(false)
-    setstoreDropdown(!storeDropdown)
-    setPaymentMethodDropdown(false)
-    setAcademicsDropdown(false)
-    setClassActivityDropdown(false)
-    setNotificationDropdown(false)
-    setResultDropdown(false)
-    setEResultDropdown(false)
-    setEmailDropdown(false)
-  }
-
-
-  const togglePaymentMethod = () => {
-    setParentDropdown(false)
-    setStudentDropdown(false)
-    setStaffDropdown(false)
-    setSchoolFeesDropdown(false)
-    setBillsDropdown(false)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(!paymentMethodDropdown)
-    setAcademicsDropdown(false)
-    setClassActivityDropdown(false)
-    setNotificationDropdown(false)
-    setResultDropdown(false)
-    setEResultDropdown(false)
-    setEmailDropdown(false)
-  }
-
-  const toggleAcademics = () => {
-    setParentDropdown(false)
-    setStudentDropdown(false)
-    setStaffDropdown(false)
-    setSchoolFeesDropdown(false)
-    setBillsDropdown(false)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(false)
-    setAcademicsDropdown(!academicsDropdown)
-    setClassActivityDropdown(false)
-    setNotificationDropdown(false)
-    setResultDropdown(false)
-    setEResultDropdown(false)
   }
 
 
 
-  const toggleClassActivity = () => {
-    setParentDropdown(false)
-    setStudentDropdown(false)
-    setStaffDropdown(false)
-    setSchoolFeesDropdown(false)
-    setBillsDropdown(false)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(false)
-    setAcademicsDropdown(false)
-    setClassActivityDropdown(!classActivityDropdown)
-    setNotificationDropdown(false)
-    setResultDropdown(false)
-    setEResultDropdown(false)
-  }
+
+
+
 
 
   const toggleNotiffcation = () => {
-    setParentDropdown(false)
-    setStudentDropdown(false)
-    setStaffDropdown(false)
     setSchoolFeesDropdown(false)
     setBillsDropdown(false)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(false)
-    setAcademicsDropdown(false)
-    setClassActivityDropdown(false)
     setNotificationDropdown(!notificationDropdown)
-    setResultDropdown(false)
-    setEResultDropdown(false)
   }
 
-  const toggleResult = () => {
-    setParentDropdown(false)
-    setStudentDropdown(false)
-    setStaffDropdown(false)
-    setSchoolFeesDropdown(false)
-    setBillsDropdown(false)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(false)
-    setAcademicsDropdown(false)
-    setClassActivityDropdown(false)
-    setNotificationDropdown(false)
-    setResultDropdown(!resultDropdown)
-    setEResultDropdown(false)
-  }
-
-  const toggleEResult = () => {
-    setParentDropdown(false)
-    setStudentDropdown(false)
-    setStaffDropdown(false)
-    setSchoolFeesDropdown(false)
-    setBillsDropdown(false)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(false)
-    setAcademicsDropdown(false)
-    setClassActivityDropdown(false)
-    setNotificationDropdown(false)
-    setResultDropdown(false)
-    setEResultDropdown(!EResultDropdown)
-    setEmailDropdown(false)
-  }
-
-  const toggleEmail = () => {
-    setParentDropdown(false)
-    setStudentDropdown(false)
-    setStaffDropdown(false)
-    setSchoolFeesDropdown(false)
-    setBillsDropdown(false)
-    setstoreDropdown(false)
-    setPaymentMethodDropdown(false)
-    setAcademicsDropdown(false)
-    setClassActivityDropdown(false)
-    setNotificationDropdown(false)
-    setResultDropdown(false)
-    setEResultDropdown(false)
-    setEmailDropdown(!emailDropdown)
-  }
 
 
   const toggleNavDropdown = () => {

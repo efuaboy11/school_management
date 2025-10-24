@@ -25,10 +25,10 @@ const DisableHr = () => {
   const [messageError, setMessageError] = useState(false)
 
   const {
-    truncateText,
+
     authTokens,
 
-    formatDate,
+
     formatName,
 
 
@@ -158,7 +158,7 @@ const DisableHr = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<any>();
 
 
@@ -181,7 +181,7 @@ const DisableHr = () => {
   }
 
 
-  const handlesShowDiactivateModal = (id: any) => {
+  const handlesShowDiactivateModal = () => {
     setDiactivateModal(true)
   }
   const handlesCloseDiactivateModal = () => {

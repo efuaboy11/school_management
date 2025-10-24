@@ -102,7 +102,7 @@ const AllEmail = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://school.amanilightequity.com/api//delete-multiple-email/', {
+      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-email/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

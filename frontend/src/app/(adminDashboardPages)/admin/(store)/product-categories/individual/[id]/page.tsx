@@ -11,10 +11,10 @@ const IndivivdualProductCategories = ({ params }: { params: Promise<{ id: string
   const { id } = use(params)
 
   const {
-    truncateText,
+
     authTokens,
 
-    formatDate,
+
     formatName,
 
 
@@ -76,7 +76,7 @@ const IndivivdualProductCategories = ({ params }: { params: Promise<{ id: string
 
   const IndividualDetailsFunction = async () => {
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//product-categories/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/product-categories/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -109,7 +109,7 @@ const IndivivdualProductCategories = ({ params }: { params: Promise<{ id: string
     setLoader(true)
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//product-categories/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/product-categories/${id}/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`
@@ -161,7 +161,7 @@ const IndivivdualProductCategories = ({ params }: { params: Promise<{ id: string
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//product-categories/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/product-categories/${id}/`, {
         method: 'PATCH',
         body: formData,
         headers: {

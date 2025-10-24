@@ -22,12 +22,11 @@ const AddParent = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors},
   } = useForm<any>();
 
   const {
     StudentClassFunction,
-    studentClassData
   } = useContext(AllDataContext)!;
 
   const {

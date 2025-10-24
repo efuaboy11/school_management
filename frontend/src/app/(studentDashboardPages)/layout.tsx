@@ -3,7 +3,6 @@ import React from "react";
 import FloatingAlert from "@/components/alert";
 import { useContext } from "react";
 import AuthContext from "@/context/AuthContext";
-import { DashboardFooter } from "@/components/dashFooter";
 import "../../css/adminCss/staff.css"
 import '../../css/adminCss/adminResult.css'
 import StudentFrame from "@/components/dashboardFrames/studentDashframe";

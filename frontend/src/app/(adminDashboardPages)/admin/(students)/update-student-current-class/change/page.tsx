@@ -4,7 +4,6 @@ import AuthContext from '@/context/AuthContext'
 import ThemeContext from '@/context/ThemeContext'
 import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useRouter } from 'next/navigation';
 import Select from 'react-select';
 
 const ChangeStudentCurrentClassPage = () => {
@@ -52,9 +51,9 @@ const ChangeStudentCurrentClassPage = () => {
 
 
   const {
-    register,
+
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<any>();
 
   const onSubmit = (data: FormData, e: any) => {
@@ -74,7 +73,7 @@ const ChangeStudentCurrentClassPage = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//update-student-current-class/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/update-student-current-class/`, {
         method: 'POST',
         body: formData,
         headers: {

@@ -26,7 +26,6 @@ const SchoolEventPage = () => {
 
   const {
     truncateText,
-    authTokens,
     formatDate,
     formatName,
 

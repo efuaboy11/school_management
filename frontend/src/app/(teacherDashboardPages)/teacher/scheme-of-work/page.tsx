@@ -46,10 +46,10 @@ const SchemeOfWorkPage = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
+
     authTokens,
 
-    formatDate,
+
     formatName,
 
 

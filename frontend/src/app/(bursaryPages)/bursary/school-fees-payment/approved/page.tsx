@@ -23,7 +23,6 @@ const SuccsessfulSchoolFeesPayment = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
     authTokens,
     formatName,
     loader,

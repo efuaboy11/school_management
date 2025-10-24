@@ -33,7 +33,7 @@ const HrDept = () => {
 								<div className='light-text '>
 									<FontAwesomeIcon className='md-text' icon={faPeopleGroup}/>
 									<div className='pt-3'>
-										<p className='font-size-20px'>All HR's</p>
+										<p className='font-size-20px'>All HRs</p>
 									</div>
 								</div>
 							</div>

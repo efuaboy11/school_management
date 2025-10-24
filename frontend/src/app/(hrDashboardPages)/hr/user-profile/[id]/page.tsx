@@ -3,7 +3,7 @@ import React, { use, useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
 import AuthContext from '@/context/AuthContext'
 import { useForm } from 'react-hook-form'
-import { useRouter } from 'next/navigation';
+
 import AllDataContext from '@/context/AllData'
 
 import Link from 'next/link'
@@ -14,12 +14,12 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params)
 
   const [showPersonalInformationModal, setShowPersonalInformationModal] = useState(false);
-  const [showSchoolInformationModal, setShowSchoolInformationModal] = useState(false);
-  const [showContactInformationModal, setShowContactInformationModal] = useState(false);
+
+
   const [animateModal, setAnimateModal] = useState(false);
   const [userData, setUserData] = useState<any>(null)
   const [userDeleteModal, setUserDeleteModal] = useState(false)
-  const [schoolFeesDeleteModal, setSchoolFeesDeleteModal] = useState(false)
+
   const [billsDeleteModal, setBillsDeleteModal] = useState(false)
 
   const [firstName, setFirstName] = useState('')
@@ -72,19 +72,6 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
   };
 
 
-  const handleShowUserDeleteModal = () => {
-    setUserDeleteModal(true)
-  }
-
-  const handleCloseUserDeleteModal = () => {
-    setUserDeleteModal(false)
-  }
-
-
-
-  const handleCloseBillsDeleteModal = () => {
-    setBillsDeleteModal(false)
-  }
 
   const handleImgFile = (files: File[]) => {
     if (files.length > 0) {
@@ -164,31 +151,6 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
 
 
   useEffect(() => {
-    if (showSchoolInformationModal) {
-      setAnimateModal(true)
-    } else {
-      setAnimateModal(false);
-    }
-  }, [showSchoolInformationModal]);
-
-
-  useEffect(() => {
-    if (showContactInformationModal) {
-      setAnimateModal(true)
-    } else {
-      setAnimateModal(false);
-    }
-  }, [showContactInformationModal]);
-
-  useEffect(() => {
-    if (schoolFeesDeleteModal) {
-      setAnimateModal(true)
-    } else {
-      setAnimateModal(false);
-    }
-  }, [schoolFeesDeleteModal]);
-
-  useEffect(() => {
     if (billsDeleteModal) {
       setAnimateModal(true)
     } else {
@@ -208,21 +170,11 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
   const {
     register: registerPersonalInformation,
     handleSubmit: handleSubmitPersonalInformation,
-    formState: { errors: errorsPersonalInformation, isValid: isValidPersonalInformation },
+    formState: { errors: errorsPersonalInformation,},
   } = useForm<any>();
 
 
-  const {
-    register: registerSchoolInformation,
-    handleSubmit: handleSubmitSchoolInformation,
-    formState: { errors: errorsSchoolInformation, isValid: isValidSchoolInformation },
-  } = useForm<any>();
 
-  const {
-    register: registerContactInformation,
-    handleSubmit: handleSubmitContactInformation,
-    formState: { errors: errorsContactInformation, isValid: isValidContactInformation },
-  } = useForm<any>();
 
 
   const onPersonalInformationSubmit = (data: any, e: any) => {

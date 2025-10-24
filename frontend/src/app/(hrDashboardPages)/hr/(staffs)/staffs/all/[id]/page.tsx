@@ -19,8 +19,6 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
   const [animateModal, setAnimateModal] = useState(false);
   const [userData, setUserData] = useState<any>(null)
   const [userDeleteModal, setUserDeleteModal] = useState(false)
-  const [schoolFeesDeleteModal, setSchoolFeesDeleteModal] = useState(false)
-  const [billsDeleteModal, setBillsDeleteModal] = useState(false)
 
 
   const router = useRouter();
@@ -42,7 +40,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
   const [homeAddress, setHomeAddress] = useState('')
   const [yearsOfExperience, setYearsOfExperience] = useState('')
   const [computerSkills, setComputerSkills] = useState('')
-  const [staffSpeech, setStaffSpeech] = useState('')
+
   const [passport, setPassport] = useState<File | null>(null)
   const [studentClass, setStudentClass] = useState('')
 
@@ -69,7 +67,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
   const {
     StudentClassFunction,
     studentClassData,
-    setStudentClassData,
+
   } = useContext(AllDataContext)!;
 
 
@@ -107,21 +105,9 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
     setUserDeleteModal(false)
   }
 
-  const handleShowSchoolFeesDeleteModal = () => {
-    setSchoolFeesDeleteModal(true)
-  }
 
-  const handleCloseSchoolFeesDeleteModal = () => {
-    setSchoolFeesDeleteModal(false)
-  }
 
-  const handleShowBillsDeleteModal = () => {
-    setBillsDeleteModal(true)
-  }
 
-  const handleCloseBillsDeleteModal = () => {
-    setBillsDeleteModal(false)
-  }
 
   const handleImgFile = (files: File[]) => {
     if (files.length > 0) {
@@ -269,21 +255,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
     }
   }, [showContactInformationModal]);
 
-  useEffect(() => {
-    if (schoolFeesDeleteModal) {
-      setAnimateModal(true)
-    } else {
-      setAnimateModal(false);
-    }
-  }, [schoolFeesDeleteModal]);
 
-  useEffect(() => {
-    if (billsDeleteModal) {
-      setAnimateModal(true)
-    } else {
-      setAnimateModal(false);
-    }
-  }, [billsDeleteModal]);
 
   useEffect(() => {
     if (userDeleteModal) {
@@ -297,20 +269,20 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
   const {
     register: registerPersonalInformation,
     handleSubmit: handleSubmitPersonalInformation,
-    formState: { errors: errorsPersonalInformation, isValid: isValidPersonalInformation },
+    formState: { errors: errorsPersonalInformation, },
   } = useForm<any>();
 
 
   const {
     register: registerSchoolInformation,
     handleSubmit: handleSubmitSchoolInformation,
-    formState: { errors: errorsSchoolInformation, isValid: isValidSchoolInformation },
+    formState: { errors: errorsSchoolInformation,},
   } = useForm<any>();
 
   const {
     register: registerContactInformation,
     handleSubmit: handleSubmitContactInformation,
-    formState: { errors: errorsContactInformation, isValid: isValidContactInformation },
+    formState: { errors: errorsContactInformation},
   } = useForm<any>();
 
 

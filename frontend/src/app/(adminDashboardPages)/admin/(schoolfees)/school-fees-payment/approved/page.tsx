@@ -23,7 +23,7 @@ const SuccsessfulSchoolFeesPayment = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
+    formatCurrency,
     authTokens,
     formatName,
     loader,
@@ -102,7 +102,7 @@ const SuccsessfulSchoolFeesPayment = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://school.amanilightequity.com/api//delete-multiple-payment-school-fees/', {
+      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-payment-school-fees/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

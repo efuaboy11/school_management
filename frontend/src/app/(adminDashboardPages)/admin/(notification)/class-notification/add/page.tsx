@@ -55,7 +55,7 @@ const UploadSchoolNotificationPage = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<any>();
 
   const onSubmit = (data: FormData, e: any) => {
@@ -160,7 +160,7 @@ const UploadSchoolNotificationPage = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//class-notification/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/class-notification/`, {
         method: 'POST',
         body: formData,
         headers: {

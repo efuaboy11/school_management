@@ -32,25 +32,6 @@ const StafflNotification = () => {
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
 
-  const [filterOptions, setOptions] = useState(false)
-
-  const toggleFilterOptions = () => {
-    setOptions(!filterOptions)
-  }
-
-  const [hasMounted, setHasMounted] = useState(false);
-
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
-
-
-
-
-
-
-
-
 
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);

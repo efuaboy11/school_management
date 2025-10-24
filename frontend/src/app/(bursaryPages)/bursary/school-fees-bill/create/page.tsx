@@ -46,7 +46,7 @@ const CreateSchoolFees = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors },
   } = useForm<any>();
 
   const onSubmit = (data: FormData, e: any) => {
@@ -69,7 +69,7 @@ const CreateSchoolFees = () => {
 
 
     try {
-      const response = await fetch(`http://school.amanilightequity.com/api//school-fees/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/school-fees/`, {
         method: 'POST',
         body: formData,
         headers: {
