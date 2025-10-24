@@ -22,6 +22,7 @@ const IndivivdualFees = ({ params }: { params: Promise<{ id: string }> }) => {
     setIsSuccess,
 
     formatName,
+    formatCurrency,
 
 
   } = useContext(AuthContext)!;
