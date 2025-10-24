@@ -194,7 +194,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
 
   const IndividualUserDataFunction = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/students/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api//students/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -239,7 +239,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
 
   const IndividualSchoolFeesPaymentFunction = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/payment-school-fees/?student=${id}`, {
+      const response = await fetch(`http://school.amanilightequity.com/api//payment-school-fees/?student=${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -266,7 +266,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
 
   const IndividualBillsFunction = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/bills-payment/?student=${id}`, {
+      const response = await fetch(`http://school.amanilightequity.com/api//bills-payment/?student=${id}`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -297,7 +297,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
     setLoader(true)
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-payment-school-fees/', {
+      const response = await fetch('http://school.amanilightequity.com/api//delete-multiple-payment-school-fees/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -349,7 +349,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
     setLoader(true)
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-bills/', {
+      const response = await fetch('http://school.amanilightequity.com/api//delete-multiple-bills/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -401,7 +401,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
     setLoader(true)
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/students/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api//students/${id}/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`
@@ -561,7 +561,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
 
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/students/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api//students/${id}/`, {
         method: 'PATCH',
         body: formData,
         headers: {
@@ -615,7 +615,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
 
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/students/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api//students/${id}/`, {
         method: 'PATCH',
         body: formData,
         headers: {
@@ -672,7 +672,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
 
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/students/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api//students/${id}/`, {
         method: 'PATCH',
         body: formData,
         headers: {

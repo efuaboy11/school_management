@@ -252,7 +252,7 @@ const SchoolNotification = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-class-notification/', {
+      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-class-notification/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -304,7 +304,7 @@ const SchoolNotification = () => {
     setDisableButton(true)
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/class-notification/${selectedDataId}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/class-notification/${selectedDataId}/`, {
         method: 'PATCH',
         body: JSON.stringify({
           text: notificationMessage,

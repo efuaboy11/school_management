@@ -1,5 +1,5 @@
 "use client"
-import {faX } from '@fortawesome/free-solid-svg-icons'
+import { faX } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
@@ -18,7 +18,7 @@ const ScratchCardPage = () => {
 
     scratchCardSearch,
     setScratchCardSearch,
-    ScratchCardFunction, 
+    ScratchCardFunction,
     FilterScratchCard,
 
 
@@ -42,10 +42,10 @@ const ScratchCardPage = () => {
 
   } = useContext(AuthContext)!;
 
-  useEffect(() =>{
-    if(!scratchCardSearch){
+  useEffect(() => {
+    if (!scratchCardSearch) {
       ScratchCardFunction()
-    }else if(scratchCardSearch){
+    } else if (scratchCardSearch) {
       const debouncedSearch = debounce(() => {
         FilterScratchCard();
       }, 300);
@@ -54,22 +54,22 @@ const ScratchCardPage = () => {
       return () => {
         debouncedSearch.cancel();
       };
-      
+
     }
-    
+
   }, [scratchCardSearch])
 
 
-  useEffect(() =>{
+  useEffect(() => {
     ScratchCardFunction()
   }, [statusQuery])
 
   const [cardAmount, setCardAmount] = useState('')
-  
+
   const [copied, setCopied] = useState(false)
   const [selectedID, setSelectedID] = useState<number | null>(null);
 
-  const handleCopy = (text:string,id:number) => {
+  const handleCopy = (text: string, id: number) => {
     navigator.clipboard.writeText(text)
       .then(() => {
         setCopied(true)
@@ -79,7 +79,7 @@ const ScratchCardPage = () => {
         console.error("Failed to copy text: ", err);
       });
   };
-  
+
 
   useEffect(() => {
     if (copied) {
@@ -94,10 +94,10 @@ const ScratchCardPage = () => {
 
   const [filterOptions, setOptions] = useState(false)
 
-  const toggleFilterOptions = () =>{
+  const toggleFilterOptions = () => {
     setOptions(!filterOptions)
   }
-  
+
 
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
@@ -132,8 +132,8 @@ const ScratchCardPage = () => {
     }
   }
 
-  const showStatusModal = () =>{
-    if(statusModal.current){
+  const showStatusModal = () => {
+    if (statusModal.current) {
       statusModal.current.style.transform = `translateY(${0}px)`
       statusModal.current.style.transition = `all ${1.5}s ease`
     }
@@ -142,7 +142,7 @@ const ScratchCardPage = () => {
   }
 
   const hideStatusModal = () => {
-    if(statusModal.current){
+    if (statusModal.current) {
       statusModal.current.style.transform = `translateY(${-650}%)`
       statusModal.current.style.transition = `all ${5}s ease`
     }
@@ -150,7 +150,7 @@ const ScratchCardPage = () => {
 
   }
 
-  
+
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
@@ -158,12 +158,12 @@ const ScratchCardPage = () => {
   const currentItems = scratchCardData.slice(startIndex, startIndex + itemsPerPage);
 
 
-  const deleteFunction = async () =>{
+  const deleteFunction = async () => {
     setDisableButton(true)
     setLoader(true)
 
-    try{
-      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-scratch-cards/', {
+    try {
+      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-scratch-cards/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -175,7 +175,7 @@ const ScratchCardPage = () => {
 
       })
 
-      if(response.ok){
+      if (response.ok) {
         setLoader(false)
         setDisableButton(false)
         setScratchCardData(scratchCardData.filter(dat => dat.id !== selectedIDs))
@@ -185,13 +185,13 @@ const ScratchCardPage = () => {
         ScratchCardFunction()
         showAlert()
         setIsSuccess(true)
-        
-          
-      }else {
+
+
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
 
         setLoader(false)
         setDisableButton(false)
@@ -200,7 +200,7 @@ const ScratchCardPage = () => {
         setIsSuccess(false)
 
       }
-    }catch{
+    } catch {
       setLoader(false)
       setDisableButton(false)
       setMessage("An error occurred. Please try again.")
@@ -209,34 +209,34 @@ const ScratchCardPage = () => {
     }
   }
 
-    const {
-      register,
-      handleSubmit,
-      formState: {errors},
-    } = useForm<any>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<any>();
 
 
-    const onSubmit = () => {
-      GenerateCardNumber()
-    }
+  const onSubmit = () => {
+    GenerateCardNumber()
+  }
 
-  const GenerateCardNumber = async() =>{
+  const GenerateCardNumber = async () => {
     setLoader(true)
     setDisableButton(true)
 
-    try{
-      const response = await fetch(`http://127.0.0.1:8000/api/generate-scratch-cards/`, {
+    try {
+      const response = await fetch(`http://school.amanilightequity.com/api/generate-scratch-cards/`, {
         method: 'POST',
         body: JSON.stringify({
           amount: cardAmount,
         }),
-        headers:{
+        headers: {
           Authorization: `Bearer ${authTokens?.access}`,
           "Content-Type": "application/json"
         }
       })
 
-      if(response.ok){
+      if (response.ok) {
         showAlert()
         setMessage("Card generated successfully")
         setDisableButton(false)
@@ -244,11 +244,11 @@ const ScratchCardPage = () => {
         setLoader(false)
         hideStatusModal()
         ScratchCardFunction()
-      }else{
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setDisableButton(false)
         setLoader(false)
@@ -256,7 +256,7 @@ const ScratchCardPage = () => {
         showAlert()
 
       }
-    }catch(error){
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred.');
@@ -264,10 +264,10 @@ const ScratchCardPage = () => {
       setIsSuccess(false)
       setLoader(false)
 
-    } 
+    }
   }
 
- 
+
 
   useEffect(() => {
     if (showDeleteModal) {
@@ -277,7 +277,7 @@ const ScratchCardPage = () => {
     }
   }, [showDeleteModal]);
 
-  
+
   useEffect(() => {
     let timer: any;
     if (modalNavigator) {
@@ -286,7 +286,7 @@ const ScratchCardPage = () => {
       }, 1000);
     }
 
-  
+
     return () => clearTimeout(timer);
   }, [modalNavigator]);
 
@@ -297,31 +297,31 @@ const ScratchCardPage = () => {
       {showDeleteModal && (
         <section className={` ${showDeleteModal ? 'overlay-background' : ''}`}>
           <div className='container-lg'>
-              
+
             <div className=" row justify-content-center align-center2 height-90vh">
 
-                <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
-                  <div className="site-modal-conatiner">
-                    <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
-                      <div className="d-flex justify-content-center text-center">
-                        <div>
-                          <Image src="/img/icon/warning.png" alt="empty" width={100} height={100} />
-                          <p className='md-text mt-3'>Are you sure?</p>
-                          <p className="light-text">This action cannot be undone. {selectedIDs.length} selected {selectedIDs.length === 1 ? 'data entry' : 'data entries'} will be deleted.</p>
-                          <div className='pt-4'>
-                            <button className="site-delete-btn px-3 me-2 width-100 mb-4" onClick={deleteFunction} disabled={disableButton}>
-                              <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                              <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-delete-bin-line pe-2"></i> Delete</span>
-                            </button>
-                            <button onClick={handleCloseDeleteModal} className="site-btn site-cancel-btn px-3 width-100"><i className="ri-close-circle-line pe-2"></i>Cancel</button>
-                          </div>
+              <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
+                <div className="site-modal-conatiner">
+                  <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
+                    <div className="d-flex justify-content-center text-center">
+                      <div>
+                        <Image src="/img/icon/warning.png" alt="empty" width={100} height={100} />
+                        <p className='md-text mt-3'>Are you sure?</p>
+                        <p className="light-text">This action cannot be undone. {selectedIDs.length} selected {selectedIDs.length === 1 ? 'data entry' : 'data entries'} will be deleted.</p>
+                        <div className='pt-4'>
+                          <button className="site-delete-btn px-3 me-2 width-100 mb-4" onClick={deleteFunction} disabled={disableButton}>
+                            <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                            <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-delete-bin-line pe-2"></i> Delete</span>
+                          </button>
+                          <button onClick={handleCloseDeleteModal} className="site-btn site-cancel-btn px-3 width-100"><i className="ri-close-circle-line pe-2"></i>Cancel</button>
                         </div>
                       </div>
-                    
                     </div>
+
                   </div>
                 </div>
-            
+              </div>
+
 
             </div>
 
@@ -330,32 +330,32 @@ const ScratchCardPage = () => {
       )}
 
 
-      <div className={`${statusOverlay ? 'overlay-background pt-5 ': ''}`}>
+      <div className={`${statusOverlay ? 'overlay-background pt-5 ' : ''}`}>
         <div className="dashboard-update-status-container" ref={statusModal}>
           <div className="row justify-content-center">
             <div className="col-lg-5 col-md-6 col-sm-9 col-11">
               <div className="site-boxes px-4 py-3 border-radius-10px">
                 <div className="d-flex justify-content-end">
-                  <FontAwesomeIcon className='sm-text cursor-pointer' icon={faX} onClick={hideStatusModal}/>
+                  <FontAwesomeIcon className='sm-text cursor-pointer' icon={faX} onClick={hideStatusModal} />
                 </div>
                 <h5 className='pb-4'>Generate Card Number</h5>
-                <form  onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="row g-3">
 
                     <div className="col-12">
                       <label htmlFor="cardAmount" className="form-label">Card Amount <span className="text-danger">*</span></label>
-                      <input   className={`site-input ${errors.cardAmount ? 'error-input' : ''}`} {...register('cardAmount', {required: true})}  value={cardAmount}  onChange={(e) => setCardAmount(e.target.value)}/>   
+                      <input className={`site-input ${errors.cardAmount ? 'error-input' : ''}`} {...register('cardAmount', { required: true })} value={cardAmount} onChange={(e) => setCardAmount(e.target.value)} />
                       {errors.cardAmount && <p className="error-text">This field is required</p>}
                     </div>
 
                     <div className="col-12">
                       <div className='mb-3'>
                         <button disabled={disableButton} type="submit" className={`Button site-btn px-3`}>
-                          <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                          <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
+                          <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                          <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
                         </button>
                       </div>
-                    
+
                     </div>
 
                   </div>
@@ -374,7 +374,7 @@ const ScratchCardPage = () => {
           <div>
             <p className="md-text">Scratch Card Numbers</p>
             <p className="light-text pb-3">Total of {scratchCardCount} cards avaliable</p>
-         </div>
+          </div>
 
           <div className='d-flex mb-4'>
             <button onClick={showStatusModal} className="site-btn px-3 Link"><i className="ri-send-plane-fill pe-2"></i>Generate number</button>
@@ -385,17 +385,17 @@ const ScratchCardPage = () => {
 
           <div>
             <div className="d-flex align-items-center">
-              <input type="text" className="site-search-input" placeholder="Search" value={scratchCardSearch} onChange={(e) => setScratchCardSearch(e.target.value)}/>
+              <input type="text" className="site-search-input" placeholder="Search" value={scratchCardSearch} onChange={(e) => setScratchCardSearch(e.target.value)} />
               <button className="site-btn px-3 ms-2"><i className="ri-search-line"></i></button>
             </div>
           </div>
         </div>
-        
+
         <div className='pt-5'>
           <div className='d-flex'>
             <p className='pe-2 light-text'>Filter</p>
             <label className="site-switch">
-              <input type="checkbox" onChange={toggleFilterOptions}/>
+              <input type="checkbox" onChange={toggleFilterOptions} />
               <span className="site-switch-slider"></span>
             </label>
 
@@ -405,14 +405,14 @@ const ScratchCardPage = () => {
               <div className="d-sm-flex">
                 <div className="me-3 mb-3">
                   <label htmlFor="" className='form-label light-text'>Filter by status</label>
-                  <select   className={`site-search-input`}   value={statusQuery}  onChange={(e) => setStatusQuery(e.target.value)}>
+                  <select className={`site-search-input`} value={statusQuery} onChange={(e) => setStatusQuery(e.target.value)}>
                     <option value="">Select</option>
                     <option value="active">Active</option>
                     <option value="used">Used</option>
                     <option value="expired">Expired</option>
                   </select>
                 </div>
-      
+
               </div>
             </div>
           )}
@@ -437,12 +437,12 @@ const ScratchCardPage = () => {
               {currentItems.length > 0 ? (
                 <div>
                   {selectedIDs.length > 0 ? (
-                          <div className='pb-2'>
-                            <button onClick={handleShowDeleteModal}  className='site-delete-btn px-3'><i className="ri-delete-bin-line me-2"></i>Delete</button>
-                          </div>
-                    ): (
-                      <div></div>
-                    )
+                    <div className='pb-2'>
+                      <button onClick={handleShowDeleteModal} className='site-delete-btn px-3'><i className="ri-delete-bin-line me-2"></i>Delete</button>
+                    </div>
+                  ) : (
+                    <div></div>
+                  )
                   }
                   <div className='site-boxes  site-border border-radius-5px dahboard-table non-wrap-text scroll-bar'>
                     <table className='overflow-auto light-text'>
@@ -450,15 +450,15 @@ const ScratchCardPage = () => {
                         <tr>
                           <th className='py-2'>
                             <label className="custom-checkbox cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={selectedIDs.length === scratchCardData.length && scratchCardData.length > 0}
-                              onChange={handleSelectAll}
-                            />
+                              <input
+                                type="checkbox"
+                                checked={selectedIDs.length === scratchCardData.length && scratchCardData.length > 0}
+                                onChange={handleSelectAll}
+                              />
                               <span className="checkmark"></span>
                             </label>
                           </th>
-                          <th>Pin</th> 
+                          <th>Pin</th>
                           <th>Trials Left</th>
                         </tr>
                       </thead>
@@ -468,29 +468,29 @@ const ScratchCardPage = () => {
                           currentItems.map((data) => (
                             <tr key={data.id}>
                               <td className='py-3'>
-                                  <label className="custom-checkbox cursor-pointer">
-                                    <input
-                                      type="checkbox"
-                                      checked={selectedIDs.includes(data.id)}
-                                      onChange={() => handleCheckboxChange(data.id)}
-                                    />
-                                    <span className="checkmark"></span>
-                                  </label>
+                                <label className="custom-checkbox cursor-pointer">
+                                  <input
+                                    type="checkbox"
+                                    checked={selectedIDs.includes(data.id)}
+                                    onChange={() => handleCheckboxChange(data.id)}
+                                  />
+                                  <span className="checkmark"></span>
+                                </label>
                               </td>
                               <td>
                                 <div className="d-flex">
                                   <p>{data.pin}</p>
-                                  
-                                    <div className="ms-4 col-2  cursor-pointer" onClick={() => handleCopy(data.pin, data.id)}>
-                                      <div className="d-flex align-items-center height-100">
-                                        {(copied && (selectedID === data.id)) ? (
-                                          <p className='success-text'><i className="bi bi-clipboard-check"></i></p>
-                                        ): (
-                                          <p><i className="bi bi-clipboard pe-1"></i></p>
-                                        )}
 
-                                      </div>
+                                  <div className="ms-4 col-2  cursor-pointer" onClick={() => handleCopy(data.pin, data.id)}>
+                                    <div className="d-flex align-items-center height-100">
+                                      {(copied && (selectedID === data.id)) ? (
+                                        <p className='success-text'><i className="bi bi-clipboard-check"></i></p>
+                                      ) : (
+                                        <p><i className="bi bi-clipboard pe-1"></i></p>
+                                      )}
+
                                     </div>
+                                  </div>
                                 </div>
                               </td>
                               <td>
@@ -516,29 +516,29 @@ const ScratchCardPage = () => {
                   </div>
 
                   {scratchCardData.length > 10 && (
-                      <div className="col-12 mb-4 mt-3">
-                        <Stack spacing={2} alignItems="end">
-                          <Pagination
-                            count={Math.ceil(scratchCardData.length / itemsPerPage)}
-                            page={page}
-                            onChange={handleChange}
-                            sx={{
-                              '& .MuiPaginationItem-root': {
-                                color: '#737b7d', // color of all numbers
-                              },
-                              '& .MuiPaginationItem-root.Mui-selected': {
-                                backgroundColor: '#783ebc', // Your custom color
-                                color: '#fff',
-                              },
-                            }}
-                          />
-                        </Stack>
-                      </div>
-                    )}
+                    <div className="col-12 mb-4 mt-3">
+                      <Stack spacing={2} alignItems="end">
+                        <Pagination
+                          count={Math.ceil(scratchCardData.length / itemsPerPage)}
+                          page={page}
+                          onChange={handleChange}
+                          sx={{
+                            '& .MuiPaginationItem-root': {
+                              color: '#737b7d', // color of all numbers
+                            },
+                            '& .MuiPaginationItem-root.Mui-selected': {
+                              backgroundColor: '#783ebc', // Your custom color
+                              color: '#fff',
+                            },
+                          }}
+                        />
+                      </Stack>
+                    </div>
+                  )}
                 </div>
 
-              
-              ): (
+
+              ) : (
                 <div className="col-12 ">
                   <div className='site-boxes text-center pb-5 d-flex justify-content-center align-items-center  mt-5 pt-5'>
                     <div>
@@ -555,7 +555,7 @@ const ScratchCardPage = () => {
           )}
 
 
-          
+
         </div>
       </div>
     </div>

@@ -399,7 +399,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const userDetails = async (profileId: any) => {
     try {
       const response = await fetch(
-        `http://127.0.0.1:8000/api/user-profile/${profileId ?? user?.profile_id ?? ''}/`,
+        `http://school.amanilightequity.com/api/user-profile/${profileId ?? user?.profile_id ?? ''}/`,
         {
           method: "GET",
           credentials: "include",
@@ -521,7 +521,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const sanitizedUsername = validator.escape(username);
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/request-to-change-password-form/', {
+      const response = await fetch('http://school.amanilightequity.com/api/request-to-change-password-form/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -572,7 +572,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const sanitizedChangePasswordToken = validator.escape(changePasswordToken)
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/change-password/', {
+      const response = await fetch('http://school.amanilightequity.com/api/change-password/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -632,7 +632,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
   const updateToken = async () => {
     if (authTokens) {
       if (!authTokens?.refresh) return;
-      const response = await fetch('http://127.0.0.1:8000/api/token/refresh/', {
+      const response = await fetch('http://school.amanilightequity.com/api/token/refresh/', {
         method: 'POST',
         headers: {
           "Content-Type": "application/json",

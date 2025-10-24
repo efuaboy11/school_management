@@ -203,7 +203,7 @@ const IndivivdualSchemeOfWork = ({ params }: { params: Promise<any> }) => {
 
   const IndividualDetailsFunction = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/scheme-of-work/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/scheme-of-work/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -238,7 +238,7 @@ const IndivivdualSchemeOfWork = ({ params }: { params: Promise<any> }) => {
     setLoader(true)
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/scheme-of-work/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/scheme-of-work/${id}/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`
@@ -295,7 +295,7 @@ const IndivivdualSchemeOfWork = ({ params }: { params: Promise<any> }) => {
 
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/scheme-of-work/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/scheme-of-work/${id}/`, {
         method: 'PATCH',
         body: formData,
         headers: {

@@ -13,7 +13,7 @@ const SchemeOfWorkPage = ({ params }: { params: Promise<any> }) => {
   const param = use(params);
   const [termID, classID,] = param.params || [];
 
-  const { theme} = useContext(ThemeContext)!
+  const { theme } = useContext(ThemeContext)!
     ;
   const {
 
@@ -153,7 +153,7 @@ const SchemeOfWorkPage = ({ params }: { params: Promise<any> }) => {
 
 
   const SchemeOFWorkFunction = async () => {
-    const response = await fetch(`http://127.0.0.1:8000/api/scheme-of-work/?student_class=${classID}&term=${termID}&subject=${subjectQuery}`, {
+    const response = await fetch(`http://school.amanilightequity.com/api/scheme-of-work/?student_class=${classID}&term=${termID}&subject=${subjectQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -184,7 +184,7 @@ const SchemeOfWorkPage = ({ params }: { params: Promise<any> }) => {
 
   const UserDetails = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/students/${authTokens?.user_id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/students/${authTokens?.user_id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

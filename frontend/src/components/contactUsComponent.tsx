@@ -10,22 +10,22 @@ const ContactUsComponent = () => {
   const [subject, setSubject] = useState('')
   const [emailMessage, setEmailMessage] = useState('')
 
-  const { 
-  
+  const {
+
     authTokens,
-  
+
     loader,
     setLoader,
     disableButton,
     setDisableButton,
-  
+
     setMessage,
     showAlert,
     setIsSuccess,
-  
-    
-  
-  
+
+
+
+
   } = useContext(AuthContext)!
 
 
@@ -44,15 +44,15 @@ const ContactUsComponent = () => {
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<any>();
 
-  const onSubmit = (data: FormData, e:any) => {
+  const onSubmit = (data: FormData, e: any) => {
     SendEmail(e)
   }
 
 
-  const SendEmail = async(e:any) =>{
+  const SendEmail = async (e: any) => {
     e.preventDefault()
     setLoader(true)
     setDisableButton(true)
@@ -64,17 +64,17 @@ const ContactUsComponent = () => {
     formData.append('message', emailMessage)
 
 
-    try{
-      const response = await fetch(`http://127.0.0.1:8000/api/contact-us/`, {
+    try {
+      const response = await fetch(`http://school.amanilightequity.com/api//contact-us/`, {
         method: 'POST',
         body: formData,
-        headers:{
+        headers: {
           Authorization: `Bearer ${authTokens?.access}`
         }
       })
 
 
-      if(response.ok){
+      if (response.ok) {
         showAlert()
         setMessage('Email sent')
         setIsSuccess(true)
@@ -87,11 +87,11 @@ const ContactUsComponent = () => {
 
 
 
-      }else{
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setDisableButton(false)
         setIsSuccess(false)
@@ -99,8 +99,8 @@ const ContactUsComponent = () => {
         showAlert()
       }
 
-      
-    }catch(error){
+
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred.');
@@ -108,7 +108,7 @@ const ContactUsComponent = () => {
       setIsSuccess(false)
       setLoader(false)
 
-    }  
+    }
   }
 
 
@@ -127,54 +127,54 @@ const ContactUsComponent = () => {
               <p className='md-text'>Support Center</p>
               <p className='light-text'>Send us a direct email and our support team will get back to you <br /> shortly.</p>
             </div>
-            <div className="site-boxes border-radius-10px">             
+            <div className="site-boxes border-radius-10px">
               <div className="p-3">
-                  <form  onSubmit={handleSubmit(onSubmit)}>
-                    <div className="row g-3 align-center">
-                      <div className="col-md-3 col-12">
-                        <p className=''>Your Email Address:</p>
-                      </div>
-
-                      <div className="col-md-9 col-12">
-                        <input type="text" className={`site-input ${errors.email ? 'error-input' : ''}`} {...register('email', {required: true})}  value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email:" />
-                        {errors.email && <span style={{color: 'red'}}>This Feild is required</span>} 
-                      </div>
-
-
-                      <div className="col-md-3 col-12">
-                        <p className=''>Your FullName:</p>
-                      </div>
-
-                      <div className="col-md-9 col-12">
-                        <input type="text" className={`site-input ${errors.userName ? 'error-input' : ''}`} {...register('userName', {required: true})}  value={userName} onChange={(e) => setUserName(e.target.value)} placeholder="userName:" />
-                        {errors.userName && <span style={{color: 'red'}}>This Feild is required</span>} 
-                      </div>
-
-                      <div className="col-md-3 col-12">
-                        <p className=''>Email Subject:</p>
-                      </div>
-
-                      <div className="col-md-9 col-12">
-                        <input type="text" className={`site-input ${errors.subject ? 'error-input' : ''}`} {...register('subject', {required: true})}  value={subject} onChange={(e) => setSubject(e.target.value)} placeholder="Email Subject:" />
-                        {errors.subject && <span style={{color: 'red'}}>This Feild is required</span>} 
-                      </div>
-
-                      <div className="col-12">
-                        <textarea rows={9}  className={`site-input ${errors.emailMessage ? 'error-input' : ''}`} {...register('emailMessage', {required: true})}  value={emailMessage} onChange={(e) => setEmailMessage(e.target.value)} placeholder="Write Your Message"></textarea>
-                        {errors.emailMessage && <span style={{color: 'red'}}>This Feild is required</span>} 
-                      </div>
-
-                      <div className="col-12">
-                        <div className='mb-3'>
-                          <button disabled={disableButton} type="submit" className={`Button site-btn px-3`}>
-                            <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                            <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
-                          </button>
-                        </div>
-                      
-                      </div>
+                <form onSubmit={handleSubmit(onSubmit)}>
+                  <div className="row g-3 align-center">
+                    <div className="col-md-3 col-12">
+                      <p className=''>Your Email Address:</p>
                     </div>
-                  </form>
+
+                    <div className="col-md-9 col-12">
+                      <input type="text" className={`site-input ${errors.email ? 'error-input' : ''}`} {...register('email', { required: true })} value={email} onChange={(e) => setEmail(e.target.value)} placeholder="Email:" />
+                      {errors.email && <span style={{ color: 'red' }}>This Feild is required</span>}
+                    </div>
+
+
+                    <div className="col-md-3 col-12">
+                      <p className=''>Your FullName:</p>
+                    </div>
+
+                    <div className="col-md-9 col-12">
+                      <input type="text" className={`site-input ${errors.userName ? 'error-input' : ''}`} {...register('userName', { required: true })} value={userName} onChange={(e) => setUserName(e.target.value)} placeholder="userName:" />
+                      {errors.userName && <span style={{ color: 'red' }}>This Feild is required</span>}
+                    </div>
+
+                    <div className="col-md-3 col-12">
+                      <p className=''>Email Subject:</p>
+                    </div>
+
+                    <div className="col-md-9 col-12">
+                      <input type="text" className={`site-input ${errors.subject ? 'error-input' : ''}`} {...register('subject', { required: true })} value={subject} onChange={(e) => setSubject(e.target.value)} placeholder="Email Subject:" />
+                      {errors.subject && <span style={{ color: 'red' }}>This Feild is required</span>}
+                    </div>
+
+                    <div className="col-12">
+                      <textarea rows={9} className={`site-input ${errors.emailMessage ? 'error-input' : ''}`} {...register('emailMessage', { required: true })} value={emailMessage} onChange={(e) => setEmailMessage(e.target.value)} placeholder="Write Your Message"></textarea>
+                      {errors.emailMessage && <span style={{ color: 'red' }}>This Feild is required</span>}
+                    </div>
+
+                    <div className="col-12">
+                      <div className='mb-3'>
+                        <button disabled={disableButton} type="submit" className={`Button site-btn px-3`}>
+                          <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                          <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
+                        </button>
+                      </div>
+
+                    </div>
+                  </div>
+                </form>
               </div>
             </div>
           </div>

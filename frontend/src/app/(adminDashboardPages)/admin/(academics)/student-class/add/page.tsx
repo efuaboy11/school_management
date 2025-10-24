@@ -10,55 +10,55 @@ const AddStudentClass = () => {
   const [studentClass, setStudentClass] = useState('')
   const [subjectIDs, setSubjectIDs] = useState<number[]>([])
 
-  const { 
-  
+  const {
+
     authTokens,
-  
+
     loader,
     setLoader,
     setDisableButton,
-  
+
     setMessage,
     showAlert,
     setIsSuccess,
     formatName,
-  
-    
-  
-  
+
+
+
+
   } = useContext(AuthContext)!
 
 
-    const {
-      subjectGroupData,
-      subjectData,
-  
-      subjectSearch,
-      setSubjectSearch,
-      SubjectFunction, 
-      FilterSubject,
-      sectionLabels,
-    } = useContext(AllDataContext)!;
+  const {
+    subjectGroupData,
+    subjectData,
+
+    subjectSearch,
+    setSubjectSearch,
+    SubjectFunction,
+    FilterSubject,
+    sectionLabels,
+  } = useContext(AllDataContext)!;
 
 
   const {
     register,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
   } = useForm<any>();
 
   const handleCheckboxChange = (id: number) => {
-    setSubjectIDs(prev => 
+    setSubjectIDs(prev =>
       prev.includes(id) ? prev.filter(item => item !== id) : [...prev, id]
     );
   };
 
-  const onSubmit = (data: FormData, e:any) => {
+  const onSubmit = (data: FormData, e: any) => {
     CreatBill(e)
   }
 
 
-  const CreatBill = async(e:any) =>{
+  const CreatBill = async (e: any) => {
     e.preventDefault()
     setLoader(true)
     setDisableButton(true)
@@ -69,18 +69,18 @@ const AddStudentClass = () => {
     };
 
 
-    try{
-      const response = await fetch(`http://127.0.0.1:8000/api/student-class/`, {
+    try {
+      const response = await fetch(`http://school.amanilightequity.com/api/student-class/`, {
         method: 'POST',
         body: JSON.stringify(payload),
-        headers:{
+        headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${authTokens?.access}`
         }
       })
 
 
-      if(response.ok){
+      if (response.ok) {
         showAlert()
         setMessage('Student class created')
         setIsSuccess(true)
@@ -91,11 +91,11 @@ const AddStudentClass = () => {
 
 
 
-      }else{
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setDisableButton(false)
         setIsSuccess(false)
@@ -103,8 +103,8 @@ const AddStudentClass = () => {
         showAlert()
       }
 
-      
-    }catch(error){
+
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred.');
@@ -112,27 +112,27 @@ const AddStudentClass = () => {
       setIsSuccess(false)
       setLoader(false)
 
-    }  
+    }
   }
 
 
-  
-    useEffect(() =>{
-      if(!subjectSearch){
-        SubjectFunction()
-      }else if(subjectSearch){
-        const debouncedSearch = debounce(() => {
-          FilterSubject();
-        }, 300);
-        debouncedSearch();
 
-        return () => {
-          debouncedSearch.cancel();
-        };
-        
-      }
-      
-    }, [subjectSearch])
+  useEffect(() => {
+    if (!subjectSearch) {
+      SubjectFunction()
+    } else if (subjectSearch) {
+      const debouncedSearch = debounce(() => {
+        FilterSubject();
+      }, 300);
+      debouncedSearch();
+
+      return () => {
+        debouncedSearch.cancel();
+      };
+
+    }
+
+  }, [subjectSearch])
 
 
 
@@ -152,7 +152,7 @@ const AddStudentClass = () => {
                   <div className="row g-3">
                     <div className="col-md-6">
                       <label htmlFor="studentClass" className="form-label">Class</label>
-                      <input type="text" className={`site-input ${errors.studentClass ? 'error-input' : ''}`} {...register('studentClass', {required: true})}  placeholder='Class' value={studentClass}  onChange={(e) => setStudentClass(e.target.value)}/>
+                      <input type="text" className={`site-input ${errors.studentClass ? 'error-input' : ''}`} {...register('studentClass', { required: true })} placeholder='Class' value={studentClass} onChange={(e) => setStudentClass(e.target.value)} />
                       {errors.studentClass && <p className="error-text">This field is required</p>}
                     </div>
 
@@ -160,7 +160,7 @@ const AddStudentClass = () => {
 
                       <div>
                         <div className="d-flex align-items-center">
-                          <input type="text" className="f site-search-input" placeholder="Search" value={subjectSearch} onChange={(e) => setSubjectSearch(e.target.value)}/>
+                          <input type="text" className="f site-search-input" placeholder="Search" value={subjectSearch} onChange={(e) => setSubjectSearch(e.target.value)} />
                           <button className="site-btn px-3 ms-2"><i className="ri-search-line"></i></button>
                         </div>
                       </div>
@@ -174,30 +174,30 @@ const AddStudentClass = () => {
                             <div className='pb-4' key={sectionKey} >
                               <p className='pb-3'>{sectionLabels[sectionKey]}</p>
                               <div className="row g-3">
-                                {subjects.map((data:any) => (    
-                                    <div className="col-lg-3  col-md-6" key={data.id}>
-                                        <div className="site-border border-radius-10px  p-2">
-                                          <div>
-                                            <label className="custom-checkbox cursor-pointer">
-                                              <input
-                                                type="checkbox"
-                                                checked={subjectIDs.includes(data.id)}
-                                                onChange={() => handleCheckboxChange(data.id)}
-                                              />
-                                              <span className="checkmark"></span>
-                                            </label>
-  
-                                          </div>
-                                          <h5 className="light-text">{formatName(data.name)}</h5>
-                                        </div>
-    
-                                
-    
-                                      
+                                {subjects.map((data: any) => (
+                                  <div className="col-lg-3  col-md-6" key={data.id}>
+                                    <div className="site-border border-radius-10px  p-2">
+                                      <div>
+                                        <label className="custom-checkbox cursor-pointer">
+                                          <input
+                                            type="checkbox"
+                                            checked={subjectIDs.includes(data.id)}
+                                            onChange={() => handleCheckboxChange(data.id)}
+                                          />
+                                          <span className="checkmark"></span>
+                                        </label>
+
+                                      </div>
+                                      <h5 className="light-text">{formatName(data.name)}</h5>
                                     </div>
-                                
+
+
+
+
+                                  </div>
+
                                 ))}
-                                </div>
+                              </div>
                             </div>
                           )
                         ))}
@@ -209,7 +209,7 @@ const AddStudentClass = () => {
                           <p className='light-text md-text'>No details available</p>
                           <p className="light-text">There is no details current right now. Check again later</p>
                         </div>
-    
+
                       </div>
                     )}
 
@@ -217,10 +217,10 @@ const AddStudentClass = () => {
 
                     <div className="col-12 mt-4">
                       <button type='submit' className='site-btn px-4'>
-                        <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                        <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill pe-2"></i> Sumbit</span>
+                        <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                        <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill pe-2"></i> Sumbit</span>
                       </button>
-                  
+
                     </div>
                   </div>
 

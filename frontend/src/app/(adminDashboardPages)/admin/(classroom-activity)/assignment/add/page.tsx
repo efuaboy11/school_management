@@ -63,7 +63,7 @@ const CreateAssignment = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors},
+    formState: { errors },
   } = useForm<any>();
 
   const handleImgFile = (files: File[]) => {
@@ -214,7 +214,7 @@ const CreateAssignment = () => {
 
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/assignment/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/assignment/`, {
         method: 'POST',
         body: formData,
         headers: {

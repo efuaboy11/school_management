@@ -13,7 +13,7 @@ import { DownloadLink } from '@/components/downloadLink'
 
 const EResultPage = () => {
 
-  const { theme} = useContext(ThemeContext)!;
+  const { theme } = useContext(ThemeContext)!;
   const {
     eResultCount,
     eResultData,
@@ -242,7 +242,7 @@ const EResultPage = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-e-result/', {
+      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-e-result/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

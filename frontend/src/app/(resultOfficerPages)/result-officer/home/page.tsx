@@ -46,7 +46,7 @@ const ResultOfficerHomePage = () => {
 
 
   const ResultFunction = async () => {
-    const response = await fetch(`http://127.0.0.1:8000/api/student-result/`, {
+    const response = await fetch(`http://school.amanilightequity.com/api/student-result/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -78,7 +78,7 @@ const ResultOfficerHomePage = () => {
 
   const UserDetailsFunction = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/staff/${authTokens?.user_id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/staff/${authTokens?.user_id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

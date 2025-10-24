@@ -9,39 +9,39 @@ const CreateSchoolEventPage = () => {
   const [startDate, setStartDate] = useState('')
   const [endDate, setEndDate] = useState('')
 
-  const { 
-  
+  const {
+
     authTokens,
-  
+
     loader,
     setLoader,
     setDisableButton,
-  
+
     setMessage,
     showAlert,
     setIsSuccess,
-  
-    
-  
-  
+
+
+
+
   } = useContext(AuthContext)!
 
 
- 
+
 
 
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<any>();
 
-  const onSubmit = (e:any) => {
+  const onSubmit = (e: any) => {
     CreatBill(e)
   }
 
 
-  const CreatBill = async(e:any) =>{
+  const CreatBill = async (e: any) => {
     e.preventDefault()
     setLoader(true)
     setDisableButton(true)
@@ -53,17 +53,17 @@ const CreateSchoolEventPage = () => {
     formData.append('end_date', endDate)
 
 
-    try{
-      const response = await fetch(`http://127.0.0.1:8000/api/school-event/`, {
+    try {
+      const response = await fetch(`http://school.amanilightequity.com/api/school-event/`, {
         method: 'POST',
         body: formData,
-        headers:{
+        headers: {
           Authorization: `Bearer ${authTokens?.access}`
         }
       })
 
 
-      if(response.ok){
+      if (response.ok) {
         showAlert()
         setMessage('Event created')
         setIsSuccess(true)
@@ -76,11 +76,11 @@ const CreateSchoolEventPage = () => {
 
 
 
-      }else{
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setDisableButton(false)
         setIsSuccess(false)
@@ -88,8 +88,8 @@ const CreateSchoolEventPage = () => {
         showAlert()
       }
 
-      
-    }catch(error){
+
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred.');
@@ -97,11 +97,11 @@ const CreateSchoolEventPage = () => {
       setIsSuccess(false)
       setLoader(false)
 
-    }  
+    }
   }
 
 
-  
+
 
 
 
@@ -121,36 +121,36 @@ const CreateSchoolEventPage = () => {
                   <div className="row g-3">
                     <div className="col-md-6">
                       <label htmlFor="title" className="form-label">Title<span className="text-danger">*</span></label>
-                      <input type="text" className={`site-input ${errors.title ? 'error-input' : ''}`} {...register('title', {required: true})}  placeholder='Title' value={title}  onChange={(e) => setTitle(e.target.value)}/>
+                      <input type="text" className={`site-input ${errors.title ? 'error-input' : ''}`} {...register('title', { required: true })} placeholder='Title' value={title} onChange={(e) => setTitle(e.target.value)} />
                       {errors.title && <p className="error-text">This field is required</p>}
                     </div>
 
                     <div className="col-md-6">
                       <label htmlFor="email" className="form-label">Start Date<span className="text-danger">*</span></label>
-                      <input type="date" className={`site-input ${errors.startDate ? 'error-input' : ''}`} {...register('startDate', {required: true})}  value={startDate}  onChange={(e) => setStartDate(e.target.value)} placeholder='Start Date' />
+                      <input type="date" className={`site-input ${errors.startDate ? 'error-input' : ''}`} {...register('startDate', { required: true })} value={startDate} onChange={(e) => setStartDate(e.target.value)} placeholder='Start Date' />
                       {errors.startDate && <p className="error-text">This field is required</p>}
                     </div>
 
                     <div className="col-md-6">
                       <label htmlFor="email" className="form-label">End Date<span className="text-danger">*</span></label>
-                      <input type="date" className={`site-input ${errors.endDate ? 'error-input' : ''}`} {...register('endDate', {required: true})}  value={endDate}  onChange={(e) => setEndDate(e.target.value)} placeholder='Start Date' />
+                      <input type="date" className={`site-input ${errors.endDate ? 'error-input' : ''}`} {...register('endDate', { required: true })} value={endDate} onChange={(e) => setEndDate(e.target.value)} placeholder='Start Date' />
                       {errors.endDate && <p className="error-text">This field is required</p>}
                     </div>
 
 
                     <div className="col-md-12">
                       <label htmlFor="description" className="form-label">Description<span className="text-danger">*</span></label>
-                      <textarea rows={6}  className={`site-input ${errors.description ? 'error-input' : ''}`} {...register('description', {required: true})}   value={description}  onChange={(e) => setDescription(e.target.value)} placeholder='....'></textarea>
+                      <textarea rows={6} className={`site-input ${errors.description ? 'error-input' : ''}`} {...register('description', { required: true })} value={description} onChange={(e) => setDescription(e.target.value)} placeholder='....'></textarea>
                       {errors.description && <p className="error-text">This field is required</p>}
                     </div>
 
 
                     <div className="col-12 mt-4">
                       <button type='submit' className='site-btn px-4'>
-                        <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                        <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill pe-2"></i> Sumbit</span>
+                        <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                        <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill pe-2"></i> Sumbit</span>
                       </button>
-                  
+
                     </div>
                   </div>
 

@@ -229,7 +229,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
     }
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/student-result/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/student-result/${id}/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -291,7 +291,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
     }
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/student-result/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/student-result/${id}/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -345,7 +345,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
     }
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/student-result/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/student-result/${id}/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -399,7 +399,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
     }
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/student-result/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/student-result/${id}/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -470,7 +470,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
     };
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/student-result/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/student-result/${id}/`, {
         method: 'PATCH',
         headers: {
           'Content-Type': 'application/json',
@@ -512,7 +512,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
 
   const IndividualDetailsFunction = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/student-result/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/student-result/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -646,7 +646,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
     }
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/student-result/', {
+      const response = await fetch('http://school.amanilightequity.com/api/student-result/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

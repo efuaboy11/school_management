@@ -193,7 +193,7 @@ const IndividualEResult = ({ params }: { params: Promise<any> }) => {
 
   const IndividualDetailsFunction = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/e-result/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/e-result/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -227,7 +227,7 @@ const IndividualEResult = ({ params }: { params: Promise<any> }) => {
     setLoader(true)
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/e-result/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/e-result/${id}/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`
@@ -284,7 +284,7 @@ const IndividualEResult = ({ params }: { params: Promise<any> }) => {
 
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/e-result/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/e-result/${id}/`, {
         method: 'PATCH',
         body: formData,
         headers: {

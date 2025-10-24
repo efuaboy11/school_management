@@ -54,7 +54,7 @@ const SchoolFees = () => {
     setLoader,
     disableButton,
     setDisableButton,
-    
+
 
     setMessage,
     showAlert,
@@ -142,7 +142,7 @@ const SchoolFees = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-school-fees/', {
+      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-school-fees/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

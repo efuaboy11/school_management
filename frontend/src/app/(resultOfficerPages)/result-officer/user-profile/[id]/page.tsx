@@ -120,7 +120,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
   };
 
 
-  const { getRootProps, getInputProps} = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop: handleImgFile,
     accept: {
       'image/*': []
@@ -130,7 +130,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
 
   const IndividualUserDataFunction = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/staff/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/staff/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -295,7 +295,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
 
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/staff/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/staff/${id}/`, {
         method: 'PATCH',
         body: formData,
         headers: {
@@ -351,7 +351,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
 
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/staff/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/staff/${id}/`, {
         method: 'PATCH',
         body: formData,
         headers: {
@@ -408,7 +408,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
 
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/staff/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/staff/${id}/`, {
         method: 'PATCH',
         body: formData,
         headers: {

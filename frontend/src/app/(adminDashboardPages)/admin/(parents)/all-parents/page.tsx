@@ -18,41 +18,41 @@ const AllParents = () => {
 
     parentSearch,
     setParentSearch,
-    ParentFunction, 
+    ParentFunction,
     FilterParent,
   } = useContext(AllDataContext)!;
 
-    const {
-      truncateText,
-      authTokens,
-      formatName,
-      loader,
-      setLoader,
-      disableButton,
-      setDisableButton,
+  const {
+    truncateText,
+    authTokens,
+    formatName,
+    loader,
+    setLoader,
+    disableButton,
+    setDisableButton,
 
-      setMessage,
-      showAlert,
-      setIsSuccess,
-  
-    } = useContext(AuthContext)!;
+    setMessage,
+    showAlert,
+    setIsSuccess,
 
-    useEffect(() =>{
-      if(!parentSearch){
-        ParentFunction()
-      }else if(parentSearch){
-        const debouncedSearch = debounce(() => {
-          FilterParent();
-        }, 300);
-        debouncedSearch();
+  } = useContext(AuthContext)!;
 
-        return () => {
-          debouncedSearch.cancel();
-        };
-        
-      }
-     
-    }, [parentSearch])
+  useEffect(() => {
+    if (!parentSearch) {
+      ParentFunction()
+    } else if (parentSearch) {
+      const debouncedSearch = debounce(() => {
+        FilterParent();
+      }, 300);
+      debouncedSearch();
+
+      return () => {
+        debouncedSearch.cancel();
+      };
+
+    }
+
+  }, [parentSearch])
 
   console.log(parentSearch)
   const itemsPerPage = 10;
@@ -84,7 +84,7 @@ const AllParents = () => {
     }
   }
 
-  
+
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
@@ -94,12 +94,12 @@ const AllParents = () => {
   const currentItems = parentData.slice(startIndex, startIndex + itemsPerPage);
 
 
-  const deleteFunction = async () =>{
+  const deleteFunction = async () => {
     setDisableButton(true)
     setLoader(true)
 
-    try{
-      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-parents/', {
+    try {
+      const response = await fetch('http://school.amanilightequity.com/api//delete-multiple-parents/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -111,7 +111,7 @@ const AllParents = () => {
 
       })
 
-      if(response.ok){
+      if (response.ok) {
         setLoader(false)
         setDisableButton(false)
         setParentData(parentData.filter(dat => dat.id !== selectedIDs))
@@ -121,13 +121,13 @@ const AllParents = () => {
         ParentFunction()
         showAlert()
         setIsSuccess(true)
-        
-          
-      }else {
+
+
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
 
         setLoader(false)
         setDisableButton(false)
@@ -136,7 +136,7 @@ const AllParents = () => {
         setIsSuccess(false)
 
       }
-    }catch{
+    } catch {
       setLoader(false)
       setDisableButton(false)
       setMessage("An error occurred. Please try again.")
@@ -145,7 +145,7 @@ const AllParents = () => {
     }
   }
 
- 
+
 
   useEffect(() => {
     if (showDeleteModal) {
@@ -162,31 +162,31 @@ const AllParents = () => {
       {showDeleteModal && (
         <section className={` ${showDeleteModal ? 'overlay-background' : ''}`}>
           <div className='container-lg'>
-              
+
             <div className=" row justify-content-center align-center2 height-90vh">
 
-                <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
-                  <div className="site-modal-conatiner">
-                    <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
-                      <div className="d-flex justify-content-center text-center">
-                        <div>
-                          <Image src="/img/icon/warning.png" alt="empty" width={100} height={100} />
-                          <p className='md-text mt-3'>Are you sure?</p>
-                          <p className="light-text">This action cannot be undone. {selectedIDs.length} selected {selectedIDs.length === 1 ? 'data entry' : 'data entries'} will be deleted.</p>
-                          <div className='pt-4'>
-                            <button className="site-delete-btn px-3 me-2 width-100 mb-4" onClick={deleteFunction} disabled={disableButton}>
-                              <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                              <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-delete-bin-line pe-2"></i> Delete</span>
-                            </button>
-                            <button onClick={handleCloseDeleteModal} className="site-btn site-cancel-btn px-3 width-100"><i className="ri-close-circle-line pe-2"></i>Cancel</button>
-                          </div>
+              <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
+                <div className="site-modal-conatiner">
+                  <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
+                    <div className="d-flex justify-content-center text-center">
+                      <div>
+                        <Image src="/img/icon/warning.png" alt="empty" width={100} height={100} />
+                        <p className='md-text mt-3'>Are you sure?</p>
+                        <p className="light-text">This action cannot be undone. {selectedIDs.length} selected {selectedIDs.length === 1 ? 'data entry' : 'data entries'} will be deleted.</p>
+                        <div className='pt-4'>
+                          <button className="site-delete-btn px-3 me-2 width-100 mb-4" onClick={deleteFunction} disabled={disableButton}>
+                            <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                            <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-delete-bin-line pe-2"></i> Delete</span>
+                          </button>
+                          <button onClick={handleCloseDeleteModal} className="site-btn site-cancel-btn px-3 width-100"><i className="ri-close-circle-line pe-2"></i>Cancel</button>
                         </div>
                       </div>
-                    
                     </div>
+
                   </div>
                 </div>
-            
+              </div>
+
 
             </div>
 
@@ -198,7 +198,7 @@ const AllParents = () => {
           <div>
             <p className="md-text">Parents</p>
             <p className="light-text pb-3">Total of {parentCount} parents avaliable</p>
-         </div>
+          </div>
 
           <div className='d-flex mb-4'>
             <Link href='/admin/add-parent' className="site-btn px-3 Link"><i className="ri-user-add-line pe-2"></i> Add  Parent</Link>
@@ -209,7 +209,7 @@ const AllParents = () => {
 
           <div>
             <div className="d-flex align-items-center">
-              <input type="text" className="f site-search-input" placeholder="Search" value={parentSearch} onChange={(e) => setParentSearch(e.target.value)}/>
+              <input type="text" className="f site-search-input" placeholder="Search" value={parentSearch} onChange={(e) => setParentSearch(e.target.value)} />
               <button className="site-btn px-3 ms-2"><i className="ri-search-line"></i></button>
             </div>
           </div>
@@ -233,12 +233,12 @@ const AllParents = () => {
               {currentItems.length > 0 ? (
                 <div>
                   {selectedIDs.length > 0 ? (
-                          <div className='pb-2'>
-                            <button onClick={handleShowDeleteModal}  className='site-delete-btn px-3'><i className="ri-delete-bin-line me-2"></i>Delete</button>
-                          </div>
-                    ): (
-                      <div></div>
-                    )
+                    <div className='pb-2'>
+                      <button onClick={handleShowDeleteModal} className='site-delete-btn px-3'><i className="ri-delete-bin-line me-2"></i>Delete</button>
+                    </div>
+                  ) : (
+                    <div></div>
+                  )
                   }
                   <div className='site-boxes light-text site-border border-radius-5px dahboard-table non-wrap-text scroll-bar'>
                     <table className='overflow-auto'>
@@ -246,11 +246,11 @@ const AllParents = () => {
                         <tr>
                           <th className='py-2'>
                             <label className="custom-checkbox cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={selectedIDs.length === parentData.length && parentData.length > 0}
-                              onChange={handleSelectAll}
-                            />
+                              <input
+                                type="checkbox"
+                                checked={selectedIDs.length === parentData.length && parentData.length > 0}
+                                onChange={handleSelectAll}
+                              />
                               <span className="checkmark"></span>
                             </label>
                           </th>
@@ -268,14 +268,14 @@ const AllParents = () => {
                           currentItems.map((data) => (
                             <tr key={data.id}>
                               <td className='py-3'>
-                                  <label className="custom-checkbox cursor-pointer">
-                                    <input
-                                      type="checkbox"
-                                      checked={selectedIDs.includes(data.id)}
-                                      onChange={() => handleCheckboxChange(data.id)}
-                                    />
-                                    <span className="checkmark"></span>
-                                  </label>
+                                <label className="custom-checkbox cursor-pointer">
+                                  <input
+                                    type="checkbox"
+                                    checked={selectedIDs.includes(data.id)}
+                                    onChange={() => handleCheckboxChange(data.id)}
+                                  />
+                                  <span className="checkmark"></span>
+                                </label>
                               </td>
                               <td className='py-3'>
                                 <div className="d-flex align-center">
@@ -310,29 +310,29 @@ const AllParents = () => {
                   </div>
 
                   {parentData.length > 10 && (
-                      <div className="col-12 mb-4 mt-3">
-                        <Stack spacing={2} alignItems="end">
-                          <Pagination
-                            count={Math.ceil(parentData.length / itemsPerPage)}
-                            page={page}
-                            onChange={handleChange}
-                            sx={{
-                              '& .MuiPaginationItem-root': {
-                                color: '#737b7d', // color of all numbers
-                              },
-                              '& .MuiPaginationItem-root.Mui-selected': {
-                                backgroundColor: '#783ebc', // Your custom color
-                                color: '#fff',
-                              },
-                            }}
-                          />
-                        </Stack>
-                      </div>
-                    )}
+                    <div className="col-12 mb-4 mt-3">
+                      <Stack spacing={2} alignItems="end">
+                        <Pagination
+                          count={Math.ceil(parentData.length / itemsPerPage)}
+                          page={page}
+                          onChange={handleChange}
+                          sx={{
+                            '& .MuiPaginationItem-root': {
+                              color: '#737b7d', // color of all numbers
+                            },
+                            '& .MuiPaginationItem-root.Mui-selected': {
+                              backgroundColor: '#783ebc', // Your custom color
+                              color: '#fff',
+                            },
+                          }}
+                        />
+                      </Stack>
+                    </div>
+                  )}
                 </div>
 
-              
-              ): (
+
+              ) : (
                 <div className="col-12 ">
                   <div className='site-boxes text-center pb-5 d-flex justify-content-center align-items-center  mt-5 pt-5'>
                     <div>
@@ -349,7 +349,7 @@ const AllParents = () => {
           )}
 
 
-          
+
         </div>
       </div>
     </div>

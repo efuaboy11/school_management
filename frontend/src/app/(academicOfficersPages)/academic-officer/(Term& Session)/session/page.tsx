@@ -19,51 +19,51 @@ const SessionPage = () => {
 
     sessionSearch,
     setSessionSearch,
-    SessionFunction, 
+    SessionFunction,
     FilterSession,
 
   } = useContext(AllDataContext)!;
 
-    const {
-      authTokens,
-      formatName,
-      loader,
-      setLoader,
-      disableButton,
-      setDisableButton,
+  const {
+    authTokens,
+    formatName,
+    loader,
+    setLoader,
+    disableButton,
+    setDisableButton,
 
-      setMessage,
-      showAlert,
-      setIsSuccess,
-  
-    } = useContext(AuthContext)!;
+    setMessage,
+    showAlert,
+    setIsSuccess,
 
-    useEffect(() =>{
-      if(!sessionSearch){
-        SessionFunction()
-      }else if(sessionSearch){
-        const debouncedSearch = debounce(() => {
-          FilterSession();
-        }, 300);
-        debouncedSearch();
+  } = useContext(AuthContext)!;
 
-        return () => {
-          debouncedSearch.cancel();
-        };
-        
-      }
-     
-    }, [sessionSearch])
+  useEffect(() => {
+    if (!sessionSearch) {
+      SessionFunction()
+    } else if (sessionSearch) {
+      const debouncedSearch = debounce(() => {
+        FilterSession();
+      }, 300);
+      debouncedSearch();
+
+      return () => {
+        debouncedSearch.cancel();
+      };
+
+    }
+
+  }, [sessionSearch])
 
 
 
-  useEffect(() =>{
+  useEffect(() => {
     SessionFunction()
 
   }, [])
-  
-  
-  
+
+
+
 
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
@@ -94,7 +94,7 @@ const SessionPage = () => {
     }
   }
 
-  
+
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
@@ -104,12 +104,12 @@ const SessionPage = () => {
   const currentItems = sessionData.slice(startIndex, startIndex + itemsPerPage);
 
 
-  const deleteFunction = async () =>{
+  const deleteFunction = async () => {
     setDisableButton(true)
     setLoader(true)
 
-    try{
-      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-session/', {
+    try {
+      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-session/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -121,7 +121,7 @@ const SessionPage = () => {
 
       })
 
-      if(response.ok){
+      if (response.ok) {
         setLoader(false)
         setDisableButton(false)
         setSessionData(sessionData.filter(dat => dat.id !== selectedIDs))
@@ -131,13 +131,13 @@ const SessionPage = () => {
         SessionFunction()
         showAlert()
         setIsSuccess(true)
-        
-          
-      }else {
+
+
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
 
         setLoader(false)
         setDisableButton(false)
@@ -146,7 +146,7 @@ const SessionPage = () => {
         setIsSuccess(false)
 
       }
-    }catch(error){
+    } catch (error) {
       setLoader(false)
       setDisableButton(false)
       setMessage("An error occurred. Please try again.")
@@ -156,7 +156,7 @@ const SessionPage = () => {
     }
   }
 
- 
+
 
   useEffect(() => {
     if (showDeleteModal) {
@@ -173,31 +173,31 @@ const SessionPage = () => {
       {showDeleteModal && (
         <section className={` ${showDeleteModal ? 'overlay-background' : ''}`}>
           <div className='container-lg'>
-              
+
             <div className=" row justify-content-center align-center2 height-90vh">
 
-                <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
-                  <div className="site-modal-conatiner">
-                    <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
-                      <div className="d-flex justify-content-center text-center">
-                        <div>
-                          <Image src="/img/icon/warning.png" alt="empty" width={100} height={100} />
-                          <p className='md-text mt-3'>Are you sure?</p>
-                          <p className="light-text">This action cannot be undone. {selectedIDs.length} selected {selectedIDs.length === 1 ? 'data entry' : 'data entries'} will be deleted.</p>
-                          <div className='pt-4'>
-                            <button className="site-delete-btn px-3 me-2 width-100 mb-4" onClick={deleteFunction} disabled={disableButton}>
-                              <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                              <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-delete-bin-line pe-2"></i> Delete</span>
-                            </button>
-                            <button onClick={handleCloseDeleteModal} className="site-btn site-cancel-btn px-3 width-100"><i className="ri-close-circle-line pe-2"></i>Cancel</button>
-                          </div>
+              <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
+                <div className="site-modal-conatiner">
+                  <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
+                    <div className="d-flex justify-content-center text-center">
+                      <div>
+                        <Image src="/img/icon/warning.png" alt="empty" width={100} height={100} />
+                        <p className='md-text mt-3'>Are you sure?</p>
+                        <p className="light-text">This action cannot be undone. {selectedIDs.length} selected {selectedIDs.length === 1 ? 'data entry' : 'data entries'} will be deleted.</p>
+                        <div className='pt-4'>
+                          <button className="site-delete-btn px-3 me-2 width-100 mb-4" onClick={deleteFunction} disabled={disableButton}>
+                            <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                            <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-delete-bin-line pe-2"></i> Delete</span>
+                          </button>
+                          <button onClick={handleCloseDeleteModal} className="site-btn site-cancel-btn px-3 width-100"><i className="ri-close-circle-line pe-2"></i>Cancel</button>
                         </div>
                       </div>
-                    
                     </div>
+
                   </div>
                 </div>
-            
+              </div>
+
 
             </div>
 
@@ -209,7 +209,7 @@ const SessionPage = () => {
           <div>
             <p className="md-text">Session</p>
             <p className="light-text pb-3">Total of {sessionCount} session avaliable</p>
-         </div>
+          </div>
 
           <div className='d-flex mb-4'>
             <Link href='/academic-officer/session/add' className="site-btn px-3 Link"><i className="ri-send-plane-fill pe-2"></i> Add session</Link>
@@ -220,7 +220,7 @@ const SessionPage = () => {
 
           <div>
             <div className="d-flex align-items-center">
-              <input type="text" className="site-search-input" placeholder="Search" value={sessionSearch} onChange={(e) => setSessionSearch(e.target.value)}/>
+              <input type="text" className="site-search-input" placeholder="Search" value={sessionSearch} onChange={(e) => setSessionSearch(e.target.value)} />
               <button className="site-btn px-3 ms-2"><i className="ri-search-line"></i></button>
             </div>
           </div>
@@ -244,12 +244,12 @@ const SessionPage = () => {
               {currentItems.length > 0 ? (
                 <div>
                   {selectedIDs.length > 0 ? (
-                          <div className='pb-2'>
-                            <button onClick={handleShowDeleteModal}  className='site-delete-btn px-3'><i className="ri-delete-bin-line me-2"></i>Delete</button>
-                          </div>
-                    ): (
-                      <div></div>
-                    )
+                    <div className='pb-2'>
+                      <button onClick={handleShowDeleteModal} className='site-delete-btn px-3'><i className="ri-delete-bin-line me-2"></i>Delete</button>
+                    </div>
+                  ) : (
+                    <div></div>
+                  )
                   }
                   <div className='site-boxes  site-border border-radius-5px dahboard-table non-wrap-text scroll-bar'>
                     <table className='overflow-auto light-text'>
@@ -257,11 +257,11 @@ const SessionPage = () => {
                         <tr>
                           <th className='py-2'>
                             <label className="custom-checkbox cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={selectedIDs.length === sessionData.length && sessionData.length > 0}
-                              onChange={handleSelectAll}
-                            />
+                              <input
+                                type="checkbox"
+                                checked={selectedIDs.length === sessionData.length && sessionData.length > 0}
+                                onChange={handleSelectAll}
+                              />
                               <span className="checkmark"></span>
                             </label>
                           </th>
@@ -275,14 +275,14 @@ const SessionPage = () => {
                           currentItems.map((data) => (
                             <tr key={data.id}>
                               <td className='py-3'>
-                                  <label className="custom-checkbox cursor-pointer">
-                                    <input
-                                      type="checkbox"
-                                      checked={selectedIDs.includes(data.id)}
-                                      onChange={() => handleCheckboxChange(data.id)}
-                                    />
-                                    <span className="checkmark"></span>
-                                  </label>
+                                <label className="custom-checkbox cursor-pointer">
+                                  <input
+                                    type="checkbox"
+                                    checked={selectedIDs.includes(data.id)}
+                                    onChange={() => handleCheckboxChange(data.id)}
+                                  />
+                                  <span className="checkmark"></span>
+                                </label>
                               </td>
                               <td className='py-3'>
                                 {formatName(data.name)}
@@ -291,9 +291,9 @@ const SessionPage = () => {
                                 <div className="d-flex justify-content-end">
                                   <Link href={`/academic-officer/session/individual/${data.id}`} className="Link site-border box-50px d-flex  align-center justify-content-center border-radius-5px cursor-pointer">
                                     <i className="ri-eye-line"></i>
-                                </Link>
+                                  </Link>
                                 </div>
-                     
+
                               </td>
                             </tr>
 
@@ -313,29 +313,29 @@ const SessionPage = () => {
                   </div>
 
                   {sessionData.length > 10 && (
-                      <div className="col-12 mb-4 mt-3">
-                        <Stack spacing={2} alignItems="end">
-                          <Pagination
-                            count={Math.ceil(sessionData.length / itemsPerPage)}
-                            page={page}
-                            onChange={handleChange}
-                            sx={{
-                              '& .MuiPaginationItem-root': {
-                                color: '#737b7d', // color of all numbers
-                              },
-                              '& .MuiPaginationItem-root.Mui-selected': {
-                                backgroundColor: '#783ebc', // Your custom color
-                                color: '#fff',
-                              },
-                            }}
-                          />
-                        </Stack>
-                      </div>
-                    )}
+                    <div className="col-12 mb-4 mt-3">
+                      <Stack spacing={2} alignItems="end">
+                        <Pagination
+                          count={Math.ceil(sessionData.length / itemsPerPage)}
+                          page={page}
+                          onChange={handleChange}
+                          sx={{
+                            '& .MuiPaginationItem-root': {
+                              color: '#737b7d', // color of all numbers
+                            },
+                            '& .MuiPaginationItem-root.Mui-selected': {
+                              backgroundColor: '#783ebc', // Your custom color
+                              color: '#fff',
+                            },
+                          }}
+                        />
+                      </Stack>
+                    </div>
+                  )}
                 </div>
 
-              
-              ): (
+
+              ) : (
                 <div className="col-12 ">
                   <div className='site-boxes text-center pb-5 d-flex justify-content-center align-items-center  mt-5 pt-5'>
                     <div>
@@ -352,7 +352,7 @@ const SessionPage = () => {
           )}
 
 
-          
+
         </div>
       </div>
     </div>

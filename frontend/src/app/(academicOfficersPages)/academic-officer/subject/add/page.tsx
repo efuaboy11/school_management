@@ -1,7 +1,7 @@
 "use client"
 
 import AuthContext from '@/context/AuthContext'
-import React, { useContext,  useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { useForm } from 'react-hook-form'
 
 const CreateBills = () => {
@@ -9,37 +9,37 @@ const CreateBills = () => {
   const [section, setSection] = useState('')
   const [description, setDescription] = useState('')
 
-  const { 
-  
+  const {
+
     authTokens,
-  
+
     loader,
     setLoader,
     disableButton,
     setDisableButton,
-  
+
     setMessage,
     showAlert,
     setIsSuccess,
-  
-    
-  
-  
+
+
+
+
   } = useContext(AuthContext)!
 
 
   const {
     register,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
   } = useForm<any>();
 
-  const onSubmit = (data: FormData, e:any) => {
+  const onSubmit = (data: FormData, e: any) => {
     CreatBill(e)
   }
 
 
-  const CreatBill = async(e:any) =>{
+  const CreatBill = async (e: any) => {
     e.preventDefault()
     setLoader(true)
     setDisableButton(true)
@@ -50,17 +50,17 @@ const CreateBills = () => {
     formData.append('description', description)
 
 
-    try{
-      const response = await fetch(`http://127.0.0.1:8000/api/subjects/`, {
+    try {
+      const response = await fetch(`http://school.amanilightequity.com/api/subjects/`, {
         method: 'POST',
         body: formData,
-        headers:{
+        headers: {
           Authorization: `Bearer ${authTokens?.access}`
         }
       })
 
 
-      if(response.ok){
+      if (response.ok) {
         showAlert()
         setMessage('Subject created')
         setIsSuccess(true)
@@ -72,11 +72,11 @@ const CreateBills = () => {
 
 
 
-      }else{
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setDisableButton(false)
         setIsSuccess(false)
@@ -84,8 +84,8 @@ const CreateBills = () => {
         showAlert()
       }
 
-      
-    }catch(error){
+
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred.');
@@ -93,11 +93,11 @@ const CreateBills = () => {
       setIsSuccess(false)
       setLoader(false)
 
-    }  
+    }
   }
 
 
-  
+
 
 
 
@@ -113,19 +113,19 @@ const CreateBills = () => {
               </div>
 
               <div className="p-3">
-                <form  onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="row g-3">
 
                     <div className="col-md-6">
                       <label htmlFor="phoneNumber" className="form-label">Subject Name <span className="text-danger">*</span></label>
-                      <input   className={`site-input ${errors.subjectName ? 'error-input' : ''}`} {...register('subjectName', {required: true})}  value={subjectName}  onChange={(e) => setSubjectName(e.target.value)}/>   
+                      <input className={`site-input ${errors.subjectName ? 'error-input' : ''}`} {...register('subjectName', { required: true })} value={subjectName} onChange={(e) => setSubjectName(e.target.value)} />
                       {errors.subjectName && <p className="error-text">This field is required</p>}
                     </div>
 
 
                     <div className="col-md-6">
                       <label htmlFor="email" className="form-label">Section</label>
-                      <select  className={`site-input ${errors.section ? 'error-input' : ''}`} {...register('section', {required: true})}  value={section}  onChange={(e) => setSection(e.target.value)}>
+                      <select className={`site-input ${errors.section ? 'error-input' : ''}`} {...register('section', { required: true })} value={section} onChange={(e) => setSection(e.target.value)}>
                         <option value="">Select</option>
                         <option value="general">General</option>
                         <option value="pre_school">Pre School</option>
@@ -136,21 +136,21 @@ const CreateBills = () => {
                       </select>
                       {errors.section && <p className="error-text">This field is required</p>}
                     </div>
-          
+
 
                     <div className="col-12">
                       <label htmlFor="" className='form-label'>Description</label>
-                      <textarea rows={6} className={`site-input ${errors.description ? 'error-input' : ''}`} {...register('description')}  value={description}  onChange={(e) => setDescription(e.target.value)}  placeholder='Description' />
+                      <textarea rows={6} className={`site-input ${errors.description ? 'error-input' : ''}`} {...register('description')} value={description} onChange={(e) => setDescription(e.target.value)} placeholder='Description' />
                     </div>
 
                     <div className="col-12">
                       <div className='mb-3'>
                         <button disabled={disableButton} type="submit" className={`Button site-btn px-3`}>
-                          <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                          <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
+                          <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                          <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
                         </button>
                       </div>
-                    
+
                     </div>
 
                   </div>

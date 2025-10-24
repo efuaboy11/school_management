@@ -68,7 +68,7 @@ const AddParent = () => {
     }
   };
 
-  const { getRootProps, getInputProps} = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop: handleImgFile,
     accept: {
       'image/*': []
@@ -100,7 +100,7 @@ const AddParent = () => {
 
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/parents/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/parents/`, {
         method: 'POST',
         body: formData,
         headers: {

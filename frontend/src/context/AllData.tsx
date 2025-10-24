@@ -1,12 +1,12 @@
 "use client"
 
-import {useCallback, createContext, useContext, useEffect, useState } from "react";
+import { useCallback, createContext, useContext, useEffect, useState } from "react";
 import { debounce } from "lodash";
 import AuthContext from "./AuthContext";
 import { ReactNode } from "react";
 import { set } from "react-hook-form";
 
-interface AllDataContextTye{
+interface AllDataContextTye {
 
   sectionLabels: Record<string, string>;
 
@@ -21,10 +21,10 @@ interface AllDataContextTye{
   setSessionQuery: (data: string) => void
   feeTypeQuery: string
   setFeeTypeQuery: (data: string) => void
-  productCategoriesQuery : string
-  setProductCategoriesQuery : (data: string) => void
-  statusQuery : string
-  setStatusQuery : (data: string) => void
+  productCategoriesQuery: string
+  setProductCategoriesQuery: (data: string) => void
+  statusQuery: string
+  setStatusQuery: (data: string) => void
   subjectQuery: string
   setSubjectQuery: (data: string) => void
 
@@ -34,7 +34,7 @@ interface AllDataContextTye{
   recentStudent: any[]
   setRecentStudent: (student: any[]) => void
   studentData: any[]
-  setStudentData:(data: any[]) => void
+  setStudentData: (data: any[]) => void
   studentLoader: boolean
   setStudentLoader: (loader: boolean) => void
   studentSearch: string
@@ -48,7 +48,7 @@ interface AllDataContextTye{
   recentTeacher: any[]
   setRecentTeacher: (data: any[]) => void
   teacherData: any[]
-  setTeacherData:(data: any[]) => void
+  setTeacherData: (data: any[]) => void
   teacherLoader: boolean
   setTeacherLoader: (loader: boolean) => void
   teacherSearch: string
@@ -61,7 +61,7 @@ interface AllDataContextTye{
   recentParent: any[]
   setRecentParent: (data: any[]) => void
   parentData: any[]
-  setParentData:(data: any[]) => void
+  setParentData: (data: any[]) => void
   parentLoader: boolean
   setParentLoader: (loader: boolean) => void
   parentSearch: string
@@ -74,7 +74,7 @@ interface AllDataContextTye{
   recentStaff: any[]
   setRecentStaff: (data: any[]) => void
   staffData: any[]
-  setStaffData:(data: any[]) => void
+  setStaffData: (data: any[]) => void
   staffLoader: boolean
   setStaffLoader: (loader: boolean) => void
   staffSearch: string
@@ -85,7 +85,7 @@ interface AllDataContextTye{
   hrCount: number
   setHrCount: (count: number) => void
   hrData: any[]
-  setHrData:(data: any[]) => void
+  setHrData: (data: any[]) => void
   hrLoader: boolean
   setHrLoader: (loader: boolean) => void
   hrSearch: string
@@ -95,7 +95,7 @@ interface AllDataContextTye{
   bursaryCount: number
   setBursaryCount: (count: number) => void
   bursaryData: any[]
-  setBursaryData:(data: any[]) => void
+  setBursaryData: (data: any[]) => void
   bursaryLoader: boolean
   setBursaryLoader: (loader: boolean) => void
   bursarySearch: string
@@ -105,7 +105,7 @@ interface AllDataContextTye{
   storeKeeperCount: number
   setStoreKeeperCount: (count: number) => void
   storeKeeperData: any[]
-  setStoreKeeperData:(data: any[]) => void
+  setStoreKeeperData: (data: any[]) => void
   storeKeeperLoader: boolean
   setStoreKeeperLoader: (loader: boolean) => void
   storeKeeperSearch: string
@@ -115,17 +115,17 @@ interface AllDataContextTye{
   resultOfficerCount: number
   setResultOfficerCount: (count: number) => void
   resultOfficerData: any[]
-  setResultOfficerData:(data: any[]) => void
+  setResultOfficerData: (data: any[]) => void
   resultOfficerLoader: boolean
   setResultOfficerLoader: (loader: boolean) => void
   resultOfficerSearch: string
   setResultOfficerSearch: (loader: string) => void
- 
+
   // academic officer
   academicOfficerCount: number
   setAcademicOfficerCount: (count: number) => void
   academicOfficerData: any[]
-  setAcademicOfficerData:(data: any[]) => void
+  setAcademicOfficerData: (data: any[]) => void
   academicOfficerLoader: boolean
   setAcademicOfficerLoader: (loader: boolean) => void
   academicOfficerSearch: string
@@ -136,7 +136,7 @@ interface AllDataContextTye{
   otherStaffCount: number
   setOtherStaffCount: (count: number) => void
   otherStaffData: any[]
-  setOtherStaffData:(data: any[]) => void
+  setOtherStaffData: (data: any[]) => void
   otherStaffLoader: boolean
   setOtherStaffLoader: (loader: boolean) => void
   otherStaffSearch: string
@@ -148,7 +148,7 @@ interface AllDataContextTye{
   recentEmail: any[]
   setRecentEmail: (data: any[]) => void
   emailData: any[]
-  setEmailData:(data: any[]) => void
+  setEmailData: (data: any[]) => void
   emailLoader: boolean
   setEmailLoader: (loader: boolean) => void
   emailSearch: string
@@ -161,18 +161,18 @@ interface AllDataContextTye{
   recentSubject: any[]
   setRecentSubject: (data: any[]) => void
   subjectData: any[]
-  setSubjectData:(data: any[]) => void
+  setSubjectData: (data: any[]) => void
   subjectLoader: boolean
   setSubjectLoader: (loader: boolean) => void
   subjectSearch: string
   setSubjectSearch: (loader: string) => void
-  subjectGroupData : any[]
+  subjectGroupData: any[]
   setSubjectGroupData: (data: any[]) => void
 
   termCount: number
   setTermCount: (count: number) => void
   termData: any[]
-  setTermData:(data: any[]) => void
+  setTermData: (data: any[]) => void
   termLoader: boolean
   setTermLoader: (loader: boolean) => void
   termSearch: string
@@ -184,7 +184,7 @@ interface AllDataContextTye{
   currentsession: any
   setCurentSession: (data: any) => void
   sessionData: any[]
-  setSessionData:(data: any[]) => void
+  setSessionData: (data: any[]) => void
   sessionLoader: boolean
   setSessionLoader: (loader: boolean) => void
   sessionSearch: string
@@ -196,7 +196,7 @@ interface AllDataContextTye{
   recentStudentClass: any[]
   setRecentStudentClass: (data: any[]) => void
   studentClassData: any[]
-  setStudentClassData:(data: any[]) => void
+  setStudentClassData: (data: any[]) => void
   studentClassLoader: boolean
   setStudentClassLoader: (loader: boolean) => void
   studentClassSearch: string
@@ -209,7 +209,7 @@ interface AllDataContextTye{
   recentAdminHrNotification: any[]
   setRecentAdminHrNotification: (data: any[]) => void
   adminHrNotificationData: any[]
-  setAdminHrNotificationData:(data: any[]) => void
+  setAdminHrNotificationData: (data: any[]) => void
   adminHrNotificationLoader: boolean
   setAdminHrNotificationLoader: (loader: boolean) => void
   adminHrNotificationSearch: string
@@ -221,7 +221,7 @@ interface AllDataContextTye{
   recentSchoolNotification: any[]
   setRecentSchoolNotification: (data: any[]) => void
   schoolNotificationData: any[]
-  setSchoolNotificationData:(data: any[]) => void
+  setSchoolNotificationData: (data: any[]) => void
   schoolNotificationLoader: boolean
   setSchoolNotificationLoader: (loader: boolean) => void
   schoolNotificationSearch: string
@@ -233,7 +233,7 @@ interface AllDataContextTye{
   recentClassNotification: any[]
   setRecentClassNotification: (data: any[]) => void
   classNotificationData: any[]
-  setClassNotificationData:(data: any[]) => void
+  setClassNotificationData: (data: any[]) => void
   classNotificationLoader: boolean
   setClassNotificationLoader: (loader: boolean) => void
   classNotificationSearch: string
@@ -246,7 +246,7 @@ interface AllDataContextTye{
   recentStaffNotification: any[]
   setRecentStaffNotification: (data: any[]) => void
   staffNotificationData: any[]
-  setStaffNotificationData:(data: any[]) => void
+  setStaffNotificationData: (data: any[]) => void
   staffNotificationLoader: boolean
   setStaffNotificationLoader: (loader: boolean) => void
   staffNotificationSearch: string
@@ -258,7 +258,7 @@ interface AllDataContextTye{
   recentSchoolEvent: any[]
   setRecentSchoolEvent: (data: any[]) => void
   schoolEventData: any[]
-  setSchoolEventData:(data: any[]) => void
+  setSchoolEventData: (data: any[]) => void
   schoolEventLoader: boolean
   setSchoolEventLoader: (loader: boolean) => void
   schoolEventSearch: string
@@ -271,7 +271,7 @@ interface AllDataContextTye{
   recentAssignment: any[]
   setRecentAssignment: (data: any[]) => void
   assignmentData: any[]
-  setAssignmentData:(data: any[]) => void
+  setAssignmentData: (data: any[]) => void
   assignmentLoader: boolean
   setAssignmentLoader: (loader: boolean) => void
   assignmentSearch: string
@@ -283,7 +283,7 @@ interface AllDataContextTye{
   recentAssignmentSubmission: any[]
   setRecentAssignmentSubmission: (data: any[]) => void
   assignmentSubmissionData: any[]
-  setAssignmentSubmissionData:(data: any[]) => void
+  setAssignmentSubmissionData: (data: any[]) => void
   assignmentSubmissionLoader: boolean
   setAssignmentSubmissionLoader: (loader: boolean) => void
   assignmentSubmissionSearch: string
@@ -295,7 +295,7 @@ interface AllDataContextTye{
   recentClassTimetable: any[]
   setRecentClassTimetable: (data: any[]) => void
   classTimetableData: any[]
-  setClassTimetableData:(data: any[]) => void
+  setClassTimetableData: (data: any[]) => void
   classTimetableLoader: boolean
   setClassTimetableLoader: (loader: boolean) => void
   classTimetableSearch: string
@@ -305,7 +305,7 @@ interface AllDataContextTye{
   schemeOfWorkCount: number
   setSchemeOfWorkCount: (count: number) => void
   schemeOfWorkData: any[]
-  setSchemeOfWorkData:(data: any[]) => void
+  setSchemeOfWorkData: (data: any[]) => void
   schemeOfWorkLoader: boolean
   setSchemeOfWorkLoader: (loader: boolean) => void
   schemeOfWorkSearch: string
@@ -337,18 +337,18 @@ interface AllDataContextTye{
   paymentMethodCount: number
   setPaymentMethodCount: (count: number) => void
   paymentMethodData: any[]
-  setPaymentMethodData:(data: any[]) => void
+  setPaymentMethodData: (data: any[]) => void
   paymentMethodLoader: boolean
   setPaymentMethodLoader: (loader: boolean) => void
   paymentMethodSearch: string
   setPaymentMethodSearch: (loader: string) => void
- 
+
 
   // school Fees
   schoolFeesCount: number
   setSchoolFeesCount: (count: number) => void
   schoolFeesData: any[]
-  setSchoolFeesData:(data: any[]) => void
+  setSchoolFeesData: (data: any[]) => void
   schoolFeesLoader: boolean
   setSchoolFeesLoader: (loader: boolean) => void
   schoolFeesSearch: string
@@ -357,12 +357,12 @@ interface AllDataContextTye{
   // all school fees payment
   allSchoolFeesPaymentCount: number
   setAllSchoolFeesPaymentCount: (count: number) => void
-  totalAllSchoolFeesPayment : number
-  setTotalAllSchoolFeesPayment : (total: number) => void
+  totalAllSchoolFeesPayment: number
+  setTotalAllSchoolFeesPayment: (total: number) => void
   recentAllSchoolFeesPayment: any[]
   setRecentAllSchoolFeesPayment: (data: any[]) => void
   allSchoolFeesPaymentData: any[]
-  setAllSchoolFeesPaymentData:(data: any[]) => void
+  setAllSchoolFeesPaymentData: (data: any[]) => void
   allSchoolFeesPaymentLoader: boolean
   setAllSchoolFeesPaymentLoader: (loader: boolean) => void
   allSchoolFeesPaymentSearch: string
@@ -372,12 +372,12 @@ interface AllDataContextTye{
   // pending school fees payment
   pendingSchoolFeesPaymentCount: number
   setPendingSchoolFeesPaymentCount: (count: number) => void
-  totalPendingSchoolFeesPayment : number
-  setTotalPendingSchoolFeesPayment : (total: number) => void
+  totalPendingSchoolFeesPayment: number
+  setTotalPendingSchoolFeesPayment: (total: number) => void
   recentPendingSchoolFeesPayment: any[]
   setRecentPendingSchoolFeesPayment: (data: any[]) => void
   pendingSchoolFeesPaymentData: any[]
-  setPendingSchoolFeesPaymentData:(data: any[]) => void
+  setPendingSchoolFeesPaymentData: (data: any[]) => void
   pendingSchoolFeesPaymentLoader: boolean
   setPendingSchoolFeesPaymentLoader: (loader: boolean) => void
   pendingSchoolFeesPaymentSearch: string
@@ -391,7 +391,7 @@ interface AllDataContextTye{
   recentSucessSchoolFeesPayment: any[]
   setRecentSucessSchoolFeesPayment: (data: any[]) => void
   sucessSchoolFeesPaymentData: any[]
-  setSucessSchoolFeesPaymentData:(data: any[]) => void
+  setSucessSchoolFeesPaymentData: (data: any[]) => void
   sucessSchoolFeesPaymentLoader: boolean
   setSucessSchoolFeesPaymentLoader: (loader: boolean) => void
   sucessSchoolFeesPaymentSearch: string
@@ -401,11 +401,11 @@ interface AllDataContextTye{
   declinedSchoolFeesPaymentCount: number
   setDeclinedSchoolFeesPaymentCount: (count: number) => void
   totalDeclinedSchoolFeesPayment: number
-  setTotalDeclinedSchoolFeesPayment : (total: number) => void
+  setTotalDeclinedSchoolFeesPayment: (total: number) => void
   recentDeclinedSchoolFeesPayment: any[]
   setRecentDeclinedSchoolFeesPayment: (data: any[]) => void
   declinedSchoolFeesPaymentData: any[]
-  setDeclinedSchoolFeesPaymentData:(data: any[]) => void
+  setDeclinedSchoolFeesPaymentData: (data: any[]) => void
   declinedSchoolFeesPaymentLoader: boolean
   setDeclinedSchoolFeesPaymentLoader: (loader: boolean) => void
   declinedSchoolFeesPaymentSearch: string
@@ -418,7 +418,7 @@ interface AllDataContextTye{
   recentBills: any[]
   setRecentBills: (data: any[]) => void
   billsData: any[]
-  setBillsData:(data: any[]) => void
+  setBillsData: (data: any[]) => void
   billsLoader: boolean
   setBillsLoader: (loader: boolean) => void
   billsSearch: string
@@ -432,7 +432,7 @@ interface AllDataContextTye{
   recentBillsPayment: any[]
   setRecentBillsPayment: (data: any[]) => void
   billsPaymentData: any[]
-  setBillsPaymentData:(data: any[]) => void
+  setBillsPaymentData: (data: any[]) => void
   billsPaymentLoader: boolean
   setBillsPaymentLoader: (loader: boolean) => void
   billsPaymentSearch: string
@@ -443,11 +443,11 @@ interface AllDataContextTye{
   pendingBillsPaymentCount: number
   setPendingBillsPaymentCount: (count: number) => void
   totalPendingBillsPayment: number
-  setTotalPendingBillsPayment : (total: number) => void
+  setTotalPendingBillsPayment: (total: number) => void
   recentPendingBillsPayment: any[]
   setRecentPendingBillsPayment: (data: any[]) => void
   pendingBillsPaymentData: any[]
-  setPendingBillsPaymentData:(data: any[]) => void
+  setPendingBillsPaymentData: (data: any[]) => void
   pendingBillsPaymentLoader: boolean
   setPendingBillsPaymentLoader: (loader: boolean) => void
   pendingBillsPaymentSearch: string
@@ -461,7 +461,7 @@ interface AllDataContextTye{
   recentSucessBillsPayment: any[]
   setRecentSucessBillsPayment: (data: any[]) => void
   sucessBillsPaymentData: any[]
-  setSucessBillsPaymentData:(data: any[]) => void
+  setSucessBillsPaymentData: (data: any[]) => void
   sucessBillsPaymentLoader: boolean
   setSucessBillsPaymentLoader: (loader: boolean) => void
   sucessBillsPaymentSearch: string
@@ -475,7 +475,7 @@ interface AllDataContextTye{
   recentDeclinedBillsPayment: any[]
   setRecentDeclinedBillsPayment: (data: any[]) => void
   declinedBillsPaymentData: any[]
-  setDeclinedBillsPaymentData:(data: any[]) => void
+  setDeclinedBillsPaymentData: (data: any[]) => void
   declinedBillsPaymentLoader: boolean
   setDeclinedBillsPaymentLoader: (loader: boolean) => void
   declinedBillsPaymentSearch: string
@@ -486,7 +486,7 @@ interface AllDataContextTye{
   bankAccountCount: number
   setBankAccountCount: (count: number) => void
   bankAccountData: any[]
-  setBankAccountData:(data: any[]) => void
+  setBankAccountData: (data: any[]) => void
   bankAccountLoader: boolean
   setBankAccountLoader: (loader: boolean) => void
   bankAccountSearch: string
@@ -497,7 +497,7 @@ interface AllDataContextTye{
   productCatergoriesCount: number
   setProductCatergoriesCount: (count: number) => void
   productCatergoriesData: any[]
-  setProductCatergoriesData:(data: any[]) => void
+  setProductCatergoriesData: (data: any[]) => void
   productCatergoriesLoader: boolean
   setProductCatergoriesLoader: (loader: boolean) => void
   productCatergoriesSearch: string
@@ -510,7 +510,7 @@ interface AllDataContextTye{
   recentProduct: any[]
   setRecentProduct: (data: any[]) => void
   productData: any[]
-  setProductData:(data: any[]) => void
+  setProductData: (data: any[]) => void
   productLoader: boolean
   setProductLoader: (loader: boolean) => void
   productSearch: string
@@ -522,7 +522,7 @@ interface AllDataContextTye{
   recentFavouriteProduct: any[]
   setRecentFavouriteProduct: (data: any[]) => void
   favouriteProductData: any[]
-  setFavouriteProductData:(data: any[]) => void
+  setFavouriteProductData: (data: any[]) => void
   favouriteProductLoader: boolean
   setFavouriteProductLoader: (loader: boolean) => void
   favouriteProductSearch: string
@@ -535,7 +535,7 @@ interface AllDataContextTye{
   recentOrderProduct: any[]
   setRecentOrderProduct: (data: any[]) => void
   orderProductData: any[]
-  setOrderProductData:(data: any[]) => void
+  setOrderProductData: (data: any[]) => void
   orderProductLoader: boolean
   setOrderProductLoader: (loader: boolean) => void
   orderProductSearch: string
@@ -625,19 +625,19 @@ interface AllDataContextTye{
 
   // Assignment 
   AssignmentFunction: () => Promise<void>;
-  FilterAssignment: () => Promise<void>; 
+  FilterAssignment: () => Promise<void>;
 
   // Assignment Submission
   AssignmentSubmissionFunction: () => Promise<void>;
-  FilterAssignmentSubmission: () => Promise<void>; 
+  FilterAssignmentSubmission: () => Promise<void>;
 
   // Class Timetable
   ClassTimetableFunction: () => Promise<void>;
-  FilterSchemeOFWork: () => Promise<void>; 
+  FilterSchemeOFWork: () => Promise<void>;
 
   // Scheme of work
   SchemeOFWorkFunction: () => Promise<void>;
-  FilterClassTimetable: () => Promise<void>; 
+  FilterClassTimetable: () => Promise<void>;
 
   // Scratch Card
   ScratchCardFunction: () => Promise<void>;
@@ -662,7 +662,7 @@ interface AllDataContextTye{
   //pending  School Fees Payment
   PendingSchoolFeesPaymentFunction: () => Promise<void>
   FilterPendingSchoolFeesPayment: () => Promise<void>
-  
+
   // success school Fees payment
   SucessSchoolFeesPaymentFunction: () => Promise<void>
   FilterSucessSchoolFeesPayment: () => Promise<void>
@@ -678,7 +678,7 @@ interface AllDataContextTye{
   // bill payment
   BillsPaymentFunction: () => Promise<void>
   FilterBillsPayment: () => Promise<void>
-  
+
 
   // pending Bills
   PendingBillsPaymentFunction: () => Promise<void>
@@ -711,7 +711,7 @@ interface AllDataContextTye{
   // order product
   OrderProductFunction: () => Promise<void>
   FilterOrderProduct: () => Promise<void>
-  
+
 
 
 }
@@ -720,8 +720,8 @@ interface AllDataContextTye{
 const AllDataContext = createContext<AllDataContextTye | undefined>(undefined)
 export default AllDataContext
 
-export const AllDataProvider = ({children}: {children:ReactNode}) =>{
-  const {authTokens} = useContext(AuthContext)!
+export const AllDataProvider = ({ children }: { children: ReactNode }) => {
+  const { authTokens } = useContext(AuthContext)!
 
 
   const sectionOrder = [
@@ -746,13 +746,13 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   const [studentQuery, setStudentQuery] = useState('')
   const [studentClassQuery, setStudentClassQuery] = useState('')
-  const [termQuery,setTermQuery] = useState('')
+  const [termQuery, setTermQuery] = useState('')
   const [sessionQuery, setSessionQuery] = useState('')
   const [feeTypeQuery, setFeeTypeQuery] = useState('')
   const [productCategoriesQuery, setProductCategoriesQuery] = useState('')
   const [statusQuery, setStatusQuery] = useState('')
   const [subjectQuery, setSubjectQuery] = useState('')
-  
+
   const [studentCount, setStudentCount] = useState(0)
   const [recentStudent, setRecentStudent] = useState<any[]>([])
   const [studentData, setStudentData] = useState<any[]>([])
@@ -778,7 +778,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   const [staffData, setStaffData] = useState<any>([])
   const [staffLoader, setStaffLoader] = useState(true)
   const [staffSearch, setStaffSearch] = useState('')
-  
+
 
   const [hrCount, setHrCount] = useState(0)
   const [hrData, setHrData] = useState<any>([])
@@ -855,7 +855,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   const [schoolNotificationData, setSchoolNotificationData] = useState<any>([])
   const [recentSchoolNotification, setRecentSchoolNotification] = useState<any>([])
   const [schoolNotificationLoader, setSchoolNotificationLoader] = useState(true)
-  const [schoolNotificationSearch, setSchoolNotificationSearch] =   useState('')
+  const [schoolNotificationSearch, setSchoolNotificationSearch] = useState('')
 
   const [classNotificationCount, setClassNotificationCount] = useState(0)
   const [classNotificationData, setClassNotificationData] = useState<any>([])
@@ -937,15 +937,15 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   const [pendingSchoolFeesPaymentData, setPendingSchoolFeesPaymentData] = useState<any>([])
   const [pendingSchoolFeesPaymentLoader, setPendingSchoolFeesPaymentLoader] = useState(true)
   const [pendingSchoolFeesPaymentSearch, setPendingSchoolFeesPaymentSearch] = useState('')
-  
+
 
   const [sucessSchoolFeesPaymentCount, setSucessSchoolFeesPaymentCount] = useState(0)
-  const [totalSucessSchoolFeesPayment,setTotalSucessSchoolFeesPayment] = useState(0)
+  const [totalSucessSchoolFeesPayment, setTotalSucessSchoolFeesPayment] = useState(0)
   const [recentSucessSchoolFeesPayment, setRecentSucessSchoolFeesPayment] = useState<any>([])
   const [sucessSchoolFeesPaymentData, setSucessSchoolFeesPaymentData] = useState<any>([])
   const [sucessSchoolFeesPaymentLoader, setSucessSchoolFeesPaymentLoader] = useState(true)
   const [sucessSchoolFeesPaymentSearch, setSucessSchoolFeesPaymentSearch] = useState('')
-  
+
   const [declinedSchoolFeesPaymentCount, setDeclinedSchoolFeesPaymentCount] = useState(0)
   const [totalDeclinedSchoolFeesPayment, setTotalDeclinedSchoolFeesPayment] = useState(0)
   const [recentDeclinedSchoolFeesPayment, setRecentDeclinedSchoolFeesPayment] = useState<any>([])
@@ -973,7 +973,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   const [pendingBillsPaymentData, setPendingBillsPaymentData] = useState<any>([])
   const [pendingBillsPaymentLoader, setPendingBillsPaymentLoader] = useState(true)
   const [pendingBillsPaymentSearch, setPendingBillsPaymentSearch] = useState('')
-  
+
 
   const [sucessBillsPaymentCount, setSucessBillsPaymentCount] = useState(0)
   const [totalSucessBillsPayment, setTotalSucessBillsPayment] = useState(0)
@@ -981,7 +981,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   const [sucessBillsPaymentData, setSucessBillsPaymentData] = useState<any>([])
   const [sucessBillsPaymentLoader, setSucessBillsPaymentLoader] = useState(true)
   const [sucessBillsPaymentSearch, setSucessBillsPaymentSearch] = useState('')
-  
+
   const [declinedBillsPaymentCount, setDeclinedBillsPaymentCount] = useState(0)
   const [totalDeclinedBillsPayment, setTotalDeclinedBillsPayment] = useState(0)
   const [recentDeclinedBillsPayment, setRecentDeclinedBillsPayment] = useState<any>([])
@@ -1017,12 +1017,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   const [orderProductData, setOrderProductData] = useState<any>([])
   const [recentOrderProduct, setRecentOrderProduct] = useState<any>([])
   const [orderProductLoader, setOrderProductLoader] = useState(true)
-  const [orderProductSearch, setOrderProductSearch] =  useState('')
+  const [orderProductSearch, setOrderProductSearch] = useState('')
 
 
 
-  const StudentFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/students/', {
+  const StudentFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//students/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1031,22 +1031,22 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setStudentCount(data.length)
       }
       const sortedData = [...data].sort((a, b) =>
         a.first_name.localeCompare(b.first_name)
       );
-      
+
       const RecentsortedData = [...data].sort((a, b) =>
         new Date(b.date_joined).getTime() - new Date(a.date_joined).getTime()
       );
-      
+
       const recentData = RecentsortedData.slice(0, 7);
 
 
-     // Group by first letter
+      // Group by first letter
       const groupedByLetter: Record<string, typeof data> = {};
 
       sortedData.forEach(student => {
@@ -1063,7 +1063,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
         .reduce((acc, key) => {
           acc[key] = groupedByLetter[key];
           return acc;
-      }, {} as typeof groupedByLetter);
+        }, {} as typeof groupedByLetter);
 
       setStudentGroupData(sortedGroupedData);
       setRecentStudent(recentData)
@@ -1071,7 +1071,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setStudentLoader(false)
 
 
-    }else{
+    } else {
       setStudentLoader(false)
     }
 
@@ -1080,11 +1080,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterStudent = async() =>{
+  const FilterStudent = async () => {
     let url;
 
-    if(studentSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/students/?search=${studentSearch}`
+    if (studentSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//students/?search=${studentSearch}`
     }
 
 
@@ -1096,16 +1096,16 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: {first_name: string}, b: {first_name:string}) => a.first_name.localeCompare(b.first_name));
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { first_name: string }, b: { first_name: string }) => a.first_name.localeCompare(b.first_name));
       setStudentData(sortedData)
     }
   }
@@ -1113,8 +1113,8 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
 
   // Teacher
-  const TeacherFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/teachers/', {
+  const TeacherFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//teachers/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1123,14 +1123,14 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setTeacherCount(data.length)
       }
       const sortedData = [...data].sort((a, b) =>
         a.first_name.localeCompare(b.first_name)
       );
-      
+
       const RecentsortedData = [...data].sort((a, b) =>
         new Date(b.date_joined).getTime() - new Date(a.date_joined).getTime()
       );
@@ -1140,7 +1140,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setTeacherLoader(false)
 
 
-    }else{
+    } else {
       setTeacherLoader(false)
     }
 
@@ -1149,11 +1149,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterTeacher = async() =>{
+  const FilterTeacher = async () => {
     let url;
 
-    if(teacherSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/teachers/?search=${teacherSearch}`
+    if (teacherSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//teachers/?search=${teacherSearch}`
     }
 
 
@@ -1165,23 +1165,23 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: {first_name: string}, b: {first_name:string}) => a.first_name.localeCompare(b.first_name));
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { first_name: string }, b: { first_name: string }) => a.first_name.localeCompare(b.first_name));
       setTeacherData(sortedData)
     }
   }
 
 
-  const ParentFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/parents/', {
+  const ParentFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//parents/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1190,14 +1190,14 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setParentCount(data.length)
       }
       const sortedData = [...data].sort((a, b) =>
         a.name.localeCompare(b.name)
       );
-      
+
       const RecentsortedData = [...data].sort((a, b) =>
         new Date(b.date_joined).getTime() - new Date(a.date_joined).getTime()
       );
@@ -1208,7 +1208,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setParentLoader(false)
 
 
-    }else{
+    } else {
       setParentLoader(false)
     }
 
@@ -1217,11 +1217,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterParent = async() =>{
+  const FilterParent = async () => {
     let url;
 
-    if(parentSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/parents/?search=${parentSearch}`
+    if (parentSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//parents/?search=${parentSearch}`
     }
 
 
@@ -1233,25 +1233,25 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: {name: string}, b: {name:string}) => a.name.localeCompare(b.name));
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { name: string }, b: { name: string }) => a.name.localeCompare(b.name));
       setParentData(sortedData)
     }
   }
-  
+
 
   // Staff
-  const StaffFunction = async() =>{
+  const StaffFunction = async () => {
     console.log('lpadign')
-    const response = await fetch('http://127.0.0.1:8000/api/staff/', {
+    const response = await fetch('http://school.amanilightequity.com/api//staff/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1260,14 +1260,14 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setStaffCount(data.length)
       }
       const sortedData = [...data].sort((a, b) =>
         a.first_name.localeCompare(b.first_name)
       );
-      
+
       const RecentsortedData = [...data].sort((a, b) =>
         new Date(b.date_joined).getTime() - new Date(a.date_joined).getTime()
       );
@@ -1278,7 +1278,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setStaffLoader(false)
 
 
-    }else{
+    } else {
       setStaffLoader(false)
     }
 
@@ -1287,11 +1287,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterStaff = async() =>{
+  const FilterStaff = async () => {
     let url;
 
-    if(staffSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/staff/?search=${staffSearch}`
+    if (staffSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//staff/?search=${staffSearch}`
     }
 
 
@@ -1303,24 +1303,24 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: {first_name: string}, b: {first_name:string}) => a.first_name.localeCompare(b.first_name));
-       setStaffData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { first_name: string }, b: { first_name: string }) => a.first_name.localeCompare(b.first_name));
+      setStaffData(sortedData)
     }
   }
 
 
   // HR
-  const HrFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/hr/', {
+  const HrFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//hr/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1329,24 +1329,24 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setHrCount(data.length)
       }
       const sortedData = [...data].sort((a, b) =>
         a.first_name.localeCompare(b.first_name)
       );
-      
+
       const RecentsortedData = [...data].sort((a, b) =>
         new Date(b.date_joined).getTime() - new Date(a.date_joined).getTime()
       );
-           
+
       const recentData = RecentsortedData.slice(0, 4);
       setHrData(sortedData)
       setHrLoader(false)
 
 
-    }else{
+    } else {
       setHrLoader(false)
     }
 
@@ -1355,11 +1355,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterHr = async() =>{
+  const FilterHr = async () => {
     let url;
 
-    if(hrSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/hr/?search=${hrSearch}`
+    if (hrSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//hr/?search=${hrSearch}`
     }
 
 
@@ -1371,24 +1371,24 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: {first_name: string}, b: {first_name:string}) => a.first_name.localeCompare(b.first_name));
-       setHrData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { first_name: string }, b: { first_name: string }) => a.first_name.localeCompare(b.first_name));
+      setHrData(sortedData)
     }
   }
 
 
   // Bursary
-  const BursaryFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/bursary/', {
+  const BursaryFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//bursary/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1397,17 +1397,17 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setBursaryCount(data.length)
       }
       // sorting from A to Z
-      const sortedData = data.sort((a: {first_name: string}, b: {first_name:string}) => a.first_name.localeCompare(b.first_name));
+      const sortedData = data.sort((a: { first_name: string }, b: { first_name: string }) => a.first_name.localeCompare(b.first_name));
       setBursaryData(sortedData)
       setBursaryLoader(false)
 
 
-    }else{
+    } else {
       setBursaryLoader(false)
     }
 
@@ -1416,11 +1416,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterBursary = async() =>{
+  const FilterBursary = async () => {
     let url;
 
-    if(bursarySearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/bursary/?search=${bursarySearch}`
+    if (bursarySearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//bursary/?search=${bursarySearch}`
     }
 
 
@@ -1432,23 +1432,23 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-        // sorting from A to Z
-        const sortedData = data.sort((a: {first_name: string}, b: {first_name:string}) => a.first_name.localeCompare(b.first_name));
-        setBursaryData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { first_name: string }, b: { first_name: string }) => a.first_name.localeCompare(b.first_name));
+      setBursaryData(sortedData)
     }
   }
 
   // Store Keeper
-  const StoreKeeperFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/store_keeper/', {
+  const StoreKeeperFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//store_keeper/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1457,17 +1457,17 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setStoreKeeperCount(data.length)
       }
       // sorting from A to Z
-      const sortedData = data.sort((a: {first_name: string}, b: {first_name:string}) => a.first_name.localeCompare(b.first_name));
+      const sortedData = data.sort((a: { first_name: string }, b: { first_name: string }) => a.first_name.localeCompare(b.first_name));
       setStoreKeeperData(sortedData)
       setStoreKeeperLoader(false)
 
 
-    }else{
+    } else {
       setStoreKeeperLoader(false)
     }
 
@@ -1476,11 +1476,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterStoreKeeper = async() =>{
+  const FilterStoreKeeper = async () => {
     let url;
 
-    if(storeKeeperSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/store_keeper/?search=${storeKeeperSearch}`
+    if (storeKeeperSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//store_keeper/?search=${storeKeeperSearch}`
     }
 
 
@@ -1492,23 +1492,23 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-        // sorting from A to Z
-        const sortedData = data.sort((a: {first_name: string}, b: {first_name:string}) => a.first_name.localeCompare(b.first_name));
-        setStoreKeeperData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { first_name: string }, b: { first_name: string }) => a.first_name.localeCompare(b.first_name));
+      setStoreKeeperData(sortedData)
     }
   }
 
   // Exam Officer
-  const ResultOfficerFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/result_officer/', {
+  const ResultOfficerFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//result_officer/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1517,17 +1517,17 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setResultOfficerCount(data.length)
       }
       // sorting from A to Z
-      const sortedData = data.sort((a: {first_name: string}, b: {first_name:string}) => a.first_name.localeCompare(b.first_name));
+      const sortedData = data.sort((a: { first_name: string }, b: { first_name: string }) => a.first_name.localeCompare(b.first_name));
       setResultOfficerData(sortedData)
       setResultOfficerLoader(false)
 
 
-    }else{
+    } else {
       setResultOfficerLoader(false)
     }
 
@@ -1536,11 +1536,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterResultOfficer = async() =>{
+  const FilterResultOfficer = async () => {
     let url;
 
-    if(resultOfficerSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/result_officer/?search=${resultOfficerSearch}`
+    if (resultOfficerSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//result_officer/?search=${resultOfficerSearch}`
     }
 
 
@@ -1552,23 +1552,23 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-        // sorting from A to Z
-        const sortedData = data.sort((a: {first_name: string}, b: {first_name:string}) => a.first_name.localeCompare(b.first_name));
-        setResultOfficerData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { first_name: string }, b: { first_name: string }) => a.first_name.localeCompare(b.first_name));
+      setResultOfficerData(sortedData)
     }
   }
 
   // Academic Officer
-  const AcademicOfficerFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/academic-officer/', {
+  const AcademicOfficerFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//academic-officer/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1577,17 +1577,17 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setAcademicOfficerCount(data.length)
       }
       // sorting from A to Z
-      const sortedData = data.sort((a: {first_name: string}, b: {first_name:string}) => a.first_name.localeCompare(b.first_name));
+      const sortedData = data.sort((a: { first_name: string }, b: { first_name: string }) => a.first_name.localeCompare(b.first_name));
       setAcademicOfficerData(sortedData)
       setAcademicOfficerLoader(false)
 
 
-    }else{
+    } else {
       setAcademicOfficerLoader(false)
     }
 
@@ -1596,11 +1596,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterAcademicOfficer = async() =>{
+  const FilterAcademicOfficer = async () => {
     let url;
 
-    if(academicOfficerSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/academic-officer/?search=${academicOfficerSearch}`
+    if (academicOfficerSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//academic-officer/?search=${academicOfficerSearch}`
     }
 
 
@@ -1612,23 +1612,23 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-        // sorting from A to Z
-        const sortedData = data.sort((a: {first_name: string}, b: {first_name:string}) => a.first_name.localeCompare(b.first_name));
-        setAcademicOfficerData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { first_name: string }, b: { first_name: string }) => a.first_name.localeCompare(b.first_name));
+      setAcademicOfficerData(sortedData)
     }
   }
 
   //  other Staff
-  const OtherStaffFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/other-staff/', {
+  const OtherStaffFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//other-staff/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1637,17 +1637,17 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setOtherStaffCount(data.length)
       }
       // sorting from A to Z
-      const sortedData = data.sort((a: {first_name: string}, b: {first_name:string}) => a.first_name.localeCompare(b.first_name));
+      const sortedData = data.sort((a: { first_name: string }, b: { first_name: string }) => a.first_name.localeCompare(b.first_name));
       setOtherStaffData(sortedData)
       setOtherStaffLoader(false)
 
 
-    }else{
+    } else {
       setOtherStaffLoader(false)
     }
 
@@ -1656,11 +1656,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterOtherStaff = async() =>{
+  const FilterOtherStaff = async () => {
     let url;
 
-    if(otherStaffSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/other-staff/?search=${otherStaffSearch}`
+    if (otherStaffSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//other-staff/?search=${otherStaffSearch}`
     }
 
 
@@ -1672,23 +1672,23 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-        // sorting from A to Z
-        const sortedData = data.sort((a: {first_name: string}, b: {first_name:string}) => a.first_name.localeCompare(b.first_name));
-        setOtherStaffData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { first_name: string }, b: { first_name: string }) => a.first_name.localeCompare(b.first_name));
+      setOtherStaffData(sortedData)
     }
   }
 
   // email
-  const EmailFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/email/', {
+  const EmailFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//email/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1697,12 +1697,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setEmailCount(data.length)
       }
-      
-      
+
+
       // sort by latest 
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       const recentData = sortedData.slice(0, 4);
@@ -1711,7 +1711,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setEmailLoader(false)
 
 
-    }else{
+    } else {
       setEmailLoader(false)
     }
 
@@ -1720,11 +1720,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterEmail = async() =>{
+  const FilterEmail = async () => {
     let url;
 
-    if(emailSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/email/?search=${emailSearch}`
+    if (emailSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//email/?search=${emailSearch}`
     }
 
 
@@ -1736,24 +1736,24 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setEmailData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setEmailData(sortedData)
     }
   }
 
 
   //subject
-  const SubjectFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/subjects/', {
+  const SubjectFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//subjects/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1762,17 +1762,17 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setSubjectCount(data.length)
       }
-      
-      
+
+
 
       const sortedData = [...data].sort((a, b) =>
         a.name.localeCompare(b.name)
       );
-      
+
       const RecentsortedData = [...data].sort((a, b) =>
         b.id - a.id
       );
@@ -1792,7 +1792,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setSubjectLoader(false)
 
 
-    }else{
+    } else {
       setSubjectLoader(false)
     }
 
@@ -1801,11 +1801,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterSubject = async() =>{
+  const FilterSubject = async () => {
     let url;
 
-    if(subjectSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/subjects/?search=${subjectSearch}`
+    if (subjectSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//subjects/?search=${subjectSearch}`
     }
 
 
@@ -1817,16 +1817,16 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
+    if (response.ok) {
       // sorting from A to Z
-      const sortedData = data.sort((a: {name: string}, b: {name:string}) => a.name.localeCompare(b.name));
+      const sortedData = data.sort((a: { name: string }, b: { name: string }) => a.name.localeCompare(b.name));
       const groupedBySection: Record<string, typeof data> = {};
 
       sectionOrder.forEach(section => {
@@ -1840,8 +1840,8 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
   // Term
-  const TermFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/term/', {
+  const TermFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//term/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1850,20 +1850,20 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setTermCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
-      const sortedData = data.sort((a: {name: string}, b: {name:string}) => a.name.localeCompare(b.name));
+      const sortedData = data.sort((a: { name: string }, b: { name: string }) => a.name.localeCompare(b.name));
       setTermData(sortedData)
       setTermLoader(false)
 
 
-    }else{
+    } else {
       setTermLoader(false)
     }
 
@@ -1872,11 +1872,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterTerm = async() =>{
+  const FilterTerm = async () => {
     let url;
 
-    if(termSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/term/?search=${termSearch}`
+    if (termSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//term/?search=${termSearch}`
     }
 
 
@@ -1888,23 +1888,23 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setTermData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setTermData(sortedData)
     }
   }
 
- // session
-  const SessionFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/session/', {
+  // session
+  const SessionFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//session/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1913,12 +1913,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setSessionCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
@@ -1928,7 +1928,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setSessionLoader(false)
 
 
-    }else{
+    } else {
       setSessionLoader(false)
     }
 
@@ -1937,11 +1937,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterSession = async() =>{
+  const FilterSession = async () => {
     let url;
 
-    if(sessionSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/session/?search=${sessionSearch}`
+    if (sessionSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//session/?search=${sessionSearch}`
     }
 
 
@@ -1953,25 +1953,25 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setSessionData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setSessionData(sortedData)
     }
   }
 
 
 
-   // Student Class
-   const StudentClassFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/student-class/', {
+  // Student Class
+  const StudentClassFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//student-class/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -1980,17 +1980,17 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setStudentClassCount(data.length)
       }
-      
-      
+
+
 
       const sortedData = [...data].sort((a, b) =>
         a.name.localeCompare(b.name)
       );
-      
+
       const RecentsortedData = [...data].sort((a, b) =>
         b.id - a.id
       );
@@ -1999,7 +1999,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setStudentClassLoader(false)
 
 
-    }else{
+    } else {
       setStudentClassLoader(false)
     }
 
@@ -2008,11 +2008,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterStudentClass = async() =>{
+  const FilterStudentClass = async () => {
     let url;
 
-    if(studentClassSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/student-class/?search=${studentClassSearch}`
+    if (studentClassSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//student-class/?search=${studentClassSearch}`
     }
 
 
@@ -2024,24 +2024,24 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: {name: string}, b: {name:string}) => a.name.localeCompare(b.name));
-       setStudentClassData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { name: string }, b: { name: string }) => a.name.localeCompare(b.name));
+      setStudentClassData(sortedData)
     }
   }
 
 
   // Admin or hr Notification
-  const AdminHrNotificationFunction = async() =>{
-    const response = await fetch(`http://127.0.0.1:8000/api/admin-or-hr-notification/?seen=${statusQuery}`, {
+  const AdminHrNotificationFunction = async () => {
+    const response = await fetch(`http://school.amanilightequity.com/api//admin-or-hr-notification/?seen=${statusQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2050,12 +2050,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setAdminHrNotificationCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
@@ -2065,7 +2065,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setAdminHrNotificationLoader(false)
 
 
-    }else{
+    } else {
       setAdminHrNotificationLoader(false)
     }
 
@@ -2074,11 +2074,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilteradminHrNotification = async() =>{
+  const FilteradminHrNotification = async () => {
     let url;
 
-    if(adminHrNotificationSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/admin-or-hr-notification/?search=${adminHrNotificationSearch}`
+    if (adminHrNotificationSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//admin-or-hr-notification/?search=${adminHrNotificationSearch}`
     }
 
 
@@ -2090,23 +2090,23 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setAdminHrNotificationData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setAdminHrNotificationData(sortedData)
     }
   }
 
   //School Notification
-  const SchoolNotificationFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/school-notification/', {
+  const SchoolNotificationFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//school-notification/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2115,12 +2115,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setSchoolNotificationCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
@@ -2130,7 +2130,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setSchoolNotificationLoader(false)
 
 
-    }else{
+    } else {
       setSchoolNotificationLoader(false)
     }
 
@@ -2139,11 +2139,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterSchoolNotification = async() =>{
+  const FilterSchoolNotification = async () => {
     let url;
 
-    if(schoolNotificationSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/school-notification/?search=${schoolNotificationSearch}`
+    if (schoolNotificationSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//school-notification/?search=${schoolNotificationSearch}`
     }
 
 
@@ -2155,23 +2155,23 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setSchoolNotificationData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setSchoolNotificationData(sortedData)
     }
   }
 
- // class Notififcatiion
-  const ClassNotificationFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/class-notification/', {
+  // class Notififcatiion
+  const ClassNotificationFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//class-notification/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2180,12 +2180,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setClassNotificationCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
@@ -2195,7 +2195,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setClassNotificationLoader(false)
 
 
-    }else{
+    } else {
       setClassNotificationLoader(false)
     }
 
@@ -2204,11 +2204,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterClassNotification = async() =>{
+  const FilterClassNotification = async () => {
     let url;
 
-    if(classNotificationSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/class-notification/?search=${classNotificationSearch}`
+    if (classNotificationSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//class-notification/?search=${classNotificationSearch}`
     }
 
 
@@ -2220,24 +2220,24 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setClassNotificationData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setClassNotificationData(sortedData)
     }
   }
 
 
   // staff Notification
-  const StaffNotificationFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/staff-notification/', {
+  const StaffNotificationFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//staff-notification/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2246,12 +2246,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setStaffNotificationCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
@@ -2261,7 +2261,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setStaffNotificationLoader(false)
 
 
-    }else{
+    } else {
       setStaffNotificationLoader(false)
     }
 
@@ -2270,11 +2270,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterStaffNotification = async() =>{
+  const FilterStaffNotification = async () => {
     let url;
 
-    if(staffNotificationSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/staff-notification/?search=${staffNotificationSearch}`
+    if (staffNotificationSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//staff-notification/?search=${staffNotificationSearch}`
     }
 
 
@@ -2286,24 +2286,24 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setStaffNotificationData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setStaffNotificationData(sortedData)
     }
   }
 
 
   // School Event
-  const SchoolEventFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/school-event/', {
+  const SchoolEventFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//school-event/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2312,12 +2312,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setSchoolEventCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
@@ -2327,7 +2327,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setSchoolEventLoader(false)
 
 
-    }else{
+    } else {
       setSchoolEventLoader(false)
     }
 
@@ -2336,11 +2336,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterSchoolEvent = async() =>{
+  const FilterSchoolEvent = async () => {
     let url;
 
-    if(schoolEventSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/school-event/?search=${schoolEventSearch}`
+    if (schoolEventSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//school-event/?search=${schoolEventSearch}`
     }
 
 
@@ -2352,24 +2352,24 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setSchoolEventData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setSchoolEventData(sortedData)
     }
   }
 
 
   // Assignment
-  const AssignmentFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/assignment/', {
+  const AssignmentFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//assignment/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2378,12 +2378,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setAssignmentCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
@@ -2393,7 +2393,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setAssignmentLoader(false)
 
 
-    }else{
+    } else {
       setAssignmentLoader(false)
     }
 
@@ -2402,11 +2402,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterAssignment = async() =>{
+  const FilterAssignment = async () => {
     let url;
 
-    if(assignmentSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/assignment/?search=${assignmentSearch}`
+    if (assignmentSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//assignment/?search=${assignmentSearch}`
     }
 
 
@@ -2418,24 +2418,24 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setAssignmentData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setAssignmentData(sortedData)
     }
   }
 
 
   // Asignment Submission
-  const AssignmentSubmissionFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/assignment-submission/', {
+  const AssignmentSubmissionFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//assignment-submission/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2444,12 +2444,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setAssignmentSubmissionCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
@@ -2459,7 +2459,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setAssignmentSubmissionLoader(false)
 
 
-    }else{
+    } else {
       setAssignmentSubmissionLoader(false)
     }
 
@@ -2468,11 +2468,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterAssignmentSubmission = async() =>{
+  const FilterAssignmentSubmission = async () => {
     let url;
 
-    if(assignmentSubmissionSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/assignment-submission/?search=${assignmentSubmissionSearch}`
+    if (assignmentSubmissionSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//assignment-submission/?search=${assignmentSubmissionSearch}`
     }
 
 
@@ -2484,24 +2484,24 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setAssignmentSubmissionData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setAssignmentSubmissionData(sortedData)
     }
   }
 
 
   // Class Timetable
-  const ClassTimetableFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/class-timetable/', {
+  const ClassTimetableFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//class-timetable/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2510,12 +2510,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setClassTimetableCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
       const sortedData = data.sort((a: { student_class_name: { name: string } }, b: { student_class_name: { name: string } }) => a.student_class_name.name.localeCompare(b.student_class_name.name));
@@ -2525,7 +2525,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setClassTimetableLoader(false)
 
 
-    }else{
+    } else {
       setClassTimetableLoader(false)
     }
 
@@ -2534,11 +2534,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterClassTimetable = async() =>{
+  const FilterClassTimetable = async () => {
     let url;
 
-    if(classTimetableSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/class-timetable/?search=${classTimetableSearch}`
+    if (classTimetableSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//class-timetable/?search=${classTimetableSearch}`
     }
 
 
@@ -2550,26 +2550,26 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { student_class_name: { name: string } }, b: { student_class_name: { name: string } }) => a.student_class_name.name.localeCompare(b.student_class_name.name));
-       setClassTimetableData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { student_class_name: { name: string } }, b: { student_class_name: { name: string } }) => a.student_class_name.name.localeCompare(b.student_class_name.name));
+      setClassTimetableData(sortedData)
     }
   }
 
 
 
 
-    // Class Timetable
-  const SchemeOFWorkFunction = async() =>{
-    const response = await fetch(`http://127.0.0.1:8000/api/scheme-of-work/?student_class=${studentClassQuery}&term=${termQuery}&subject=${subjectQuery}`, {
+  // Class Timetable
+  const SchemeOFWorkFunction = async () => {
+    const response = await fetch(`http://school.amanilightequity.com/api//scheme-of-work/?student_class=${studentClassQuery}&term=${termQuery}&subject=${subjectQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2578,18 +2578,18 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setSchemeOfWorkCount(data.length)
       }
-      
-      
+
+
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setSchemeOfWorkData(sortedData)
       setSchemeOfWorkLoader(false)
 
 
-    }else{
+    } else {
       setSchemeOfWorkLoader(false)
     }
 
@@ -2598,11 +2598,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterSchemeOFWork = async() =>{
+  const FilterSchemeOFWork = async () => {
     let url;
 
-    if(schemeOfWorkSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/scheme-of-work/?search=${schemeOfWorkSearch}`
+    if (schemeOfWorkSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//scheme-of-work/?search=${schemeOfWorkSearch}`
     }
 
 
@@ -2614,14 +2614,14 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
+    if (response.ok) {
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setSchemeOfWorkData(sortedData)
@@ -2632,8 +2632,8 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
 
 
-   const ScratchCardFunction = async() =>{
-    const response = await fetch(`http://127.0.0.1:8000/api/scratch-cards/?status=${statusQuery}`, {
+  const ScratchCardFunction = async () => {
+    const response = await fetch(`http://school.amanilightequity.com/api//scratch-cards/?status=${statusQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2642,18 +2642,18 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setScratchCardCount(data.length)
       }
-      
-      
+
+
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setScratchCardData(sortedData)
       setScratchCardLoader(false)
 
 
-    }else{
+    } else {
       setScratchCardLoader(false)
     }
 
@@ -2662,11 +2662,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterScratchCard = async() =>{
+  const FilterScratchCard = async () => {
     let url;
 
-    if(scratchCardSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/scratch-cards/?search=${scratchCardSearch}`
+    if (scratchCardSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//scratch-cards/?search=${scratchCardSearch}`
     }
 
 
@@ -2678,14 +2678,14 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
+    if (response.ok) {
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
       setScratchCardData(sortedData)
@@ -2695,8 +2695,8 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   //E Result
 
-  const EResultFunction = async() =>{
-    const response = await fetch(`http://127.0.0.1:8000/api/e-result/?student=${studentQuery}&student_class=${studentClassQuery}&term=${termQuery}&session=${sessionQuery}`, {
+  const EResultFunction = async () => {
+    const response = await fetch(`http://school.amanilightequity.com/api//e-result/?student=${studentQuery}&student_class=${studentClassQuery}&term=${termQuery}&session=${sessionQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2705,23 +2705,23 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setEResultCount(data.length)
       }
 
-      
+
       const sortedData = [...data].sort((a, b) =>
         new Date(b.date).getTime() - new Date(a.date).getTime()
       );
-      
+
       const recentData = sortedData.slice(0, 7);
       setEResultData(sortedData)
       setRecentEResultData(recentData)
       setEResultLoader(false)
 
 
-    }else{
+    } else {
       setEResultLoader(false)
       setEResultData([])
     }
@@ -2730,11 +2730,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
   }
 
-    const FilterEResult = async() =>{
+  const FilterEResult = async () => {
     let url;
 
-    if(eResultSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/e-result/?search=${eResultSearch}`
+    if (eResultSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//e-result/?search=${eResultSearch}`
     }
 
 
@@ -2746,14 +2746,14 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
+    if (response.ok) {
       // sorting from A to Z
       const sortedData = [...data].sort((a, b) =>
         new Date(b.date).getTime() - new Date(a.date).getTime()
@@ -2763,8 +2763,8 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
   // Payment Mehthod
-  const PaymentMethodFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/payment-method/', {
+  const PaymentMethodFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//payment-method/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2773,12 +2773,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setPaymentMethodCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
@@ -2788,7 +2788,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setPaymentMethodLoader(false)
 
 
-    }else{
+    } else {
       setPaymentMethodLoader(false)
     }
 
@@ -2797,11 +2797,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterPaymentMethod = async() =>{
+  const FilterPaymentMethod = async () => {
     let url;
 
-    if(paymentMethodSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/payment-method/?search=${paymentMethodSearch}`
+    if (paymentMethodSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//payment-method/?search=${paymentMethodSearch}`
     }
 
 
@@ -2813,24 +2813,24 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setPaymentMethodData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setPaymentMethodData(sortedData)
     }
   }
 
 
   // school fees
-  const SchoolFeesFunction = async() =>{
-    const response = await fetch(`http://127.0.0.1:8000/api/school-fees/?student_class=${studentClassQuery}&term=${termQuery}&session=${sessionQuery}&fee_type=${feeTypeQuery}`, {
+  const SchoolFeesFunction = async () => {
+    const response = await fetch(`http://school.amanilightequity.com/api//school-fees/?student_class=${studentClassQuery}&term=${termQuery}&session=${sessionQuery}&fee_type=${feeTypeQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2839,12 +2839,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setSchoolFeesCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
       const sortedData = data.sort((a: { student_class_name: { name: string } }, b: { student_class_name: { name: string } }) => a.student_class_name.name.localeCompare(b.student_class_name.name));
@@ -2852,7 +2852,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setSchoolFeesLoader(false)
 
 
-    }else{
+    } else {
       setSchoolFeesLoader(false)
     }
 
@@ -2861,11 +2861,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterSchoolFees = async() =>{
+  const FilterSchoolFees = async () => {
     let url;
 
-    if(schoolFeesSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/school-fees/?search=${schoolFeesSearch}`
+    if (schoolFeesSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//school-fees/?search=${schoolFeesSearch}`
     }
 
 
@@ -2877,24 +2877,24 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { student_class_name: { name: string } }, b: { student_class_name: { name: string } }) => a.student_class_name.name.localeCompare(b.student_class_name.name));
-       setSchoolFeesData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { student_class_name: { name: string } }, b: { student_class_name: { name: string } }) => a.student_class_name.name.localeCompare(b.student_class_name.name));
+      setSchoolFeesData(sortedData)
     }
   }
 
 
-    //All  School Fees Payment
-  const AllSchoolFeesPaymentFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/payment-school-fees/', {
+  //All  School Fees Payment
+  const AllSchoolFeesPaymentFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//payment-school-fees/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2903,12 +2903,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setAllSchoolFeesPaymentCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
@@ -2920,7 +2920,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setAllSchoolFeesPaymentLoader(false)
 
 
-    }else{
+    } else {
       setAllSchoolFeesPaymentLoader(false)
     }
 
@@ -2929,11 +2929,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterAllSchoolFeesPayment = async() =>{
+  const FilterAllSchoolFeesPayment = async () => {
     let url;
 
-    if(allSchoolFeesPaymentSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/payment-school-fees/?search=${allSchoolFeesPaymentSearch}`
+    if (allSchoolFeesPaymentSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//payment-school-fees/?search=${allSchoolFeesPaymentSearch}`
     }
 
 
@@ -2945,23 +2945,23 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setAllSchoolFeesPaymentData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setAllSchoolFeesPaymentData(sortedData)
     }
   }
 
   //pending  School Fees Payment
-  const PendingSchoolFeesPaymentFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/payment-school-fees/pending/', {
+  const PendingSchoolFeesPaymentFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//payment-school-fees/pending/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -2970,12 +2970,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setPendingSchoolFeesPaymentCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
@@ -2987,7 +2987,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setPendingSchoolFeesPaymentLoader(false)
 
 
-    }else{
+    } else {
       setPendingSchoolFeesPaymentLoader(false)
     }
 
@@ -2996,11 +2996,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterPendingSchoolFeesPayment = async() =>{
+  const FilterPendingSchoolFeesPayment = async () => {
     let url;
 
-    if(pendingSchoolFeesPaymentSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/payment-school-fees/pending/?search=${pendingSchoolFeesPaymentSearch}`
+    if (pendingSchoolFeesPaymentSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//payment-school-fees/pending/?search=${pendingSchoolFeesPaymentSearch}`
     }
 
 
@@ -3012,23 +3012,23 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setPendingSchoolFeesPaymentData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setPendingSchoolFeesPaymentData(sortedData)
     }
   }
 
   // success school Fees payment
-  const SucessSchoolFeesPaymentFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/payment-school-fees/approved/', {
+  const SucessSchoolFeesPaymentFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//payment-school-fees/approved/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3037,12 +3037,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setSucessSchoolFeesPaymentCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
@@ -3054,7 +3054,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setSucessSchoolFeesPaymentLoader(false)
 
 
-    }else{
+    } else {
       setSucessSchoolFeesPaymentLoader(false)
     }
 
@@ -3063,11 +3063,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterSucessSchoolFeesPayment = async() =>{
+  const FilterSucessSchoolFeesPayment = async () => {
     let url;
 
-    if(sucessSchoolFeesPaymentSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/payment-school-fees/approved/?search=${sucessSchoolFeesPaymentSearch}`
+    if (sucessSchoolFeesPaymentSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//payment-school-fees/approved/?search=${sucessSchoolFeesPaymentSearch}`
     }
 
 
@@ -3079,23 +3079,23 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setSucessSchoolFeesPaymentData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setSucessSchoolFeesPaymentData(sortedData)
     }
   }
 
   // declined school Fees payment
-  const DeclinedSchoolFeesPaymentFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/payment-school-fees/declined/', {
+  const DeclinedSchoolFeesPaymentFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//payment-school-fees/declined/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3104,12 +3104,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setDeclinedSchoolFeesPaymentCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
@@ -3121,7 +3121,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setDeclinedSchoolFeesPaymentLoader(false)
 
 
-    }else{
+    } else {
       setDeclinedSchoolFeesPaymentLoader(false)
     }
 
@@ -3130,11 +3130,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterDeclinedSchoolFeesPayment = async() =>{
+  const FilterDeclinedSchoolFeesPayment = async () => {
     let url;
 
-    if(declinedSchoolFeesPaymentSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/payment-school-fees/declined/?search=${declinedSchoolFeesPaymentSearch}`
+    if (declinedSchoolFeesPaymentSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//payment-school-fees/declined/?search=${declinedSchoolFeesPaymentSearch}`
     }
 
 
@@ -3146,24 +3146,24 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setDeclinedSchoolFeesPaymentData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setDeclinedSchoolFeesPaymentData(sortedData)
     }
   }
 
 
   // bills
-  const BillsFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/bills/', {
+  const BillsFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//bills/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3172,12 +3172,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setBillsCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
@@ -3187,7 +3187,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setBillsLoader(false)
 
 
-    }else{
+    } else {
       setBillsLoader(false)
     }
 
@@ -3196,11 +3196,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterBills = async() =>{
+  const FilterBills = async () => {
     let url;
 
-    if(billsSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/bills/?search=${billsSearch}`
+    if (billsSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//bills/?search=${billsSearch}`
     }
 
 
@@ -3212,81 +3212,22 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setBillsData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setBillsData(sortedData)
     }
   }
 
-  const BillsPaymentFunction = async() =>{
-      const response = await fetch('http://127.0.0.1:8000/api/bills-payment/', {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${authTokens?.access}`
-        },
-      })
-
-      const data = await response.json()
-      if(response.ok){
-        if(Array.isArray(data) && data.length > 0){
-          setBillsPaymentCount(data.length)
-        }
-        
-        
-
-        // sorting from A to Z
-        const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-        const recentData = sortedData.slice(0, 4);
-        const totalAmount = data.reduce((acc: number, item: any) => acc + (item.bill_name?.amount || 0), 0);
-        setTotalBillsPayment(totalAmount)
-        setRecentBillsPayment(recentData)
-        setBillsPaymentData(sortedData)
-        setBillsPaymentLoader(false)
-
-    }
-  } 
-  
-  const FilterBillsPayment = async() =>{
-    let url;
-
-    if(billsPaymentSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/bills-payment/?search=${billsPaymentSearch}`
-    }
-    
-    if (!url) {
-      console.error("URL is undefined");
-      return;
-    }
-
-    const response = await fetch(url, {
-      method: "GET",
-      headers: {
-        "Content-Type":"application/json",
-        Authorization: `Bearer ${authTokens?.access}`
-      }
-    });
-
-    const data = await response.json()
-    if(response.ok){
-        // sorting from A to Z
-        const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-        setBillsPaymentData(sortedData)
-    }
-  }
-
-
-  // pending Bills
-  const PendingBillsPaymentFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/bills-payment/pending/', {
+  const BillsPaymentFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//bills-payment/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3295,12 +3236,71 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
+        setBillsPaymentCount(data.length)
+      }
+
+
+
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      const recentData = sortedData.slice(0, 4);
+      const totalAmount = data.reduce((acc: number, item: any) => acc + (item.bill_name?.amount || 0), 0);
+      setTotalBillsPayment(totalAmount)
+      setRecentBillsPayment(recentData)
+      setBillsPaymentData(sortedData)
+      setBillsPaymentLoader(false)
+
+    }
+  }
+
+  const FilterBillsPayment = async () => {
+    let url;
+
+    if (billsPaymentSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//bills-payment/?search=${billsPaymentSearch}`
+    }
+
+    if (!url) {
+      console.error("URL is undefined");
+      return;
+    }
+
+    const response = await fetch(url, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authTokens?.access}`
+      }
+    });
+
+    const data = await response.json()
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setBillsPaymentData(sortedData)
+    }
+  }
+
+
+  // pending Bills
+  const PendingBillsPaymentFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//bills-payment/pending/', {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${authTokens?.access}`
+      },
+    })
+
+    const data = await response.json()
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setPendingBillsPaymentCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
@@ -3312,7 +3312,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setPendingBillsPaymentLoader(false)
 
 
-    }else{
+    } else {
       setPendingBillsPaymentLoader(false)
     }
 
@@ -3321,11 +3321,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterPendingBillsPayment = async() =>{
+  const FilterPendingBillsPayment = async () => {
     let url;
 
-    if(pendingBillsPaymentSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/bills-payment/pending/?search=${pendingBillsPaymentSearch}`
+    if (pendingBillsPaymentSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//bills-payment/pending/?search=${pendingBillsPaymentSearch}`
     }
 
 
@@ -3337,24 +3337,24 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setPendingBillsPaymentData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setPendingBillsPaymentData(sortedData)
     }
   }
 
 
   // success Bills
-  const SucessBillsPaymentFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/bills-payment/approved/', {
+  const SucessBillsPaymentFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//bills-payment/approved/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3363,12 +3363,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setSucessBillsPaymentCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
@@ -3381,7 +3381,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setSucessBillsPaymentLoader(false)
 
 
-    }else{
+    } else {
       setSucessBillsPaymentLoader(false)
     }
 
@@ -3390,11 +3390,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterSucessBillsPayment = async() =>{
+  const FilterSucessBillsPayment = async () => {
     let url;
 
-    if(sucessBillsPaymentSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/bills-payment/approved/?search=${sucessBillsPaymentSearch}`
+    if (sucessBillsPaymentSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//bills-payment/approved/?search=${sucessBillsPaymentSearch}`
     }
 
 
@@ -3406,23 +3406,23 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setSucessBillsPaymentData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setSucessBillsPaymentData(sortedData)
     }
   }
 
   // declined Bills'
-  const DeclinedBillsPaymentFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/bills-payment/declined/', {
+  const DeclinedBillsPaymentFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//bills-payment/declined/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3431,12 +3431,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setDeclinedBillsPaymentCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
@@ -3448,7 +3448,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setDeclinedBillsPaymentLoader(false)
 
 
-    }else{
+    } else {
       setDeclinedBillsPaymentLoader(false)
     }
 
@@ -3458,8 +3458,8 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
 
   // Bank Account'
-  const BankAccountFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/bank-account/', {
+  const BankAccountFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//bank-account/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3468,22 +3468,22 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setBankAccountCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
-       const sortedData = [...data].sort((a, b) =>
+      const sortedData = [...data].sort((a, b) =>
         a.bank_name.localeCompare(b.bank_name)
       );
       setBankAccountData(sortedData)
       setBankAccountLoader(false)
 
 
-    }else{
+    } else {
       setBankAccountLoader(false)
     }
 
@@ -3492,11 +3492,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-    const FilterBankAccount = async() =>{
+  const FilterBankAccount = async () => {
     let url;
 
-    if(bankAccountSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/bank-account/?search=${bankAccountSearch}`
+    if (bankAccountSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//bank-account/?search=${bankAccountSearch}`
     }
 
 
@@ -3508,14 +3508,14 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
+    if (response.ok) {
       const sortedData = [...data].sort((a, b) =>
         a.bank_name.localeCompare(b.bank_name)
       );
@@ -3524,11 +3524,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterDeclinedBillsPayment = async() =>{
+  const FilterDeclinedBillsPayment = async () => {
     let url;
 
-    if(declinedBillsPaymentSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/bills-payment/declined/?search=${declinedBillsPaymentSearch}`
+    if (declinedBillsPaymentSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//bills-payment/declined/?search=${declinedBillsPaymentSearch}`
     }
 
 
@@ -3540,24 +3540,24 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setDeclinedBillsPaymentData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setDeclinedBillsPaymentData(sortedData)
     }
   }
 
 
   //product categories
-  const ProductCatergoriesFunction = async() =>{
-    const response = await fetch(`http://127.0.0.1:8000/api/product-categories/`, {
+  const ProductCatergoriesFunction = async () => {
+    const response = await fetch(`http://school.amanilightequity.com/api//product-categories/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3566,12 +3566,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setProductCatergoriesCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
@@ -3579,7 +3579,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setProductCatergoriesLoader(false)
 
 
-    }else{
+    } else {
       setProductCatergoriesLoader(false)
     }
 
@@ -3588,11 +3588,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterProductCatergories = async() =>{
+  const FilterProductCatergories = async () => {
     let url;
 
-    if(productCatergoriesSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/product-categories/?search=${productCatergoriesSearch}`
+    if (productCatergoriesSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//product-categories/?search=${productCatergoriesSearch}`
     }
 
 
@@ -3604,24 +3604,24 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setProductCatergoriesData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setProductCatergoriesData(sortedData)
     }
   }
 
 
   // product
-  const ProductFunction = async() =>{
-    const response = await fetch(`http://127.0.0.1:8000/api/product/?product_category=${productCategoriesQuery}&status=${statusQuery}`, {
+  const ProductFunction = async () => {
+    const response = await fetch(`http://school.amanilightequity.com/api//product/?product_category=${productCategoriesQuery}&status=${statusQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3630,12 +3630,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setProductCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
@@ -3645,7 +3645,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setProductLoader(false)
 
 
-    }else{
+    } else {
       setProductLoader(false)
     }
 
@@ -3654,11 +3654,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterProduct = async() =>{
+  const FilterProduct = async () => {
     let url;
 
-    if(productSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/product/?search=${productSearch}`
+    if (productSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//product/?search=${productSearch}`
     }
 
 
@@ -3670,23 +3670,23 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setProductData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setProductData(sortedData)
     }
   }
 
-    // favourite product
-  const FavouriteProductFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/favorite-products/', {
+  // favourite product
+  const FavouriteProductFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//favorite-products/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3695,12 +3695,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setFavouriteProductCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
@@ -3710,7 +3710,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setFavouriteProductLoader(false)
 
 
-    }else{
+    } else {
       setFavouriteProductLoader(false)
     }
 
@@ -3719,11 +3719,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterFavouriteProduct = async() =>{
+  const FilterFavouriteProduct = async () => {
     let url;
 
-    if(favouriteProductSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/favorite-products/?search=${favouriteProductSearch}`
+    if (favouriteProductSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//favorite-products/?search=${favouriteProductSearch}`
     }
 
 
@@ -3735,23 +3735,23 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setFavouriteProductData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setFavouriteProductData(sortedData)
     }
   }
 
   // order product
-  const OrderProductFunction = async() =>{
-    const response = await fetch('http://127.0.0.1:8000/api/order-products/', {
+  const OrderProductFunction = async () => {
+    const response = await fetch('http://school.amanilightequity.com/api//order-products/', {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -3760,12 +3760,12 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     })
 
     const data = await response.json()
-    if(response.ok){
-      if(Array.isArray(data) && data.length > 0){
+    if (response.ok) {
+      if (Array.isArray(data) && data.length > 0) {
         setOrderProductCount(data.length)
       }
-      
-      
+
+
 
       // sorting from A to Z
       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
@@ -3775,7 +3775,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
       setOrderProductLoader(false)
 
 
-    }else{
+    } else {
       setOrderProductLoader(false)
     }
 
@@ -3784,11 +3784,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
   }
 
 
-  const FilterOrderProduct = async() =>{
+  const FilterOrderProduct = async () => {
     let url;
 
-    if(orderProductSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/order-products/?search=${orderProductSearch}`
+    if (orderProductSearch.length !== 0) {
+      url = `http://school.amanilightequity.com/api//order-products/?search=${orderProductSearch}`
     }
 
 
@@ -3800,17 +3800,17 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     const response = await fetch(url, {
       method: "GET",
       headers: {
-        "Content-Type":"application/json",
+        "Content-Type": "application/json",
         Authorization: `Bearer ${authTokens?.access}`
       }
     });
 
     const data = await response.json()
 
-    if(response.ok){
-       // sorting from A to Z
-       const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
-       setOrderProductData(sortedData)
+    if (response.ok) {
+      // sorting from A to Z
+      const sortedData = data.sort((a: { id: number }, b: { id: number }) => b.id - a.id);
+      setOrderProductData(sortedData)
     }
   }
 
@@ -3826,13 +3826,13 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
 
 
-  const contextData ={
-   sectionLabels,
-    
+  const contextData = {
+    sectionLabels,
+
     studentQuery, setStudentQuery,
     studentClassQuery, setStudentClassQuery,
     termQuery, setTermQuery,
-    sessionQuery,setSessionQuery,
+    sessionQuery, setSessionQuery,
     feeTypeQuery, setFeeTypeQuery,
     productCategoriesQuery, setProductCategoriesQuery,
     statusQuery, setStatusQuery,
@@ -3866,11 +3866,11 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     staffCount, setStaffCount,
     recentStaff, setRecentStaff,
     staffData, setStaffData,
-    staffLoader,setStaffLoader,
+    staffLoader, setStaffLoader,
     staffSearch, setStaffSearch,
 
     hrCount, setHrCount,
-    hrData,setHrData,
+    hrData, setHrData,
     hrLoader, setHrLoader,
     hrSearch, setHrSearch,
 
@@ -3879,7 +3879,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     bursaryLoader, setBursaryLoader,
     bursarySearch, setBursarySearch,
 
-    storeKeeperCount,setStoreKeeperCount,
+    storeKeeperCount, setStoreKeeperCount,
     storeKeeperData, setStoreKeeperData,
     storeKeeperLoader, setStoreKeeperLoader,
     storeKeeperSearch, setStoreKeeperSearch,
@@ -3887,7 +3887,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
     resultOfficerCount, setResultOfficerCount,
     resultOfficerData, setResultOfficerData,
-    resultOfficerLoader,setResultOfficerLoader,
+    resultOfficerLoader, setResultOfficerLoader,
     resultOfficerSearch, setResultOfficerSearch,
 
 
@@ -3898,7 +3898,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
     otherStaffCount, setOtherStaffCount,
     otherStaffData, setOtherStaffData,
-    otherStaffLoader,setOtherStaffLoader,
+    otherStaffLoader, setOtherStaffLoader,
     otherStaffSearch, setOtherStaffSearch,
 
     emailCount, setEmailCount,
@@ -3935,7 +3935,7 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
 
 
     adminHrNotificationCount, setAdminHrNotificationCount,
-    adminHrNotificationData,  setAdminHrNotificationData,
+    adminHrNotificationData, setAdminHrNotificationData,
     recentAdminHrNotification, setRecentAdminHrNotification,
     adminHrNotificationLoader, setAdminHrNotificationLoader,
     adminHrNotificationSearch, setAdminHrNotificationSearch,
@@ -4115,21 +4115,21 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     StudentFunction, FilterStudent,
     TeacherFunction, FilterTeacher,
     ParentFunction, FilterParent,
-    StaffFunction,  FilterStaff,
+    StaffFunction, FilterStaff,
     HrFunction, FilterHr,
     BursaryFunction, FilterBursary,
     StoreKeeperFunction, FilterStoreKeeper,
-    ResultOfficerFunction,  FilterResultOfficer,
+    ResultOfficerFunction, FilterResultOfficer,
     AcademicOfficerFunction, FilterAcademicOfficer,
-    OtherStaffFunction , FilterOtherStaff,
-    EmailFunction,  FilterEmail,
+    OtherStaffFunction, FilterOtherStaff,
+    EmailFunction, FilterEmail,
     SubjectFunction, FilterSubject,
-    TermFunction,  FilterTerm,
+    TermFunction, FilterTerm,
     SessionFunction, FilterSession,
     StudentClassFunction, FilterStudentClass,
     AdminHrNotificationFunction, FilteradminHrNotification,
     SchoolNotificationFunction, FilterSchoolNotification,
-    ClassNotificationFunction,  FilterClassNotification,
+    ClassNotificationFunction, FilterClassNotification,
     SchemeOFWorkFunction, FilterSchemeOFWork,
     ScratchCardFunction, FilterScratchCard,
     EResultFunction, FilterEResult,
@@ -4160,17 +4160,17 @@ export const AllDataProvider = ({children}: {children:ReactNode}) =>{
     OrderProductFunction, FilterOrderProduct,
 
 
-    
 
 
 
 
 
-    
+
+
 
   }
 
-  return(
+  return (
     <AllDataContext.Provider value={contextData}>
       {children}
     </AllDataContext.Provider>

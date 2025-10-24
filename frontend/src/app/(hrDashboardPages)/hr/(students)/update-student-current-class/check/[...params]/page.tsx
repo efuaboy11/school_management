@@ -220,7 +220,7 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
 
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/update-student-current-class/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/update-student-current-class/`, {
         method: 'POST',
         body: formData,
         headers: {
@@ -267,7 +267,7 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
 
 
   const StudentInClassFunction = async () => {
-    const response = await fetch(`http://127.0.0.1:8000/api/student-in-class/?student_class=${classID}&student=${studentQuery}`, {
+    const response = await fetch(`http://school.amanilightequity.com/api/student-in-class/?student_class=${classID}&student=${studentQuery}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -305,7 +305,7 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
 
   const IndividualClass = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/student-class/${classID}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/student-class/${classID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

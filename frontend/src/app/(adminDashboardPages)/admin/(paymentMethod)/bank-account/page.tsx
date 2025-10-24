@@ -139,7 +139,7 @@ const BankAccount = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-bank-account/', {
+      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-bank-account/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -190,7 +190,7 @@ const BankAccount = () => {
     setDisableButton(true)
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/bank-account/${selectedDataId}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/bank-account/${selectedDataId}/`, {
         method: 'PATCH',
         body: JSON.stringify({
           is_active: !isActive,

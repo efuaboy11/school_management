@@ -154,7 +154,7 @@ const Product = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-product/', {
+      const response = await fetch('http://school.amanilightequity.com/api//delete-multiple-product/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -205,7 +205,7 @@ const Product = () => {
     setDisableButton(true)
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/product/${selectedDataId}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api//product/${selectedDataId}/`, {
         method: 'PATCH',
         body: JSON.stringify({
           is_active: !isProductActive,

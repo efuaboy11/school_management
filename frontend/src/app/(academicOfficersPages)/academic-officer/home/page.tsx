@@ -40,9 +40,9 @@ const TeacherHome = () => {
 
   } = useContext(AuthContext)!;
 
-  const UserDetailsFunction = async () =>{
-    try{
-      const response = await fetch(`http://127.0.0.1:8000/api/staff/${authTokens?.user_id}/`, {
+  const UserDetailsFunction = async () => {
+    try {
+      const response = await fetch(`http://school.amanilightequity.com/api/staff/${authTokens?.user_id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -52,24 +52,24 @@ const TeacherHome = () => {
       })
       const data = await response.json()
 
-      if(response.ok){
+      if (response.ok) {
         setUserDetails(data)
       }
-    }catch{
+    } catch {
       console.log('error')
     }
 
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     SubjectFunction()
     UserDetailsFunction()
     StaffNotificationFunction()
 
-    
+
   }, [])
 
-  
+
 
   // useEffect(() =>{
   //   // const updateGreeting = () =>{
@@ -170,54 +170,54 @@ const TeacherHome = () => {
                       </div>
 
                       {subjectLoader ? (
-                      <div className="recent-assignment-submission-spinner">
-                        <div className="site-content-loader"></div>
-                      </div>
-                    ) : (
-                      <div>
+                        <div className="recent-assignment-submission-spinner">
+                          <div className="site-content-loader"></div>
+                        </div>
+                      ) : (
+                        <div>
 
-                        {recentSubject.length > 0 ? (
-                          <div className='light-text dahboard-table non-wrap-text scroll-bar'>
-                          <table className='overflow-auto'>
-                            <thead>
-                              <tr className='sm-text'>
-                                <th className="py-2">Subject name</th>
-                                <th className="">Section</th>
-                                <th className="">Date Created</th>                    
-                              </tr>
-                            </thead>
+                          {recentSubject.length > 0 ? (
+                            <div className='light-text dahboard-table non-wrap-text scroll-bar'>
+                              <table className='overflow-auto'>
+                                <thead>
+                                  <tr className='sm-text'>
+                                    <th className="py-2">Subject name</th>
+                                    <th className="">Section</th>
+                                    <th className="">Date Created</th>
+                                  </tr>
+                                </thead>
 
-                            <tbody>
-                              {recentSubject.map((data) =>(
-                                <tr key={data.id}>
-                                  <td className="py-2">{formatName(data.name)}</td>
-                                  <td>{formatName(data.sections)}</td>
-                                  <td>{formatDate(data.created_at)}</td>
-                                </tr>
-                              ))}
-
-                              
-                            </tbody>
-
-                          </table>
-                          </div>
-
-                        ): (
-                          <div className='light-text recent-assignment-submission-spinner text-center'>
-                            <i className="ri-error-warning-line"></i>
-                            <p>No Subject created.</p>
-                          </div>
-                        )} 
+                                <tbody>
+                                  {recentSubject.map((data) => (
+                                    <tr key={data.id}>
+                                      <td className="py-2">{formatName(data.name)}</td>
+                                      <td>{formatName(data.sections)}</td>
+                                      <td>{formatDate(data.created_at)}</td>
+                                    </tr>
+                                  ))}
 
 
+                                </tbody>
 
-                        
-                      </div>
-                    )}
+                              </table>
+                            </div>
+
+                          ) : (
+                            <div className='light-text recent-assignment-submission-spinner text-center'>
+                              <i className="ri-error-warning-line"></i>
+                              <p>No Subject created.</p>
+                            </div>
+                          )}
 
 
 
-                      
+
+                        </div>
+                      )}
+
+
+
+
                     </div>
                   </div>
                 </div>
@@ -241,7 +241,7 @@ const TeacherHome = () => {
                             <div key={data.id}>
                               <div>
                                 <p className="pb-3 sm-text d-flex justify-content-end support-text">{formateDateTime(data.date)}</p>
-                                
+
                                 <p className='sm-text'><span className="light-text">Subject:</span> {formatName(data.subject)}</p>
                                 <p className='light-text sm-text'>{truncateText(data.text, 15)}</p>
                               </div>
@@ -254,20 +254,20 @@ const TeacherHome = () => {
                           </div>
                         </div>
 
-                      ): (
+                      ) : (
                         <div className='light-text recent-notification-spinner text-center'>
                           <i className="ri-error-warning-line"></i>
                           <p>No recent notificaton.</p>
                         </div>
-                      )} 
+                      )}
 
 
 
-                      
+
                     </div>
                   )}
 
-                  
+
                 </div>
               </div>
 
@@ -290,33 +290,33 @@ const TeacherHome = () => {
                       <div className="d-flex align-items-center height-100">
                         <Link href='/academic-officer/contact-us' className="site-inverse-btn px-4 py-2 Link">Get Support Now</Link>
                       </div>
-                      
+
                     </div>
                   </div>
                 </div>
               </div>
 
 
-              
-              
 
 
-              
+
+
+
             </div>
           </section>
         </div>
       ) : (
         <div className="mt-5 pt-5">
-            <div className="d-flex justify-content-center align-items-center">
-              <div className="book-loader">
-                <div className="book red"></div>
-                <div className="book blue"></div>
-                <div className="book green"></div>
-              </div>
+          <div className="d-flex justify-content-center align-items-center">
+            <div className="book-loader">
+              <div className="book red"></div>
+              <div className="book blue"></div>
+              <div className="book green"></div>
             </div>
           </div>
+        </div>
       )}
-       
+
     </div>
   )
 }

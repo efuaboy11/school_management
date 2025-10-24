@@ -11,27 +11,27 @@ const CreateClassTImetable = () => {
   const [studentClass, setStudentClass] = useState('')
   const [file, setFile] = useState<File | null>(null)
 
-    const [hasMounted, setHasMounted] = useState(false);
-  
-    useEffect(() => {
-      setHasMounted(true);
-    }, []);
+  const [hasMounted, setHasMounted] = useState(false);
 
-  const { 
-  
+  useEffect(() => {
+    setHasMounted(true);
+  }, []);
+
+  const {
+
     authTokens,
-  
+
     loader,
     setLoader,
     setDisableButton,
-  
+
     setMessage,
     showAlert,
     setIsSuccess,
-  
-    
-  
-  
+
+
+
+
   } = useContext(AuthContext)!
 
 
@@ -43,8 +43,8 @@ const CreateClassTImetable = () => {
     StudentClassFunction,
   } = useContext(AllDataContext)!;
 
-  const {theme} = useContext(ThemeContext)!;
- 
+  const { theme } = useContext(ThemeContext)!;
+
 
 
   const {
@@ -54,12 +54,12 @@ const CreateClassTImetable = () => {
 
 
 
-  const handleFile = (event:any) => {
+  const handleFile = (event: any) => {
     if (event.target.files.length > 0) {
       const file = event.target.files[0];
-      setFile(file); 
+      setFile(file);
     } else {
-      setFile(null); 
+      setFile(null);
     }
   };
 
@@ -79,7 +79,7 @@ const CreateClassTImetable = () => {
   }));
 
 
-    const customStyles = {
+  const customStyles = {
     control: (provided: any, state: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#0d0d0d' : '#fff',
@@ -87,37 +87,37 @@ const CreateClassTImetable = () => {
       boxShadow: state.isFocused ? '0 0 0 4px rgba(120, 62, 188, 0.2)' : 'none',
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     menu: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#0d0d0d' : '#fff',
       border: '1px solid #ccc',
       zIndex: 999,
     }),
-  
+
     option: (provided: any, state: any) => {
       const isDark = theme === 'dark';
-  
+
       const backgroundColor = state.isSelected
         ? '#783ebc'
         : state.isFocused
-        ? isDark
-          ? '#1a1a1a' // hover in dark
-          : '#f0f0f0' // hover in light
-        : isDark
-        ? '#0d0d0d'
-        : '#fff';
-  
+          ? isDark
+            ? '#1a1a1a' // hover in dark
+            : '#f0f0f0' // hover in light
+          : isDark
+            ? '#0d0d0d'
+            : '#fff';
+
       const color = state.isSelected
         ? '#fff'
         : state.isFocused
-        ? isDark
-          ? '#fff'
-          : '#000'
-        : isDark
-        ? '#fff'
-        : '#000';
-  
+          ? isDark
+            ? '#fff'
+            : '#000'
+          : isDark
+            ? '#fff'
+            : '#000';
+
       return {
         ...provided,
         backgroundColor,
@@ -125,27 +125,27 @@ const CreateClassTImetable = () => {
         cursor: 'pointer',
       };
     },
-  
+
     singleValue: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     placeholder: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#aaa' : '#666',
     }),
-  
+
     input: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     dropdownIndicator: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     indicatorSeparator: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#444' : '#ccc',
@@ -155,12 +155,12 @@ const CreateClassTImetable = () => {
 
 
 
-  const onSubmit = (data: FormData, e:any) => {
+  const onSubmit = (data: FormData, e: any) => {
     CreatClassTimetable(e)
   }
 
 
-  const CreatClassTimetable = async(e:any) =>{
+  const CreatClassTimetable = async (e: any) => {
     e.preventDefault()
     setLoader(true)
     setDisableButton(true)
@@ -168,23 +168,23 @@ const CreateClassTImetable = () => {
     const formData = new FormData()
     formData.append('teacher', teacherName)
     formData.append('student_class', studentClass)
-    if(file){
-      formData.append('class_timetable', file)  
+    if (file) {
+      formData.append('class_timetable', file)
     }
 
 
 
-    try{
-      const response = await fetch(`http://127.0.0.1:8000/api/class-timetable/`, {
+    try {
+      const response = await fetch(`http://school.amanilightequity.com/api/class-timetable/`, {
         method: 'POST',
         body: formData,
-        headers:{
+        headers: {
           Authorization: `Bearer ${authTokens?.access}`
         }
       })
 
 
-      if(response.ok){
+      if (response.ok) {
         showAlert()
         setMessage('Class timetable created')
         setIsSuccess(true)
@@ -197,11 +197,11 @@ const CreateClassTImetable = () => {
 
 
 
-      }else{
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setDisableButton(false)
         setIsSuccess(false)
@@ -209,8 +209,8 @@ const CreateClassTImetable = () => {
         showAlert()
       }
 
-      
-    }catch(error){
+
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred.');
@@ -218,16 +218,16 @@ const CreateClassTImetable = () => {
       setIsSuccess(false)
       setLoader(false)
 
-    }  
+    }
   }
 
-  useEffect(() =>{
+  useEffect(() => {
     StudentClassFunction()
     TeacherFunction()
   }, [])
 
 
-  
+
 
 
 
@@ -275,11 +275,11 @@ const CreateClassTImetable = () => {
                         />
                       </div>
 
-                                  
+
 
                       <div className="col-lg-3 col-md-6">
                         <label htmlFor="cv" className="form-label">Timetable File</label>
-                        
+
                         <input
                           type="file"
                           id="cv"
@@ -298,21 +298,21 @@ const CreateClassTImetable = () => {
                           }
                         </label>
                       </div>
-                  
+
 
 
                       <div className="col-12 mt-4">
                         <button type='submit' className='site-btn px-4'>
-                          <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                          <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill pe-2"></i> Sumbit</span>
+                          <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                          <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill pe-2"></i> Sumbit</span>
                         </button>
-                    
+
                       </div>
                     </div>
 
                   </form>
                 )}
-  
+
               </div>
             </div>
           </div>

@@ -59,7 +59,7 @@ const IndivivdualProduct = ({ params }: { params: Promise<{ id: string }> }) => 
     }
   };
 
-  const { getRootProps, getInputProps} = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop: handleImgFile,
     accept: {
       'image/*': []
@@ -101,7 +101,7 @@ const IndivivdualProduct = ({ params }: { params: Promise<{ id: string }> }) => 
 
   const IndividualDetailsFunction = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/product/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/product/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -138,7 +138,7 @@ const IndivivdualProduct = ({ params }: { params: Promise<{ id: string }> }) => 
     setLoader(true)
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/product/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/product/${id}/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`
@@ -199,7 +199,7 @@ const IndivivdualProduct = ({ params }: { params: Promise<{ id: string }> }) => 
 
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/product/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/product/${id}/`, {
         method: 'PATCH',
         body: formData,
         headers: {

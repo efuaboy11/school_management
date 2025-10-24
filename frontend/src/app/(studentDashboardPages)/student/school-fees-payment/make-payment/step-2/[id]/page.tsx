@@ -101,7 +101,7 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
     return () => clearTimeout(timer);
   }
 
-  const { getRootProps, getInputProps} = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop: handleImgFile,
     accept: {
       'image/*': []
@@ -111,7 +111,7 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
 
   const IndividualPaymentFunction = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/payment-method/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/payment-method/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -137,7 +137,7 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
 
   const IndividualBankAccountFunction = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/bank-account/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/bank-account/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -181,7 +181,7 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
 
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/payment-school-fees/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/payment-school-fees/`, {
         method: 'POST',
         body: formData,
         headers: {
@@ -236,7 +236,7 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
 
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/initialize-payment/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/initialize-payment/`, {
         method: 'POST',
         body: JSON.stringify({
           email: studentData?.email,
@@ -284,7 +284,7 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
 
   const IndividualStudentFunction = async () => {
 
-    const response = await fetch(`http://127.0.0.1:8000/api/students/${authTokens?.user_id}`, {
+    const response = await fetch(`http://school.amanilightequity.com/api/students/${authTokens?.user_id}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

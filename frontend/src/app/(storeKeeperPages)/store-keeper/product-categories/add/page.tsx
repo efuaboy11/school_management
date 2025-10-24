@@ -7,22 +7,22 @@ const AddProductCategories = () => {
   const [categoryName, setCategoryName] = useState('')
   const [description, setDescription] = useState('')
 
-  const { 
-  
+  const {
+
     authTokens,
-  
+
     loader,
     setLoader,
     disableButton,
     setDisableButton,
-  
+
     setMessage,
     showAlert,
     setIsSuccess,
-  
-    
-  
-  
+
+
+
+
   } = useContext(AuthContext)!
 
 
@@ -32,15 +32,15 @@ const AddProductCategories = () => {
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<any>();
 
-  const onSubmit = (data: FormData, e:any) => {
+  const onSubmit = (data: FormData, e: any) => {
     CreatCategory(e)
   }
 
 
-  const CreatCategory = async(e:any) =>{
+  const CreatCategory = async (e: any) => {
     e.preventDefault()
     setLoader(true)
     setDisableButton(true)
@@ -51,17 +51,17 @@ const AddProductCategories = () => {
     formData.append('is_active', `${true}`)
 
 
-    try{
-      const response = await fetch(`http://127.0.0.1:8000/api/product-categories/`, {
+    try {
+      const response = await fetch(`http://school.amanilightequity.com/api/product-categories/`, {
         method: 'POST',
         body: formData,
-        headers:{
+        headers: {
           Authorization: `Bearer ${authTokens?.access}`
         }
       })
 
 
-      if(response.ok){
+      if (response.ok) {
         showAlert()
         setMessage('Product category created')
         setIsSuccess(true)
@@ -72,11 +72,11 @@ const AddProductCategories = () => {
 
 
 
-      }else{
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setDisableButton(false)
         setIsSuccess(false)
@@ -84,8 +84,8 @@ const AddProductCategories = () => {
         showAlert()
       }
 
-      
-    }catch(error){
+
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred.');
@@ -93,7 +93,7 @@ const AddProductCategories = () => {
       setIsSuccess(false)
       setLoader(false)
 
-    }  
+    }
   }
 
 
@@ -111,33 +111,33 @@ const AddProductCategories = () => {
               <div className="border-bottom1 text-center p-3">
                 <p>Create product category</p>
               </div>
-              
+
 
               <div className="p-3">
-                <form  onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="row g-3">
 
                     <div className="col-md-6">
                       <label htmlFor="phoneNumber" className="form-label">Category name <span className="text-danger">*</span></label>
-                      <input  className={`site-input ${errors.categoryName ? 'error-input' : ''}`} {...register('categoryName', {required: true})}  value={categoryName}  onChange={(e) => setCategoryName(e.target.value)}/>
+                      <input className={`site-input ${errors.categoryName ? 'error-input' : ''}`} {...register('categoryName', { required: true })} value={categoryName} onChange={(e) => setCategoryName(e.target.value)} />
                       {errors.categoryName && <p className="error-text">This field is required</p>}
                     </div>
-                    
-   
+
+
 
                     <div className="col-12">
                       <label htmlFor="" className='form-label'>Description</label>
-                      <textarea rows={6} className={`site-input ${errors.description ? 'error-input' : ''}`} {...register('description')}  value={description}  onChange={(e) => setDescription(e.target.value)}  placeholder='Description' />
+                      <textarea rows={6} className={`site-input ${errors.description ? 'error-input' : ''}`} {...register('description')} value={description} onChange={(e) => setDescription(e.target.value)} placeholder='Description' />
                     </div>
 
                     <div className="col-12">
                       <div className='mb-3'>
                         <button disabled={disableButton} type="submit" className={`Button site-btn px-3`}>
-                          <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                          <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
+                          <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                          <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
                         </button>
                       </div>
-                    
+
                     </div>
 
                   </div>

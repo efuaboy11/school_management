@@ -152,7 +152,7 @@ const ProductCategories = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-product-categories/', {
+      const response = await fetch('http://school.amanilightequity.com/api//delete-multiple-product-categories/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -204,7 +204,7 @@ const ProductCategories = () => {
     setDisableButton(true)
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/product-categories/${selectedDataId}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api//product-categories/${selectedDataId}/`, {
         method: 'PATCH',
         body: JSON.stringify({
           is_active: !isProductActive,

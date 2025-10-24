@@ -102,7 +102,7 @@ const AcademicDept = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-staff/', {
+      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-staff/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

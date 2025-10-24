@@ -16,7 +16,7 @@ const ChangePasswordPage = () => {
     setLoader,
     disableButton,
     setDisableButton,
-  
+
     setMessage,
     showAlert,
     setIsSuccess,
@@ -33,10 +33,10 @@ const ChangePasswordPage = () => {
 
     handlePasswordChange,
     handleUsernameChange,
-  
-    
-  
-  
+
+
+
+
   } = useContext(AuthContext)!
 
 
@@ -51,26 +51,26 @@ const ChangePasswordPage = () => {
 
   const [passwordChangeSuccess, setPasswordSuccess] = useState(false)
 
-  const toogleShowPassword = () =>{
+  const toogleShowPassword = () => {
     setShowPassword(!showPassword)
   }
 
 
- 
+
 
 
   const {
     register,
     handleSubmit,
-    formState: {errors},
+    formState: { errors },
   } = useForm<FormData>();
 
-  const onSubmit = (data: FormData, e:any) => {
+  const onSubmit = (data: FormData, e: any) => {
     ChangePassword(e)
   }
 
 
-  const ChangePassword = async(e:any) =>{
+  const ChangePassword = async (e: any) => {
     e.preventDefault()
     setLoader(true)
     setDisableButton(true)
@@ -78,22 +78,22 @@ const ChangePasswordPage = () => {
 
 
 
-    try{
-      const response = await fetch(`http://127.0.0.1:8000/api/change-admin-password/`, {
+    try {
+      const response = await fetch(`http://school.amanilightequity.com/api/change-admin-password/`, {
         method: 'POST',
         body: JSON.stringify({
           username: userDetails?.username,
           new_username: username,
           new_password: password
         }),
-        headers:{
+        headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${authTokens?.access}`
         }
       })
 
 
-      if(response.ok){
+      if (response.ok) {
         setPasswordSuccess(true)
         setLoader(false)
         setDisableButton(false)
@@ -106,11 +106,11 @@ const ChangePasswordPage = () => {
 
 
 
-      }else{
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setDisableButton(false)
         setIsSuccess(false)
@@ -118,8 +118,8 @@ const ChangePasswordPage = () => {
         showAlert()
       }
 
-      
-    }catch(error){
+
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred.');
@@ -127,13 +127,13 @@ const ChangePasswordPage = () => {
       setIsSuccess(false)
       setLoader(false)
 
-    }  
+    }
   }
 
-  
-  const UserDetailsFunction = async () =>{
-    try{
-      const response = await fetch(`http://127.0.0.1:8000/api/me/`, {
+
+  const UserDetailsFunction = async () => {
+    try {
+      const response = await fetch(`http://school.amanilightequity.com/api/me/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -143,11 +143,11 @@ const ChangePasswordPage = () => {
       })
       const data = await response.json()
 
-      if(response.ok){
+      if (response.ok) {
         setUserDetails(data)
-        console.log('data', data)      
+        console.log('data', data)
       }
-    }catch{
+    } catch {
       console.log('error')
     }
 
@@ -165,33 +165,33 @@ const ChangePasswordPage = () => {
       <div className="container-lg my-5 pt-2">
         <div className="row justify-content-center">
           {passwordChangeSuccess ? (
-            <div  className='col-lg-10'>
+            <div className='col-lg-10'>
               <div className="site-boxes border-radius-10px p-4">
                 <div className="d-flex justify-content-center">
                   <div>
 
 
                     <div className="d-flex justify-content-center width-100">
-                        <Image  src="/img/icon/good-icon.png" alt="Logo" width={130} height={120} />
+                      <Image src="/img/icon/good-icon.png" alt="Logo" width={130} height={120} />
                       {/* <img src="/img/icon/good-icon.png" alt='' width='150px'/> */}
                     </div>
-                    
+
                     <div className="text-center">
                       <p className='lg-text font-bold auth-header pb-4 primary-text '>Successful</p>
                       <p className="light-text">Hurrayy🥳🥳!!! Your username and password has be changed.</p>
                       <p className="light-text xsm-text italic-text">Note: Due to security measures you will be logged out shortly. You will be required to log in again.</p>
                     </div>
-                      <div className="row justify-content-center pt-4">
-                        <div className="col-lg-6 col-md-9 col-sm-10">
-                          <Link href='/login' className="site-btn width-100 Link">Login</Link>
-                        </div>
+                    <div className="row justify-content-center pt-4">
+                      <div className="col-lg-6 col-md-9 col-sm-10">
+                        <Link href='/login' className="site-btn width-100 Link">Login</Link>
                       </div>
+                    </div>
                   </div>
-                  
+
 
                 </div>
               </div>
-              
+
             </div>
           ) : (
             <div className="col-lg-6 col-sm-8">
@@ -201,18 +201,18 @@ const ChangePasswordPage = () => {
                 </div>
 
                 <div className="p-3">
-                  <form  onSubmit={handleSubmit(onSubmit)}>
+                  <form onSubmit={handleSubmit(onSubmit)}>
                     <div className="row g-3">
 
                       <div className="col-12">
                         <label htmlFor="phoneNumber" className="form-label">Username <span className="text-danger">*</span></label>
-                        <input type='text'  className={`site-input`} disabled value={userDetails?.username || ''}/>   
+                        <input type='text' className={`site-input`} disabled value={userDetails?.username || ''} />
                       </div>
 
 
                       <div className="col-12">
                         <label className="form-label">New Username</label>
-                        <input 
+                        <input
                           type="text"
                           className={`${errors.username ? 'error-input' : ''} site-input`}
                           {...register("username", {
@@ -230,7 +230,7 @@ const ChangePasswordPage = () => {
                           onChange={handleUsernameChange}
                           placeholder="Enter your new username"
                         />
-                        {username &&(
+                        {username && (
                           <div>
                             <div>
                               <div className="d-flex">
@@ -248,7 +248,7 @@ const ChangePasswordPage = () => {
                               </div>
                             </div>
                           </div>
-                          )
+                        )
                         }
                         {errors.username && <p className="error-text xsm-text">{errors.username.message}</p>}
                       </div>
@@ -256,9 +256,9 @@ const ChangePasswordPage = () => {
                       <div className="col-12">
                         <label className="form-label">New Password</label>
                         <div className="password-container">
-                          <input 
+                          <input
                             type={showPassword ? "text" : "password"}
-                            className={`site-input password-input ${errors.password ? 'error-input' : ''}`} 
+                            className={`site-input password-input ${errors.password ? 'error-input' : ''}`}
                             {...register("password", {
                               required: "Password is required",
                               minLength: {
@@ -278,7 +278,7 @@ const ChangePasswordPage = () => {
                             <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} onClick={toogleShowPassword} />
                           </span>
                         </div>
-                        {password &&(
+                        {password && (
                           <div>
                             <div className="d-flex">
                               <i className={passwordValidation.minLength ? 'ri-check-fill success-text' : 'ri-close-line error-text'}></i>
@@ -302,7 +302,7 @@ const ChangePasswordPage = () => {
                             </div>
                           </div>
                         )}
-                      
+
 
                         {errors.password && <p className="error-text xsm-text">{errors.password.message}</p>}
                       </div>
@@ -310,11 +310,11 @@ const ChangePasswordPage = () => {
                       <div className="col-12">
                         <div className='mb-3'>
                           <button disabled={disableButton} type="submit" className={`Button site-btn px-3`}>
-                            <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                            <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
+                            <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                            <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
                           </button>
                         </div>
-                      
+
                       </div>
 
                     </div>

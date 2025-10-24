@@ -7,22 +7,22 @@ const AddPaymentMethod = () => {
   const [paymentMethodName, setPaymentMethodName] = useState('')
   const [description, setDescription] = useState('')
 
-  const { 
-  
+  const {
+
     authTokens,
-  
+
     loader,
     setLoader,
     disableButton,
     setDisableButton,
-  
+
     setMessage,
     showAlert,
     setIsSuccess,
-  
-    
-  
-  
+
+
+
+
   } = useContext(AuthContext)!
 
 
@@ -30,15 +30,15 @@ const AddPaymentMethod = () => {
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: { errors, isValid },
   } = useForm<any>();
 
-  const onSubmit = (data: FormData, e:any) => {
+  const onSubmit = (data: FormData, e: any) => {
     CreatPaymentMethod(e)
   }
 
 
-  const CreatPaymentMethod = async(e:any) =>{
+  const CreatPaymentMethod = async (e: any) => {
     e.preventDefault()
     setLoader(true)
     setDisableButton(true)
@@ -48,17 +48,17 @@ const AddPaymentMethod = () => {
     formData.append('description', description)
 
 
-    try{
-      const response = await fetch(`http://127.0.0.1:8000/api/payment-method/`, {
+    try {
+      const response = await fetch(`http://school.amanilightequity.com/api/payment-method/`, {
         method: 'POST',
         body: formData,
-        headers:{
+        headers: {
           Authorization: `Bearer ${authTokens?.access}`
         }
       })
 
 
-      if(response.ok){
+      if (response.ok) {
         showAlert()
         setMessage('Payment method created')
         setIsSuccess(true)
@@ -69,11 +69,11 @@ const AddPaymentMethod = () => {
 
 
 
-      }else{
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
         setMessage(errorMessages)
         setDisableButton(false)
         setIsSuccess(false)
@@ -81,8 +81,8 @@ const AddPaymentMethod = () => {
         showAlert()
       }
 
-      
-    }catch(error){
+
+    } catch (error) {
       console.log(error)
       showAlert()
       setMessage('An unexpected error occurred.');
@@ -90,11 +90,11 @@ const AddPaymentMethod = () => {
       setIsSuccess(false)
       setLoader(false)
 
-    }  
+    }
   }
 
 
-  
+
 
 
 
@@ -109,29 +109,29 @@ const AddPaymentMethod = () => {
               </div>
 
               <div className="p-3">
-                <form  onSubmit={handleSubmit(onSubmit)}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                   <div className="row g-3">
 
                     <div className="col-md-6">
                       <label htmlFor="phoneNumber" className="form-label">Payment method name <span className="text-danger">*</span></label>
-                      <input   className={`site-input ${errors.paymentMethodName ? 'error-input' : ''}`} {...register('paymentMethodName', {required: true})}  value={paymentMethodName}  onChange={(e) => setPaymentMethodName(e.target.value)}/>   
+                      <input className={`site-input ${errors.paymentMethodName ? 'error-input' : ''}`} {...register('paymentMethodName', { required: true })} value={paymentMethodName} onChange={(e) => setPaymentMethodName(e.target.value)} />
                       {errors.paymentMethodName && <p className="error-text">This field is required</p>}
                     </div>
-                     
+
 
                     <div className="col-12">
                       <label htmlFor="" className='form-label'>Description</label>
-                      <textarea rows={6} className={`site-input ${errors.description ? 'error-input' : ''}`} {...register('description')}  value={description}  onChange={(e) => setDescription(e.target.value)}  placeholder='Description' />
+                      <textarea rows={6} className={`site-input ${errors.description ? 'error-input' : ''}`} {...register('description')} value={description} onChange={(e) => setDescription(e.target.value)} placeholder='Description' />
                     </div>
 
                     <div className="col-12">
                       <div className='mb-3'>
                         <button disabled={disableButton} type="submit" className={`Button site-btn px-3`}>
-                          <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                          <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
+                          <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                          <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-send-plane-fill me-2"></i> Submit</span>
                         </button>
                       </div>
-                    
+
                     </div>
 
                   </div>

@@ -163,7 +163,7 @@ const VerifyDetails = () => {
 
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/get-school-fees-amount/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api//get-school-fees-amount/`, {
         method: 'POST',
         body: formData,
         headers: {

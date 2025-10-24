@@ -13,8 +13,8 @@ import { DownloadLink } from '@/components/downloadLink'
 
 const EResultPage = () => {
 
-  const { theme} = useContext(ThemeContext)!
-  ;
+  const { theme } = useContext(ThemeContext)!
+    ;
   const {
     eResultCount,
     eResultData,
@@ -23,7 +23,7 @@ const EResultPage = () => {
 
     eResultSearch,
     setEResultSearch,
-    EResultFunction, 
+    EResultFunction,
     FilterEResult,
 
 
@@ -56,7 +56,7 @@ const EResultPage = () => {
     authTokens,
 
     formatName,
-  
+
     loader,
     setLoader,
     disableButton,
@@ -68,10 +68,10 @@ const EResultPage = () => {
 
   } = useContext(AuthContext)!;
 
-  useEffect(() =>{
-    if(!eResultSearch){
+  useEffect(() => {
+    if (!eResultSearch) {
       EResultFunction()
-    }else if(eResultSearch){
+    } else if (eResultSearch) {
       const debouncedSearch = debounce(() => {
         FilterEResult();
       }, 300);
@@ -80,33 +80,33 @@ const EResultPage = () => {
       return () => {
         debouncedSearch.cancel();
       };
-      
+
     }
-    
+
   }, [eResultSearch])
 
-    useEffect(() =>{
-      StudentClassFunction()
-      TermFunction()
-      SessionFunction()
-      StudentFunction()
-    }, [])
+  useEffect(() => {
+    StudentClassFunction()
+    TermFunction()
+    SessionFunction()
+    StudentFunction()
+  }, [])
 
-    useEffect(() =>{
-      EResultFunction()
+  useEffect(() => {
+    EResultFunction()
 
-    }, [studentClassQuery, sessionQuery, termQuery, studentQuery])
-  
-  
+  }, [studentClassQuery, sessionQuery, termQuery, studentQuery])
+
+
   const [filterOptions, setOptions] = useState(false)
 
 
 
 
-  const toggleFilterOptions = () =>{
+  const toggleFilterOptions = () => {
     setOptions(!filterOptions)
   }
-  
+
 
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
@@ -137,7 +137,7 @@ const EResultPage = () => {
     }
   }
 
-  
+
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
@@ -157,7 +157,7 @@ const EResultPage = () => {
     value: data.id,
     label: `${data.name}`
   }));
-  
+
 
 
   const customStyles = {
@@ -168,37 +168,37 @@ const EResultPage = () => {
       boxShadow: state.isFocused ? '0 0 0 4px rgba(120, 62, 188, 0.2)' : 'none',
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     menu: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#0d0d0d' : '#fff',
       border: '1px solid #ccc',
       zIndex: 999,
     }),
-  
+
     option: (provided: any, state: any) => {
       const isDark = theme === 'dark';
-  
+
       const backgroundColor = state.isSelected
         ? '#783ebc'
         : state.isFocused
-        ? isDark
-          ? '#1a1a1a' // hover in dark
-          : '#f0f0f0' // hover in light
-        : isDark
-        ? '#0d0d0d'
-        : '#fff';
-  
+          ? isDark
+            ? '#1a1a1a' // hover in dark
+            : '#f0f0f0' // hover in light
+          : isDark
+            ? '#0d0d0d'
+            : '#fff';
+
       const color = state.isSelected
         ? '#fff'
         : state.isFocused
-        ? isDark
-          ? '#fff'
-          : '#000'
-        : isDark
-        ? '#fff'
-        : '#000';
-  
+          ? isDark
+            ? '#fff'
+            : '#000'
+          : isDark
+            ? '#fff'
+            : '#000';
+
       return {
         ...provided,
         backgroundColor,
@@ -206,27 +206,27 @@ const EResultPage = () => {
         cursor: 'pointer',
       };
     },
-  
+
     singleValue: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     placeholder: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#aaa' : '#666',
     }),
-  
+
     input: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     dropdownIndicator: (provided: any) => ({
       ...provided,
       color: theme === 'dark' ? '#fff' : '#000',
     }),
-  
+
     indicatorSeparator: (provided: any) => ({
       ...provided,
       backgroundColor: theme === 'dark' ? '#444' : '#ccc',
@@ -235,12 +235,12 @@ const EResultPage = () => {
 
 
 
-  const deleteFunction = async () =>{
+  const deleteFunction = async () => {
     setDisableButton(true)
     setLoader(true)
 
-    try{
-      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-e-result/', {
+    try {
+      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-e-result/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -252,7 +252,7 @@ const EResultPage = () => {
 
       })
 
-      if(response.ok){
+      if (response.ok) {
         setLoader(false)
         setDisableButton(false)
         setEResultData(eResultData.filter(dat => dat.id !== selectedIDs))
@@ -262,13 +262,13 @@ const EResultPage = () => {
         EResultFunction()
         showAlert()
         setIsSuccess(true)
-        
-          
-      }else {
+
+
+      } else {
         const errorData = await response.json()
         const errorMessages = Object.values(errorData)
-        .flat()
-        .join(', ');
+          .flat()
+          .join(', ');
 
         setLoader(false)
         setDisableButton(false)
@@ -277,7 +277,7 @@ const EResultPage = () => {
         setIsSuccess(false)
 
       }
-    }catch{
+    } catch {
       setLoader(false)
       setDisableButton(false)
       setMessage("An error occurred. Please try again.")
@@ -286,7 +286,7 @@ const EResultPage = () => {
     }
   }
 
- 
+
 
   useEffect(() => {
     if (showDeleteModal) {
@@ -303,31 +303,31 @@ const EResultPage = () => {
       {showDeleteModal && (
         <section className={` ${showDeleteModal ? 'overlay-background' : ''}`}>
           <div className='container-lg'>
-              
+
             <div className=" row justify-content-center align-center2 height-90vh">
 
-                <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
-                  <div className="site-modal-conatiner">
-                    <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
-                      <div className="d-flex justify-content-center text-center">
-                        <div>
-                          <Image src="/img/icon/warning.png" alt="empty" width={100} height={100} />
-                          <p className='md-text mt-3'>Are you sure?</p>
-                          <p className="light-text">This action cannot be undone. {selectedIDs.length} selected {selectedIDs.length === 1 ? 'data entry' : 'data entries'} will be deleted.</p>
-                          <div className='pt-4'>
-                            <button className="site-delete-btn px-3 me-2 width-100 mb-4" onClick={deleteFunction} disabled={disableButton}>
-                              <span className={`${loader ? 'site-submit-spinner': ''}`}></span>
-                              <span className={`${loader ? 'site-submit-btn-visiblity': ''}`}><i className="ri-delete-bin-line pe-2"></i> Delete</span>
-                            </button>
-                            <button onClick={handleCloseDeleteModal} className="site-btn site-cancel-btn px-3 width-100"><i className="ri-close-circle-line pe-2"></i>Cancel</button>
-                          </div>
+              <div className="col-xl-5 col-lg-6 col-md-8 col-sm-10 col-12">
+                <div className="site-modal-conatiner">
+                  <div className={`site-modal-content scroll-bar  ${animateModal ? 'show-modal' : 'hide-modal'}`}>
+                    <div className="d-flex justify-content-center text-center">
+                      <div>
+                        <Image src="/img/icon/warning.png" alt="empty" width={100} height={100} />
+                        <p className='md-text mt-3'>Are you sure?</p>
+                        <p className="light-text">This action cannot be undone. {selectedIDs.length} selected {selectedIDs.length === 1 ? 'data entry' : 'data entries'} will be deleted.</p>
+                        <div className='pt-4'>
+                          <button className="site-delete-btn px-3 me-2 width-100 mb-4" onClick={deleteFunction} disabled={disableButton}>
+                            <span className={`${loader ? 'site-submit-spinner' : ''}`}></span>
+                            <span className={`${loader ? 'site-submit-btn-visiblity' : ''}`}><i className="ri-delete-bin-line pe-2"></i> Delete</span>
+                          </button>
+                          <button onClick={handleCloseDeleteModal} className="site-btn site-cancel-btn px-3 width-100"><i className="ri-close-circle-line pe-2"></i>Cancel</button>
                         </div>
                       </div>
-                    
                     </div>
+
                   </div>
                 </div>
-            
+              </div>
+
 
             </div>
 
@@ -339,7 +339,7 @@ const EResultPage = () => {
           <div>
             <p className="md-text">Student Result</p>
             <p className="light-text pb-3">Total of {eResultCount} student results available</p>
-         </div>
+          </div>
 
           <div className='d-flex mb-4'>
             <Link href='/admin/upload-e-result' className="site-btn px-3 Link"><i className="ri-send-plane-fill pe-2"></i>Upload Result</Link>
@@ -350,17 +350,17 @@ const EResultPage = () => {
 
           <div>
             <div className="d-flex align-items-center">
-              <input type="text" className="site-search-input" placeholder="Search" value={eResultSearch} onChange={(e) => setEResultSearch(e.target.value)}/>
+              <input type="text" className="site-search-input" placeholder="Search" value={eResultSearch} onChange={(e) => setEResultSearch(e.target.value)} />
               <button className="site-btn px-3 ms-2"><i className="ri-search-line"></i></button>
             </div>
           </div>
         </div>
-        
+
         <div className='pt-5'>
           <div className='d-flex'>
             <p className='pe-2 light-text'>Filter</p>
             <label className="site-switch">
-              <input type="checkbox" onChange={toggleFilterOptions}/>
+              <input type="checkbox" onChange={toggleFilterOptions} />
               <span className="site-switch-slider"></span>
             </label>
 
@@ -398,9 +398,9 @@ const EResultPage = () => {
 
                 <div className="me-3 mb-3">
                   <label htmlFor="" className='form-label light-text'>Filter by term</label>
-                  <select   className={`site-input`}   value={termQuery}  onChange={(e) => setTermQuery(e.target.value)}>
+                  <select className={`site-input`} value={termQuery} onChange={(e) => setTermQuery(e.target.value)}>
                     <option value="">Select Term</option>
-                    {termData.map((data:any) => (
+                    {termData.map((data: any) => (
                       <option key={data.id} value={data.id}>{data.name}</option>
                     ))}
                   </select>
@@ -408,14 +408,14 @@ const EResultPage = () => {
 
                 <div className="me-3 mb-3">
                   <label htmlFor="" className='form-label light-text'>Filter by session</label>
-                  <select   className={`site-input`}   value={sessionQuery}  onChange={(e) => setSessionQuery(e.target.value)}>
+                  <select className={`site-input`} value={sessionQuery} onChange={(e) => setSessionQuery(e.target.value)}>
                     <option value="">Select Session</option>
-                    {sessionData.map((data:any) => (
+                    {sessionData.map((data: any) => (
                       <option key={data.id} value={data.id}>{data.name}</option>
                     ))}
                   </select>
                 </div>
-      
+
               </div>
             </div>
           )}
@@ -440,12 +440,12 @@ const EResultPage = () => {
               {currentItems.length > 0 ? (
                 <div>
                   {selectedIDs.length > 0 ? (
-                          <div className='pb-2'>
-                            <button onClick={handleShowDeleteModal}  className='site-delete-btn px-3'><i className="ri-delete-bin-line me-2"></i>Delete</button>
-                          </div>
-                    ): (
-                      <div></div>
-                    )
+                    <div className='pb-2'>
+                      <button onClick={handleShowDeleteModal} className='site-delete-btn px-3'><i className="ri-delete-bin-line me-2"></i>Delete</button>
+                    </div>
+                  ) : (
+                    <div></div>
+                  )
                   }
                   <div className='site-boxes  site-border border-radius-5px dahboard-table non-wrap-text scroll-bar'>
                     <table className='overflow-auto light-text'>
@@ -453,11 +453,11 @@ const EResultPage = () => {
                         <tr>
                           <th className='py-2'>
                             <label className="custom-checkbox cursor-pointer">
-                            <input
-                              type="checkbox"
-                              checked={selectedIDs.length === eResultData.length && eResultData.length > 0}
-                              onChange={handleSelectAll}
-                            />
+                              <input
+                                type="checkbox"
+                                checked={selectedIDs.length === eResultData.length && eResultData.length > 0}
+                                onChange={handleSelectAll}
+                              />
                               <span className="checkmark"></span>
                             </label>
                           </th>
@@ -475,14 +475,14 @@ const EResultPage = () => {
                           currentItems.map((data) => (
                             <tr key={data.id}>
                               <td className='py-3'>
-                                  <label className="custom-checkbox cursor-pointer">
-                                    <input
-                                      type="checkbox"
-                                      checked={selectedIDs.includes(data.id)}
-                                      onChange={() => handleCheckboxChange(data.id)}
-                                    />
-                                    <span className="checkmark"></span>
-                                  </label>
+                                <label className="custom-checkbox cursor-pointer">
+                                  <input
+                                    type="checkbox"
+                                    checked={selectedIDs.includes(data.id)}
+                                    onChange={() => handleCheckboxChange(data.id)}
+                                  />
+                                  <span className="checkmark"></span>
+                                </label>
                               </td>
                               <td className='py-3'>
                                 {formatName(data.student_name.first_name)}
@@ -519,29 +519,29 @@ const EResultPage = () => {
                   </div>
 
                   {eResultData.length > 10 && (
-                      <div className="col-12 mb-4 mt-3">
-                        <Stack spacing={2} alignItems="end">
-                          <Pagination
-                            count={Math.ceil(eResultData.length / itemsPerPage)}
-                            page={page}
-                            onChange={handleChange}
-                            sx={{
-                              '& .MuiPaginationItem-root': {
-                                color: '#737b7d', // color of all numbers
-                              },
-                              '& .MuiPaginationItem-root.Mui-selected': {
-                                backgroundColor: '#783ebc', // Your custom color
-                                color: '#fff',
-                              },
-                            }}
-                          />
-                        </Stack>
-                      </div>
-                    )}
+                    <div className="col-12 mb-4 mt-3">
+                      <Stack spacing={2} alignItems="end">
+                        <Pagination
+                          count={Math.ceil(eResultData.length / itemsPerPage)}
+                          page={page}
+                          onChange={handleChange}
+                          sx={{
+                            '& .MuiPaginationItem-root': {
+                              color: '#737b7d', // color of all numbers
+                            },
+                            '& .MuiPaginationItem-root.Mui-selected': {
+                              backgroundColor: '#783ebc', // Your custom color
+                              color: '#fff',
+                            },
+                          }}
+                        />
+                      </Stack>
+                    </div>
+                  )}
                 </div>
 
-              
-              ): (
+
+              ) : (
                 <div className="col-12 ">
                   <div className='site-boxes text-center pb-5 d-flex justify-content-center align-items-center  mt-5 pt-5'>
                     <div>
@@ -558,7 +558,7 @@ const EResultPage = () => {
           )}
 
 
-          
+
         </div>
       </div>
     </div>

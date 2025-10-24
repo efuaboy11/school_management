@@ -80,7 +80,7 @@ const IndivivdualAssignment = ({ params }: { params: Promise<{ id: string }> }) 
     }
   };
 
-  const { getRootProps, getInputProps} = useDropzone({
+  const { getRootProps, getInputProps } = useDropzone({
     onDrop: handleImgFile,
     accept: {
       'image/*': []
@@ -218,7 +218,7 @@ const IndivivdualAssignment = ({ params }: { params: Promise<{ id: string }> }) 
 
   const IndividualDetailsFunction = async () => {
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/assignment-submission/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/assignment-submission/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -253,7 +253,7 @@ const IndivivdualAssignment = ({ params }: { params: Promise<{ id: string }> }) 
     setLoader(true)
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/assignment-submission/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/assignment-submission/${id}/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`
@@ -313,7 +313,7 @@ const IndivivdualAssignment = ({ params }: { params: Promise<{ id: string }> }) 
 
 
     try {
-      const response = await fetch(`http://127.0.0.1:8000/api/assignment-submission/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/assignment-submission/${id}/`, {
         method: 'PATCH',
         body: formData,
         headers: {

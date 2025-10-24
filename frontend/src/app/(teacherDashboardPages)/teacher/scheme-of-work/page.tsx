@@ -13,7 +13,7 @@ import { DownloadLink } from '@/components/downloadLink'
 
 const SchemeOfWorkPage = () => {
 
-  const { theme} = useContext(ThemeContext)!
+  const { theme } = useContext(ThemeContext)!
     ;
   const {
     schemeOfWorkCount,
@@ -234,7 +234,7 @@ const SchemeOfWorkPage = () => {
     setLoader(true)
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/api/delete-multiple-scheme-of-work/', {
+      const response = await fetch('http://school.amanilightequity.com/api/delete-multiple-scheme-of-work/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
