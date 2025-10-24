@@ -34,6 +34,7 @@ ALLOWED_HOSTS = [
     "127.0.0.1",
     "localhost",
     "school.amanilightequity.com",
+    "school-management-iota-six.vercel.app"
 ]
 
 AUTH_USER_MODEL = 'base.Users'  # Replace 'yourapp' with the actual app name where Users is defined
@@ -76,6 +77,7 @@ CORS_ALLOW_CREDENTIALS = True
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:3000",
     "http://school.amanilightequity.com",
+    "https://school-management-iota-six.vercel.app",
 ]
 
 
