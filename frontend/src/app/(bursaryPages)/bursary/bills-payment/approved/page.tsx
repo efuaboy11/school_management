@@ -33,6 +33,7 @@ const ApproveBills = () => {
 
 
     formatDate,
+    formatCurrency,
 
     setMessage,
     showAlert,

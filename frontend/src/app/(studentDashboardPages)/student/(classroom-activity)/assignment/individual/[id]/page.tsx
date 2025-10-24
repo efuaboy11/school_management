@@ -1,44 +1,26 @@
 "use client"
 import AuthContext from '@/context/AuthContext'
 import React, { use, useContext, useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form'
 import Image from 'next/image'
 
 import AllDataContext from '@/context/AllData';
 import ThemeContext from '@/context/ThemeContext';
-import Select from 'react-select';
-import { DownloadLink } from '@/components/downloadLink';
 
 
 const IndivivdualAssignment = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params)
 
   const {
-    truncateText,
     authTokens,
 
     formatDate,
     formatName,
-
-
-    loader,
-    setLoader,
-    disableButton,
-    setDisableButton,
+    formateDateTime,
     handleDownload,
-
-    setMessage,
-    showAlert,
-    setIsSuccess,
 
   } = useContext(AuthContext)!;
 
   const {
-    teacherData,
-    studentClassData,
-    subjectData,
-
     TeacherFunction,
     StudentClassFunction,
     SubjectFunction

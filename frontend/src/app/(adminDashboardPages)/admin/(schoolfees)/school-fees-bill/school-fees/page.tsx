@@ -10,13 +10,12 @@ import { debounce } from "lodash";
 
 const SchoolFees = () => {
 
-
-
   const {
     schoolFeesCount,
     schoolFeesData,
     setSchoolFeesData,
     schoolFeesLoader,
+
 
     schoolFeesSearch,
     setSchoolFeesSearch,
@@ -47,7 +46,7 @@ const SchoolFees = () => {
   const {
     truncateText,
     authTokens,
-    formatDate,
+    formatCurrency,
     formatName,
 
 
@@ -55,6 +54,7 @@ const SchoolFees = () => {
     setLoader,
     disableButton,
     setDisableButton,
+    
 
     setMessage,
     showAlert,

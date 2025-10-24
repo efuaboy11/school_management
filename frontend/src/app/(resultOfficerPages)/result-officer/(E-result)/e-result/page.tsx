@@ -13,8 +13,7 @@ import { DownloadLink } from '@/components/downloadLink'
 
 const EResultPage = () => {
 
-  const { theme} = useContext(ThemeContext)!
-    ;
+  const { theme} = useContext(ThemeContext)!;
   const {
     eResultCount,
     eResultData,
@@ -52,10 +51,7 @@ const EResultPage = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
     authTokens,
-
-    formatDate,
     formatName,
 
 

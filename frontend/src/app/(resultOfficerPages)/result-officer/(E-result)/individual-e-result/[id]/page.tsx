@@ -8,17 +8,14 @@ import Image from 'next/image'
 import AllDataContext from '@/context/AllData';
 import ThemeContext from '@/context/ThemeContext';
 import Select from 'react-select';
-import { DownloadLink } from '@/components/downloadLink';
 
 
 const IndividualEResult = ({ params }: { params: Promise<any> }) => {
   const { id } = use(params)
 
   const {
-    truncateText,
     authTokens,
-
-    formatDate,
+    formateDateTime,
     formatName,
 
 

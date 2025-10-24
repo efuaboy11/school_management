@@ -15,7 +15,6 @@ const SchoolEventPage = () => {
   const {
     schoolEventCount,
     schoolEventData,
-    setSchoolEventData,
     schoolEventLoader,
 
     schoolEventSearch,
@@ -30,16 +29,6 @@ const SchoolEventPage = () => {
     authTokens,
     formatDate,
     formatName,
-
-
-    loader,
-    setLoader,
-    disableButton,
-    setDisableButton,
-
-    setMessage,
-    showAlert,
-    setIsSuccess,
 
   } = useContext(AuthContext)!;
 

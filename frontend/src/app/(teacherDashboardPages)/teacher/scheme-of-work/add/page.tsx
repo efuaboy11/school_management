@@ -21,16 +21,9 @@ const CreateShemeOfWork1 = () => {
 
   const {
 
-    authTokens,
-
     loader,
     setLoader,
-    disableButton,
-    setDisableButton,
 
-    setMessage,
-    showAlert,
-    setIsSuccess,
 
 
 

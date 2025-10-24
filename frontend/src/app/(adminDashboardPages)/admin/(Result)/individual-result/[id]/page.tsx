@@ -17,13 +17,8 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
 
 
   const {
-
     authTokens,
-
-
     formatName,
-
-
     loader,
     setLoader,
 

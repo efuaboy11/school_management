@@ -1,52 +1,22 @@
 "use client"
 import AuthContext from '@/context/AuthContext'
 import React, { use, useContext, useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form'
 import Image from 'next/image'
 
 const IndivivdualEvent = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params)
 
   const {
-    truncateText,
     authTokens,
 
     formatDate,
     formatName,
 
-
-    loader,
-    setLoader,
-    disableButton,
-    setDisableButton,
-
-    setMessage,
-    showAlert,
-    setIsSuccess,
-
   } = useContext(AuthContext)!;
 
 
-  const router = useRouter();
-
   const [loading, setLoading] = useState(true)
   const [details, setDetails] = useState<any>(null)
-
-
-
-
-
-
-
-
-
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<any>();
 
 
 

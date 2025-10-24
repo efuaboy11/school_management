@@ -28,25 +28,14 @@ const SendEmailPage = () => {
   } = useContext(AuthContext)!
 
 
-  const {
-    StudentClassFunction,
-    studentClassData,
-
-    termData,
-    TermFunction,
-
-    sessionData,
-    SessionFunction
-  } = useContext(AllDataContext)!;
-
 
   const {
     register,
     handleSubmit,
-    formState: {errors, isValid},
+    formState: {errors},
   } = useForm<any>();
 
-  const onSubmit = (data: FormData, e:any) => {
+  const onSubmit = (e:any) => {
     SendEmail(e)
   }
 

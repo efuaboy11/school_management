@@ -25,7 +25,6 @@ const PendingPayment = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
     authTokens,
     formatName,
     loader,
@@ -35,6 +34,7 @@ const PendingPayment = () => {
 
 
     formatDate,
+    formatCurrency,
 
     setMessage,
     showAlert,

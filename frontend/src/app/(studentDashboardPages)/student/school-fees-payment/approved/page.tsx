@@ -13,7 +13,6 @@ const SuccsessfulSchoolFeesPayment = () => {
   const {
     sucessSchoolFeesPaymentCount,
     sucessSchoolFeesPaymentData,
-    setSucessSchoolFeesPaymentData,
     sucessSchoolFeesPaymentLoader,
 
     sucessSchoolFeesPaymentSearch,
@@ -23,20 +22,11 @@ const SuccsessfulSchoolFeesPayment = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
-    authTokens,
     formatName,
-    loader,
-    setLoader,
-    disableButton,
-    setDisableButton,
 
 
     formatDate,
-
-    setMessage,
-    showAlert,
-    setIsSuccess,
+    formatCurrency,
 
   } = useContext(AuthContext)!;
 

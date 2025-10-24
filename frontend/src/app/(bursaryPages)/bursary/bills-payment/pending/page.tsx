@@ -32,6 +32,8 @@ const PendingPayment = () => {
     setLoader,
     disableButton,
     setDisableButton,
+    formatCurrency,
+
 
 
     formatDate,

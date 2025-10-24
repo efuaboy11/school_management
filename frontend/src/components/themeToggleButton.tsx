@@ -3,7 +3,7 @@ import { useContext, useEffect } from "react";
 import ThemeContext from "@/context/ThemeContext";
 import '../css/component/themeToggleButton.css'; // Import your CSS file here
 export const ThemeToggleButton = () => {
-  const { theme } = useContext(ThemeContext)!;
+  const { theme, toggleTheme } = useContext(ThemeContext)!;
 
   return (
     <div onClick={toggleTheme} className="theme-btn lg-text">

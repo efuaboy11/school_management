@@ -6,8 +6,7 @@ import { useRouter } from 'next/navigation'
 import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
 import Select from 'react-select';
-
-import Link from 'next/link'
+import { useDropzone } from 'react-dropzone'
 
 const PayBills = () => {
   const [bills, setBills] = useState('')
@@ -15,7 +14,6 @@ const PayBills = () => {
   const [paymentMethod, setPaymentMethod] = useState('')
   const [reciept, setReciept] = useState<File | null>(null)
   const [status, setStatus] = useState('')
-  const [studentErrorMessage, setStudentErrorMessage] = useState('')
 
   const router = useRouter();
   const [isClient, setIsClient] = useState(false);
@@ -34,7 +32,6 @@ const PayBills = () => {
     setLoader,
     disableButton,
     setDisableButton,
-    formatName,
 
 
     setMessage,
@@ -78,7 +75,7 @@ const PayBills = () => {
     }
   };
 
-  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+  const { getRootProps, getInputProps} = useDropzone({
     onDrop: handleImgFile,
     accept: {
       'image/*': []
@@ -270,7 +267,7 @@ const PayBills = () => {
                           isClearable
                         />
                       )}
-                      {studentErrorMessage && <p className="error-text">This field is required</p>}
+
                     </div>
 
                     <div className="col-md-6">

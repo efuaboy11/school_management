@@ -1,11 +1,8 @@
 "use client"
 import AuthContext from '@/context/AuthContext'
 import React, { use, useContext, useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form'
 import Image from 'next/image'
 
-import Link from 'next/link';
 
 
 interface DetailsInterface {
@@ -23,7 +20,6 @@ interface DetailsInterface {
 const IndividualBills = ({ params }: { params: Promise<any> }) => {
 
   const {
-    truncateText,
     authTokens,
     formatDate,
     formatName,

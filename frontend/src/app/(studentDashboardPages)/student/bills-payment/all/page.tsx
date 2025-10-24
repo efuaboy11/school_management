@@ -35,19 +35,9 @@ const AllBillsPayment = () => {
 
   const {
     truncateText,
-    authTokens,
+    formatCurrency,
     formatName,
-    loader,
-    setLoader,
-    disableButton,
-    setDisableButton,
-
-
     formatDate,
-
-    setMessage,
-    showAlert,
-    setIsSuccess,
 
   } = useContext(AuthContext)!;
 

@@ -29,7 +29,6 @@ const BankAccount = () => {
   const {
     truncateText,
     authTokens,
-    formatDate,
     formatName,
 
 
@@ -68,8 +67,6 @@ const BankAccount = () => {
 
   }, [])
 
-
-  const [status, setStatus] = useState('')
   const [statusLoader, setStatusLoader] = useState(false)
   const statusModal = useRef<any>(null)
   const [statusOverlay, setStatusOverlay] = useState(false)
@@ -208,7 +205,6 @@ const BankAccount = () => {
         showAlert()
         setMessage("Status updated sucessfully")
         setDisableButton(false)
-        setStatus('')
         setIsSuccess(true)
         setStatusLoader(false)
         hideStatusModal()

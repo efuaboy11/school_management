@@ -1,7 +1,7 @@
 "use client"
-import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
 import React, { useContext, useEffect, useState } from 'react'
+import { useDropzone } from 'react-dropzone'
 import { useForm } from 'react-hook-form'
 
 
@@ -41,7 +41,7 @@ const AddBankAcount = () => {
     }
   };
 
-  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+  const { getRootProps, getInputProps} = useDropzone({
     onDrop: handleImgFile,
     accept: {
       'image/*': []

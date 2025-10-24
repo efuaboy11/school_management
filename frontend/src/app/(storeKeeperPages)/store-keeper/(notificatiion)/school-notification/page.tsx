@@ -1,14 +1,10 @@
 "use client"
-import { faX } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import React, { useContext, useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { Pagination, Stack } from '@mui/material';
 import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
 import { debounce } from "lodash";
-import { useForm } from 'react-hook-form'
 
 const SchoolNotification = () => {
 
@@ -17,7 +13,6 @@ const SchoolNotification = () => {
   const {
     schoolNotificationCount,
     schoolNotificationData,
-    setSchoolNotificationData,
     schoolNotificationLoader,
 
     schoolNotificationSearch,
@@ -28,20 +23,8 @@ const SchoolNotification = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
-    authTokens,
     formatDate,
     formatName,
-
-
-    loader,
-    setLoader,
-    disableButton,
-    setDisableButton,
-
-    setMessage,
-    showAlert,
-    setIsSuccess,
 
   } = useContext(AuthContext)!;
 
@@ -53,11 +36,6 @@ const SchoolNotification = () => {
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
 
-  const [filterOptions, setOptions] = useState(false)
-
-  const toggleFilterOptions = () => {
-    setOptions(!filterOptions)
-  }
 
 
 
@@ -67,13 +45,6 @@ const SchoolNotification = () => {
   const handleChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
-
-  const {
-    register,
-    handleSubmit,
-    formState: { errors, isValid },
-  } = useForm();
-
 
 
   // const schoolNotificationData = [...Array(100).keys()];

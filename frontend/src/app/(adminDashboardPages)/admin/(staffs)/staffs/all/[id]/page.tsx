@@ -136,7 +136,7 @@ const handleImgFile = (files: File[]) => {
 };
 
 
-const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+const { getRootProps, getInputProps} = useDropzone({
   onDrop: handleImgFile,
   accept: {
     'image/*': []

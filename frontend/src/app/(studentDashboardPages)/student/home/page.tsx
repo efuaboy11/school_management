@@ -10,7 +10,7 @@ import AuthContext from '@/context/AuthContext'
 
 const StudentHome = () => {
 
-  const [timeofDay, setTimeOfDay] = useState('')
+  // const [timeofDay, setTimeOfDay] = useState('')
 
   const [showSchoolFees, setShowSchoolFees] = useState(true)
   const [showPendingSchoolFees, setShowPendingSchoolFees] = useState(false)
@@ -180,8 +180,8 @@ const StudentHome = () => {
 
     formatDate,
     formatName,
+    formatCurrency,
 
-    showSidebar
 
   } = useContext(AuthContext)!;
 
@@ -233,26 +233,26 @@ const StudentHome = () => {
 
 
 
-  useEffect(() => {
-    const updateGreeting = () => {
-      const currentHour = new Date().getHours()
-      console.log(currentHour)
+  // useEffect(() => {
+  //   const updateGreeting = () => {
+  //     const currentHour = new Date().getHours()
+  //     console.log(currentHour)
 
-      if (currentHour >= 0 && currentHour < 12) {
-        setTimeOfDay('Bonjour')
-      } else if (currentHour >= 12 && currentHour < 16) {
-        setTimeOfDay('Bonjour')
-      } else if (currentHour >= 16 && currentHour < 24) {
-        setTimeOfDay('Bonsoir')
-      }
-    }
+  //     if (currentHour >= 0 && currentHour < 12) {
+  //       setTimeOfDay('Bonjour')
+  //     } else if (currentHour >= 12 && currentHour < 16) {
+  //       setTimeOfDay('Bonjour')
+  //     } else if (currentHour >= 16 && currentHour < 24) {
+  //       setTimeOfDay('Bonsoir')
+  //     }
+  //   }
 
-    updateGreeting()
+  //   updateGreeting()
 
-    const interval = setInterval(updateGreeting, 60 * 60 * 1000)
+  //   const interval = setInterval(updateGreeting, 60 * 60 * 1000)
 
-    return () => clearInterval(interval)
-  }, [])
+  //   return () => clearInterval(interval)
+  // }, [])
 
 
   return (

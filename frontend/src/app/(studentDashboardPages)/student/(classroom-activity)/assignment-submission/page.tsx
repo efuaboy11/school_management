@@ -26,20 +26,8 @@ const AssignmentSubmissionPage = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
-    authTokens,
-    formatDate,
+
     formatName,
-
-
-    loader,
-    setLoader,
-    disableButton,
-    setDisableButton,
-
-    setMessage,
-    showAlert,
-    setIsSuccess,
 
   } = useContext(AuthContext)!;
 

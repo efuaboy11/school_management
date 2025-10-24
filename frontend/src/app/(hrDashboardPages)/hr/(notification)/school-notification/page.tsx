@@ -11,9 +11,6 @@ import { debounce } from "lodash";
 import { useForm } from 'react-hook-form'
 
 const SchoolNotification = () => {
-
-
-
   const {
     schoolNotificationCount,
     schoolNotificationData,
@@ -28,7 +25,6 @@ const SchoolNotification = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
     authTokens,
     formatDate,
     formatName,
@@ -53,11 +49,6 @@ const SchoolNotification = () => {
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
 
-  const [filterOptions, setOptions] = useState(false)
-
-  const toggleFilterOptions = () => {
-    setOptions(!filterOptions)
-  }
 
   const [notificationMessage, setNotificationMessage] = useState('')
   const [notificationSubject, setNotificationSubject] = useState('')

@@ -25,10 +25,7 @@ const DisableStudentAccount = () => {
   const [messageError, setMessageError] = useState(false)
 
   const {
-    truncateText,
     authTokens,
-
-    formatDate,
     formatName,
 
 

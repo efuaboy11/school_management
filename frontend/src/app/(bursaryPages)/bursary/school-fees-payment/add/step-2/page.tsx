@@ -5,9 +5,9 @@ import ThemeContext from '@/context/ThemeContext'
 import { useRouter } from 'next/navigation'
 import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import Select from 'react-select';
 
 import Link from 'next/link'
+import { useDropzone } from 'react-dropzone'
 
 const PayFees = () => {
   interface FeeDetailsType {
@@ -50,6 +50,7 @@ const PayFees = () => {
     disableButton,
     setDisableButton,
     formatName,
+    formatCurrency,
 
 
     setMessage,
@@ -82,7 +83,7 @@ const PayFees = () => {
     }
   };
 
-  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+  const { getRootProps, getInputProps} = useDropzone({
     onDrop: handleImgFile,
     accept: {
       'image/*': []

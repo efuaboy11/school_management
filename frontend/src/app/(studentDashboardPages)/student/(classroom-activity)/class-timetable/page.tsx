@@ -2,7 +2,6 @@
 
 import React, { useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { Pagination, Stack } from '@mui/material';
 import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
@@ -17,7 +16,6 @@ const ClassTimetablePage = () => {
   const {
     classTimetableCount,
     classTimetableData,
-    setClassTimetableData,
     classTimetableLoader,
 
     classTimetableSearch,
@@ -28,20 +26,10 @@ const ClassTimetablePage = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
-    authTokens,
     formatDate,
     formatName,
 
 
-    loader,
-    setLoader,
-    disableButton,
-    setDisableButton,
-
-    setMessage,
-    showAlert,
-    setIsSuccess,
 
   } = useContext(AuthContext)!;
 

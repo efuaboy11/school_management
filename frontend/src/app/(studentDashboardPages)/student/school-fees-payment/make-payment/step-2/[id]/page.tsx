@@ -29,7 +29,6 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
     [key: string]: any;
   }
 
-  const [selectedID, setSelectedID] = useState<any>(null)
 
 
 
@@ -43,17 +42,11 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
 
   const [reciept, setReciept] = useState<File | null>(null)
   const [feeDetails, setFeeDetails] = useState<FeeDetailsType | null>(null)
-  const [status, setStatus] = useState('')
 
 
   const [studentData, setStudentData] = useState<StudentDataType | null>(null)
   const [studentLoader, setStudentLoader] = useState(true)
   const router = useRouter();
-
-
-  // const parsedStudent = storedStudent ? JSON.parse(storedStudent) : null;
-  const [isClient, setIsClient] = useState(false);
-  const { theme } = useContext(ThemeContext)!;
 
 
 
@@ -82,11 +75,6 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
   } = useContext(AllDataContext)!;
 
 
-  const handleSelectedID = (id: any) => {
-    setSelectedID(id)
-
-  }
-
 
 
 
@@ -113,7 +101,7 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
     return () => clearTimeout(timer);
   }
 
-  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+  const { getRootProps, getInputProps} = useDropzone({
     onDrop: handleImgFile,
     accept: {
       'image/*': []
@@ -327,7 +315,6 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
   }, [])
 
   useEffect(() => {
-    setIsClient(true);
     const storedFeeDetails = localStorage.getItem('schoolFeesDetails');
     setFeeDetails(storedFeeDetails ? JSON.parse(storedFeeDetails) : null);
     setGenerateFeeLoader(false)
@@ -579,7 +566,7 @@ const PayFees = ({ params }: { params: Promise<any> }) => {
                         bankAcountdDetails.map((data: any) => (
                           <div className="col-md-6" key={data.id}>
                             <div className="site-boxes border-radius-10px">
-                              <div className="row p-4" onClick={handleSelectedID}>
+                              <div className="row p-4">
                                 <div className="cursor-pointer col-11">
                                   <div className="d-flex align-center">
                                     <div className="pe-4 border-right-dotted">

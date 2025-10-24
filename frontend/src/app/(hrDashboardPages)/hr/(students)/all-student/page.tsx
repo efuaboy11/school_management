@@ -8,7 +8,6 @@ import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
 import { debounce } from "lodash";
 const AllStudents = () => {
-
   const {
     studentCount,
     studentData,
@@ -22,7 +21,6 @@ const AllStudents = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
     authTokens,
     formatDate,
     formatName,

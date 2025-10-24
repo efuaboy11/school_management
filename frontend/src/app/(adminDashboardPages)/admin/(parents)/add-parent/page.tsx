@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye, faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 import "../../../../../css/authCss/auth.css"
 import { add } from 'lodash';
+import { useDropzone } from 'react-dropzone';
 const AddParent = () => {
 
   const [fullName, setFullName] = useState('')
@@ -71,7 +72,7 @@ const AddParent = () => {
     }
   };
 
-  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+  const { getRootProps, getInputProps} = useDropzone({
     onDrop: handleImgFile,
     accept: {
       'image/*': []

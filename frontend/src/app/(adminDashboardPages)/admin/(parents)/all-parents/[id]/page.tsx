@@ -10,10 +10,7 @@ const IndivivdualParent = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params)
 
   const {
-    truncateText,
     authTokens,
-    formatDate,
-    formatName,
 
 
     loader,
@@ -68,7 +65,7 @@ const handleImgFile = (files: File[]) => {
   }
 };
 
-const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+const { getRootProps, getInputProps} = useDropzone({
   onDrop: handleImgFile,
   accept: {
     'image/*': []

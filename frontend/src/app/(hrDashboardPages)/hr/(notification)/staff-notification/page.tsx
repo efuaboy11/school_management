@@ -12,8 +12,6 @@ import { useForm } from 'react-hook-form'
 
 const StaffNotification = () => {
 
-
-
   const {
     staffNotificationCount,
     staffNotificationData,
@@ -53,11 +51,7 @@ const StaffNotification = () => {
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
 
-  const [filterOptions, setOptions] = useState(false)
 
-  const toggleFilterOptions = () => {
-    setOptions(!filterOptions)
-  }
 
   const [notificationMessage, setNotificationMessage] = useState('')
   const [notificationSubject, setNotificationSubject] = useState('')

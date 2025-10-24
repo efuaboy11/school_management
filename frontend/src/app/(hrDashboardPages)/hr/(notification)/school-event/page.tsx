@@ -9,9 +9,6 @@ import AuthContext from '@/context/AuthContext'
 import { debounce } from "lodash";
 
 const SchoolEventPage = () => {
-
-
-
   const {
     schoolEventCount,
     schoolEventData,

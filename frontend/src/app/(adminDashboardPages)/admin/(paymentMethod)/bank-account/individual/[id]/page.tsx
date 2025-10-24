@@ -6,6 +6,7 @@ import { useForm } from 'react-hook-form'
 import Image from 'next/image'
 
 import AllDataContext from '@/context/AllData';
+import { useDropzone } from 'react-dropzone';
 
 
 const IndivivdualBankAccount = ({ params }: { params: Promise<{ id: string }> }) => {
@@ -59,7 +60,7 @@ const IndivivdualBankAccount = ({ params }: { params: Promise<{ id: string }> })
     }
   };
 
-  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+  const { getRootProps, getInputProps} = useDropzone({
     onDrop: handleImgFile,
     accept: {
       'image/*': []

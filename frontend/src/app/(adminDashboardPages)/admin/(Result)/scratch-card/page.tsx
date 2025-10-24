@@ -10,9 +10,6 @@ import { debounce } from "lodash";
 import { useForm } from 'react-hook-form'
 
 const ScratchCardPage = () => {
-
-
-
   const {
     scratchCardCount,
     scratchCardData,

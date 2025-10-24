@@ -24,10 +24,6 @@ const CreateSchoolFees = () => {
     setMessage,
     showAlert,
     setIsSuccess,
-  
-    
-  
-  
   } = useContext(AuthContext)!
 
 

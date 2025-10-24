@@ -13,7 +13,6 @@ const DeclinedPayment = () => {
   const {
     declinedSchoolFeesPaymentCount,
     declinedSchoolFeesPaymentData,
-    setDeclinedSchoolFeesPaymentData,
     declinedSchoolFeesPaymentLoader,
 
     declinedSchoolFeesPaymentSearch,
@@ -23,20 +22,9 @@ const DeclinedPayment = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
-    authTokens,
     formatName,
-    loader,
-    setLoader,
-    disableButton,
-    setDisableButton,
-
-
+    formatCurrency,
     formatDate,
-
-    setMessage,
-    showAlert,
-    setIsSuccess,
 
   } = useContext(AuthContext)!;
 

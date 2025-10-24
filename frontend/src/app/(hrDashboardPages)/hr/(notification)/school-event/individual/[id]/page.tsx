@@ -9,7 +9,6 @@ const IndivivdualEvent = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params)
 
   const {
-    truncateText,
     authTokens,
 
     formatDate,
@@ -69,7 +68,7 @@ const IndivivdualEvent = ({ params }: { params: Promise<{ id: string }> }) => {
     formState: { errors },
   } = useForm<any>();
 
-  const onSubmit = (data: any, e: any) => {
+  const onSubmit = (e: any) => {
     EditDetails(e)
 
   }

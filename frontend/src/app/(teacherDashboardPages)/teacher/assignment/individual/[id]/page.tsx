@@ -81,7 +81,7 @@ const IndivivdualAssignment = ({ params }: { params: Promise<{ id: string }> }) 
     }
   };
 
-  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+  const { getRootProps, getInputProps} = useDropzone({
     onDrop: handleImgFile,
     accept: {
       'image/*': []

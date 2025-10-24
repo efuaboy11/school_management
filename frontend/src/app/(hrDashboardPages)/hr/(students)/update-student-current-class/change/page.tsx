@@ -4,7 +4,6 @@ import AuthContext from '@/context/AuthContext'
 import ThemeContext from '@/context/ThemeContext'
 import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import { useRouter } from 'next/navigation';
 import Select from 'react-select';
 
 const ChangeStudentCurrentClassPage = () => {
@@ -52,12 +51,10 @@ const ChangeStudentCurrentClassPage = () => {
 
 
   const {
-    register,
     handleSubmit,
-    formState: { errors, isValid },
   } = useForm<any>();
 
-  const onSubmit = (data: FormData, e: any) => {
+  const onSubmit = (e: any) => {
     ChangeStudentCurrentClass(e)
 
   }

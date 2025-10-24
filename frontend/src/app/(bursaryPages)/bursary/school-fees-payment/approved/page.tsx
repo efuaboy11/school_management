@@ -30,6 +30,7 @@ const SuccsessfulSchoolFeesPayment = () => {
     setLoader,
     disableButton,
     setDisableButton,
+    formatCurrency,
 
 
     formatDate,

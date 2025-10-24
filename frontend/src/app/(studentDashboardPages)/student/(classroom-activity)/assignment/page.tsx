@@ -16,7 +16,7 @@ const AssignmentPage = () => {
   const {
     assignmentCount,
     assignmentData,
-    setAssignmentData,
+
     assignmentLoader,
 
     assignmentSearch,
@@ -28,19 +28,7 @@ const AssignmentPage = () => {
 
   const {
     truncateText,
-    authTokens,
-    formatDate,
     formatName,
-
-
-    loader,
-    setLoader,
-    disableButton,
-    setDisableButton,
-
-    setMessage,
-    showAlert,
-    setIsSuccess,
 
   } = useContext(AuthContext)!;
 

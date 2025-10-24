@@ -1,5 +1,4 @@
 "use client"
-import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
 import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -27,16 +26,7 @@ const AddProductCategories = () => {
   } = useContext(AuthContext)!
 
 
-  const {
-    StudentClassFunction,
-    studentClassData,
 
-    termData,
-    TermFunction,
-
-    sessionData,
-    SessionFunction
-  } = useContext(AllDataContext)!;
 
 
   const {

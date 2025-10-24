@@ -1,5 +1,4 @@
 "use client"
-import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
 import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
@@ -16,7 +15,6 @@ const CreateSchoolEventPage = () => {
   
     loader,
     setLoader,
-    disableButton,
     setDisableButton,
   
     setMessage,
@@ -38,7 +36,7 @@ const CreateSchoolEventPage = () => {
     formState: {errors, isValid},
   } = useForm<any>();
 
-  const onSubmit = (data: FormData, e:any) => {
+  const onSubmit = (e:any) => {
     CreatBill(e)
   }
 

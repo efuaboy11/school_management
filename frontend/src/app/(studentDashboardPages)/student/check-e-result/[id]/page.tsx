@@ -2,13 +2,7 @@
 import AuthContext from '@/context/AuthContext'
 import React, { use, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form'
 import Image from 'next/image'
-
-import AllDataContext from '@/context/AllData';
-import ThemeContext from '@/context/ThemeContext';
-import Select from 'react-select';
-import { DownloadLink } from '@/components/downloadLink';
 
 
 const IndividualEResult = ({ params }: { params: Promise<any> }) => {
@@ -50,7 +44,6 @@ const IndividualEResult = ({ params }: { params: Promise<any> }) => {
     };
   }, [router]);
 
-  const { theme } = useContext(ThemeContext)!;
 
   const [Loading, setLoading] = useState(true)
   const [details, setDetails] = useState<any>(null)

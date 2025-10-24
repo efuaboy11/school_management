@@ -1,11 +1,9 @@
 "use client"
 import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
-import ThemeContext from '@/context/ThemeContext'
 import { useRouter } from 'next/navigation'
 import React, { useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import Select from 'react-select';
 
 
 const VerifyDetails = () => {
@@ -16,13 +14,6 @@ const VerifyDetails = () => {
   const [term, setTerm] = useState('')
 
   const router = useRouter();
-  const [studentErrorMessage, setStudentErrorMessage] = useState('')
-
-  const [isClient, setIsClient] = useState(false);
-  const { theme } = useContext(ThemeContext)!;
-  useEffect(() => {
-    setIsClient(true);
-  }, []);
 
 
   const {

@@ -1,11 +1,7 @@
 "use client"
 import AuthContext from '@/context/AuthContext'
 import React, { use, useContext, useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form'
 import Image from 'next/image'
-
-import Link from 'next/link';
 
 type ParamsType = {
   params: {
@@ -29,21 +25,12 @@ interface DetailsInterface {
 const IndividualPayment = ({ params }: { params: Promise<any> }) => {
 
   const {
-    truncateText,
+    formatCurrency,
     authTokens,
 
     formatDate,
     formatName,
-
-
-    loader,
-    setLoader,
-    disableButton,
-    setDisableButton,
-
-    setMessage,
-    showAlert,
-    setIsSuccess,
+    formateDateTime,
 
   } = useContext(AuthContext)!;
 

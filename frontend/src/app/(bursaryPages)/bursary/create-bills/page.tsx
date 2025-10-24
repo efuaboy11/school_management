@@ -9,9 +9,6 @@ import AuthContext from '@/context/AuthContext'
 import { debounce } from "lodash";
 
 const Bills = () => {
-
-
-
   const {
     billsCount,
     billsData,
@@ -36,6 +33,7 @@ const Bills = () => {
     setLoader,
     disableButton,
     setDisableButton,
+    formatCurrency,
 
     setMessage,
     showAlert,

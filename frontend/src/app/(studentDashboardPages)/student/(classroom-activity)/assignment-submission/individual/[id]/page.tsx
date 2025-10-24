@@ -8,15 +8,15 @@ import Image from 'next/image'
 import AllDataContext from '@/context/AllData';
 import ThemeContext from '@/context/ThemeContext';
 import Select from 'react-select';
-import { DownloadLink } from '@/components/downloadLink';
+import { useDropzone } from 'react-dropzone';
 
 
 const IndivivdualAssignment = ({ params }: { params: Promise<{ id: string }> }) => {
   const { id } = use(params)
 
   const {
-    truncateText,
     authTokens,
+    formateDateTime,
 
     formatDate,
     formatName,
@@ -80,7 +80,7 @@ const IndivivdualAssignment = ({ params }: { params: Promise<{ id: string }> }) 
     }
   };
 
-  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+  const { getRootProps, getInputProps} = useDropzone({
     onDrop: handleImgFile,
     accept: {
       'image/*': []
@@ -653,7 +653,7 @@ const IndivivdualAssignment = ({ params }: { params: Promise<{ id: string }> }) 
 
                             <div className="pb-3 d-sm-flex justify-content-between">
                               <p className="pb-2 sm-text">Submission Date</p>
-                              <p>{formatDate(formateDateTime(details.date)_submitted)}</p>
+                              <p>{formatDate(formateDateTime(details.date_submitted))}</p>
                             </div>
 
 

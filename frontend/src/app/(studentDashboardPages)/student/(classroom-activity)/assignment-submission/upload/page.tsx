@@ -3,6 +3,7 @@ import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
 import ThemeContext from '@/context/ThemeContext'
 import React, { useContext, useEffect, useState } from 'react'
+import { useDropzone } from 'react-dropzone'
 
 import { useForm } from 'react-hook-form'
 import Select from 'react-select';
@@ -29,7 +30,6 @@ const CreateAssignmentSubmission = () => {
 
     loader,
     setLoader,
-    disableButton,
     setDisableButton,
 
     setMessage,
@@ -44,7 +44,6 @@ const CreateAssignmentSubmission = () => {
 
   const {
     teacherData,
-    studentClassData,
     subjectData,
 
     TeacherFunction,
@@ -79,7 +78,7 @@ const CreateAssignmentSubmission = () => {
     }
   };
 
-  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+  const { getRootProps, getInputProps} = useDropzone({
     onDrop: handleImgFile,
     accept: {
       'image/*': []
@@ -97,11 +96,6 @@ const CreateAssignmentSubmission = () => {
     label: `${data.name}`
   }));
 
-
-  const StudentClassOptions = studentClassData.map((data: any) => ({
-    value: data.id,
-    label: `${data.name}`
-  }));
 
 
   const customStyles = {

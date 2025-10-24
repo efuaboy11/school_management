@@ -13,7 +13,6 @@ const DeclinedBills = () => {
   const {
     declinedBillsPaymentCount,
     declinedBillsPaymentData,
-    setDeclinedBillsPaymentData,
     declinedBillsPaymentLoader,
 
     declinedBillsPaymentSearch,
@@ -24,19 +23,11 @@ const DeclinedBills = () => {
 
   const {
     truncateText,
-    authTokens,
     formatName,
-    loader,
-    setLoader,
-    disableButton,
-    setDisableButton,
+    formatCurrency,
 
 
     formatDate,
-
-    setMessage,
-    showAlert,
-    setIsSuccess,
 
   } = useContext(AuthContext)!;
 

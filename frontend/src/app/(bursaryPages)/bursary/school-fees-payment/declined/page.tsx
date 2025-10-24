@@ -23,7 +23,6 @@ const DeclinedPayment = () => {
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
     authTokens,
     formatName,
     loader,
@@ -33,6 +32,7 @@ const DeclinedPayment = () => {
 
 
     formatDate,
+    formatCurrency,
 
     setMessage,
     showAlert,

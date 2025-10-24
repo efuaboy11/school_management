@@ -12,8 +12,6 @@ import { useForm } from 'react-hook-form'
 
 const ProductCategories = () => {
 
-
-
   const {
     productCatergoriesCount,
     productCatergoriesData,
@@ -75,7 +73,6 @@ const ProductCategories = () => {
   const itemsPerPage = 10;
   const [page, setPage] = useState(1);
 
-  const [status, setStatus] = useState('')
   const [statusLoader, setStatusLoader] = useState(false)
   const statusModal = useRef<any>(null)
   const [statusOverlay, setStatusOverlay] = useState(false)
@@ -219,7 +216,6 @@ const ProductCategories = () => {
         showAlert()
         setMessage("Status updated sucessfully")
         setDisableButton(false)
-        setStatus('')
         setIsSuccess(true)
         setStatusLoader(false)
         hideStatusModal()

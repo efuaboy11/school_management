@@ -1,7 +1,6 @@
 "use client"
 import AuthContext from '@/context/AuthContext'
 import React, { use, useContext, useEffect, useState } from 'react'
-import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form'
 import Image from 'next/image'
 
@@ -13,12 +12,9 @@ import Select from 'react-select';
 export default function UploadResultPage({ params }: { params: Promise<any> }) {
   const param = use(params);
   const [classID, termID, sessionID] = param.params || [];
-  const router = useRouter()
   const {
-    truncateText,
     authTokens,
 
-    formatDate,
     formatName,
 
 
@@ -26,7 +22,6 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
     setLoader,
     disableButton,
     setDisableButton,
-    handleDownload,
 
     setMessage,
     showAlert,
@@ -39,7 +34,6 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
   const [resultCount, setResultCount] = useState(0)
   const [resultData, setResultData] = useState<any[]>([])
   const [resultLoader, setResultLoader] = useState(true)
-  const [resultSearch, setResultSearch] = useState('')
 
 
 
@@ -48,9 +42,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
   const [termDetails, setTermDetails] = useState<any>(null)
   const [studentData, setStudentData] = useState<any[]>([])
 
-  const [classLoader, setClassLoader] = useState(true)
-  const [sessionLoader, setSessionLoader] = useState(true)
-  const [termLoader, setTermLoader] = useState(true)
+
 
   const [studentQuery, setStudentQuery] = useState<string>('');
 
@@ -226,13 +218,9 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
       if (response.ok) {
         setClassDetails(data)
-        setClassLoader(false)
-      } else {
-        setClassLoader(false)
       }
     } catch {
       console.log('error')
-      setClassLoader(false)
     }
 
   }
@@ -251,13 +239,11 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
       if (response.ok) {
         setTermDetails(data)
-        setTermLoader(false)
-      } else {
-        setTermLoader(false)
+        
       }
     } catch {
       console.log('error')
-      setTermLoader(false)
+      
     }
 
   }
@@ -277,13 +263,10 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
       if (response.ok) {
         setSessionDetails(data)
-        setSessionLoader(false)
-      } else {
-        setSessionLoader(false)
+
       }
     } catch {
       console.log('error')
-      setSessionLoader(false)
     }
 
   }

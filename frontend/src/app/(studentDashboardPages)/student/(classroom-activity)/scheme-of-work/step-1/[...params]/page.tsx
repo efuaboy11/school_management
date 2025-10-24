@@ -2,12 +2,10 @@
 
 import React, { use, useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
-import Link from 'next/link'
 import { Pagination, Stack } from '@mui/material';
 import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
-import { debounce } from "lodash";
-import Select from 'react-select';
+
 import ThemeContext from '@/context/ThemeContext'
 import { DownloadLink } from '@/components/downloadLink'
 
@@ -28,27 +26,13 @@ const SchemeOfWorkPage = ({ params }: { params: Promise<any> }) => {
 
 
     subjectQuery,
-    setSubjectQuery,
 
 
   } = useContext(AllDataContext)!;
 
   const {
-    truncateText,
     authTokens,
-
-    formatDate,
     formatName,
-
-
-    loader,
-    setLoader,
-    disableButton,
-    setDisableButton,
-
-    setMessage,
-    showAlert,
-    setIsSuccess,
 
   } = useContext(AuthContext)!;
 
@@ -58,12 +42,6 @@ const SchemeOfWorkPage = ({ params }: { params: Promise<any> }) => {
 
   const [filterOptions, setOptions] = useState(false)
 
-
-  const [hasMounted, setHasMounted] = useState(false);
-
-  useEffect(() => {
-    setHasMounted(true);
-  }, []);
 
 
 

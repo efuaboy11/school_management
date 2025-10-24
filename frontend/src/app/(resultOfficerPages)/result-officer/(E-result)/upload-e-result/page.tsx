@@ -22,13 +22,9 @@ const UploadEResultPage = () => {
 
 
   const {
-
-    authTokens,
-
     loader,
     setLoader,
     disableButton,
-    setDisableButton,
 
     setMessage,
     showAlert,

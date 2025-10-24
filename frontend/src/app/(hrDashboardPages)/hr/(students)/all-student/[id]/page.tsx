@@ -59,6 +59,7 @@ const IndivivdualStudent = ({ params }: { params: Promise<{ id: string }> }) => 
     authTokens,
 
     formatDate,
+    formatCurrency,
     formatName,
 
 

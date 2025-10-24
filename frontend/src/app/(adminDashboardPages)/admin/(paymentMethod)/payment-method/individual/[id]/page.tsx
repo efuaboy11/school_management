@@ -11,9 +11,7 @@ const IndivivdualPaymentMethod = ({ params }: { params: Promise<{ id: string }> 
   const { id } = use(params)
 
   const {
-    truncateText,
     authTokens,
-    formatDate,
     formatName,
 
 

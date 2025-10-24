@@ -20,6 +20,7 @@ const IndivivdualFees = ({ params }: { params: Promise<{ id: string }> }) => {
     setMessage,
     showAlert,
     setIsSuccess,
+    formatCurrency,
 
     formatName,
 

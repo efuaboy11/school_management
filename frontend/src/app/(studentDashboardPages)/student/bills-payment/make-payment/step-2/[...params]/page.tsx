@@ -1,17 +1,14 @@
 "use client"
 import AllDataContext from '@/context/AllData'
 import AuthContext from '@/context/AuthContext'
-import ThemeContext from '@/context/ThemeContext'
 import { useRouter } from 'next/navigation'
 import React, { use, useContext, useEffect, useState } from 'react'
 import { useForm } from 'react-hook-form'
-import Select from 'react-select';
 
 import Link from 'next/link'
 import { ProcessingSpiner } from '@/components/spin'
 import Image from 'next/image'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
+import { useDropzone } from 'react-dropzone'
 
 const PayBills = ({ params }: { params: Promise<any> }) => {
   const param = use(params);
@@ -26,7 +23,6 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
     [key: string]: any;
   }
 
-  const [selectedID, setSelectedID] = useState<any>(null)
 
 
 
@@ -42,17 +38,12 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
   const [reciept, setReciept] = useState<File | null>(null)
 
-  const [status, setStatus] = useState('')
-
 
   const [studentData, setStudentData] = useState<StudentDataType | null>(null)
   const [studentLoader, setStudentLoader] = useState(true)
   const router = useRouter();
 
 
-  // const parsedStudent = storedStudent ? JSON.parse(storedStudent) : null;
-  const [isClient, setIsClient] = useState(false);
-  const { theme } = useContext(ThemeContext)!;
 
 
 
@@ -69,21 +60,15 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
     setMessage,
     showAlert,
     setIsSuccess,
+    formatCurrency,
 
   } = useContext(AuthContext)!
 
 
   const {
     PaymentMethodFunction,
-    paymentMethodData,
 
   } = useContext(AllDataContext)!;
-
-
-  const handleSelectedID = (id: any) => {
-    setSelectedID(id)
-
-  }
 
 
 
@@ -111,7 +96,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
     return () => clearTimeout(timer);
   }
 
-  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+  const { getRootProps, getInputProps} = useDropzone({
     onDrop: handleImgFile,
     accept: {
       'image/*': []
@@ -351,7 +336,6 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
   }, [])
 
   useEffect(() => {
-    setIsClient(true);
     setGenerateFeeLoader(false)
   }, []);
 
@@ -584,7 +568,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
                         bankAcountdDetails.map((data: any) => (
                           <div className="col-md-6" key={data.id}>
                             <div className="site-boxes border-radius-10px">
-                              <div className="row p-4" onClick={handleSelectedID}>
+                              <div className="row p-4">
                                 <div className="cursor-pointer col-11">
                                   <div className="d-flex align-center">
                                     <div className="pe-4 border-right-dotted">

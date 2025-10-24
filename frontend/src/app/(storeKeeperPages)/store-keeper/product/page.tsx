@@ -38,8 +38,8 @@ const Product = () => {
   const {
     truncateText,
     authTokens,
-    formatDate,
     formatName,
+    formatCurrency,
 
 
     loader,
@@ -93,7 +93,6 @@ const Product = () => {
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [animateModal, setAnimateModal] = useState(false);
 
-  const [status, setStatus] = useState('')
   const [statusLoader, setStatusLoader] = useState(false)
   const statusModal = useRef<any>(null)
   const [statusOverlay, setStatusOverlay] = useState(false)
@@ -220,7 +219,6 @@ const Product = () => {
         showAlert()
         setMessage("Status updated sucessfully")
         setDisableButton(false)
-        setStatus('')
         setIsSuccess(true)
         setStatusLoader(false)
         hideStatusModal()

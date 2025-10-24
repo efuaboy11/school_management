@@ -1,15 +1,13 @@
 "use client"
 import React, { use, useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons'
 import AuthContext from '@/context/AuthContext'
 import { useForm } from 'react-hook-form'
-import { Pagination, Stack } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import AllDataContext from '@/context/AllData'
 
 import Link from 'next/link'
+import { useDropzone } from 'react-dropzone'
 
 
 const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
@@ -23,9 +21,6 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
   const [userDeleteModal, setUserDeleteModal] = useState(false)
   const [schoolFeesDeleteModal, setSchoolFeesDeleteModal] = useState(false)
   const [billsDeleteModal, setBillsDeleteModal] = useState(false)
-
-
-  const router = useRouter();
 
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -45,7 +40,6 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
   const [Loading, setLoading] = useState(true)
 
   const {
-    truncateText,
     authTokens,
 
     formatDate,
@@ -54,7 +48,6 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
 
     loader,
     setLoader,
-    disableButton,
     setDisableButton,
 
     setMessage,
@@ -66,7 +59,6 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
   const {
     StudentClassFunction,
     studentClassData,
-    setStudentClassData,
   } = useContext(AllDataContext)!;
 
 
@@ -103,7 +95,7 @@ const IndivivdualHr = ({ params }: { params: Promise<{ id: string }> }) => {
   };
 
 
-  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+  const { getRootProps, getInputProps} = useDropzone({
     onDrop: handleImgFile,
     accept: {
       'image/*': []

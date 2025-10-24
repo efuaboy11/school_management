@@ -9,8 +9,6 @@ import { useForm } from 'react-hook-form'
 import Select from 'react-select';
 import Image from 'next/image'
 import { Pagination, Stack } from '@mui/material';
-import { DownloadLink } from '@/components/downloadLink'
-import { debounce } from "lodash";
 
 const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
 
@@ -36,11 +34,7 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
   }, []);
 
   const {
-
-    truncateText,
     authTokens,
-
-    formatDate,
     formatName,
 
 
@@ -72,9 +66,7 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
 
 
   const {
-    register,
     handleSubmit,
-    formState: { errors, isValid },
   } = useForm<any>();
 
 

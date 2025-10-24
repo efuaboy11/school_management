@@ -13,7 +13,6 @@ const ApproveBills = () => {
   const {
     sucessBillsPaymentCount,
     sucessBillsPaymentData,
-    setSucessBillsPaymentData,
     sucessBillsPaymentLoader,
 
     sucessBillsPaymentSearch,
@@ -24,19 +23,11 @@ const ApproveBills = () => {
 
   const {
     truncateText,
-    authTokens,
+    formatCurrency,
     formatName,
-    loader,
-    setLoader,
-    disableButton,
-    setDisableButton,
 
 
     formatDate,
-
-    setMessage,
-    showAlert,
-    setIsSuccess,
 
   } = useContext(AuthContext)!;
 

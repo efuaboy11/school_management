@@ -43,6 +43,7 @@ const AllSchoolFeesPayment = () => {
 
 
     formatDate,
+    formatCurrency,
 
     setMessage,
     showAlert,

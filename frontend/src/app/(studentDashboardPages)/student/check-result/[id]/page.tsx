@@ -2,50 +2,17 @@
 import AuthContext from '@/context/AuthContext'
 import React, { use, useContext, useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation';
-import { useForm } from 'react-hook-form'
-import Image from 'next/image'
-
-import Link from 'next/link';
-import { set } from 'lodash';
-import AllDataContext from '@/context/AllData';
-import { on } from 'events';
 
 export default function IndividualResultPage({ params }: { params: Promise<any> }) {
   const { id } = use(params);
 
 
   const {
-    truncateText,
     authTokens,
-
-    formatDate,
     formatName,
-
-
-    loader,
-    setLoader,
-    disableButton,
-    setDisableButton,
-    handleDownload,
-
-    setMessage,
-    showAlert,
-    setIsSuccess,
 
   } = useContext(AuthContext)!;
 
-
-  const {
-    StudentClassFunction,
-    studentClassData,
-
-    termData,
-    TermFunction,
-
-    sessionData,
-    SessionFunction,
-
-  } = useContext(AllDataContext)!;
 
 
   const router = useRouter();
@@ -137,7 +104,6 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
 
   useEffect(() => {
     IndividualDetailsFunction()
-    setLoader(false)
   }, [])
 
 

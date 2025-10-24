@@ -48,11 +48,7 @@ const TeacherHome = () => {
   const {
     truncateText,
     authTokens,
-
-    formatDate,
     formatName,
-
-    showSidebar
 
   } = useContext(AuthContext)!;
 

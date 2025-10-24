@@ -1,15 +1,12 @@
 "use client"
 import React, { use, useContext, useEffect, useState } from 'react'
 import Image from 'next/image'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faEllipsis } from '@fortawesome/free-solid-svg-icons'
 import AuthContext from '@/context/AuthContext'
 import { useForm } from 'react-hook-form'
-import { Pagination, Stack } from '@mui/material';
-import { useRouter } from 'next/navigation';
 import AllDataContext from '@/context/AllData'
 
 import Link from 'next/link'
+import { useDropzone } from 'react-dropzone'
 
 
 const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
@@ -24,8 +21,6 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
   const [schoolFeesDeleteModal, setSchoolFeesDeleteModal] = useState(false)
   const [billsDeleteModal, setBillsDeleteModal] = useState(false)
 
-
-  const router = useRouter();
 
   const [firstName, setFirstName] = useState('')
   const [lastName, setLastName] = useState('')
@@ -51,7 +46,6 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
   const [Loading, setLoading] = useState(true)
 
   const {
-    truncateText,
     authTokens,
 
     formatDate,
@@ -60,7 +54,6 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
 
     loader,
     setLoader,
-    disableButton,
     setDisableButton,
 
     setMessage,
@@ -129,7 +122,7 @@ const IndivivdualStaff = ({ params }: { params: Promise<{ id: string }> }) => {
   };
 
 
-  const { getRootProps, getInputProps, acceptedFiles } = useDropzone({
+  const { getRootProps, getInputProps} = useDropzone({
     onDrop: handleImgFile,
     accept: {
       'image/*': []

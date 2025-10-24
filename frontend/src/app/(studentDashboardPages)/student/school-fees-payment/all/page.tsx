@@ -14,7 +14,6 @@ const AllSchoolFeesPayment = () => {
   const {
     allSchoolFeesPaymentCount,
     allSchoolFeesPaymentData,
-    setAllSchoolFeesPaymentData,
     allSchoolFeesPaymentLoader,
 
     allSchoolFeesPaymentSearch,
@@ -34,7 +33,7 @@ const AllSchoolFeesPayment = () => {
 
   const {
     formatName,
-
+    formatCurrency,
     formatDate,
 
 

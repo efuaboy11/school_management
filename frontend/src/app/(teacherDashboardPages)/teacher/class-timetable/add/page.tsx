@@ -24,7 +24,6 @@ const CreateClassTImetable = () => {
 
     loader,
     setLoader,
-    disableButton,
     setDisableButton,
 
     setMessage,

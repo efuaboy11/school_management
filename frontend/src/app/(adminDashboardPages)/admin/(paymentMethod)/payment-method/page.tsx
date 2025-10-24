@@ -9,9 +9,6 @@ import AuthContext from '@/context/AuthContext'
 import { debounce } from "lodash";
 
 const PaymentMethod = () => {
-
-
-
   const {
     paymentMethodCount,
     paymentMethodData,
@@ -28,7 +25,6 @@ const PaymentMethod = () => {
   const {
     truncateText,
     authTokens,
-    formatDate,
     formatName,
 
 

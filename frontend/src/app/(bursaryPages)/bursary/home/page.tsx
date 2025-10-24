@@ -10,7 +10,7 @@ import AuthContext from '@/context/AuthContext'
 
 const HrHome = () => {
 
-  const [timeofDay, setTimeOfDay] = useState('')
+  // const [timeofDay, setTimeOfDay] = useState('')
   const [userDetails, setUserDetails] = useState<any>(null)
   const {
     recentStaffNotification,
@@ -22,11 +22,6 @@ const HrHome = () => {
     recentPendingBillsPayment,
     recentSucessBillsPayment,
     recentDeclinedBillsPayment,
-
-    totalPendingBillsPayment,
-    totalDeclinedBillsPayment,
-    totalSucessBillsPayment,
-    totalBillsPayment,
 
     BillsPaymentFunction,
     PendingBillsPaymentFunction,
@@ -63,8 +58,7 @@ const HrHome = () => {
 
     formatDate,
     formatName,
-
-    showSidebar
+    formatCurrency,
 
   } = useContext(AuthContext)!;
 
@@ -212,26 +206,26 @@ const HrHome = () => {
 
 
 
-  useEffect(() => {
-    const updateGreeting = () => {
-      const currentHour = new Date().getHours()
-      console.log(currentHour)
+  // useEffect(() => {
+  //   const updateGreeting = () => {
+  //     const currentHour = new Date().getHours()
+  //     console.log(currentHour)
 
-      if (currentHour >= 0 && currentHour < 12) {
-        setTimeOfDay('Bonjour')
-      } else if (currentHour >= 12 && currentHour < 16) {
-        setTimeOfDay('Bonjour')
-      } else if (currentHour >= 16 && currentHour < 24) {
-        setTimeOfDay('Bonsoir')
-      }
-    }
+  //     if (currentHour >= 0 && currentHour < 12) {
+  //       setTimeOfDay('Bonjour')
+  //     } else if (currentHour >= 12 && currentHour < 16) {
+  //       setTimeOfDay('Bonjour')
+  //     } else if (currentHour >= 16 && currentHour < 24) {
+  //       setTimeOfDay('Bonsoir')
+  //     }
+  //   }
 
-    updateGreeting()
+  //   updateGreeting()
 
-    const interval = setInterval(updateGreeting, 60 * 60 * 1000)
+  //   const interval = setInterval(updateGreeting, 60 * 60 * 1000)
 
-    return () => clearInterval(interval)
-  }, [])
+  //   return () => clearInterval(interval)
+  // }, [])
 
 
   return (
