@@ -56,7 +56,7 @@ const DisableHr = () => {
 
   const DisabledAccountList = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/disable-account/?user_role=hr`, {
+      let response = await fetch(`http://school.amanilightequity.com/api/disable-account/?user_role=hr`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -90,7 +90,7 @@ const DisableHr = () => {
     setLoader(true)
 
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/disable-account/${selectedDataId}/`, {
+      let response = await fetch(`http://school.amanilightequity.com/api/disable-account/${selectedDataId}/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`
@@ -286,7 +286,7 @@ const DisableHr = () => {
     setLoader(true)
 
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/disable-account/`, {
+      let response = await fetch(`http://school.amanilightequity.com/api/disable-account/`, {
         method: "POST",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`,

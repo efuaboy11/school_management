@@ -62,7 +62,7 @@ const AddProductCategories = () => {
 
 
     try{
-      const response = await fetch(`http://127.0.0.1:8000/api/product-categories/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/product-categories/`, {
         method: 'POST',
         body: formData,
         headers:{

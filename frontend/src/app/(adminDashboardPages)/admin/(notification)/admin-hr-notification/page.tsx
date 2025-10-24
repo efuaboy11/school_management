@@ -139,7 +139,7 @@ const AdminHrNotificationPage = () => {
     setLoader(true)
 
     try{
-      let response = await fetch('http://127.0.0.1:8000/api/delete-multiple-admin-or-hr-notification/', {
+      let response = await fetch('http://school.amanilightequity.com/api/delete-multiple-admin-or-hr-notification/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -191,7 +191,7 @@ const AdminHrNotificationPage = () => {
     setDisableButton(true)
 
     try{
-      const response = await fetch(`http://127.0.0.1:8000/api/admin-or-hr-notification/${selectedDataId}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/admin-or-hr-notification/${selectedDataId}/`, {
         method: 'PATCH',
         body: JSON.stringify({
           seen: !seen,

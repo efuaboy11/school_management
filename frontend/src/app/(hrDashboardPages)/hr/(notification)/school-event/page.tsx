@@ -116,7 +116,7 @@ const SchoolEventPage = () => {
     setLoader(true)
 
     try{
-      let response = await fetch('http://127.0.0.1:8000/api/delete-multiple-school-event/', {
+      let response = await fetch('http://school.amanilightequity.com/api/delete-multiple-school-event/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

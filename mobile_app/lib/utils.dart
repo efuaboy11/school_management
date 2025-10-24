@@ -4,10 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_app/auth_service.dart';
 import 'package:http/http.dart' as http;
-import 'package:flutter_paystack_plus/flutter_paystack_plus.dart';
+import 'package:flutter_paystack_plus/src/paystack.dart';
 
 
-Future<String> makePayement(BuildContext context, String email, String amount) async{
+
+Future<String> makePayement(BuildContext context, String email, String amount, Function onPaymentSuccessful) async{
   final token = await AuthService.getAccessToken(); 
   try{
     final response = await http.post(
@@ -26,26 +27,29 @@ Future<String> makePayement(BuildContext context, String email, String amount) a
     );
 
     if(response.statusCode == 201 || response.statusCode == 200){
-      print('success');
+
       Map<String, dynamic> data = json.decode(response.body);
-      await  FlutterPaystackPlus.openPaystackPopup(
-        customerEmail: email, 
-        amount: amount, 
-        reference: data['reference'], 
-        context: context,
-        onClosed: (){
-          print('Payment closed or cancelled');
-        }, 
-        onSuccess: (){
-          print('Payment successful!');
-        }
-      );
+
+      final secretKey = data['private_key'] as String;
+      final publicKey = data['public_key'] as String;
+
+      await FlutterPaystackPlus.openPaystackPopup(
+            customerEmail: email,
+            amount: (double.parse(amount) * 100).toInt().toString(),
+            reference: 'TXN_${DateTime.now().millisecondsSinceEpoch}',
+            secretKey: secretKey,
+            publicKey: publicKey,
+            currency: 'NGN',
+            callBackUrl: 'http://school.amanilightequity.com/api/initialize-payment/',
+            context: context,
+            onClosed: () => onPaymentSuccessful(context),
+            onSuccess: () => onPaymentSuccessful(context),
+          );
 
     }else{
       final errorData = jsonDecode(response.body);
       final errorMessages = errorData.values.join(", ");
-      print("Login failed: ${response.statusCode}");
-      print("Response body: ${response.body}");
+      return errorMessages;
     }
     
 
@@ -57,7 +61,6 @@ Future<String> makePayement(BuildContext context, String email, String amount) a
   return '';
 
 }
-
 
 
 

@@ -1,18 +1,37 @@
 
 import 'package:flutter/material.dart';
+import 'package:mobile_app/auth_service.dart';
 import 'package:mobile_app/models/student_details.dart';
 import 'package:mobile_app/screens/student/school_fees/add_school_fees/bank_account.dart';
+import 'package:mobile_app/screens/student/school_fees/add_school_fees/step3.dart';
 import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/utils.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
 import 'package:mobile_app/widgets/platform_back_button.dart';
 
 class SchoolFeesPaymentScreenTwo extends StatelessWidget{
-  const SchoolFeesPaymentScreenTwo({super.key, required this.paymentDetails, required this.userDetails, required this.paymentMethod});
+  const SchoolFeesPaymentScreenTwo({super.key, required this.paymentDetails, required this.userDetails, required this.paymentMethod, required this.paymentMethodId});
 
   final Map<String, dynamic> paymentDetails;
   final StudentDetails userDetails;
   final String paymentMethod;
+  final String paymentMethodId;
+
+
+
+  void _onPaymentSuccessful(BuildContext context)async{
+    print('yes');
+    final userId = await AuthService.getUserId();
+    Navigator.of(context).push(
+      MaterialPageRoute(builder: (ctx) => 
+        SchoolFeesPaymentScreenThree(
+          userId: userId!, 
+          feeType: paymentDetails['id'], 
+          paymentMethod: paymentMethodId,
+        )
+      )
+    );
+  }
 
 
 
@@ -135,7 +154,7 @@ class SchoolFeesPaymentScreenTwo extends StatelessWidget{
                           height: 50,
                           child: ElevatedButton(
                             onPressed: () {
-                              makePayement(context,  userDetails.email, paymentDetails['amount'].toString());
+                              makePayement(context,  userDetails.email, paymentDetails['amount'].toString(), _onPaymentSuccessful);
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Theme.of(context).colorScheme.primary,

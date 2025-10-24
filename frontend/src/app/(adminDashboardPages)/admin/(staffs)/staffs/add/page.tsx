@@ -206,7 +206,7 @@ const AddTeacher = () => {
 
 
     try{
-      const response = await fetch(`http://127.0.0.1:8000/api/staff/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/staff/`, {
         method: 'POST',
         body: formData,
         headers:{

@@ -97,7 +97,7 @@ const IndivivdualAssignment = ({ params }: { params: Promise<{ id: string }> }) 
 
   const IndividualDetailsFunction = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/assignment-submission/${id}/`, {
+      let response = await fetch(`http://school.amanilightequity.com/api/assignment-submission/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -130,7 +130,7 @@ const IndivivdualAssignment = ({ params }: { params: Promise<{ id: string }> }) 
     setLoader(true)
 
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/assignment-submission/${id}/`, {
+      let response = await fetch(`http://school.amanilightequity.com/api/assignment-submission/${id}/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`
@@ -179,7 +179,7 @@ const IndivivdualAssignment = ({ params }: { params: Promise<{ id: string }> }) 
     formData.append('feedback', feedback)
 
     try{
-      const response = await fetch(`http://127.0.0.1:8000/api/assignment-submission/${id}/update/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/assignment-submission/${id}/update/`, {
         method: 'PATCH',
         body: formData,
         headers:{

@@ -56,7 +56,7 @@ const CreateSchoolEventPage = () => {
 
 
     try{
-      const response = await fetch(`http://127.0.0.1:8000/api/school-event/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/school-event/`, {
         method: 'POST',
         body: formData,
         headers:{

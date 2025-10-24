@@ -51,7 +51,7 @@ const CreateBills = () => {
 
 
     try{
-      const response = await fetch(`http://127.0.0.1:8000/api/subjects/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/subjects/`, {
         method: 'POST',
         body: formData,
         headers:{

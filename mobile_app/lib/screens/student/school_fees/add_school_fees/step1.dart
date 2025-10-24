@@ -162,7 +162,12 @@ class _SchoolFeesPaymentScreenState extends ConsumerState<SchoolFeesPaymentScree
           
           if(!mounted) return;
           Navigator.of(context).push(
-            MaterialPageRoute(builder: (ctx) => SchoolFeesPaymentScreenTwo(paymentDetails: data, userDetails: studentDetails, paymentMethod: paymentMethod!))
+            MaterialPageRoute(builder: (ctx) => SchoolFeesPaymentScreenTwo(
+              paymentDetails: data, 
+              userDetails: studentDetails, 
+              paymentMethod: paymentMethod!,
+              paymentMethodId: _selectedPaymentMethod!,
+            ))
           );
 
           

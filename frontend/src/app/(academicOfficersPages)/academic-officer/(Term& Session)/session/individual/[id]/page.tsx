@@ -94,7 +94,7 @@ const IndivivdualSession = ({ params }: { params: Promise<{ id: string }> }) => 
 
   const IndividualDetailsFunction = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/session/${id}/`, {
+      let response = await fetch(`http://school.amanilightequity.com/api/session/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -131,7 +131,7 @@ const IndivivdualSession = ({ params }: { params: Promise<{ id: string }> }) => 
     setLoader(true)
 
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/session/${id}/`, {
+      let response = await fetch(`http://school.amanilightequity.com/api/session/${id}/`, {
         method: "DELETE",
         headers: {
           Authorization: `Bearer ${authTokens?.access}`
@@ -182,7 +182,7 @@ const IndivivdualSession = ({ params }: { params: Promise<{ id: string }> }) => 
 
 
     try{
-      const response = await fetch(`http://127.0.0.1:8000/api/session/${id}/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/session/${id}/`, {
         method: 'PATCH',
         body: JSON.stringify(payload),
         headers:{

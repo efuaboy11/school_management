@@ -70,7 +70,7 @@ const IndividualEResult =  ({ params }: { params: Promise<any> }) => {
 
   const IndividualDetailsFunction = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/e-result/${id}/`, {
+      let response = await fetch(`http://school.amanilightequity.com/api/e-result/${id}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

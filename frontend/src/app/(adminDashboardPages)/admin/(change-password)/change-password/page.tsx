@@ -80,7 +80,7 @@ const ChangePasswordPage = () => {
 
 
     try{
-      const response = await fetch(`http://127.0.0.1:8000/api/change-admin-password/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/change-admin-password/`, {
         method: 'POST',
         body: JSON.stringify({
           username: userDetails?.username,
@@ -134,7 +134,7 @@ const ChangePasswordPage = () => {
   
   const UserDetailsFunction = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/me/`, {
+      let response = await fetch(`http://school.amanilightequity.com/api/me/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',

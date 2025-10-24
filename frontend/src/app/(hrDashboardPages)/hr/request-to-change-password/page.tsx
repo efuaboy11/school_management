@@ -47,7 +47,7 @@ const Product = () => {
 
 
   const ChangePasswordRequestFunction = async() =>{
-    let response = await fetch(`http://127.0.0.1:8000/api/request-to-change-password/`, {
+    let response = await fetch(`http://school.amanilightequity.com/api/request-to-change-password/`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
@@ -82,7 +82,7 @@ const Product = () => {
     let url;
 
     if(changePasswordRequestSearch.length !== 0){
-      url = `http://127.0.0.1:8000/api/request-to-change-password/?search=${changePasswordRequestSearch}`
+      url = `http://school.amanilightequity.com/api/request-to-change-password/?search=${changePasswordRequestSearch}`
     }
 
 
@@ -211,7 +211,7 @@ const Product = () => {
     setLoader(true)
 
     try{
-      let response = await fetch('http://127.0.0.1:8000/api/delete-multiple-request-to-change-password/', {
+      let response = await fetch('http://school.amanilightequity.com/api/delete-multiple-request-to-change-password/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -262,7 +262,7 @@ const Product = () => {
     setDisableButton(true)
 
     try{
-      const response = await fetch(`http://127.0.0.1:8000/api/request-to-change-password/${selectedDataId}/update-status/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/request-to-change-password/${selectedDataId}/update-status/`, {
         method: 'PUT',
         body: JSON.stringify({
           approved_status: requestStatus,

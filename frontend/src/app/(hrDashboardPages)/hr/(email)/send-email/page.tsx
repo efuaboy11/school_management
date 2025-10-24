@@ -63,7 +63,7 @@ const SendEmailPage = () => {
 
 
     try{
-      const response = await fetch(`http://127.0.0.1:8000/api/email/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/email/`, {
         method: 'POST',
         body: formData,
         headers:{

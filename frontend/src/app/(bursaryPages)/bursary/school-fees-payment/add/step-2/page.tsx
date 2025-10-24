@@ -113,7 +113,7 @@ const PayFees = () => {
 
 
     try{
-      const response = await fetch(`http://127.0.0.1:8000/api/payment-school-fees/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/payment-school-fees/`, {
         method: 'POST',
         body: formData,
         headers:{
@@ -163,7 +163,7 @@ const PayFees = () => {
 
   const IndividualStudentFunction = async() =>{
 
-    let response = await fetch(`http://127.0.0.1:8000/api/students/${storedStudent}`, {
+    let response = await fetch(`http://school.amanilightequity.com/api/students/${storedStudent}`, {
       method: "GET",
       headers: {
         "Content-Type": "application/json",

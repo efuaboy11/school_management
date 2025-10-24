@@ -52,7 +52,7 @@ const UploadStaffNotificationPage = () => {
 
 
     try{
-      const response = await fetch(`http://127.0.0.1:8000/api/staff-notification/`, {
+      const response = await fetch(`http://school.amanilightequity.com/api/staff-notification/`, {
         method: 'POST',
         body: formData,
         headers:{

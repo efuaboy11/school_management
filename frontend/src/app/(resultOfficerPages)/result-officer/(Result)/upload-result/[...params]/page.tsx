@@ -78,7 +78,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
   const IndividualStudentFunction = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/students/${studentID}/`, {
+      let response = await fetch(`http://school.amanilightequity.com/api/students/${studentID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -103,7 +103,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
   const IndividualClassFunction = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/student-class/${classID}/`, {
+      let response = await fetch(`http://school.amanilightequity.com/api/student-class/${classID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -141,7 +141,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
   const IndividualTermFunction = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/term/${termID}/`, {
+      let response = await fetch(`http://school.amanilightequity.com/api/term/${termID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -167,7 +167,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
 
   const IndividualSessionFunction = async () =>{
     try{
-      let response = await fetch(`http://127.0.0.1:8000/api/session/${sessionID}/`, {
+      let response = await fetch(`http://school.amanilightequity.com/api/session/${sessionID}/`, {
         method: 'GET',
         headers: {
           'Content-Type': 'application/json',
@@ -256,7 +256,7 @@ export default function UploadResultPage({ params }: { params: Promise<any> }) {
     }
 
     try{
-      const response = await fetch('http://127.0.0.1:8000/api/student-result/', {
+      const response = await fetch('http://school.amanilightequity.com/api/student-result/', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
