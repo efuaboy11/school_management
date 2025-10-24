@@ -13,7 +13,7 @@ import AllDataContext from '@/context/AllData';
 export default function IndividualResultPage({ params }: { params: Promise<any> }) {
   const { id } = use(params);
 
-  const router = useRouter()
+
 
 
   const {

@@ -37,8 +37,8 @@ const TeacherHome = () => {
 
     StaffNotificationFunction,
 
-    BillsPaymentFunction,
-    PendingBillsPaymentFunction,
+    // BillsPaymentFunction,
+    // PendingBillsPaymentFunction,
     SucessBillsPaymentFunction,
     DeclinedBillsPaymentFunction,
 
@@ -87,7 +87,7 @@ const TeacherHome = () => {
 
 
     // BillsPaymentFunction(),
-      PendingBillsPaymentFunction(),
+      // PendingBillsPaymentFunction(),
       SucessBillsPaymentFunction(),
       DeclinedBillsPaymentFunction()
 

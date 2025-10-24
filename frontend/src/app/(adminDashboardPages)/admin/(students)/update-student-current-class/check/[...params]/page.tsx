@@ -84,14 +84,6 @@ const CheckStudentInClassPage2 = ({ params }: { params: Promise<any> }) => {
   const [page, setPage] = useState(1);
 
 
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-
-
-  const handleShowDeleteModal = () => {
-    setShowDeleteModal(true);
-  };
-
 
 
 

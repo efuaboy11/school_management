@@ -12,7 +12,6 @@ import AllDataContext from '@/context/AllData';
 export default function IndividualResultPage({ params }: { params: Promise<any> }) {
   const { id } = use(params);
 
-  const router = useRouter()
 
 
   const {
@@ -445,7 +444,7 @@ export default function IndividualResultPage({ params }: { params: Promise<any> 
         );
       })
       .map((item: any) => {
-        const { subject_name, ...rest } = item; // Destructure to remove subject_name
+        const { ...rest } = item; // Destructure to remove subject_name
         return {
           ...rest
         };

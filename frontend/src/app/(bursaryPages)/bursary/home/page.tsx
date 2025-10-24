@@ -23,8 +23,8 @@ const HrHome = () => {
     recentSucessBillsPayment,
     recentDeclinedBillsPayment,
 
-    BillsPaymentFunction,
-    PendingBillsPaymentFunction,
+    // BillsPaymentFunction,
+    // PendingBillsPaymentFunction,
     SucessBillsPaymentFunction,
     DeclinedBillsPaymentFunction,
 
@@ -198,7 +198,7 @@ const HrHome = () => {
     DeclinedSchoolFeesPaymentFunction()
 
     // BillsPaymentFunction(),
-      PendingBillsPaymentFunction(),
+      // PendingBillsPaymentFunction(),
       SucessBillsPaymentFunction(),
       DeclinedBillsPaymentFunction()
 

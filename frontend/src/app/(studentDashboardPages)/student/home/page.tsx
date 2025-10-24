@@ -167,8 +167,8 @@ const StudentHome = () => {
 
     ClassNotificationFunction,
 
-    BillsPaymentFunction,
-    PendingBillsPaymentFunction,
+    // BillsPaymentFunction,
+    // PendingBillsPaymentFunction,
     SucessBillsPaymentFunction,
     DeclinedBillsPaymentFunction,
 
@@ -221,7 +221,7 @@ const StudentHome = () => {
 
 
     // BillsPaymentFunction(),
-      PendingBillsPaymentFunction(),
+      // PendingBillsPaymentFunction(),
       SucessBillsPaymentFunction(),
       DeclinedBillsPaymentFunction()
 

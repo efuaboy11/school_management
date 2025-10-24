@@ -4,7 +4,7 @@ import { faAngleDown, faArrowLeft, faBars, faLock } from '@fortawesome/free-soli
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import Link from 'next/link'
 import React, { useContext, useState } from 'react'
-import { usePathname, useRouter } from 'next/navigation'
+import { usePathname} from 'next/navigation'
 import AuthContext from '@/context/AuthContext'
 import '../../css/component/dashFrames.css'
 
