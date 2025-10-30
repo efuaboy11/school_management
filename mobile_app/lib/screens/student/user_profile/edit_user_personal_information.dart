@@ -58,7 +58,7 @@ class _EditUserPersonalInformationState extends ConsumerState<EditUserPersonalIn
 
       try{
         print('executing');
-        final response = await ref.read(studentDetailsProvider.notifier).updateStudentDetails(data);
+        final response = await ref.read(studentDetailsProvider.notifier).updateStudentDetails(data, context);
         if(response == 'success'){
           if(!mounted) return;
           hideLoadingDialog(context);

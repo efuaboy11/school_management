@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
 import 'package:go_router/go_router.dart';
-class SchoolFeesPaymentScreenFour extends StatelessWidget {
-  const SchoolFeesPaymentScreenFour({
+class BillsPaymentScreenFour extends StatelessWidget {
+  const BillsPaymentScreenFour({
     super.key,
   });
 
@@ -48,7 +48,7 @@ class SchoolFeesPaymentScreenFour extends StatelessWidget {
 
                               SizedBox(height: 10,),
 
-                              Text("Your payment has been successfully recorded in our database. Our team will now verify the payment details. Once verification is complete and everything is in order, your school fee status will be updated to Successful or Approved", 
+                              Text("Your payment has been successfully recorded in our database. Our team will now verify the payment details. Once verification is complete and everything is in order, your bill status will be updated to Successful or Approved", 
                                 textAlign: TextAlign.center, style: TextStyle(fontSize: 16)
                               ),
                               SizedBox(height: 10,),

@@ -5,7 +5,7 @@ import 'package:mobile_app/auth_service.dart';
 import 'package:flutter/cupertino.dart';
 import 'dart:io' show Platform;
 
-import 'package:mobile_app/widgets/alert.dart'; // For platform check
+// import 'package:mobile_app/widgets/alert.dart'; // For platform check
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -105,8 +105,8 @@ class _LoginScreenState extends State<LoginScreen> {
           _authManager ??= AuthManager(context); // create it
           _authManager!.restart();               // restart monitoring
         }
-        if(!mounted) return;
-        showTopAlert(context, "Login successful");
+        // if(!mounted) return;
+        // showTopAlert(context, "Login successful");
 
         
         if(role == 'student'){

@@ -3,17 +3,17 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_app/auth_service.dart';
-import 'package:mobile_app/models/school_fee.dart';
+import 'package:mobile_app/models/bills.dart';
 import 'package:http/http.dart' as http;
 import 'package:mobile_app/session_active.dart';
 
-class SchoolFeeNotifier extends StateNotifier<List<SchoolFee>> {
-  SchoolFeeNotifier() : super([]);
+class BillsNotifier extends StateNotifier<List<Bills>> {
+  BillsNotifier() : super([]);
 
-  Future<String> fetchSchoolFeesPayment(String query, BuildContext context) async {
+  Future<String> fetchBillsPayment(String query, BuildContext context) async {
     final token = await AuthService.getAccessToken();
     final String baseUrl =
-        'https://school.amanilightequity.com/api/payment-school-fees/?search=$query';
+        'https://school.amanilightequity.com/api/bills-payment/?search=$query';
 
     try {
       final response = await http.get(
@@ -35,7 +35,7 @@ class SchoolFeeNotifier extends StateNotifier<List<SchoolFee>> {
         });
 
 
-        state = data.map((json) => SchoolFee.fromJson(json)).toList();
+        state = data.map((json) => Bills.fromJson(json)).toList();
         return 'success';
       } else {
         final errorData = jsonDecode(response.body);
@@ -51,8 +51,8 @@ class SchoolFeeNotifier extends StateNotifier<List<SchoolFee>> {
   } 
 }
 
-final schoolFeesProvider =
-    StateNotifierProvider<SchoolFeeNotifier, List<SchoolFee>>((ref) {
-      return SchoolFeeNotifier();
+final billsProvider =
+    StateNotifierProvider<BillsNotifier, List<Bills>>((ref) {
+      return BillsNotifier();
     });
  

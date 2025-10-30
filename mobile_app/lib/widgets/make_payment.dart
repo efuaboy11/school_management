@@ -21,7 +21,8 @@ class PaymentButton extends StatelessWidget {
             secretKey: 'sk_test_511bdb056b1b1a109cc26e84531872c78d689ad1',
             publicKey: 'pk_test_2d74cfaa987ef3c33faa55144a77c169c697a02c',
             currency: 'NGN',
-            callBackUrl: 'http://school.amanilightequity.com/api/initialize-payment/',
+            callBackUrl:
+                'https://school.amanilightequity.com/api/initialize-payment/',
             context: context,
             onClosed: () => print('Payment closed'),
             onSuccess: () => print('Payment successful'),

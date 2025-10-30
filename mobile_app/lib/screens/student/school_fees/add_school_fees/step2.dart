@@ -34,6 +34,13 @@ class SchoolFeesPaymentScreenTwo extends StatelessWidget{
   }
 
 
+  void onPaymentCancel(BuildContext context)async{
+    Navigator.of(context).pop();
+  }
+
+  
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -154,7 +161,7 @@ class SchoolFeesPaymentScreenTwo extends StatelessWidget{
                           height: 50,
                           child: ElevatedButton(
                             onPressed: () {
-                              makePayement(context,  userDetails.email, paymentDetails['amount'].toString(), _onPaymentSuccessful);
+                              makePayement(context,  userDetails.email, paymentDetails['amount'].toString(), _onPaymentSuccessful, onPaymentCancel);
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Theme.of(context).colorScheme.primary,

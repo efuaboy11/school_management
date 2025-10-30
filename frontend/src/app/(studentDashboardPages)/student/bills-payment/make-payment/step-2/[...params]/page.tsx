@@ -23,12 +23,30 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
     [key: string]: any;
   }
 
+  interface billType{
+    id: number;
+    bill_name: string;
+    amount: number;
+    description: string;
+    created_at: any;
+  }
+
+  interface bankType{
+    id: Number;
+    bank_name: string;
+    account_number: string;
+    account_name: string;
+    bank_img: string;
+    is_active: boolean;
+    description: string;
+  }
+
 
 
 
   const [paymentMethodDetails, setPaymentMethodDetails] = useState<any>(null)
-  const [billsDetails, setBillsDetails] = useState<any>(null)
-  const [bankAcountdDetails, setBankAcountdDetails] = useState<any[]>([])
+  const [billsDetails, setBillsDetails] = useState<billType>()
+  const [bankAcountdDetails, setBankAcountdDetails] = useState<bankType[]>([])
   const [bankAccountLoading, setBankAccountLoading] = useState(true)
   const [loading, setLoading] = useState(true)
   const [billsLoading, setBillsLoading] = useState(true)
@@ -337,6 +355,8 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
   useEffect(() => {
     setGenerateFeeLoader(false)
+    setLoader(false)
+    setDisableButton(false)
   }, []);
 
 
@@ -394,7 +414,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
                         <div className="d-sm-flex flex-wrap justify-content-between pb-3 align-center">
                           <p className='sm-text'>Amount to be paid:</p>
-                          <p className='white-text font-bold'>{formatCurrency(billsDetails.amount)} NGN</p>
+                          <p className='white-text font-bold'>{formatCurrency(billsDetails?.amount || 0)} NGN</p>
                         </div>
 
                         <div className="d-sm-flex flex-wrap justify-content-between pb-3 align-center">
@@ -537,7 +557,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
                           <div className="d-sm-flex justify-content-between pb-3 align-center">
                             <p className='sm-text'>Amount to be paid:</p>
-                            <p className='white-text font-bold'>{formatCurrency(billsDetails.amount)} NGN</p>
+                            <p className='white-text font-bold'>{formatCurrency(billsDetails?.amount || 0)} NGN</p>
                           </div>
 
                           <div className="d-sm-flex flex-wrap justify-content-between pb-3 align-center">
@@ -645,7 +665,7 @@ const PayBills = ({ params }: { params: Promise<any> }) => {
 
                     <div className="d-sm-flex justify-content-between pb-3 align-center">
                       <p className='sm-text'>Amount to be paid:</p>
-                      <p className='white-text font-bold'>{formatCurrency(billsDetails.amount)} NGN</p>
+                      <p className='white-text font-bold'>{formatCurrency(billsDetails?.amount || 0)} NGN</p>
                     </div>
 
                     <div className="d-sm-flex flex-wrap justify-content-between pb-3 align-center">

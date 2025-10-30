@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_app/auth_service.dart';
 import 'package:mobile_app/screens/Auth/login.dart';
+import 'package:mobile_app/screens/student/bills/add_bills/step4.dart';
 import 'package:mobile_app/screens/student/school_fees/add_school_fees/step4.dart';
 import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
@@ -13,28 +14,28 @@ import 'dart:io' show File, Platform;
 import 'package:mobile_app/widgets/platform_back_button.dart';
 import 'package:image_picker/image_picker.dart';
 
-class SchoolFeesPaymentScreenThree extends ConsumerStatefulWidget {
-  const SchoolFeesPaymentScreenThree({
+class BillsPaymentScreenThree extends ConsumerStatefulWidget {
+  const BillsPaymentScreenThree({
     super.key,
     required this.userId,
-    required this.feeType,
+    required this.billType,
     required this.paymentMethod,
   });
 
   final String userId;
-  final int feeType;
+  final int billType;
   final String paymentMethod;
 
   @override
-  ConsumerState<SchoolFeesPaymentScreenThree> createState() =>
-      _SchoolFeesPaymentScreenThreeState();
+  ConsumerState<BillsPaymentScreenThree> createState() =>
+      _BillsPaymentScreenThreeState();
 }
 
-class _SchoolFeesPaymentScreenThreeState
-    extends ConsumerState<SchoolFeesPaymentScreenThree> {
+class _BillsPaymentScreenThreeState
+    extends ConsumerState<BillsPaymentScreenThree> {
   final _formkey = GlobalKey<FormState>();
 
-  bool _isloading = false;
+  final bool _isloading = false;
   File? _selectedImage;
 
   void _getPicture(String method) async {
@@ -74,19 +75,19 @@ class _SchoolFeesPaymentScreenThreeState
     Navigator.of(context, rootNavigator: true).pop();
   }
 
-  void showPlatformDialog(BuildContext context, String errorMessage) {
+  void showPlatformDialog(BuildContext context, String message) {
     if (Platform.isIOS) {
       showCupertinoDialog(
         context: context,
         builder: (context) {
           return CupertinoAlertDialog(
             title: Text('Payment Successful'),
-            content: Text(errorMessage),
+            content: Text(message),
             actions: [
               CupertinoDialogAction(
                 child: Text('OK'),
                 onPressed: () => Navigator.of(context).pushReplacement(
-                  MaterialPageRoute(builder: (ctx) => SchoolFeesPaymentScreenFour())
+                  MaterialPageRoute(builder: (ctx) => BillsPaymentScreenFour())
                 ),
               ),
             ],
@@ -99,7 +100,7 @@ class _SchoolFeesPaymentScreenThreeState
         builder: (context) {
           return AlertDialog(
             title: Text('Payment Successful'),
-            content: Text(errorMessage),
+            content: Text(message),
             actions: [
               TextButton(
                 child: Text('OK'),
@@ -137,7 +138,7 @@ class _SchoolFeesPaymentScreenThreeState
         var request = http.MultipartRequest(
           'POST',
           Uri.parse(
-            'https://school.amanilightequity.com/api/payment-school-fees/',
+            'https://school.amanilightequity.com/api/bills-payment/',
           ),
         );
 
@@ -146,14 +147,14 @@ class _SchoolFeesPaymentScreenThreeState
 
         // Add form fields
         request.fields['student'] = widget.userId.toString();
-        request.fields['fee_type'] = widget.feeType.toString();
+        request.fields['bill'] = widget.billType.toString();
         request.fields['payment_method'] = widget.paymentMethod.toString();
         request.fields['status'] = 'pending';
 
         // Attach image file
         request.files.add(
           await http.MultipartFile.fromPath(
-            'fee_receipt', // must match the field name in your Django serializer
+            'bill_receipt', // must match the field name in your Django serializer
             _selectedImage!.path,
           ),
         );
@@ -171,7 +172,7 @@ class _SchoolFeesPaymentScreenThreeState
 
           showPlatformDialog(
             context,
-            'School fees have been successfully paid.',
+            'Bill have been successfully paid.',
           );
         } else {
           final errorData = jsonDecode(responseBody);
@@ -253,7 +254,7 @@ class _SchoolFeesPaymentScreenThreeState
             Navigator.of(context).pop();
           },
         ),
-        title: Text('Finalize fees payment', style: TextStyle(fontSize: 18)),
+        title: Text('Finalize bills payment', style: TextStyle(fontSize: 18)),
         actions: [
           IconButton(
             icon: Icon(Icons.menu),

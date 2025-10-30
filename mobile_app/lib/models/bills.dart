@@ -1,38 +1,36 @@
-// import 'dart:io';
-class SchoolFee {
+
+class Bills{
   final int id;
   final Map<String, dynamic> studentDetails;
   final String transactionId;
-  final Map<String, dynamic> feeTypeDetails;
+  final Map<String, dynamic> billTypeDetails;
   final Map<String, dynamic> paymentMethodDetails;
-  final String feeReceipt;
+  final String billReceipt;
   final String status;
   final String date;
 
-  const SchoolFee({
+  const Bills({
     required this.id,
     required this.studentDetails,
     required this.transactionId,
-    required this.feeTypeDetails,
+    required this.billTypeDetails,
     required this.paymentMethodDetails,
-    required this.feeReceipt,
+    required this.billReceipt,
     required this.status,
     required this.date
   });
 
-
-  factory SchoolFee.fromJson(Map<String, dynamic> json){
-    return SchoolFee(
+  factory Bills.fromJson(Map<String, dynamic> json){
+    return Bills(
       id: json['id'],
       studentDetails: json['student_name'], 
       transactionId: json['transaction_id'], 
-      feeTypeDetails: json['fee_type_name'], 
+      billTypeDetails: json['bill_name'], 
       paymentMethodDetails: json['payment_method_name'], 
-      feeReceipt: json['fee_receipt'], 
+      billReceipt: json['bill_receipt'], 
       status: json['status'], 
       date: json['date']
     );
   }
-
 
 }

@@ -1,5 +1,4 @@
 // import 'package:flutter/material.dart';
-import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_app/auth_service.dart';
 
@@ -13,7 +12,7 @@ import 'package:mobile_app/screens/student/assignment_submission/assigment_submi
 import 'package:mobile_app/screens/student/assignment_submission/assignment_submission_details.dart';
 import 'package:mobile_app/screens/student/assignment_submission/submit_assignment.dart';
 import 'package:mobile_app/screens/student/bills/add_bills/step1.dart';
-import 'package:mobile_app/screens/student/bills/bill_details.dart';
+// import 'package:mobile_app/screens/student/bills/bill_details.dart';
 import 'package:mobile_app/screens/student/bills/history.dart';
 import 'package:mobile_app/screens/student/class_notifications/class_notification.dart';
 import 'package:mobile_app/screens/student/class_timetable/class_timetable.dart';
@@ -23,7 +22,6 @@ import 'package:mobile_app/screens/student/scheme_of_work/scheme_of_work.dart';
 import 'package:mobile_app/screens/student/scheme_of_work/select_term_scheme.dart';
 import 'package:mobile_app/screens/student/school_event/school_event.dart';
 import 'package:mobile_app/screens/student/school_fees/add_school_fees/step1.dart';
-import 'package:mobile_app/screens/student/school_fees/fee_details.dart';
 import 'package:mobile_app/screens/student/school_fees/history.dart';
 import 'package:mobile_app/screens/student/check_result/check_result.dart';
 import 'package:mobile_app/screens/student/user_profile/user_profile.dart';
@@ -100,7 +98,7 @@ final GoRouter appRouter = GoRouter(
 
     GoRoute(
       path: '/student/home',
-      name: 'student-gome',
+      name: 'student-home',
       pageBuilder: (context, state) => CustomTransitionPage(
         transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
@@ -146,15 +144,15 @@ final GoRouter appRouter = GoRouter(
       ),
     ),
 
-    GoRoute(
-      path: '/student/bills-history/details',
-      name: 'student-bills-history-details',
-      pageBuilder:(context, state) => CustomTransitionPage(
-        transitionsBuilder: platformPageTransitionBuilder,
-        key: state.pageKey,
-        child: BillsDetailScreen()
-      ),
-    ),
+    // GoRoute(
+    //   path: '/student/bills-history/details',
+    //   name: 'student-bills-history-details',
+    //   pageBuilder:(context, state) => CustomTransitionPage(
+    //     transitionsBuilder: platformPageTransitionBuilder,
+    //     key: state.pageKey,
+    //     child: BillsDetailScreen()
+    //   ),
+    // ),
 
     GoRoute(
       path: '/student/bills-payment',

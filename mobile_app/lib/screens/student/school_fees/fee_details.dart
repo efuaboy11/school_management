@@ -15,7 +15,7 @@ class SchoolFeesDetailScreen extends StatelessWidget{
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     final customColors = Theme.of(context).extension<CustomColors>()!;
-
+  
     Widget status = Container(
       padding: EdgeInsets.all(10),
       decoration: BoxDecoration(
@@ -32,8 +32,10 @@ class SchoolFeesDetailScreen extends StatelessWidget{
       ),
     );
 
+    
+    
     if(feeDetails.status == 'pending'){
-      Container(
+      status = Container(
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: customColors.pending,
@@ -51,7 +53,7 @@ class SchoolFeesDetailScreen extends StatelessWidget{
     }
 
     if(feeDetails.status == 'declined'){
-      Container(
+      status =  Container(
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: customColors.declined,
@@ -151,7 +153,7 @@ class SchoolFeesDetailScreen extends StatelessWidget{
                             child: ListTile(
                               contentPadding: EdgeInsets.zero,
                               title: Text(formatName(feeDetails.feeTypeDetails['fee_choice'])),
-                              subtitle: Text(formatDate(feeDetails.date)),
+                              subtitle: Text(formatDateTime(feeDetails.date)),
 
                               trailing: status,
                             ),
@@ -329,7 +331,7 @@ class SchoolFeesDetailScreen extends StatelessWidget{
 
                                 SizedBox(height: 25,),
 
-                                Image.network(feeDetails.studentDetails['passport'],
+                                Image.network(feeDetails.feeReceipt,
                                   width: double.infinity,
                                   height: 300,
                                   

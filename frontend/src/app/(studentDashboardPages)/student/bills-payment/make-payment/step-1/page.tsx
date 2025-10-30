@@ -20,6 +20,7 @@ const PayBills = () => {
     loader,
     setLoader,
     disableButton,
+    setDisableButton,
 
   } = useContext(AuthContext)!
 
@@ -47,6 +48,7 @@ const PayBills = () => {
 
   const onSubmit = () => {
     setLoader(true)
+    setDisableButton(true)
     router.push(`/student/bills-payment/make-payment/step-2/${bills}/${paymentMethod}`)
   }
 

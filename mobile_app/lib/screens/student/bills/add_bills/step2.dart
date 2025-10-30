@@ -1,13 +1,20 @@
 
 import 'package:flutter/material.dart';
+import 'package:mobile_app/auth_service.dart';
+import 'package:mobile_app/models/student_details.dart';
+import 'package:mobile_app/screens/student/bills/add_bills/step3.dart';
 import 'package:mobile_app/theme.dart';
+import 'package:mobile_app/utils.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
 import 'package:mobile_app/widgets/platform_back_button.dart';
 
 class BillPaymentScreenTwo extends StatelessWidget{
-  const BillPaymentScreenTwo({super.key});
+  const BillPaymentScreenTwo({super.key, required this.paymentDetails, required this.userDetails, required this.paymentMethod, required this.paymentMethodId});
 
-  // onPressed: () => context.pop(),
+  final Map<String, dynamic> paymentDetails;
+  final StudentDetails userDetails;
+  final String paymentMethod;
+  final String paymentMethodId;
 
 
 
@@ -15,11 +22,29 @@ class BillPaymentScreenTwo extends StatelessWidget{
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     final customColors = Theme.of(context).extension<CustomColors>()!;
-
-    String currentScreen = 'online_payment';
+ 
     Widget content = Center(child: Text('wait a moment...'),);
 
-    if(currentScreen == 'cash_payment'){
+    void onPaymentSuccessful(BuildContext context)async{
+      print('yes');
+      final userId = await AuthService.getUserId();
+      Navigator.of(context).push(
+        MaterialPageRoute(builder: (ctx) => 
+          BillsPaymentScreenThree(
+            userId: userId!, 
+            billType: paymentDetails['id'], 
+            paymentMethod: paymentMethodId,
+          )
+        )
+      );
+    }
+
+
+    void onPaymentCancel(BuildContext context)async{
+      Navigator.of(context).pop();
+    }
+
+    if(paymentMethod == 'cash_payment'){
       content = Column(
         children: [
           Card(
@@ -84,7 +109,7 @@ class BillPaymentScreenTwo extends StatelessWidget{
           )
         ],
       );
-    }else if(currentScreen == 'bank_payment'){
+    }else if(paymentMethod == 'bank_payment'){
       content = Column(
         children: [
           SizedBox(height: 10,),
@@ -152,7 +177,7 @@ class BillPaymentScreenTwo extends StatelessWidget{
           )
         ],
       );
-    }else if(currentScreen == 'online_payment'){
+    }else if(paymentMethod == 'online_payment'){
       content = Column(
         children: [
           Card(
@@ -196,10 +221,7 @@ class BillPaymentScreenTwo extends StatelessWidget{
                           height: 50,
                           child: ElevatedButton(
                             onPressed: () {
-                              // context.push('/student/pay-2');
-                              // Navigator.of(context).push(
-                              //   MaterialPageRoute(builder: (ctx) => SchoolFeesPaymentScreenTwo())
-                              // );
+                              makePayement(context,  userDetails.email, paymentDetails['amount'].toString(), onPaymentSuccessful, onPaymentCancel);
                             },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Theme.of(context).colorScheme.primary,
@@ -227,6 +249,8 @@ class BillPaymentScreenTwo extends StatelessWidget{
         ],
       );
     }
+
+    
 
     return Scaffold(
       key: scaffoldKey,
@@ -289,28 +313,24 @@ class BillPaymentScreenTwo extends StatelessWidget{
                   
                               ListTile(
                                 title: Text('Student Name'),
-                                trailing: Text('Ben Mark'),
+                                trailing: Text('${formatName(userDetails.firstName)} ${userDetails.lastName}'),
                               ),
                   
                               ListTile(
                                 title: Text('Email'),
-                                trailing: Text('ben@gmail.com'),
+                                trailing: Text(userDetails.email),
                               ),
                   
                               ListTile(
                                 title: Text('Bill Type'),
-                                trailing: Text('Christmas Fee'),
+                                trailing: Text(formatName(paymentDetails['bill_name'])),
                               ),
                                              
                   
                               ListTile(
                                 title: Text('Amount to be paid'),
-                                trailing: Text('48000 USD', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
-                              ),
-          
-                  
-                  
-                  
+                                trailing: Text('${formatMoney(paymentDetails['amount'].toString())} NGN', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),),
+                              ),       
                   
                   
                             ],

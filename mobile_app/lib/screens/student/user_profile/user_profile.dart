@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile_app/auth_service.dart';
 import 'package:mobile_app/models/student_details.dart';
 import 'package:mobile_app/providers/student_details.dart';
 import 'package:mobile_app/screens/student/user_profile/edit_user_contact_info.dart';
@@ -23,12 +24,19 @@ class _UserProfileScreenState extends ConsumerState<UserProfileScreen> {
   @override
   void initState() {
     super.initState();
+    AuthService.isTokenExpired().then((isExpired){
+      if(isExpired) {
+        if(!mounted) return;
+        context.go('/login');
+        AuthService.logout();
+      }
+    });
     _loadStudentDetails();
   }
 
   Future<void> _loadStudentDetails() async{
     try{
-      final respose = await ref.read(studentDetailsProvider.notifier).fetchStudentDetails();
+      final respose = await ref.read(studentDetailsProvider.notifier).fetchStudentDetails(context);
       if(respose != 'success'){
         _error = respose;
       }

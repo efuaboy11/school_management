@@ -102,7 +102,7 @@ class _EditUserContactInformationState extends ConsumerState<EditUserContactInfo
         'home_address' : _houseAddress
       };
 
-      final response = await ref.read(studentDetailsProvider.notifier).updateStudentDetails(data);
+      final response = await ref.read(studentDetailsProvider.notifier).updateStudentDetails(data, context);
       if(response == 'success'){
         if(!mounted) return;
         

@@ -2,11 +2,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile_app/auth_service.dart';
 import 'package:mobile_app/providers/school_fee.dart';
 import 'package:mobile_app/screens/student/school_fees/fee_details.dart';
 import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/utils.dart';
-  import 'package:mobile_app/widgets/platform_back_button.dart';
+import 'package:mobile_app/widgets/platform_back_button.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
 import 'dart:async';
@@ -30,7 +31,15 @@ class _SchoolFeesHistoryScreenState extends ConsumerState<SchoolFeesHistoryScree
   @override
   void initState() {
     super.initState();
-    _loadPaymentDetails('');
+    AuthService.isTokenExpired().then((isExpired){
+      if(isExpired) {
+        if(!mounted) return;
+        context.go('/login');
+        AuthService.logout();
+      }
+    });
+
+    _loadPaymentDetails('', context);
   }
 
   @override
@@ -41,9 +50,9 @@ class _SchoolFeesHistoryScreenState extends ConsumerState<SchoolFeesHistoryScree
   }
 
 
-  Future<void> _loadPaymentDetails(String query) async{
+  Future<void> _loadPaymentDetails(String query, context) async{
     try{
-      final respose = await ref.read(schoolFeesProvider.notifier).fetchSchoolFeesPayment(query);
+      final respose = await ref.read(schoolFeesProvider.notifier).fetchSchoolFeesPayment(query, context);
       if(respose != 'success'){
         _error = respose;
       }
@@ -122,7 +131,7 @@ class _SchoolFeesHistoryScreenState extends ConsumerState<SchoolFeesHistoryScree
                 if (_debounce?.isActive ?? false) _debounce!.cancel();
 
                 _debounce = Timer(const Duration(milliseconds: 500), () {
-                  _loadPaymentDetails(value);
+                  _loadPaymentDetails(value, context);
                 });
               },
               style: TextStyle(fontSize: 14.0), // smaller text
