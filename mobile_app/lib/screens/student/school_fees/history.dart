@@ -172,8 +172,8 @@ class _SchoolFeesHistoryScreenState extends ConsumerState<SchoolFeesHistoryScree
                     );
                   }
                   return ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    // shrinkWrap: true,
+                    // physics: NeverScrollableScrollPhysics(),
                     itemCount: schoolFeesList.length,
                     itemBuilder: (ctx, index){
                       final fee = schoolFeesList[index];

@@ -309,7 +309,7 @@ class BillsDetailScreen extends StatelessWidget{
 
                                 SizedBox(height: 25,),
 
-                                Image.network(billDetails.billReceipt,
+                                Image.network(billDetails.billReceipt, 
                                   width: double.infinity,
                                   height: 300,
                                   

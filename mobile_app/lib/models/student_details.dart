@@ -19,6 +19,7 @@ class StudentDetails {
   final String role;
   final String admissionNumber;
   final String studentClass;
+  final String studentClassID;
   final String passport;
   final String accountStatus;
 
@@ -42,6 +43,7 @@ class StudentDetails {
     required this.role,
     required this.admissionNumber,
     required this.studentClass,
+    required this.studentClassID,
     required this.passport,
     required this.accountStatus
 
@@ -68,6 +70,7 @@ class StudentDetails {
       role: json['role'], 
       admissionNumber: json['admission_number'], 
       studentClass: json['student_class_name']['name'], 
+      studentClassID: json['student_class'].toString(),
       passport: json['passport'], 
       accountStatus: json['account_status']
     );
@@ -95,6 +98,7 @@ class StudentDetails {
       role: '', 
       admissionNumber: '', 
       studentClass: '', passport: '', 
+      studentClassID: '',
       accountStatus: ''
     );
 

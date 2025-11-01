@@ -12,7 +12,7 @@ class ResultScoreDetails extends StatelessWidget {
     super.key,
     required this.subject,
     required this.totalCa,
-     required this.totalGrade,
+    required this.totalGrade,
     required this.exam,
     required this.grade,
     required this.position
@@ -64,7 +64,7 @@ class ResultScoreDetails extends StatelessWidget {
                 ListTile(
                   title: Text('Exam'),
                   subtitle: Text('(60%)'),
-                  trailing: Text(totalCa),
+                  trailing: Text(exam),
                 ),
 
                 ListTile(

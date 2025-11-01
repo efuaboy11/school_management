@@ -7,7 +7,6 @@ import 'package:mobile_app/screens/Auth/forgot_password_success.dart';
 import 'package:mobile_app/screens/Auth/login.dart';
 import 'package:mobile_app/screens/splash_screen.dart';
 import 'package:mobile_app/screens/student/assignment/assigment.dart';
-import 'package:mobile_app/screens/student/assignment/assignment_details.dart';
 import 'package:mobile_app/screens/student/assignment_submission/assigment_submission.dart';
 import 'package:mobile_app/screens/student/assignment_submission/assignment_submission_details.dart';
 import 'package:mobile_app/screens/student/assignment_submission/submit_assignment.dart';
@@ -18,7 +17,6 @@ import 'package:mobile_app/screens/student/class_notifications/class_notificatio
 import 'package:mobile_app/screens/student/class_timetable/class_timetable.dart';
 import 'package:mobile_app/screens/student/general_notification/general_notification.dart';
 import 'package:mobile_app/screens/student/home.dart';
-import 'package:mobile_app/screens/student/scheme_of_work/scheme_of_work.dart';
 import 'package:mobile_app/screens/student/scheme_of_work/select_term_scheme.dart';
 import 'package:mobile_app/screens/student/school_event/school_event.dart';
 import 'package:mobile_app/screens/student/school_fees/add_school_fees/step1.dart';
@@ -174,16 +172,6 @@ final GoRouter appRouter = GoRouter(
       ),
     ),
 
-    GoRoute(
-      path: '/student/assignment-details',
-      name: 'student-assignment-details',
-      pageBuilder:(context, state) => CustomTransitionPage(
-        transitionsBuilder: platformPageTransitionBuilder,
-        key: state.pageKey,
-        child: AssignmentDetailsScreen()
-      ),
-    ),
-
 
     GoRoute(
       path: '/student/assignment-submission',
@@ -233,16 +221,6 @@ final GoRouter appRouter = GoRouter(
         transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: SelectTermSchemeScreen()
-      ),
-    ),
-
-    GoRoute(
-      path: '/student/scheme',
-      name: 'student-scheme',
-      pageBuilder:(context, state) => CustomTransitionPage(
-        transitionsBuilder: platformPageTransitionBuilder,
-        key: state.pageKey,
-        child: SchemeOfWorkScreen()
       ),
     ),
 

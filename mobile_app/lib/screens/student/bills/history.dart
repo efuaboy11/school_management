@@ -164,16 +164,18 @@ class _BillsHistoryScreenState extends ConsumerState<BillsHistoryScreen> {
                             width: 300,
                             height: 300,
                           ),
-                          Text("No matching fee found", textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleMedium,),
+                          Text("No matching bill found", textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleMedium,),
                           
 
                         ],
                       )
                     );
                   }
+
+                  
                   return ListView.builder(
-                    shrinkWrap: true,
-                    physics: NeverScrollableScrollPhysics(),
+                    // shrinkWrap: true,
+                    // physics: NeverScrollableScrollPhysics(),
                     itemCount: billsList.length,
                     itemBuilder: (ctx, index){
                       final bill = billsList[index];

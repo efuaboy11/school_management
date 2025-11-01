@@ -1,21 +1,155 @@
 
 import 'package:flutter/material.dart';
+import 'package:mobile_app/auth_service.dart';
+import 'package:mobile_app/models/assignment.dart';
+import 'package:mobile_app/screens/Auth/login.dart';
 import 'package:mobile_app/theme.dart';
+import 'package:mobile_app/utils.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
 import 'package:mobile_app/widgets/platform_back_button.dart';
 
-class AssignmentDetailsScreen extends StatelessWidget{
-  const AssignmentDetailsScreen({super.key});
+class AssignmentDetailsScreen extends StatefulWidget{
+  const AssignmentDetailsScreen({super.key, required this.assignmentDetails});
 
-  // onPressed: () => context.pop(),
+  final Assignment assignmentDetails;
+
+  @override
+  State<AssignmentDetailsScreen> createState() => _AssignmentDetailsScreenState();
+}
+
+class _AssignmentDetailsScreenState extends State<AssignmentDetailsScreen> {
 
 
+  void _showLoadingDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false, // prevent closing by tapping outside
+      context: context,
+      barrierColor: Colors.black.withValues(alpha: 0.9), // dim background
+      builder: (context) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset('assets/image/loading.gif', width: 120, height: 120),
+          SizedBox(height: 10,),
+          Text('This might take a while...', style: Theme.of(context).textTheme.bodyMedium!,),
 
+        ],
+      )
+    );
+  }
+
+  Future<void> _onDownloadFile() async{
+    _showLoadingDialog(context);
+    if(widget.assignmentDetails.assignmentFile != null){
+      final response = await downloadFile(widget.assignmentDetails.assignmentFile!);
+      if(!mounted) return;
+      hideLoadingDialog(context);
+      if(response == 'success'){
+        showPlatformDialog(context, 'Download Successful', 'The file has been downloaded successfully.', (){
+          Navigator.of(context).pop();
+        });
+
+      }else{
+        showPlatformDialog(context, 'Download Failed', response, (){
+          Navigator.of(context).pop();
+        });
+      }
+
+
+    }
+  }
+
+
+  @override
+  void initState() {
+    super.initState();
+    AuthService.isTokenExpired().then((isExpired){
+      if(isExpired) {
+        if(!mounted) return;
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (ctx) => LoginScreen())
+        );
+        AuthService.logout();
+      }
+    });
+  }
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     final customColors = Theme.of(context).extension<CustomColors>()!;
 
+    Widget assignmentFileContent = SizedBox(
+      width: double.infinity,
+      height: 100,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'No file attached',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: customColors.lightText),
+          
+          ),
+        ],
+      )
+    );
+
+    if(widget.assignmentDetails.assignmentFile != null){
+      assignmentFileContent = InkWell(
+        onTap: _onDownloadFile,
+        child: SizedBox(
+          width: double.infinity,
+          height: 100,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                getFileName(widget.assignmentDetails.assignmentFile),
+                textAlign: TextAlign.center,
+                style: TextStyle(color: customColors.lightText),
+              
+              ),
+            ],
+          )
+        ),
+      );
+    }
+
+
+    Widget assignmentImageContent = SizedBox(
+      width: double.infinity,
+      height: 100,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'No file attached',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: customColors.lightText),
+          
+          ),
+        ],
+      )
+    );
+
+    if(widget.assignmentDetails.assignmentImage != null){
+      assignmentImageContent = InkWell(
+        onTap: _onDownloadFile,
+        child: SizedBox(
+          width: double.infinity,
+          height: 100,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.network(
+                widget.assignmentDetails.assignmentImage!,
+                width: 80,
+                height: 80,
+              )
+            ],
+          )
+        ),
+      );
+    }
 
     return Scaffold(
       key: scaffoldKey,
@@ -36,8 +170,6 @@ class AssignmentDetailsScreen extends StatelessWidget{
           ),
         
         ],
-        // backgroundColor: Theme.of(context).colorScheme.primary , // 👈 fully transparent
-         // 👈 removes shadow
 
       ),
 
@@ -76,26 +208,7 @@ class AssignmentDetailsScreen extends StatelessWidget{
                                 child: Text('Assignment File', textAlign: TextAlign.center,),
                               ),
                   
-                              GestureDetector(
-                                child: SizedBox(
-                                  width: double.infinity,
-                                  height: 100,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'No file attached',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: customColors.lightText),
-                                      
-                                      ),
-                                    ],
-                                  )
-                                ),
-                              )
-                  
-                  
-                  
+                              assignmentFileContent,
                   
                             ],
                           ),
@@ -120,23 +233,7 @@ class AssignmentDetailsScreen extends StatelessWidget{
                                 child: Text('Assignment Photo', textAlign: TextAlign.center,),
                               ),
                   
-                              GestureDetector(
-                                child: SizedBox(
-                                  width: double.infinity,
-                                  height: 100,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'No file attached',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: customColors.lightText),
-                                      
-                                      ),
-                                    ],
-                                  )
-                                ),
-                              )
+                              assignmentImageContent,
                   
                   
                   
@@ -167,38 +264,43 @@ class AssignmentDetailsScreen extends StatelessWidget{
                               ),
 
                               ListTile(
-                                title: Text('Teacher Name'),
-                                trailing: Text('Ben Mark'),
+                                title: Text('Teacher name'),
+                                trailing:  Text('${formatName(widget.assignmentDetails.teacherDetails['first_name'])} ${formatName(widget.assignmentDetails.teacherDetails['last_name'])}'),
                               ),
 
                               ListTile(
                                 title: Text('Class'),
-                                trailing: Text('Primary 1'),
+                                trailing: Text(formatName(widget.assignmentDetails.studentClassName)),
                               ),
 
                               ListTile(
                                 title: Text('Subject'),
-                                trailing: Text('English'),
+                                trailing: Text(formatName(widget.assignmentDetails.subjectName)),
                               ),
 
                               ListTile(
                                 title: Text('Assinment Name'),
-                                trailing: Text('Take Home Assignment'),
+                                trailing: Text(formatName(widget.assignmentDetails.assignmentTitle)),
                               ),
 
                               ListTile(
                                 title: Text('Assingment Code'),
-                                trailing: Text('12355767'),
+                                trailing: Text(widget.assignmentDetails.assignmentCode),
+                              ),
+
+                              ListTile(
+                                title: Text('Assingment Point'),
+                                trailing: Text(widget.assignmentDetails.assignmentTitle),
                               ),
 
                               ListTile(
                                 title: Text('Due date'),
-                                trailing: Text('7 jul 2023'),
+                                trailing: Text(formatDate(widget.assignmentDetails.dueDate)),
                               ),
 
                               ListTile(
                                 title: Text('Date given'),
-                                trailing: Text('7 jul 2023'),
+                                trailing: Text(formatDateTime(widget.assignmentDetails.assignedDate)),
                               ),             
                   
                             ],
@@ -209,6 +311,7 @@ class AssignmentDetailsScreen extends StatelessWidget{
 
                         Card(
                           child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Container(
                                 width: double.infinity,
@@ -228,7 +331,7 @@ class AssignmentDetailsScreen extends StatelessWidget{
                   
                               Padding(
                                 padding: EdgeInsetsGeometry.all(10),
-                                child: Text('data'),
+                                child: Text(formatName(widget.assignmentDetails.assignmentInstructions)),
                               )
                   
                   

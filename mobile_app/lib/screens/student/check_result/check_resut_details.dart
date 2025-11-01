@@ -1,25 +1,32 @@
 
 import 'package:flutter/material.dart';
+import 'package:mobile_app/models/result.dart';
 import 'package:mobile_app/screens/student/check_result/result_score_details.dart';
 import 'package:mobile_app/theme.dart';
+import 'package:mobile_app/utils.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
 import 'package:mobile_app/widgets/platform_back_button.dart';
 
 class CheckResutDetailsScreen extends StatelessWidget{
-  const CheckResutDetailsScreen({super.key});
+  const CheckResutDetailsScreen({super.key, required this.resultDetails});
 
   // onPressed: () => context.pop(),
+  final Result resultDetails;
 
+  
 
 
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     final customColors = Theme.of(context).extension<CustomColors>()!;
+    final  subjectResult = resultDetails.subjectResult;
+
 
     void openResultScoreverlay(subject, totalCa, exam, totalGrade, grade, position){
       showModalBottomSheet(useSafeArea: true, isScrollControlled: true, context: context, builder: (ctx) => ResultScoreDetails(subject: subject, totalCa: totalCa, totalGrade: totalGrade, exam: exam, grade: grade, position: position));
     }
+    print(resultDetails);
 
     Widget buildGridItem(BuildContext context, String text, String subText, double width){
       return SizedBox(
@@ -108,11 +115,11 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                       spacing: spacing,
                                       runSpacing: spacing,
                                       children: [
-                                        buildGridItem(context, 'Student name', 'Iseghohimhen Efua', itemWidth),
-                                        buildGridItem(context, 'Student ID', 'stubam70', itemWidth),
-                                        buildGridItem(context, 'Class', 'Primary 1', itemWidth),
-                                        buildGridItem(context, 'Term', 'First term', itemWidth),
-                                        buildGridItem(context, 'Session', '2025/2026', itemWidth),
+                                        // buildGridItem(context, 'Student name', '${formatName(resultDetails.studentDetails['first_name'])} ${formatName(resultDetails.studentDetails['last_name'])}', itemWidth),
+                                        buildGridItem(context, 'Student ID', '${resultDetails.studentDetails['userID']}', itemWidth),
+                                        buildGridItem(context, 'Class',  formatName(resultDetails.studentClass), itemWidth),
+                                        buildGridItem(context, 'Term', formatName(resultDetails.termName), itemWidth),
+                                        buildGridItem(context, 'Session', resultDetails.sessionName, itemWidth),
                                       ],
                                     );
                                 
@@ -155,7 +162,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Total mark obtained:'),
-                                    Text('23', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.totalMarksObtain, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -170,7 +177,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Student average:'),
-                                    Text('23', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.studentAverage, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -186,7 +193,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('class average:'),
-                                    Text('23', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.classAverage, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -202,7 +209,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Total student:'),
-                                    Text('23', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.totalStudents, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -218,7 +225,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('position:'),
-                                    Text('5th', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.position, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -233,7 +240,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Decision:'),
-                                    Text('Good', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.decision, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -272,41 +279,74 @@ class CheckResutDetailsScreen extends StatelessWidget{
 
                               SizedBox(height: 15,),
 
-                              ListView(
+                        
+
+                              ListView.builder(
                                 padding: EdgeInsets.all(10),
                                 shrinkWrap: true,
                                 physics: NeverScrollableScrollPhysics(),
-                                children: [
-                                  Container(
-                                    width: double.infinity,
-                                    padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(color: customColors.lightBorder, width: 1)
+                                itemCount: subjectResult.length,
+                                itemBuilder: (ctx, index){
+                                  final subject = subjectResult[index];
+                                  print(subjectResult[index]);
+                                  return Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 5),
+                                    child: Container(
+                                      width: double.infinity,
+                                      padding: EdgeInsets.all(10),
+                                      decoration: BoxDecoration(
+                                        color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                                        borderRadius: BorderRadius.circular(12),
+                                        border: Border.all(color: customColors.lightBorder, width: 1)
+                                      ),
+                                      child: InkWell(
+                                        onTap: (){
+                                          openResultScoreverlay(
+                                            subject['subject_name']['name'], 
+                                            subject['total_ca'].toString(), 
+                                            subject['exam'].toString(), 
+                                            subject['total'].toString(), 
+                                            subject['grade'], 
+                                            subject['position'].toString()
+                                          );
+                                        },
+                                        child: Text(subject['subject_name']['name']),
+                                      )
                                     ),
-                                    child: GestureDetector(
-                                      onTap: (){
-                                        openResultScoreverlay('Mathematics', '50', '50', '100', 'A1', '5th');
-                                      },
-                                      child: Text('Mathematics'),
-                                    )
-                                  ),
-                                  SizedBox(height: 10,),
+                                  );
+                                },
+                                
+                                // children: [
+                                //   Container(
+                                //     width: double.infinity,
+                                //     padding: EdgeInsets.all(10),
+                                //     decoration: BoxDecoration(
+                                //       color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                                //       borderRadius: BorderRadius.circular(12),
+                                //       border: Border.all(color: customColors.lightBorder, width: 1)
+                                //     ),
+                                //     child: GestureDetector(
+                                //       onTap: (){
+                                //         openResultScoreverlay('Mathematics', '50', '50', '100', 'A1', '5th');
+                                //       },
+                                //       child: Text('Mathematics'),
+                                //     )
+                                //   ),
+                                //   SizedBox(height: 10,),
 
-                                  Container(
-                                    width: double.infinity,
-                                    padding: EdgeInsets.all(10),
-                                    decoration: BoxDecoration(
-                                      color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
-                                      borderRadius: BorderRadius.circular(12),
-                                      border: Border.all(color: customColors.lightBorder, width: 1)
-                                    ),
-                                    child: GestureDetector(
-                                      child: Text('Mathematics'),
-                                    )
-                                  ),
-                                ]
+                                //   Container(
+                                //     width: double.infinity,
+                                //     padding: EdgeInsets.all(10),
+                                //     decoration: BoxDecoration(
+                                //       color: Theme.of(context).colorScheme.surfaceContainerHighest.withValues(alpha: 0.5),
+                                //       borderRadius: BorderRadius.circular(12),
+                                //       border: Border.all(color: customColors.lightBorder, width: 1)
+                                //     ),
+                                //     child: GestureDetector(
+                                //       child: Text('Mathematics'),
+                                //     )
+                                //   ),
+                                // ]
                               ),
 
 
@@ -403,7 +443,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Agility:'),
-                                    Text('Good', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.agility, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -418,7 +458,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Caring:'),
-                                    Text('Good', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.caring, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -434,7 +474,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Communication:'),
-                                    Text('Good', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.communication, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -450,7 +490,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Loving:'),
-                                    Text('Good', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.loving, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -466,7 +506,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Punality:'),
-                                    Text('Good', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.puntality, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -481,7 +521,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Seriousness:'),
-                                    Text('Good', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.seriousness, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -497,7 +537,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Honesty:'),
-                                    Text('Good', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.honest, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -513,7 +553,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Leadership:'),
-                                    Text('Good', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.leadership, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -529,7 +569,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Perservance:'),
-                                    Text('Good', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.perserverance, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -545,7 +585,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Socializtion:'),
-                                    Text('Good', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.socialization, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -561,7 +601,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Politeness:'),
-                                    Text('Good', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.politeness, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -577,7 +617,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Music:'),
-                                    Text('Good', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.music, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -619,7 +659,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Attentiveness:'),
-                                    Text('Good', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.attentiveness, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -634,7 +674,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Handling tools:'),
-                                    Text('Good', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.handlingOfTools, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -650,7 +690,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Neatness:'),
-                                    Text('Good', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.neatness, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -666,7 +706,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                                   children: [
                                     Text('Tools:'),
-                                    Text('Good', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.tools, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -764,7 +804,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text('Teacher comment:'),
-                                    Text('Good', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.teacherComment, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -779,7 +819,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text('Principal comment:'),
-                                    Text('Good', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.principalComment, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],
@@ -795,7 +835,7 @@ class CheckResutDetailsScreen extends StatelessWidget{
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     Text('Next term begins:'),
-                                    Text('25th 2005', style: Theme.of(context).textTheme.bodySmall!.copyWith(
+                                    Text(resultDetails.nextTermBegins, style: Theme.of(context).textTheme.bodySmall!.copyWith(
                                       color: customColors.lightText
                                     ),)
                                   ],

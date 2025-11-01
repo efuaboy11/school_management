@@ -1,10 +1,82 @@
 import 'dart:convert';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:mobile_app/auth_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_paystack_plus/src/paystack.dart';
+import 'package:path/path.dart' as path;
+import 'dart:io';
+import 'package:dio/dio.dart';
+import 'package:path_provider/path_provider.dart';
+import 'package:permission_handler/permission_handler.dart';
+
+
+
+  void showLoadingDialog(BuildContext context) {
+    showDialog(
+      barrierDismissible: false, // prevent closing by tapping outside
+      context: context,
+      barrierColor: Colors.black.withValues(alpha: 0.5), // dim background
+      builder: (context) => Center(
+        child: Image.asset('assets/image/loading.gif', width: 120, height: 120),
+      ),
+    );
+  }
+
+  
+  void hideLoadingDialog(BuildContext context) {
+    Navigator.of(context, rootNavigator: true).pop();
+  }
+
+  void showPlatformDialog(BuildContext context, String title, String message, Function onOkPressed) {
+    if (Platform.isIOS) {
+      showCupertinoDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Text(title),
+            content: Text(message),
+            actions: [
+              CupertinoDialogAction(
+                child: Text('OK'),
+                onPressed:() => onOkPressed(),
+                 
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(title),
+            content: Text(message),
+            actions: [
+              TextButton(
+                child: Text('OK'),
+                onPressed:() => onOkPressed(),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  void showSnackbar(BuildContext context, String text) {
+    ScaffoldMessenger.of(context).clearSnackBars();
+    final snackBar = SnackBar(
+      content: Text(text),
+      duration: Duration(seconds: 3),
+    );
+
+    ScaffoldMessenger.of(context).showSnackBar(snackBar);
+  }
+
 
 Future<String> makePayement(
   BuildContext context,
@@ -90,6 +162,66 @@ String formatMoney(String amount) {
     return amount; // return original if parsing fails
   }
 }
+
+String  getFileName(String url){
+  final filename = path.basename(url);
+  return filename;
+}
+
+
+
+Future<String> downloadFile(String url) async{
+  final dio = Dio();
+
+  try{
+
+  
+
+     if (Platform.isAndroid) {
+      // For Android 11+ use MANAGE_EXTERNAL_STORAGE
+      if (await Permission.manageExternalStorage.isGranted == false) {
+        var status = await Permission.manageExternalStorage.request();
+        if (!status.isGranted) {
+          return 'Storage permission not granted';
+        }
+      }
+    }
+
+    Directory? dir;
+    if(Platform.isAndroid){
+      dir = Directory('/storage/emulated/0/Download');
+      if(!await dir.exists()){
+        dir = await getExternalStorageDirectory();
+      }else{
+        dir = await getApplicationDocumentsDirectory();
+
+      }
+    }
+
+
+    String fileName = getFileName(url);
+    String filePath = path.join(dir!.path, fileName);
+    print('Downloading to: $filePath');
+
+    await dio.download(
+      url, filePath,
+      onReceiveProgress: (received, total){
+        if(total != -1){
+          final progress = '${(received / total * 100).toStringAsFixed(0)}%';
+          print("Progress: $progress");
+        }
+      }
+    );
+
+    return'success';
+  }catch(e){
+    print('Error downloading file: $e');
+    return 'Error downloading file: $e';
+
+  }
+}
+
+
 
 
 

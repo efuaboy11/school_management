@@ -301,7 +301,7 @@ const StudentHome = () => {
                         </div>
 
                         <p className="lg-text">{assignmentSubmissionCount}</p>
-                        <p className="light-text xsm-text">Total assignment submitted</p>
+                        <p className="light-text xsm-text">Assignment submitted</p>
                       </div>
                     </div>
                   </div>
