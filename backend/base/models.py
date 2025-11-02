@@ -317,7 +317,7 @@ class UserNotificationStatus(models.Model):
         ('class', 'Class'),
     ]
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
-    notiification = models.CharField(max_length=50, choices=NOTIFICATION_CHOICE, default='school')
+    notification = models.CharField(max_length=50, choices=NOTIFICATION_CHOICE, default='school')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='unread')
     updated_at = models.DateTimeField(auto_now=True)
     

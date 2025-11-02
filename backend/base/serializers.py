@@ -475,7 +475,7 @@ class SchoolNotificationSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'subject',
-            # 'text',
+            'text',
             'status',
             'date'
         ]
