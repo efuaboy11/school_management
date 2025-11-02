@@ -2,9 +2,23 @@
 
 import 'package:flutter/material.dart';
 import 'package:mobile_app/theme.dart';
+import 'package:mobile_app/utils.dart';
 
 class SchoolEventDetails extends StatelessWidget{
-  const SchoolEventDetails({super.key});
+  const SchoolEventDetails({super.key,
+    required this.title,
+    required this.description,
+    required this.startDate,
+    required this.endDate,
+
+  });
+
+  final String title;
+  final String description;
+  final String startDate;
+  final String endDate;
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -38,14 +52,14 @@ class SchoolEventDetails extends StatelessWidget{
 
                 SizedBox(height: 12,),
 
-                Text('School open day',
+                Text(formatName(title),
                   style: Theme.of(context).textTheme.headlineSmall!.copyWith(fontWeight: FontWeight.bold), 
                 ),
 
                 SizedBox(height: 12,),
 
                 Text(
-                  'This is the school day open day, it will happen and interesting',
+                  formatName(description),
                   style: Theme.of(context).textTheme.bodyMedium!.copyWith(fontSize: 16),
                 ),
 
@@ -55,7 +69,7 @@ class SchoolEventDetails extends StatelessWidget{
                   children: [
                     Icon(Icons.calendar_today, size: 18, color: customColors.lightText,),
                     SizedBox(width: 8,),
-                    Text('To: 25th nov, 2023')
+                    Text('from: ${formatDateTime(startDate)}')
                   ],
                 ),
 
@@ -65,7 +79,7 @@ class SchoolEventDetails extends StatelessWidget{
                   children: [
                     Icon(Icons.event, size: 16, color: customColors.lightText,),
                     SizedBox(width: 6,),
-                    Text('To: 2nd april 2025')
+                    Text('To: ${formatDateTime(endDate)}')
                   ],
                 )
 

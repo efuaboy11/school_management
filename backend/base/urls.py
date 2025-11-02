@@ -102,6 +102,9 @@ urlpatterns = [
     path('admin-or-hr-notification/<str:pk>/', views.AdminorHRNotificationRetrieveUpdateDestroy.as_view(), name='indiviual_admin_or_hr_notification' ),
     path('delete-multiple-admin-or-hr-notification/', views.DeleteMultipleAdminorHRNotificationView.as_view(), name='delete_multiple_admin_or_hr_notification' ),
     
+    # Update Notification
+    path('update-notification/', views.UpdateNotificationView.as_view(), name='update_notification' ),
+    
     #School Notification
     path('school-notification/', views.SchoolNotificationView.as_view(), name='school_notification' ),
     path('school-notification/<str:pk>/', views.SchoolNotificationRetrieveUpdateDestroy.as_view(), name='indiviual_school_notification' ),

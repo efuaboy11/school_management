@@ -305,6 +305,26 @@ class Session(models.Model):
 
     def __str__(self):
         return self.name
+    
+class UserNotificationStatus(models.Model):
+    STATUS_CHOICES = [
+        ('unread', 'Unread'),
+        ('read', 'Read'),
+    ]
+    NOTIFICATION_CHOICE = [
+        ('school', 'Scchool'),
+        ('staff', 'Staff'),
+        ('class', 'Class'),
+    ]
+    user = models.ForeignKey(Users, on_delete=models.CASCADE)
+    notiification = models.CharField(max_length=50, choices=NOTIFICATION_CHOICE, default='school')
+    status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='unread')
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    class Meta:
+        unique_together = ('user', 'notification')
+    
+
 
     
 # School Notification

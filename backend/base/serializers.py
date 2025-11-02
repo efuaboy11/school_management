@@ -469,14 +469,25 @@ class ShortSessionSerializer(serializers.ModelSerializer):
         
 # School Notification
 class SchoolNotificationSerializer(serializers.ModelSerializer):
+    status = serializers.SerializerMethodField()
     class Meta:
         model = SchoolNotification
         fields = [
             'id',
             'subject',
             'text',
+            'status',
             'date'
         ]
+        
+    def get_status(self, obj):
+        user = self.context['request'].user
+        
+        try:
+            user_status = UserNotificationStatus.objects.get(user=user, notification='school')
+            return user_status.status
+        except UserNotificationStatus.DoesNotExist:
+            return 'unread'
         
         
 # Staff Notification
@@ -487,6 +498,7 @@ class StaffNotificationSerializer(serializers.ModelSerializer):
             'id',
             'subject',
             'text',
+            'status',
             'date'
         ]
         
@@ -505,6 +517,7 @@ class ClassNotificationSerializer(serializers.ModelSerializer):
             'student_class_name',
             'subject',
             'text',
+            'status',
             'date',
         ]
     def get_student_class_name(self, obj):

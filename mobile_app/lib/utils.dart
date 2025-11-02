@@ -174,9 +174,6 @@ Future<String> downloadFile(String url) async{
   final dio = Dio();
 
   try{
-
-  
-
      if (Platform.isAndroid) {
       // For Android 11+ use MANAGE_EXTERNAL_STORAGE
       if (await Permission.manageExternalStorage.isGranted == false) {
@@ -201,7 +198,6 @@ Future<String> downloadFile(String url) async{
 
     String fileName = getFileName(url);
     String filePath = path.join(dir!.path, fileName);
-    print('Downloading to: $filePath');
 
     await dio.download(
       url, filePath,

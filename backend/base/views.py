@@ -850,6 +850,11 @@ class SchoolNotificationView(generics.ListCreateAPIView):
     filter_backends = [ExactSearchFilter]
     search_fields = ['subject', 'date']
     
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
+    
     
     def post(self, request, *args, **kwargs):
         user = request.user
@@ -880,6 +885,24 @@ class DeleteMultipleSchoolNotificationView(generics.GenericAPIView):
         return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
 
 
+class UpdateNotificationView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request):
+        user = request.user
+        notification = self.request.query_params.get('notification_type') 
+        
+        user_status, created = UserNotificationStatus.objects.get_or_create(
+            user=user,
+            notification=notification
+        )
+        
+        user_status.status = 'read'
+        user_status.save()
+        return Response({"message": "Notification marked as read."}, status=status.HTTP_200_OK)
+
+       
+    
 
 
 
