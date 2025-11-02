@@ -321,8 +321,6 @@ class UserNotificationStatus(models.Model):
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='unread')
     updated_at = models.DateTimeField(auto_now=True)
     
-    class Meta:
-        unique_together = ('user', 'notification')
     
 
 
