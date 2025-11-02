@@ -5,6 +5,9 @@ from django.contrib.auth.models import AbstractUser, BaseUserManager, Group, Per
 from django.utils import timezone
 import uuid
 import secrets
+from django.contrib.contenttypes.models import ContentType
+from django.contrib.contenttypes.fields import GenericForeignKey, GenericRelation
+
 
 
 class StorageQuota(models.Model):
@@ -317,9 +320,14 @@ class UserNotificationStatus(models.Model):
         ('class', 'Class'),
     ]
     user = models.ForeignKey(Users, on_delete=models.CASCADE)
-    notification = models.CharField(max_length=50, choices=NOTIFICATION_CHOICE, default='school')
+    content_type = models.ForeignKey(ContentType, on_delete=models.CASCADE)
+    object_id = models.PositiveIntegerField()
+    notification = GenericForeignKey('content_type', 'object_id')
     status = models.CharField(max_length=10, choices=STATUS_CHOICES, default='unread')
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"{self.user} - {self.notification} ({self.status})"
     
     
 
@@ -330,6 +338,7 @@ class SchoolNotification(models.Model):
     subject = models.CharField(max_length=100, null=True, blank=True)
     text = models.TextField(max_length=500, null=True, blank=True)
     date = models.DateTimeField(default=timezone.now) 
+    user_status = GenericRelation("UserNotificationStatus")
     
     
 # Staff Notification
@@ -337,6 +346,7 @@ class StaffNotification(models.Model):
     subject = models.CharField(max_length=100, null=True, blank=True)
     text = models.TextField(max_length=500, null=True, blank=True)
     date = models.DateTimeField(default=timezone.now) 
+    user_status = GenericRelation("UserNotificationStatus")
    
 
 # Class Notification
@@ -346,6 +356,7 @@ class ClassNotification(models.Model):
     student_class = models.ForeignKey(StudentClass, on_delete=models.CASCADE, related_name="class_notification")
     text = models.TextField(max_length=200, null=True, blank=True)
     date = models.DateTimeField(default=timezone.now)
+    user_status = GenericRelation("UserNotificationStatus")
     
     def __str__(self):
         return f"Notification for {self.student_class.name} by {self.teacher.first_name} {self.teacher.last_name}"

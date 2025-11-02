@@ -888,15 +888,22 @@ class DeleteMultipleSchoolNotificationView(generics.GenericAPIView):
 class UpdateNotificationView(APIView):
     permission_classes = [IsAuthenticated]
     
-    def post(self, request):
+    def post(self, request, model_name, pk):
         user = request.user
-        notification = self.request.query_params.get('notification_type') 
+        
+        try:
+            ct = ContentType.objects.get(model=model_name.lower())
+            notification = ct.get_object_for_this_type(pk=pk)
+        except ContentType.DoesNotExist:
+            return Response({"error": "Invalid notification type."}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception:
+            return Response({"error": "Notification not found."}, status=status.HTTP_404_NOT_FOUND)
         
         user_status, created = UserNotificationStatus.objects.get_or_create(
             user=user,
-            notification=notification
-        )
-        
+            notification=notification,
+            content_type=ct,
+        )   
         user_status.status = 'read'
         user_status.save()
         return Response({"message": "Notification marked as read."}, status=status.HTTP_200_OK)

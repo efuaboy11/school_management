@@ -482,12 +482,20 @@ class SchoolNotificationSerializer(serializers.ModelSerializer):
         
     def get_status(self, obj):
         user = self.context['request'].user
+        content_type = obj._meta.model
         
         try:
-            user_status = UserNotificationStatus.objects.get(user=user, notification='school')
-            return user_status.status
+            ct = ContentType.objects.get_for_model(content_type)
+            # content_type = ContentType.objects.get_for_model(SchoolNotification)
+            record = UserNotificationStatus.objects.get(
+                user=user,
+                content_type=ct,
+                object_id= obj.id
+            )
+            return record.status
         except UserNotificationStatus.DoesNotExist:
             return 'unread'
+        
         
         
 # Staff Notification

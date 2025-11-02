@@ -103,7 +103,7 @@ urlpatterns = [
     path('delete-multiple-admin-or-hr-notification/', views.DeleteMultipleAdminorHRNotificationView.as_view(), name='delete_multiple_admin_or_hr_notification' ),
     
     # Update Notification
-    path('update-notification/', views.UpdateNotificationView.as_view(), name='update_notification' ),
+    path('update-notification/<str:model_name>/<int:pk>', views.UpdateNotificationView.as_view(), name='update_notification' ),
     
     #School Notification
     path('school-notification/', views.SchoolNotificationView.as_view(), name='school_notification' ),
