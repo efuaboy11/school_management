@@ -923,7 +923,7 @@ class ReadSchoolNotificationView(generics.ListAPIView):
     
     def get_queryset(self):
         return SchoolNotification.objects.filter(
-            user_status__status='unread'
+            user_status__status='read'
         )
     
     
@@ -993,7 +993,7 @@ class ReadStaffNotificationView(generics.ListAPIView):
     
     def get_queryset(self):
         return StaffNotification.objects.filter(
-            user_status__status='unread'
+            user_status__status='read'
         )
     
     
@@ -1068,7 +1068,7 @@ class ReadClassNotificationView(generics.ListAPIView):
     
     def get_queryset(self):
         return ClassNotification.objects.filter(
-            user_status__status='unread'
+            user_status__status='read'
         )
     
 class UnReadClassNotificationView(generics.ListAPIView):
