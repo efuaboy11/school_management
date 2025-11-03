@@ -109,15 +109,15 @@ urlpatterns = [
     path('school-notification/', views.SchoolNotificationView.as_view(), name='school_notification' ),
     path('school-notification/<str:pk>/', views.SchoolNotificationRetrieveUpdateDestroy.as_view(), name='indiviual_school_notification' ),
     path('delete-multiple-school-notification/', views.DeleteMultipleSchoolNotificationView.as_view(), name='delete_multiple_school_notification' ),
-    path('school-notification/read/', views.ReadSchoolNotificationView.as_view(), name='school_notification-read' ),
-    path('school-notification/unread/', views.UnReadSchoolNotificationView.as_view(), name='school_notification-unread' ),
+    path('school-notifications-read/', views.ReadSchoolNotificationView.as_view(), name='school_notification-read' ),
+    path('school-notification-unread/', views.UnReadSchoolNotificationView.as_view(), name='school_notification-unread' ),
     
     #Staff Notification
     path('staff-notification/', views.StaffNotificationView.as_view(), name='school_notification' ),
     path('staff-notification/<str:pk>/', views.StaffNotificationRetrieveUpdateDestroy.as_view(), name='indiviual_school_notification' ),
     path('delete-multiple-staff-notification/', views.DeleteMultipleStaffNotificationView.as_view(), name='delete_multiple_school_notification' ),
-    path('staff-notification/read/', views.ReadStaffNotificationView.as_view(), name='staff_notification-read' ),
-    path('staff-notification/unread/', views.UnReadStaffNotificationView.as_view(), name='staff_notification-unread' ),
+    path('staff-notification-read/', views.ReadStaffNotificationView.as_view(), name='staff_notification-read' ),
+    path('staff-notification-unread/', views.UnReadStaffNotificationView.as_view(), name='staff_notification-unread' ),
     
     
     #Class Notification
@@ -125,8 +125,8 @@ urlpatterns = [
     path('class-notification/<str:pk>/', views.ClassNotificationRetrieveUpdateDestroy.as_view(), name='indiviual_class_notification' ),
     path('delete-multiple-class-notification/', views.DeleteMultipleClassNotificationView.as_view(), name='delete_multiple_class_notification' ),
     # path('filtered-class-notification/', views.FilteredClassNotification.as_view(), name='filtered_class_notification' ),
-    path('class-notification/read/', views.ReadStaffNotificationView.as_view(), name='class_notification-read' ),
-    path('class-notification/unread/', views.UnReadClassNotificationView.as_view(), name='class_notification-unread' ),
+    path('class-notification-read/', views.ReadStaffNotificationView.as_view(), name='class_notification-read' ),
+    path('class-notification-unread/', views.UnReadClassNotificationView.as_view(), name='class_notification-unread' ),
     
     #School Event
     path('school-event/', views.SchoolEventView.as_view(), name='school_event' ),
