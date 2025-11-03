@@ -109,7 +109,7 @@ urlpatterns = [
     path('school-notification/', views.SchoolNotificationView.as_view(), name='school_notification' ),
     path('school-notification/<str:pk>/', views.SchoolNotificationRetrieveUpdateDestroy.as_view(), name='indiviual_school_notification' ),
     path('delete-multiple-school-notification/', views.DeleteMultipleSchoolNotificationView.as_view(), name='delete_multiple_school_notification' ),
-    path('school-notifications-read/', views.ReadSchoolNotificationView.as_view(), name='school_notification-read' ),
+    path('school-notification-read/', views.ReadSchoolNotificationView.as_view(), name='school_notification-read' ),
     path('school-notification-unread/', views.UnReadSchoolNotificationView.as_view(), name='school_notification-unread' ),
     
     #Staff Notification
