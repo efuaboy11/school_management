@@ -842,7 +842,34 @@ class DeleteMultipleAdminorHRNotificationView(generics.GenericAPIView):
         deleted_count, _ = AdminorHRNotification.objects.filter(id__in=ids).delete()
         return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
      
-   
+ 
+class UpdateNotificationView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def post(self, request, model_name, pk):
+        user = request.user
+        
+        try:
+            ct = ContentType.objects.get(model=model_name.lower())
+            notification = ct.get_object_for_this_type(pk=pk)
+        except ContentType.DoesNotExist:
+            return Response({"error": "Invalid notification type."}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception:
+            return Response({"error": "Notification not found."}, status=status.HTTP_404_NOT_FOUND)
+        
+        # Correct: use content_type + object_id
+        user_status, created = UserNotificationStatus.objects.get_or_create(
+            user=user,
+            content_type=ct,
+            object_id=notification.id
+        )
+        user_status.status = 'read'
+        user_status.save()
+        
+        return Response({"message": "Notification marked as read."}, status=status.HTTP_200_OK)
+    
+    
+      
 class SchoolNotificationView(generics.ListCreateAPIView):
     serializer_class = SchoolNotificationSerializer
     permission_classes = [IsAuthenticated]
@@ -885,30 +912,24 @@ class DeleteMultipleSchoolNotificationView(generics.GenericAPIView):
         return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
 
 
-class UpdateNotificationView(APIView):
+class ReadSchoolNotificationView(generics.ListAPIView):
+    serializer_class = SchoolNotificationSerializer
     permission_classes = [IsAuthenticated]
+    filter_backends = [ExactSearchFilter]
+    search_fields = ['subject']
     
-    def post(self, request, model_name, pk):
-        user = request.user
-        
-        try:
-            ct = ContentType.objects.get(model=model_name.lower())
-            notification = ct.get_object_for_this_type(pk=pk)
-        except ContentType.DoesNotExist:
-            return Response({"error": "Invalid notification type."}, status=status.HTTP_400_BAD_REQUEST)
-        except Exception:
-            return Response({"error": "Notification not found."}, status=status.HTTP_404_NOT_FOUND)
-        
-        # Correct: use content_type + object_id
-        user_status, created = UserNotificationStatus.objects.get_or_create(
-            user=user,
-            content_type=ct,
-            object_id=notification.id
-        )
-        user_status.status = 'read'
-        user_status.save()
-        
-        return Response({"message": "Notification marked as read."}, status=status.HTTP_200_OK)
+    def get_queryset(self):
+        return SchoolNotification.objects.filter(usernotificationstatus__status='read')
+    
+    
+class UnReadSchoolNotificationView(generics.ListAPIView):
+    serializer_class = SchoolNotificationSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = [ExactSearchFilter]
+    search_fields = ['subject']
+    
+    def get_queryset(self):
+        return SchoolNotification.objects.filter(usernotificationstatus__status='unread')
     
     
 
@@ -920,6 +941,12 @@ class StaffNotificationView(generics.ListCreateAPIView):
     queryset = StaffNotification.objects.all()
     filter_backends = [ExactSearchFilter]
     search_fields = ['subject', 'date']
+    
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
+    
     
     
     def post(self, request, *args, **kwargs):
@@ -951,6 +978,25 @@ class DeleteMultipleStaffNotificationView(generics.GenericAPIView):
         return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
 
 
+class ReadStaffNotificationView(generics.ListAPIView):
+    serializer_class = StaffNotificationSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = [ExactSearchFilter]
+    search_fields = ['subject']
+    
+    def get_queryset(self):
+        return StaffNotification.objects.filter(usernotificationstatus__status='read')
+    
+    
+class UnReadStaffNotificationView(generics.ListAPIView):
+    serializer_class = StaffNotificationSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = [ExactSearchFilter]
+    search_fields = ['subject']
+    
+    def get_queryset(self):
+        return StaffNotification.objects.filter(usernotificationstatus__status='unread')
+
 
 
     
@@ -960,6 +1006,10 @@ class ClassNotificationView(generics.ListCreateAPIView):
     filter_backends = [ExactSearchFilter]
     search_fields = ['teacher__first_name', 'teacher__last_name', 'subject']
     
+    def get_serializer_context(self):
+        context = super().get_serializer_context()
+        context.update({"request": self.request})
+        return context
     
         
     def get_queryset(self):
@@ -996,7 +1046,26 @@ class DeleteMultipleClassNotificationView(generics.GenericAPIView):
         ids = serializer.validated_data['ids']
         deleted_count, _ = ClassNotification.objects.filter(id__in=ids).delete()
         return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+   
+   
+class ReadClassNotificationView(generics.ListAPIView):
+    serializer_class = ClassNotificationSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = [ExactSearchFilter]
+    search_fields = ['subject']
     
+    def get_queryset(self):
+        return ClassNotification.objects.filter(usernotificationstatus__status='read')
+    
+class UnReadClassNotificationView(generics.ListAPIView):
+    serializer_class = ClassNotificationSerializer
+    permission_classes = [IsAuthenticated]
+    filter_backends = [ExactSearchFilter]
+    search_fields = ['subject']
+    
+    def get_queryset(self):
+        return ClassNotification.objects.filter(usernotificationstatus__status='unread')
+     
       
 # class FilteredClassNotification(generics.ListAPIView):
 #     permission_classes = [IsAdminOrTeacherorStudent]

@@ -500,6 +500,7 @@ class SchoolNotificationSerializer(serializers.ModelSerializer):
         
 # Staff Notification
 class StaffNotificationSerializer(serializers.ModelSerializer):
+    status = serializers.SerializerMethodField()
     class Meta:
         model = StaffNotification
         fields = [
@@ -510,11 +511,26 @@ class StaffNotificationSerializer(serializers.ModelSerializer):
             'date'
         ]
         
+    def get_status(self, obj):
+        user = self.context['request'].user
+        
+        try:
+            content_type = ContentType.objects.get_for_model(StaffNotification)
+            record = UserNotificationStatus.objects.get(
+                user=user,
+                content_type=content_type,
+                object_id=obj.id
+            )
+            return record.status
+        except UserNotificationStatus.DoesNotExist:
+            return 'unread'
+        
         
 # class Notifcation
 class ClassNotificationSerializer(serializers.ModelSerializer):
     teacher_name =  serializers.SerializerMethodField()
     student_class_name = serializers.SerializerMethodField()
+    status = serializers.SerializerMethodField()
     class Meta:
         model = ClassNotification
         fields = [
@@ -539,6 +555,20 @@ class ClassNotificationSerializer(serializers.ModelSerializer):
         serializer = ShortStaffSerializer(
             instance=teacher, many=False)
         return serializer.data   
+    
+    def get_status(self, obj):
+        user = self.context['request'].user
+        
+        try:
+            content_type = ContentType.objects.get_for_model(StaffNotification)
+            record = UserNotificationStatus.objects.get(
+                user=user,
+                content_type=content_type,
+                object_id=obj.id
+            )
+            return record.status
+        except UserNotificationStatus.DoesNotExist:
+            return 'unread'
         
 # School Events
 class SchoolEventSerializer(serializers.ModelSerializer):
