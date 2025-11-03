@@ -893,6 +893,9 @@ class SchoolNotificationView(generics.ListCreateAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response({"error": "You do not have permission to create a notification."}, status=status.HTTP_403_FORBIDDEN)
+        
+        
+        
     
 class SchoolNotificationRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = SchoolNotificationSerializer
@@ -919,7 +922,6 @@ class ReadSchoolNotificationView(generics.ListAPIView):
     search_fields = ['subject']
     
     def get_queryset(self):
-        user = self.request.user
         return SchoolNotification.objects.filter(
             user_status__status='unread'
         )
@@ -932,8 +934,6 @@ class UnReadSchoolNotificationView(generics.ListAPIView):
     search_fields = ['subject']
     
     def get_queryset(self):
-        user = self.request
-        user = self.request.user.user
         return SchoolNotification.objects.filter(
             user_status__status='unread'
         )
@@ -992,7 +992,6 @@ class ReadStaffNotificationView(generics.ListAPIView):
     search_fields = ['subject']
     
     def get_queryset(self):
-        user = self.request.user
         return StaffNotification.objects.filter(
             user_status__status='unread'
         )
@@ -1068,7 +1067,6 @@ class ReadClassNotificationView(generics.ListAPIView):
     search_fields = ['subject']
     
     def get_queryset(self):
-        user = self.request.user
         return ClassNotification.objects.filter(
             user_status__status='unread'
         )
