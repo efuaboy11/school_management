@@ -859,7 +859,7 @@ class UpdateNotificationView(APIView):
         
         # Correct: use content_type + object_id
         try:
-            user_status,  = UserNotificationStatus.objects.get(
+            user_status  = UserNotificationStatus.objects.get(
                 user=user,
                 content_type=ct,
                 object_id=notification.id
