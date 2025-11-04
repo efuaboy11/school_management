@@ -974,17 +974,18 @@ class StaffNotificationView(generics.ListCreateAPIView):
         if(user.role == Role.ADMIN or user.role == Role.HR):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
-            notification = serializer.save()
+            notification = serializer.save()      
             ct = ContentType.objects.get_for_model(StaffNotification)
             
             bulk_status = [
                 UserNotificationStatus(
                     user=usr,
-                    ct = ContentType.objects.get_for_model(ClassNotification)
+                    content_type=ct,
                     object_id=notification.id,
                     status='unread'
-                ) for usr in Staff.objects.all()
+                ) for usr in Users.objects.all()
             ]
+            
             UserNotificationStatus.objects.bulk_create(bulk_status, ignore_conflicts=True)
             
             return Response(serializer.data, status=status.HTTP_201_CREATED)
