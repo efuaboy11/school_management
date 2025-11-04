@@ -889,7 +889,17 @@ class SchoolNotificationView(generics.ListCreateAPIView):
         if(user.role == Role.ADMIN or user.role == Role.HR):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
-            serializer.save()
+            notification= serializer.save()
+            
+            bulk_status = [
+                UserNotificationStatus(
+                    user=usr,
+                    content_object=notification,
+                    status='unread'
+                ) for usr in Users.objects.all()
+            ]
+            
+            UserNotificationStatus.objects.bulk_create(bulk_status, ignore_conflicts=True)       
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response({"error": "You do not have permission to create a notification."}, status=status.HTTP_403_FORBIDDEN)
@@ -962,7 +972,17 @@ class StaffNotificationView(generics.ListCreateAPIView):
         if(user.role == Role.ADMIN or user.role == Role.HR):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
-            serializer.save()
+            notification= serializer.save()
+            
+            bulk_status =[
+                UserNotificationStatus(
+                    user=usr,
+                    content_object=notification,
+                    status='unread'
+                ) for usr in Staff.objects.all()
+            ]
+            UserNotificationStatus.objects.bulk_create(bulk_status, ignore_conflicts=True)
+            
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response({"error": "You do not have permission to create a notification."}, status=status.HTTP_403_FORBIDDEN)
@@ -1022,6 +1042,29 @@ class ClassNotificationView(generics.ListCreateAPIView):
         context = super().get_serializer_context()
         context.update({"request": self.request})
         return context
+    
+    
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        if(user.role == Role.ADMIN or user.role == Role.TEACHERS):
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            notification= serializer.save()
+            
+            bulk_status = [
+                UserNotificationStatus(
+                    user=usr,
+                    content_object=notification,
+                    status='unread'
+                ) for usr in Student.objects.filter(student_class=notification.student_class)
+            ]
+            
+            UserNotificationStatus.objects.bulk_create(bulk_status, ignore_conflicts=True)
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"error": "You do not have permission to create a notification."}, status=status.HTTP_403_FORBIDDEN)
+        
+        
     
         
     def get_queryset(self):
