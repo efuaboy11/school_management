@@ -890,11 +890,13 @@ class SchoolNotificationView(generics.ListCreateAPIView):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             notification= serializer.save()
+            ct = ContentType.objects.get_for_model(SchoolNotification)   
             
             bulk_status = [
                 UserNotificationStatus(
                     user=usr,
-                    content_object=notification,
+                    content_type=ct,
+                    object_id=notification.id,
                     status='unread'
                 ) for usr in Users.objects.all()
             ]
@@ -972,12 +974,14 @@ class StaffNotificationView(generics.ListCreateAPIView):
         if(user.role == Role.ADMIN or user.role == Role.HR):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
-            notification= serializer.save()
+            notification = serializer.save()
+            ct = ContentType.objects.get_for_model(StaffNotification)
             
-            bulk_status =[
+            bulk_status = [
                 UserNotificationStatus(
                     user=usr,
-                    content_object=notification,
+                    ct = ContentType.objects.get_for_model(ClassNotification)
+                    object_id=notification.id,
                     status='unread'
                 ) for usr in Staff.objects.all()
             ]
@@ -1050,11 +1054,13 @@ class ClassNotificationView(generics.ListCreateAPIView):
             serializer = self.get_serializer(data=request.data)
             serializer.is_valid(raise_exception=True)
             notification= serializer.save()
+            ct = ContentType.objects.get_for_model(ClassNotification)
             
             bulk_status = [
                 UserNotificationStatus(
                     user=usr,
-                    content_object=notification,
+                    content_type=ct,
+                    object_id=notification.id,
                     status='unread'
                 ) for usr in Student.objects.filter(student_class=notification.student_class)
             ]
