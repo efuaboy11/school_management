@@ -477,7 +477,6 @@ class SchoolNotificationSerializer(serializers.ModelSerializer):
             'subject',
             'text',
             'status',
-            'user_status',
             'date'
         ]
         
