@@ -125,7 +125,7 @@ urlpatterns = [
     path('class-notification/<str:pk>/', views.ClassNotificationRetrieveUpdateDestroy.as_view(), name='indiviual_class_notification' ),
     path('delete-multiple-class-notification/', views.DeleteMultipleClassNotificationView.as_view(), name='delete_multiple_class_notification' ),
     # path('filtered-class-notification/', views.FilteredClassNotification.as_view(), name='filtered_class_notification' ),
-    path('class-notification-read/', views.ReadStaffNotificationView.as_view(), name='class_notification-read' ),
+    path('class-notification-read/', views.ReadClassNotificationView.as_view(), name='class_notification-read' ),
     path('class-notification-unread/', views.UnReadClassNotificationView.as_view(), name='class_notification-unread' ),
     
     #School Event
