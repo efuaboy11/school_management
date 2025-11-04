@@ -1,5 +1,6 @@
 
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,6 +13,7 @@ import 'package:mobile_app/utils.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
 import 'package:mobile_app/widgets/platform_back_button.dart';
+import 'package:http/http.dart' as http;
 
 class ClassNotificationScreen extends ConsumerStatefulWidget{
   const ClassNotificationScreen({super.key});
@@ -28,7 +30,7 @@ class _ClassNotificationScreenState extends ConsumerState<ClassNotificationScree
 
   void _showAll(){
     showLoadingDialog(context);
-    _loadAllNotification('', context);
+    _loadAllNotificationTab('', context);
 
     setState(() {
       _currentPage ='all';
@@ -62,6 +64,15 @@ class _ClassNotificationScreenState extends ConsumerState<ClassNotificationScree
     
   }
 
+  Future<void> _loadAllNotificationTab(String query, context) async{
+    final respose = await ref.read(classNotificationProvider.notifier).fetchClassNotificationPayment(query, context, '');
+    if(respose != 'success'){
+      showSnackbar(context, respose);
+    }
+    hideLoadingDialog(context);
+    
+  }
+
   Future<void> _loadReadNotification(String query, context) async{
     final respose = await ref.read(classNotificationProvider.notifier).fetchClassNotificationPayment(query, context, 'read');
     if(respose != 'success'){
@@ -81,7 +92,7 @@ class _ClassNotificationScreenState extends ConsumerState<ClassNotificationScree
   }
 
   Future<void> _loadNotification() async{
-    _loadAllNotification('', context);
+    await _loadAllNotification('', context);
     if(!mounted) return;
     if(_loading){
       setState(() {
@@ -90,6 +101,43 @@ class _ClassNotificationScreenState extends ConsumerState<ClassNotificationScree
     }
     
     
+  }
+
+  Future<void> _updateNotificationStatus(int notificationId, context) async{
+    // Implement the logic to update notification status here
+    // POST /notifications/schoolnotification/5/read/
+    // POST /notifications/staffnotification/2/read/
+    // POST /notifications/classnotification/9/read/
+
+    print('updating notification status for id: $notificationId');
+
+    final token = await AuthService.getAccessToken();
+
+    try{
+      final response = await http.post(
+        Uri.parse(
+          'https://school.amanilightequity.com/api/update-notification/classnotification/$notificationId'
+        ),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        
+      );
+
+      if(response.statusCode == 200 || response.statusCode == 201){
+        showSnackbar(context, response.body);
+        print(response.body);
+      }else{
+        final errorData = jsonDecode(response.body);
+        final errorMessages = errorData.values.join(", ");
+        print(errorMessages);
+        showSnackbar(context, errorMessages);
+      }
+    }catch(e){
+      showSnackbar(context, 'Failed to update notification status');
+      print(e);
+    }
   }
 
 
@@ -118,8 +166,16 @@ class _ClassNotificationScreenState extends ConsumerState<ClassNotificationScree
   @override
   Widget build(BuildContext context) {
 
-    void openEditOverlay(){
-      showModalBottomSheet(useSafeArea: true, isScrollControlled: true, context: context, builder: (ctx) => ClassNotificationDetails());
+    void openEditOverlay(id, subject, body, teacherPosted, datePosted, status){
+      showModalBottomSheet(useSafeArea: true, isScrollControlled: true, context: context, builder: (ctx) => 
+        ClassNotificationDetails(subject: subject, body: body, teacherPosted: teacherPosted, datePosted: datePosted, status: status)
+      );
+
+      if(status == 'unread'){
+        _updateNotificationStatus(id, context);
+
+      }
+
     }
     
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
@@ -219,7 +275,16 @@ class _ClassNotificationScreenState extends ConsumerState<ClassNotificationScree
                   
                 ),
                 child: ListTile(
-                  onTap: openEditOverlay,
+                  onTap: (){
+                    openEditOverlay(
+                      notice.id,
+                      notice.subject,
+                      notice.text,
+                      notice.teacherDetails,
+                      notice.date,
+                      notice.status
+                    );
+                  },
                   contentPadding: EdgeInsets.zero,
                   leading: CircleAvatar(
                     backgroundColor: customColors.lightBorder,

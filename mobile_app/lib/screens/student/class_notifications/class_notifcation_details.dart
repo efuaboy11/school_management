@@ -1,25 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/theme.dart';
+import 'package:mobile_app/utils.dart';
 
 class ClassNotificationDetails extends StatelessWidget {
   final String subject;
   final String body;
-  final String teacherPosted;
-  final DateTime datePosted;
-  final bool isRead;
+  final Map<String, dynamic> teacherPosted;
+  final String datePosted;
+  final String status;
 
-  ClassNotificationDetails({
+  const ClassNotificationDetails({
     super.key,
-    this.subject = "System Maintenance",
-    this.body = "We will be performing maintenance on the system between 12:00 AM and 2:00 AM. Please save your work.",
-    this.teacherPosted = 'Iseghohimhen Efua',
-    DateTime? datePosted,
-    this.isRead = false,
-  }) : datePosted = datePosted ?? DateTime(2025, 10, 5, 10, 0);
+    required this.subject,
+    required this.body,
+    required this.teacherPosted,
+    required this.datePosted,
+    required this.status,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final formattedDate = "${datePosted.day}/${datePosted.month}/${datePosted.year} ${datePosted.hour}:${datePosted.minute.toString().padLeft(2, '0')}";
         final customColors = Theme.of(context).extension<CustomColors>()!;
     return DraggableScrollableSheet(
       expand: false,
@@ -61,7 +61,7 @@ class ClassNotificationDetails extends StatelessWidget {
                     Icon(Icons.calendar_today, size: 16, color: customColors.lightText),
                     const SizedBox(width: 4),
                     Text(
-                      formattedDate,
+                      formatCurrentDate(datePosted),
                       style: TextStyle(color: customColors.lightText),
                     ),
 
@@ -74,10 +74,10 @@ class ClassNotificationDetails extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          Icon(isRead ? Icons.notifications : Icons.notifications_outlined, size: 12,),
+                          Icon(status =='read' ? Icons.notifications : Icons.notifications_outlined, size: 12,),
                           SizedBox(width: 10,),
                           Text(
-                            isRead ? "Read" : "Unread",
+                            status =='read' ? "Read" : "Unread",
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 12,
@@ -90,7 +90,7 @@ class ClassNotificationDetails extends StatelessWidget {
                 ),
 
                 Text(
-                  'Posted by: $teacherPosted',
+                  'Posted by: ${teacherPosted['first_name']} ${teacherPosted['last_name']}',
                   style: TextStyle(color: customColors.lightText),
                 ),
 

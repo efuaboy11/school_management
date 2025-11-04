@@ -858,13 +858,16 @@ class UpdateNotificationView(APIView):
             return Response({"error": "Notification not found."}, status=status.HTTP_404_NOT_FOUND)
         
         # Correct: use content_type + object_id
-        user_status, created = UserNotificationStatus.objects.get_or_create(
-            user=user,
-            content_type=ct,
-            object_id=notification.id
-        )
-        user_status.status = 'read'
-        user_status.save()
+        try:
+            user_status,  = UserNotificationStatus.objects.get(
+                user=user,
+                content_type=ct,
+                object_id=notification.id
+            )
+            user_status.status = 'read'
+            user_status.save()
+        except UserNotificationStatus.DoesNotExist:
+            return Response({"error": "Notification status not found for user."}, status=status.HTTP_404_NOT_FOUND)
         
         return Response({"message": "Notification marked as read."}, status=status.HTTP_200_OK)
     
