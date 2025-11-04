@@ -153,6 +153,30 @@ String formatDateTime(String date) {
   return formatter.format(parsedDate);
 }
 
+String formatCurrentDate(String dateString) {
+  final DateTime date = DateTime.parse(dateString).toLocal();
+  final DateTime now = DateTime.now();
+  final Duration diff = now.difference(date);
+
+  if (diff.inSeconds < 60) {
+    return "${diff.inSeconds}s ago";
+  } else if (diff.inMinutes < 60) {
+    return "${diff.inMinutes}m ago";
+  } else if (diff.inHours < 24) {
+    return "${diff.inHours}h ago";
+  } else if (diff.inDays == 1) {
+    return "Yesterday";
+  } else if (diff.inDays < 7) {
+    // For example: “3 days ago”
+    return "${diff.inDays}d";
+  } else {
+    // After one week or more → return formatted date like "October 1, 2025"
+    final formatter = DateFormat("MMMM d, y");
+    return formatter.format(date);
+  }
+}
+
+
 String formatMoney(String amount) {
   try {
     final parsed = int.parse(amount);

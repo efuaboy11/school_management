@@ -5,7 +5,6 @@ import 'package:go_router/go_router.dart';
 import 'package:mobile_app/auth_service.dart';
 import 'package:mobile_app/providers/timetable.dart';
 import 'package:mobile_app/utils.dart';
-// import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
 import 'package:mobile_app/widgets/platform_back_button.dart';
