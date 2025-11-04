@@ -560,7 +560,7 @@ class ClassNotificationSerializer(serializers.ModelSerializer):
         user = self.context['request'].user
         
         try:
-            content_type = ContentType.objects.get_for_model(StaffNotification)
+            content_type = ContentType.objects.get_for_model(ClassNotification)
             record = UserNotificationStatus.objects.get(
                 user=user,
                 content_type=content_type,
