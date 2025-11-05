@@ -939,7 +939,7 @@ class ReadSchoolNotificationView(generics.ListAPIView):
     def get_queryset(self):
         return SchoolNotification.objects.filter(
             user_status__status='read'
-        )
+        ).distinct()
     
     
 class UnReadSchoolNotificationView(generics.ListAPIView):
@@ -951,7 +951,7 @@ class UnReadSchoolNotificationView(generics.ListAPIView):
     def get_queryset(self):
         return SchoolNotification.objects.filter(
             user_status__status='unread'
-        )
+        ).distinct()
     
     
 
@@ -1022,7 +1022,7 @@ class ReadStaffNotificationView(generics.ListAPIView):
     def get_queryset(self):
         return StaffNotification.objects.filter(
             user_status__status='read'
-        )
+        ).distinct()
     
     
 class UnReadStaffNotificationView(generics.ListAPIView):
@@ -1035,7 +1035,7 @@ class UnReadStaffNotificationView(generics.ListAPIView):
         user = self.request.user
         return StaffNotification.objects.filter(
             user_status__status='unread'
-        )
+        ).distinct()
 
 
 
@@ -1122,7 +1122,7 @@ class ReadClassNotificationView(generics.ListAPIView):
     def get_queryset(self):
         return ClassNotification.objects.filter(
             user_status__status='read'
-        )
+        ).distinct()
     
 class UnReadClassNotificationView(generics.ListAPIView):
     serializer_class = ClassNotificationSerializer
@@ -1134,7 +1134,7 @@ class UnReadClassNotificationView(generics.ListAPIView):
         user = self.request.user
         return ClassNotification.objects.filter(
             user_status__status='unread'
-        )
+        ).distinct()
      
 
 class SchoolEventView(generics.ListCreateAPIView):
