@@ -135,7 +135,7 @@ class _ClassNotificationScreenState extends ConsumerState<ClassNotificationScree
       );
 
       if(response.statusCode == 200 || response.statusCode == 201){
-        showSnackbar(context, response.body);
+        showSnackbar(context, 'Notification status updated successfully');
         print(response.body);
       }else{
         final errorData = jsonDecode(response.body);

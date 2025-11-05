@@ -48,7 +48,7 @@ class GeneralNotificationDetails extends StatelessWidget {
 
                 // Subject
                 Text(
-                  subject,
+                  formatName(subject),
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
                 ),
                 const SizedBox(height: 8),

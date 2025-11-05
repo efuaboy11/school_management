@@ -135,7 +135,7 @@ class _GeneralNotificationScreenState extends ConsumerState<GeneralNotificationS
       );
 
       if(response.statusCode == 200 || response.statusCode == 201){
-        showSnackbar(context, response.body);
+        showSnackbar(context, 'Notification status updated successfully');
         print(response.body);
       }else{
         final errorData = jsonDecode(response.body);
@@ -175,7 +175,7 @@ class _GeneralNotificationScreenState extends ConsumerState<GeneralNotificationS
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>()!;
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
-
+    final unreadCount = ref.watch(schoolNotificationProvider).where((notification) => notification.status == 'unread').length;
     void openEditOverlay(id, subject, body, datePosted, status){
       showModalBottomSheet(useSafeArea: true, isScrollControlled: true, context: context, builder: (ctx) => 
         GeneralNotificationDetails(subject: subject, body: body,  datePosted: datePosted, status: status)
@@ -232,7 +232,7 @@ class _GeneralNotificationScreenState extends ConsumerState<GeneralNotificationS
               borderRadius: BorderRadius.circular(50),
               color: _currentPage == 'unread' ? Theme.of(context).colorScheme.primary : customColors.lightBorder
             ),
-            child: Text('Unread 20+',
+            child: Text('Unread ($unreadCount)',
               style: TextStyle(color: _currentPage == 'unread' ? Colors.white : null,),
             
             ),
