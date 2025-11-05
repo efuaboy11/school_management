@@ -1136,30 +1136,6 @@ class UnReadClassNotificationView(generics.ListAPIView):
             user_status__status='unread'
         )
      
-      
-# class FilteredClassNotification(generics.ListAPIView):
-#     permission_classes = [IsAdminOrTeacherorStudent]
-#     serializer_class = ClassNotificationSerializer
-    
-#     def get_queryset(self):
-#         query = self.request.query_params.get('query')
-#         user = self.request.user
-        
-#         if user.role == Role.TEACHERS:
-#             return ClassNotification.objects.filter(teacher=user.id)
-#         elif user.role == Role.STUDENTS:
-#             return ClassNotification.objects.filter
-#         if student_class:
-#             return ClassNotification.objects.filter(student_class=student_class)    
-#         return ClassNotification.objects.none()
-    
-#     def list(self, request, *args, **kwargs):
-#         queryset = self.get_queryset()
-#         if not queryset.exists():
-#             return Response({"message": "No notifications found for this class."}, status=status.HTTP_404_NOT_FOUND)
-#         serializer = self.get_serializer(queryset, many=True)
-#         return Response(serializer.data)
-                      
 
 class SchoolEventView(generics.ListCreateAPIView):
     serializer_class = SchoolEventSerializer

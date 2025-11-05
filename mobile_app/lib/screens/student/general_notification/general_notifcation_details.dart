@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:mobile_app/theme.dart';
+import 'package:mobile_app/utils.dart';
 
 class GeneralNotificationDetails extends StatelessWidget {
   final String subject;
   final String body;
-  final DateTime datePosted;
-  final bool isRead;
+  final String datePosted;
+  final String status;
 
-  GeneralNotificationDetails({
+  const GeneralNotificationDetails({
     super.key,
-    this.subject = "System Maintenance",
-    this.body = "We will be performing maintenance on the system between 12:00 AM and 2:00 AM. Please save your work.",
-    DateTime? datePosted,
-    this.isRead = false,
-  }) : datePosted = datePosted ?? DateTime(2025, 10, 5, 10, 0);
+    required this.subject,
+    required this.body,
+    required this.datePosted,
+    required this.status,
+  });
 
   @override
   Widget build(BuildContext context) {
-    final formattedDate = "${datePosted.day}/${datePosted.month}/${datePosted.year} ${datePosted.hour}:${datePosted.minute.toString().padLeft(2, '0')}";
-        final customColors = Theme.of(context).extension<CustomColors>()!;
+    final customColors = Theme.of(context).extension<CustomColors>()!;
     return DraggableScrollableSheet(
       expand: false,
       builder: (context, scrollController) {
@@ -59,9 +59,10 @@ class GeneralNotificationDetails extends StatelessWidget {
                     Icon(Icons.calendar_today, size: 16, color: customColors.lightText),
                     const SizedBox(width: 4),
                     Text(
-                      formattedDate,
-                      style: TextStyle(color: Colors.grey[700]),
+                      formatCurrentDate(datePosted),
+                      style: TextStyle(color: customColors.lightText),
                     ),
+
                     const Spacer(),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
@@ -71,10 +72,10 @@ class GeneralNotificationDetails extends StatelessWidget {
                       ),
                       child: Row(
                         children: [
-                          Icon(isRead ? Icons.notifications : Icons.notifications_outlined, size: 12,),
+                          Icon(status =='read' ? Icons.notifications : Icons.notifications_outlined, size: 12,),
                           SizedBox(width: 10,),
                           Text(
-                            isRead ? "Read" : "Unread",
+                            status =='read' ? "Read" : "Unread",
                             style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 12,

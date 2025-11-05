@@ -30,7 +30,7 @@ class _ClassNotificationScreenState extends ConsumerState<ClassNotificationScree
 
   void _showAll(){
     showLoadingDialog(context);
-    _loadAllNotificationTab('', context);
+    _loadAllNotification('', context, 'load');
 
     setState(() {
       _currentPage ='all';
@@ -39,7 +39,7 @@ class _ClassNotificationScreenState extends ConsumerState<ClassNotificationScree
 
   void _showRead(){
     showLoadingDialog(context);
-    _loadReadNotification('', context);
+    _loadReadNotification('', context, 'load');
     setState(() {
       _currentPage = 'read';
     });
@@ -48,15 +48,14 @@ class _ClassNotificationScreenState extends ConsumerState<ClassNotificationScree
 
   void _showUnRead(){
     showLoadingDialog(context);
-    _loadUnreadNotification('', context);
+    _loadUnreadNotification('', context, 'load');
     setState(() {
       _currentPage = 'unread';
     });
 
   }
 
-
-  Future<void> _loadAllNotification(String query, context) async{
+  Future<void> _loadAllNotificationInit(String query, context) async{
     final respose = await ref.read(classNotificationProvider.notifier).fetchClassNotificationPayment(query, context, '');
     if(respose != 'success'){
       showSnackbar(context, respose);
@@ -64,35 +63,45 @@ class _ClassNotificationScreenState extends ConsumerState<ClassNotificationScree
     
   }
 
-  Future<void> _loadAllNotificationTab(String query, context) async{
+
+  Future<void> _loadAllNotification(String query, context, String type) async{
     final respose = await ref.read(classNotificationProvider.notifier).fetchClassNotificationPayment(query, context, '');
     if(respose != 'success'){
       showSnackbar(context, respose);
     }
-    hideLoadingDialog(context);
+
+    if(type == 'load'){
+      hideLoadingDialog(context);
+    }
     
   }
 
-  Future<void> _loadReadNotification(String query, context) async{
+  Future<void> _loadReadNotification(String query, context, String type) async{
     final respose = await ref.read(classNotificationProvider.notifier).fetchClassNotificationPayment(query, context, 'read');
     if(respose != 'success'){
       showSnackbar(context, respose);
     }
-    hideLoadingDialog(context);
+
+    if(type == 'load'){
+      hideLoadingDialog(context);
+    }
+    
     
   }
 
-  Future<void> _loadUnreadNotification(String query, context) async{
+  Future<void> _loadUnreadNotification(String query, context, String type) async{
     final respose = await ref.read(classNotificationProvider.notifier).fetchClassNotificationPayment(query, context, 'unread');
     if(respose != 'success'){
       showSnackbar(context, respose);
     }
-    hideLoadingDialog(context);
+    if(type == 'load'){
+      hideLoadingDialog(context);
+    }
     
   }
 
   Future<void> _loadNotification() async{
-    await _loadAllNotification('', context);
+    await _loadAllNotificationInit('', context,);
     if(!mounted) return;
     if(_loading){
       setState(() {
@@ -180,7 +189,7 @@ class _ClassNotificationScreenState extends ConsumerState<ClassNotificationScree
     
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     final customColors = Theme.of(context).extension<CustomColors>()!;
-
+    final unreadCount = ref.watch(classNotificationProvider).where((notification) => notification.status == 'unread').length;
     
 
     Widget pageTab = Row(
@@ -227,7 +236,7 @@ class _ClassNotificationScreenState extends ConsumerState<ClassNotificationScree
               borderRadius: BorderRadius.circular(50),
               color: _currentPage == 'unread' ? Theme.of(context).colorScheme.primary : customColors.lightBorder
             ),
-            child: Text('Unread 20+',
+            child: Text('Unread ($unreadCount)',
               style: TextStyle(color: _currentPage == 'unread' ? Colors.white : null,),
             
             ),
@@ -292,7 +301,7 @@ class _ClassNotificationScreenState extends ConsumerState<ClassNotificationScree
                   ),
                   title: Text(formatName(notice.subject)),
                   trailing: Text(formatCurrentDate(notice.date), style: TextStyle(color: customColors.lightText),),
-                  subtitle: Text('${formatName(notice.text)}\nPosted by:  ${formatName(notice.text)}', 
+                  subtitle: Text(formatName(notice.text), 
                                   style: TextStyle(color: customColors.lightText),
                                   overflow: TextOverflow.ellipsis, maxLines: 2
                                 ),
@@ -300,12 +309,7 @@ class _ClassNotificationScreenState extends ConsumerState<ClassNotificationScree
               );
             }
           );
-        }),
-
-
-
-
-        
+        }),    
     );
 
     Widget content = Padding(
@@ -328,7 +332,7 @@ class _ClassNotificationScreenState extends ConsumerState<ClassNotificationScree
               if (_debounce?.isActive ?? false) _debounce!.cancel();
 
               _debounce = Timer(const Duration(milliseconds: 500), () {
-                _loadAllNotification(value, context);
+                _loadAllNotification(value, context, '');
               });
             },
             style: TextStyle(fontSize: 14.0), // smaller text
@@ -351,7 +355,7 @@ class _ClassNotificationScreenState extends ConsumerState<ClassNotificationScree
     
     
     if(_currentPage == 'read'){
-      Padding(
+      content = Padding(
         padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 15),
         child: Column(
           children: [
@@ -369,7 +373,7 @@ class _ClassNotificationScreenState extends ConsumerState<ClassNotificationScree
                 if (_debounce?.isActive ?? false) _debounce!.cancel();
 
                 _debounce = Timer(const Duration(milliseconds: 500), () {
-                  _loadReadNotification(value, context);
+                  _loadReadNotification(value, context, '');
                 });
               },
               style: TextStyle(fontSize: 14.0), // smaller text
@@ -390,7 +394,7 @@ class _ClassNotificationScreenState extends ConsumerState<ClassNotificationScree
 
 
     if(_currentPage == 'unread'){
-      Padding(
+      content = Padding(
         padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 15),
         child: Column(
           children: [
@@ -408,7 +412,7 @@ class _ClassNotificationScreenState extends ConsumerState<ClassNotificationScree
                 if (_debounce?.isActive ?? false) _debounce!.cancel();
 
                 _debounce = Timer(const Duration(milliseconds: 500), () {
-                  _loadUnreadNotification(value, context);
+                  _loadUnreadNotification(value, context, '');
                 });
               },
               style: TextStyle(fontSize: 14.0), // smaller text

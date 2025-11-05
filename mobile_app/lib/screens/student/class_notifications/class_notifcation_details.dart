@@ -20,7 +20,7 @@ class ClassNotificationDetails extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-        final customColors = Theme.of(context).extension<CustomColors>()!;
+    final customColors = Theme.of(context).extension<CustomColors>()!;
     return DraggableScrollableSheet(
       expand: false,
       builder: (context, scrollController) {

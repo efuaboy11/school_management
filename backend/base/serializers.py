@@ -558,12 +558,14 @@ class ClassNotificationSerializer(serializers.ModelSerializer):
     
     def get_status(self, obj):
         user = self.context['request'].user
+        content_type = obj._meta.model
         
         try:
-            content_type = ContentType.objects.get_for_model(ClassNotification)
+            ct = ContentType.objects.get_for_model(content_type)
+            # content_type = ContentType.objects.get_for_model(ClassNotification)
             record = UserNotificationStatus.objects.get(
                 user=user,
-                content_type=content_type,
+                content_type=ct,
                 object_id=obj.id
             )
             return record.status
