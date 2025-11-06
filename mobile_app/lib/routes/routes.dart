@@ -8,7 +8,6 @@ import 'package:mobile_app/screens/Auth/login.dart';
 import 'package:mobile_app/screens/splash_screen.dart';
 import 'package:mobile_app/screens/student/assignment/assigment.dart';
 import 'package:mobile_app/screens/student/assignment_submission/assigment_submission.dart';
-import 'package:mobile_app/screens/student/assignment_submission/assignment_submission_details.dart';
 import 'package:mobile_app/screens/student/assignment_submission/submit_assignment.dart';
 import 'package:mobile_app/screens/student/bills/add_bills/step1.dart';
 // import 'package:mobile_app/screens/student/bills/bill_details.dart';
@@ -180,16 +179,6 @@ final GoRouter appRouter = GoRouter(
         transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: AssignmentSubmissionScreen()
-      ),
-    ),
-
-    GoRoute(
-      path: '/student/assignment-submission-details',
-      name: 'student-assignment-submission-details',
-      pageBuilder:(context, state) => CustomTransitionPage(
-        transitionsBuilder: platformPageTransitionBuilder,
-        key: state.pageKey,
-        child: AssignmentSubmisionDetailsScreen()
       ),
     ),
 

@@ -1,26 +1,171 @@
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:mobile_app/auth_service.dart';
+import 'package:mobile_app/models/assignment_submission.dart';
+import 'package:mobile_app/providers/assignment_submission.dart';
+import 'package:mobile_app/screens/Auth/login.dart';
 import 'package:mobile_app/screens/student/assignment_submission/edit_assignment.dart';
 import 'package:mobile_app/theme.dart';
+import 'package:mobile_app/utils.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
 import 'package:mobile_app/widgets/platform_back_button.dart';
 
-class AssignmentSubmisionDetailsScreen extends StatelessWidget{
-  const AssignmentSubmisionDetailsScreen({super.key});
+class AssignmentSubmisionDetailsScreen extends ConsumerStatefulWidget{
+  const AssignmentSubmisionDetailsScreen({super.key, required this.assignmentDetails});
 
   // onPressed: () => context.pop(),
+  final AssignmentSubmission assignmentDetails;
+
+  @override
+  ConsumerState<AssignmentSubmisionDetailsScreen> createState() => _AssignmentSubmisionDetailsScreenState();
+}
+
+class _AssignmentSubmisionDetailsScreenState extends ConsumerState<AssignmentSubmisionDetailsScreen> {
+  Future<void> _onDownloadFile() async{
+    showLoadingDownload(context);
+    if(widget.assignmentDetails.submissionFile != null){
+      final response = await downloadFile(widget.assignmentDetails.submissionFile!);
+      if(!mounted) return;
+      hideLoadingDialog(context);
+      if(response == 'success'){
+        showPlatformDialog(context, 'Download Successful', 'The file has been downloaded successfully.', (){
+          Navigator.of(context).pop();
+        });
+
+      }else{
+        showPlatformDialog(context, 'Download Failed', response, (){
+          Navigator.of(context).pop();
+        });
+      }
 
 
+    }
+  }
 
+  void _deleteAssignmentSubmission() async{
+    showLoadingDialog(context);
+    final response = await ref.read(assignmentSubmissionProvider.notifier).deleteAssignmentSubmission(
+      widget.assignmentDetails.id, context
+    );
 
+    if(!mounted) return;
+    hideLoadingDialog(context);
+
+    if(response == 'success'){
+      showSnackbar(context, 'Assignment submission deleted successfully');
+      Navigator.of(context).pop();
+      Navigator.of(context).pop();
+
+    }else{
+      showSnackbar(context, response);
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    AuthService.isTokenExpired().then((isExpired){
+      if(isExpired) {
+        if(!mounted) return;
+        Navigator.of(context).pushReplacement(MaterialPageRoute(
+          builder: (ctx) => LoginScreen())
+        );
+        AuthService.logout();
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     final customColors = Theme.of(context).extension<CustomColors>()!;
 
+
+    Widget assignmentFileContent = SizedBox(
+      width: double.infinity,
+      height: 100,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'No file attached',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: customColors.lightText),
+          
+          ),
+        ],
+      )
+    );
+
+    if(widget.assignmentDetails.submissionFile != null){
+      assignmentFileContent = InkWell(
+        onTap: _onDownloadFile,
+        child: SizedBox(
+          width: double.infinity,
+          height: 100,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                getFileName(widget.assignmentDetails.submissionFile),
+                textAlign: TextAlign.center,
+                style: TextStyle(color: customColors.lightText),
+              
+              ),
+            ],
+          )
+        ),
+      );
+    }
+
+
+    Widget assignmentImageContent = SizedBox(
+      width: double.infinity,
+      height: 100,
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Text(
+            'No file attached',
+            textAlign: TextAlign.center,
+            style: TextStyle(color: customColors.lightText),
+          
+          ),
+        ],
+      )
+    );
+
+
+    if(widget.assignmentDetails.submissionImage != null){
+      assignmentImageContent = InkWell(
+        onTap: _onDownloadFile,
+        child: SizedBox(
+          width: double.infinity,
+          height: 100,
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Image.network(
+                widget.assignmentDetails.submissionImage!,
+                width: 80,
+                height: 80,
+              )
+            ],
+          )
+        ),
+      );
+    }
+
     void openEditOverlay(){
-      showModalBottomSheet(useSafeArea: true, isScrollControlled: true, context: context, builder: (ctx) => EditAssignmentScreen());
+      showModalBottomSheet(useSafeArea: true, isScrollControlled: true, context: context, builder: (ctx) => EditAssignmentSubmissionScreen(
+        id: widget.assignmentDetails.id,
+        teacher: widget.assignmentDetails.teacherID, 
+        subject: widget.assignmentDetails.subjectID, 
+        assignmentCode: widget.assignmentDetails.assignmentCode, 
+        assignmenNote: widget.assignmentDetails.assignmentNote, 
+      ));
+
     }
     return Scaffold(
       key: scaffoldKey,
@@ -31,7 +176,7 @@ class AssignmentSubmisionDetailsScreen extends StatelessWidget{
             Navigator.of(context).pop();
           }
         ),
-        title: Text('Assignment details', style: TextStyle(fontSize: 18)),
+        title: Text('Submission details', style: TextStyle(fontSize: 18)),
         actions: [
           IconButton(
             icon: Icon(Icons.menu,),
@@ -81,22 +226,7 @@ class AssignmentSubmisionDetailsScreen extends StatelessWidget{
                                 child: Text('Assignment File', textAlign: TextAlign.center,),
                               ),
                   
-                              GestureDetector(
-                                child: SizedBox(
-                                  width: double.infinity,
-                                  height: 100,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'No file attached',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: customColors.lightText),
-                                      ),
-                                    ],
-                                  )
-                                ),
-                              )
+                              assignmentFileContent,
                   
                   
                   
@@ -124,27 +254,8 @@ class AssignmentSubmisionDetailsScreen extends StatelessWidget{
                                 child: Text('Assignment Photo', textAlign: TextAlign.center,),
                               ),
                   
-                              GestureDetector(
-                                child: SizedBox(
-                                  width: double.infinity,
-                                  height: 100,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text(
-                                        'No file attached',
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(color: customColors.lightText),
-                                      
-                                      ),
-                                    ],
-                                  )
-                                ),
-                              )
-                  
-                  
-                  
-                  
+                              assignmentImageContent,
+                   
                             ],
                           ),
                         ),
@@ -184,7 +295,15 @@ class AssignmentSubmisionDetailsScreen extends StatelessWidget{
                                       ),
 
                                       ElevatedButton.icon(
-                                        onPressed: () {},
+                                        onPressed: (){
+                                          showDeleteDialog(
+                                            context, 
+                                            'Delete Assignment Submission', 
+                                            'Are you sure you want to delete this assignment submission?',
+                                            _deleteAssignmentSubmission,
+                                            
+                                          );
+                                        },
                                         icon: Icon(Icons.delete_outline, color: Colors.white),
                                         label: Text('Delete', style: TextStyle(color: Colors.white)),
                                         style: ElevatedButton.styleFrom(
@@ -204,31 +323,31 @@ class AssignmentSubmisionDetailsScreen extends StatelessWidget{
 
                               ListTile(
                                 title: Text('Teacher Name'),
-                                trailing: Text('Ben Mark'),
+                                trailing:  Text('${formatName(widget.assignmentDetails.teacherDetails['first_name'])} ${formatName(widget.assignmentDetails.teacherDetails['last_name'])}'),
                               ),
 
                              
 
                               ListTile(
                                 title: Text('Subject'),
-                                trailing: Text('English'),
+                                trailing: Text(formatName(widget.assignmentDetails.subjectName)),
                               ),
 
                               
 
                               ListTile(
                                 title: Text('Assingment Code'),
-                                trailing: Text('12355767'),
+                                trailing: Text(widget.assignmentDetails.assignmentCode),
                               ),
 
                               ListTile(
                                 title: Text('Grade'),
-                                trailing: Text('60'),
+                                trailing: Text(widget.assignmentDetails.grade != '' ? widget.assignmentDetails.grade : 'Not graded yet'),
                               ),  
 
                               ListTile(
                                 title: Text('Submission date'),
-                                trailing: Text('7 jul 2023'),
+                                trailing: Text(formatDateTime(widget.assignmentDetails.dateSubmitted)),
                               ),
 
                                          
@@ -260,7 +379,7 @@ class AssignmentSubmisionDetailsScreen extends StatelessWidget{
                   
                               Padding(
                                 padding: EdgeInsetsGeometry.all(10),
-                                child: Text('data'),
+                                child: Text(widget.assignmentDetails.assignmentNote != '' ? widget.assignmentDetails.assignmentNote : 'No note added'),
                               )
                   
                   
@@ -291,7 +410,7 @@ class AssignmentSubmisionDetailsScreen extends StatelessWidget{
                   
                               Padding(
                                 padding: EdgeInsetsGeometry.all(10),
-                                child: Text('data'),
+                                child: Text(widget.assignmentDetails.feedback != '' ? widget.assignmentDetails.feedback : 'No feedback added'),
                               )
                   
                   

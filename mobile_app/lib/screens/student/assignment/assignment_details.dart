@@ -20,25 +20,8 @@ class AssignmentDetailsScreen extends StatefulWidget{
 class _AssignmentDetailsScreenState extends State<AssignmentDetailsScreen> {
 
 
-  void _showLoadingDialog(BuildContext context) {
-    showDialog(
-      barrierDismissible: false, // prevent closing by tapping outside
-      context: context,
-      barrierColor: Colors.black.withValues(alpha: 0.9), // dim background
-      builder: (context) => Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          Image.asset('assets/image/loading.gif', width: 120, height: 120),
-          SizedBox(height: 10,),
-          Text('This might take a while...', style: Theme.of(context).textTheme.bodyMedium!,),
-
-        ],
-      )
-    );
-  }
-
   Future<void> _onDownloadFile() async{
-    _showLoadingDialog(context);
+    showLoadingDownload(context);
     if(widget.assignmentDetails.assignmentFile != null){
       final response = await downloadFile(widget.assignmentDetails.assignmentFile!);
       if(!mounted) return;
@@ -233,10 +216,7 @@ class _AssignmentDetailsScreenState extends State<AssignmentDetailsScreen> {
                                 child: Text('Assignment Photo', textAlign: TextAlign.center,),
                               ),
                   
-                              assignmentImageContent,
-                  
-                  
-                  
+                              assignmentImageContent,                                  
                   
                             ],
                           ),

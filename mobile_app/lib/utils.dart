@@ -6,6 +6,7 @@ import 'package:intl/intl.dart';
 import 'package:mobile_app/auth_service.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_paystack_plus/src/paystack.dart';
+import 'package:mobile_app/theme.dart';
 import 'package:path/path.dart' as path;
 import 'dart:io';
 import 'package:dio/dio.dart';
@@ -22,6 +23,23 @@ import 'package:permission_handler/permission_handler.dart';
       builder: (context) => Center(
         child: Image.asset('assets/image/loading.gif', width: 120, height: 120),
       ),
+    );
+  }
+
+    void showLoadingDownload(BuildContext context) {
+    showDialog(
+      barrierDismissible: false, // prevent closing by tapping outside
+      context: context,
+      barrierColor: Colors.black.withValues(alpha: 0.9), // dim background
+      builder: (context) => Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Image.asset('assets/image/loading.gif', width: 120, height: 120),
+          SizedBox(height: 10,),
+          Text('This might take a while...', style: Theme.of(context).textTheme.bodyMedium!,),
+
+        ],
+      )
     );
   }
 
@@ -59,6 +77,58 @@ import 'package:permission_handler/permission_handler.dart';
               TextButton(
                 child: Text('OK'),
                 onPressed:() => onOkPressed(),
+              ),
+            ],
+          );
+        },
+      );
+    }
+  }
+
+  void showDeleteDialog(BuildContext context, String title, String message, Function onDeletePressed) {
+    final customColors = Theme.of(context).extension<CustomColors>()!;
+    if (Platform.isIOS) {
+      showCupertinoDialog(
+        context: context,
+        builder: (context) {
+          return CupertinoAlertDialog(
+            title: Text(title),
+            content: Text(message),
+            actions: [
+              CupertinoDialogAction(
+                child: Text('Cancel'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              CupertinoDialogAction(
+                child: Text('Delete', style: TextStyle(color: Colors.red),),
+                onPressed:() => onDeletePressed(),
+              ),
+            ],
+          );
+        },
+      );
+    } else {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(title),
+            content: Text(message),
+            actions: [
+              TextButton(
+                child: Text('Cancel'),
+                onPressed: () => Navigator.of(context).pop(),
+              ),
+              ElevatedButton.icon(
+                onPressed: () => onDeletePressed(),
+                icon: Icon(Icons.delete_outline, color: Colors.white),
+                label: Text('Delete', style: TextStyle(color: Colors.white)),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: customColors.declined,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                )
               ),
             ],
           );

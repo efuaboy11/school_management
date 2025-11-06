@@ -1,28 +1,50 @@
 
+import 'dart:convert';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile_app/auth_service.dart';
+import 'package:mobile_app/providers/assignment_submission.dart';
+import 'package:mobile_app/session_active.dart';
 import 'package:mobile_app/theme.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:mobile_app/utils.dart';
 import 'dart:io';
 import 'package:path/path.dart' as path;
+import 'package:http/http.dart' as http;
 
-class EditAssignmentScreen extends StatefulWidget{
-  const EditAssignmentScreen({super.key});
+class EditAssignmentSubmissionScreen extends ConsumerStatefulWidget{
+  const EditAssignmentSubmissionScreen({super.key,
+    required this.id,
+    required this.teacher,
+    required this.subject,
+    required this.assignmentCode,
+    required this.assignmenNote,
+  });
+
+  final int id;
+  final String teacher;
+  final String subject;
+  final String assignmentCode;
+  final String assignmenNote;
 
   @override
-  State<EditAssignmentScreen> createState() => _EditAssignmentScreenState();
+  ConsumerState<EditAssignmentSubmissionScreen> createState() => _EditAssignmentSubmissionScreenState();
 }
 
-class _EditAssignmentScreenState extends State<EditAssignmentScreen> {
-  String? selectedTeacher;
-  String? selectedSubject;
-  String? assignemtCode;
-  String? submissionNote;
-  String? assignmentImage;
-  String? assignmentFile;
-  File? selectedImage;
-  File? selectedFile;
+class _EditAssignmentSubmissionScreenState extends ConsumerState<EditAssignmentSubmissionScreen> {
+  final _formkey = GlobalKey<FormState>();
+  String? _selectedTeacher;
+  String? _selectedSubject;
+  String? _assignemtCode;
+  String? _submissionNote;
+  File? _selectedImage;
+  File? _selectedFile;
+
+  List<dynamic>? _teachersList;
+  List<dynamic>? _subjectList;
 
 
   void _getPicture(String method) async{
@@ -40,7 +62,7 @@ class _EditAssignmentScreenState extends State<EditAssignmentScreen> {
     }
 
     setState(() {
-      selectedImage = File(pickedImage.path);
+      _selectedImage = File(pickedImage.path);
     });
   }
 
@@ -52,15 +74,118 @@ class _EditAssignmentScreenState extends State<EditAssignmentScreen> {
       return;
     }
     setState(() {
-      selectedFile = File(result.files.single.path!);
+      _selectedFile = File(result.files.single.path!);
     });
     
   }
+
+  Future<void> loadDetails(String type) async {
+    final token = await AuthService.getAccessToken();
+    try {
+      final response = await http.get(
+        Uri.parse('https://school.amanilightequity.com/api/$type/'),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if(!mounted) return;
+      bool sessionActive = await SessionActive.handleSession(context, response);
+      if(!sessionActive) return;
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        setState(() {
+          if (type == 'teachers') {
+            _teachersList = data;
+          } else if (type == 'subjects') {
+            _subjectList = data;
+          }
+        });
+
+        print('success');
+      } else {
+        final errorData = jsonDecode(response.body);
+        final errorMessages = errorData.values.join(", ");
+        print(errorMessages);
+        if (!mounted) return;
+        showSnackbar(context, errorMessages);
+      }
+    } catch (e) {
+      if (!mounted) return;
+      showSnackbar(context, 'Failed to load term');
+      print(e);
+    }
+  }
+
+  void _loadAllDetails() async {
+    await Future.wait([
+      loadDetails('teachers'),
+      loadDetails('subjects'),
+    ]);
+  }
+
+
+  Future<void> editAssignment() async {
+    print('clicked');
+    if (_formkey.currentState!.validate()) {
+      showLoadingDialog(context);
+      print('validated');
+
+      _formkey.currentState!.save();
+
+      
+
+      if(!mounted) return;
+      final response =await ref.read(assignmentSubmissionProvider.notifier).updateAssignmentSubmission(
+        _selectedTeacher!, _selectedSubject!, 
+        _submissionNote!, _assignemtCode!, 
+        _selectedImage, _selectedFile, 
+        widget.id, context
+      );
+
+      if(!mounted) return;
+      hideLoadingDialog(context);
+
+      if (response == 'success') {
+        if (!mounted) return;
+        showSnackbar(context, 'Assignment edited successfully');
+
+        context.pop();
+      }else {
+        if (!mounted) return;
+        showSnackbar(context, response);
+      }
+
+      
+    }
+  }
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAllDetails();
+
+    AuthService.isTokenExpired().then((isExpired){
+      if(isExpired) {
+        if(!mounted) return;
+        context.go('/login');
+        AuthService.logout();
+      }
+    });
+
+  }
+
+
 
 
   @override
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>()!;
+    _selectedTeacher = widget.teacher;  
+    _selectedSubject = widget.subject;
+    _assignemtCode = widget.assignmentCode;
+    _submissionNote = widget.assignmenNote;
 
     Widget imgContent = Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -71,7 +196,7 @@ class _EditAssignmentScreenState extends State<EditAssignmentScreen> {
       ],
     );
 
-    if(selectedImage != null){
+    if(_selectedImage != null){
       imgContent = SizedBox(
         width: 100,
         height: 100,
@@ -79,7 +204,7 @@ class _EditAssignmentScreenState extends State<EditAssignmentScreen> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Image.file(
-            selectedImage!,
+            _selectedImage!,
             fit: BoxFit.cover,
           ),
         ),
@@ -98,13 +223,13 @@ class _EditAssignmentScreenState extends State<EditAssignmentScreen> {
       ],
     );
 
-    if(selectedFile != null){
+    if(_selectedFile != null){
       fileContent = Row(
       mainAxisAlignment: MainAxisAlignment.center,
       spacing: 10,
       children: [
         Icon(Icons.insert_drive_file),
-        Text(path.basename(selectedFile!.path),)
+        Text(path.basename(_selectedFile!.path),)
       ],
     );
 
@@ -130,6 +255,7 @@ class _EditAssignmentScreenState extends State<EditAssignmentScreen> {
                 padding: EdgeInsetsGeometry.all(10),
                 
                 child: Form(
+                  key: _formkey,
                   child: Column(
                     spacing: 20,
                     children: [
@@ -152,23 +278,22 @@ class _EditAssignmentScreenState extends State<EditAssignmentScreen> {
                           }
                           return null;
                         },
-                        value: selectedTeacher,
-                        items: [
-                          DropdownMenuItem(
-                            value: 'mr frank',
-                            child: Text('Mr Frank')
-                          ),
-            
-                          DropdownMenuItem(
-                            value: 'mrs joy',
-                            child: Text('Mrs joy'),
-                          ),
-                        ], 
-                        onChanged: (value){
-                          setState(() {
-                            selectedTeacher = value;
-                          });
-                        }
+                        value: _selectedTeacher,
+                        items: 
+                          _teachersList 
+                           ?.map<DropdownMenuItem<String>>(
+                              (data) => DropdownMenuItem<String>(
+                                value: data['id']?.toString() ?? '',
+                                child: Text('${data['first_name']} ${data['first_name']}'),
+                              ),
+                            ).toList() ??
+                          [],
+                        
+                          onChanged: (value){
+                            setState(() {
+                              _selectedTeacher = value as String;
+                            });
+                          }
                       ),
             
                       DropdownButtonFormField(
@@ -191,21 +316,19 @@ class _EditAssignmentScreenState extends State<EditAssignmentScreen> {
                           return null;
                         },
             
-                        value: selectedSubject,
-                        items: [
-                          DropdownMenuItem(
-                            value: 'Mathematics',
-                            child: Text('Mathematics')
-                          ),
-            
-                          DropdownMenuItem(
-                            value: 'English',
-                            child: Text('English'),
-                          ),
-                        ], 
+                        value: _selectedSubject,
+                        items: 
+                          _subjectList 
+                           ?.map<DropdownMenuItem<String>>(
+                              (data) => DropdownMenuItem<String>(
+                                value: data['id']?.toString() ?? '',
+                                child: Text(data['name']?.toString() ?? ''),
+                              ),
+                            ).toList() ??
+                          [],
                         onChanged: (value){
                           setState(() {
-                            selectedSubject = value;
+                            _selectedSubject = value as String;
                           });
                         }
                       ),
@@ -226,6 +349,12 @@ class _EditAssignmentScreenState extends State<EditAssignmentScreen> {
                           }
                           return null;
                         },
+
+                        initialValue: widget.assignmentCode,
+
+                        onSaved: (value){
+                          _assignemtCode = value;
+                        },
                         
                       ),
 
@@ -240,6 +369,12 @@ class _EditAssignmentScreenState extends State<EditAssignmentScreen> {
                             borderRadius: BorderRadius.circular(12.0),
                           ),
                         ),
+
+                        initialValue: widget.assignmenNote,
+
+                        onSaved: (value){
+                          _submissionNote = value;
+                        },
                         // No validator since it's optional
                       ),
 
@@ -274,7 +409,7 @@ class _EditAssignmentScreenState extends State<EditAssignmentScreen> {
                         ), // or use any widget as the trigger
                       ),
 
-                      GestureDetector(
+                      InkWell(
                         onTap: _pickFile,
                         child: Container(
                           width: double.infinity,
@@ -290,20 +425,14 @@ class _EditAssignmentScreenState extends State<EditAssignmentScreen> {
                             ),
                           ),
                         ), 
-                      ),
-
-
-            
+                      ),            
                       
                       SizedBox(
                         width: double.infinity,
                         height: 50,
                         child: ElevatedButton(
                           onPressed: () {
-                            // context.push('/student/pay-2');
-                            // Navigator.of(context).push(
-                            //   MaterialPageRoute(builder: (ctx) => EditAssignmentScreenTwo())
-                            // );
+                            editAssignment();
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Theme.of(context).colorScheme.primary,
@@ -318,6 +447,10 @@ class _EditAssignmentScreenState extends State<EditAssignmentScreen> {
                           ),
                         ),
                       ),
+
+                      SizedBox(
+                        height: 20,
+                      )
                     ],
                   )
                 )

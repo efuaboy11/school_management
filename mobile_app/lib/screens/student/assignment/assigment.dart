@@ -25,7 +25,6 @@ class _AssignmentScreenState extends ConsumerState<AssignmentScreen> {
   String? _error;
   final _searchController = TextEditingController();
   Timer? _debounce;
-  int _totalAssignments = 0;
 
 
   @override
@@ -47,13 +46,6 @@ class _AssignmentScreenState extends ConsumerState<AssignmentScreen> {
     _searchController.dispose();
     _debounce?.cancel();
     super.dispose();
-  }
-
-  void getTotalAssignments() {
-    final assignments = ref.read(assignmentProvider);
-    setState(() {
-      _totalAssignments = assignments.length;
-    });
   }
 
   Future<void> _loadDetails(String query, context) async{
@@ -82,7 +74,7 @@ class _AssignmentScreenState extends ConsumerState<AssignmentScreen> {
     
     final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
     // final customColors = Theme.of(context).extension<CustomColors>()!;
-
+    final assignments = ref.read(assignmentProvider);
     Widget content = Center(
       child: Text('Welcome'),
     );
@@ -156,7 +148,7 @@ class _AssignmentScreenState extends ConsumerState<AssignmentScreen> {
               child: Card(
                 child: Padding(
                   padding: const EdgeInsets.all(10),
-                  child: Text('Total of $_totalAssignments assignment given'),
+                  child: Text('Total of ${assignments.length} assignment given'),
                 ),
               ),
             ),

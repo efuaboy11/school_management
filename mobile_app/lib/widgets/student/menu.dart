@@ -159,6 +159,14 @@ class _MenuBarWidgetState extends State<MenuBarWidget> {
                           context.push('/student/assignment');
                         },
                       ),
+
+                      ListTile(
+                        leading: const Icon(Icons.book_outlined),
+                        title: const Text('Assignment Submission'),
+                        onTap: () {
+                          context.push('/student/assignment-submission');
+                        },
+                      ),
                       ListTile(
                         leading: const Icon(Icons.calendar_today),
                         title: const Text('Class Timetable'),

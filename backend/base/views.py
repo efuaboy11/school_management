@@ -1879,6 +1879,7 @@ class PaymentMethodView(generics.ListCreateAPIView):
             serializer.is_valid(raise_exception=True)
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({"error": "You do not have permission to create a payment method."}, status=status.HTTP_403_FORBIDDEN)
         
 
 class PaymentMethodRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):   

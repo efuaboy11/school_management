@@ -1,31 +1,96 @@
 
+import 'dart:convert';
+
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile_app/auth_service.dart';
+import 'package:mobile_app/providers/assignment_submission.dart';
+import 'package:mobile_app/session_active.dart';
 import 'package:mobile_app/theme.dart';
+import 'package:mobile_app/utils.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
 import 'package:image_picker/image_picker.dart';
 import 'dart:io';
 import 'package:path/path.dart' as path;
 import 'package:mobile_app/widgets/student/menu.dart';
 import 'package:mobile_app/widgets/platform_back_button.dart';
+import 'package:http/http.dart' as http;
 
-class SubmitAssignmentScreen extends StatefulWidget{
+class SubmitAssignmentScreen extends ConsumerStatefulWidget{
   const SubmitAssignmentScreen({super.key});
 
   @override
-  State<SubmitAssignmentScreen> createState() => _SubmitAssignmentScreenState();
+  ConsumerState<SubmitAssignmentScreen> createState() => _SubmitAssignmentScreenState();
 }
 
-class _SubmitAssignmentScreenState extends State<SubmitAssignmentScreen> {
-  String? selectedTeacher;
-  String? selectedSubject;
-  String? assignemtCode;
-  String? submissionNote;
-  String? assignmentImage;
-  String? assignmentFile;
-  File? selectedImage;
-  File? selectedFile;
+class _SubmitAssignmentScreenState extends ConsumerState<SubmitAssignmentScreen> {
+  final _formkey = GlobalKey<FormState>();
+  String? _selectedTeacher;
+  String? _selectedSubject;
+  String? _assignemtCode;
+  String? _submissionNote;
+
+  File? _selectedImage;
+  File? _selectedFile;
+
+  List<dynamic>? _teachersList;
+  List<dynamic>? _subjectList;
+
+    bool _isloading = true;
+
+  Future<void> loadDetails(String type) async {
+    final token = await AuthService.getAccessToken();
+    try {
+      final response = await http.get(
+        Uri.parse('https://school.amanilightequity.com/api/$type/'),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if(!mounted) return;
+      bool sessionActive = await SessionActive.handleSession(context, response);
+      if(!sessionActive) return;
+
+      if (response.statusCode == 200) {
+        final data = json.decode(response.body);
+        setState(() {
+          if (type == 'teachers') {
+            _teachersList = data;
+          } else if (type == 'subjects') {
+            _subjectList = data;
+          }
+        });
+
+        print('success');
+      } else {
+        final errorData = jsonDecode(response.body);
+        final errorMessages = errorData.values.join(", ");
+        print(errorMessages);
+        if (!mounted) return;
+        showSnackbar(context, errorMessages);
+      }
+    } catch (e) {
+      if (!mounted) return;
+      showSnackbar(context, 'Failed to load term');
+      print(e);
+    }
+  }
+
+  void _loadAllDetails() async {
+    setState(() {
+      _isloading = true;
+    });
+    await Future.wait([
+      loadDetails('teachers'),
+      loadDetails('subjects'),
+    ]);
+
+    if (!mounted) return;
+    setState(() {
+      _isloading = false;
+    });
+  }
 
 
   void _getPicture(String method) async{
@@ -43,7 +108,7 @@ class _SubmitAssignmentScreenState extends State<SubmitAssignmentScreen> {
     }
 
     setState(() {
-      selectedImage = File(pickedImage.path);
+      _selectedImage = File(pickedImage.path);
     });
   }
 
@@ -55,9 +120,69 @@ class _SubmitAssignmentScreenState extends State<SubmitAssignmentScreen> {
       return;
     }
     setState(() {
-      selectedFile = File(result.files.single.path!);
+      _selectedFile = File(result.files.single.path!);
     });
     
+  }
+
+  Future<void> addAssignment() async {
+    print('clicked');
+    if (_formkey.currentState!.validate()) {
+      showLoadingDialog(context);
+      print('validated');
+
+      _formkey.currentState!.save();
+
+      
+
+      if(!mounted) return;
+      final response =await ref.read(assignmentSubmissionProvider.notifier).addAssignmentSubmission(
+        _selectedTeacher!, 
+        _selectedSubject!, 
+        _submissionNote!, 
+        _assignemtCode!, 
+        _selectedImage, 
+        _selectedFile, 
+        context
+      );
+
+      if(!mounted) return;
+      hideLoadingDialog(context);
+
+      if (response == 'success') {
+        if (!mounted) return;
+        showPlatformDialog(context, 'Successful', 'Assignment added successfully', 
+          (){
+            Navigator.of(context).pop();
+          }
+        );
+        _formkey.currentState!.reset();
+      }else {
+        if (!mounted) return;
+        showPlatformDialog(context, 'Failed', response, 
+          (){
+            Navigator.of(context).pop();
+          }
+        );
+      }
+
+      
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _loadAllDetails();
+
+    AuthService.isTokenExpired().then((isExpired){
+      if(isExpired) {
+        if(!mounted) return;
+        context.go('/login');
+        AuthService.logout();
+      }
+    });
+
   }
 
 
@@ -75,7 +200,7 @@ class _SubmitAssignmentScreenState extends State<SubmitAssignmentScreen> {
       ],
     );
 
-    if(selectedImage != null){
+    if(_selectedImage != null){
       imgContent = SizedBox(
         width: 100,
         height: 100,
@@ -83,7 +208,7 @@ class _SubmitAssignmentScreenState extends State<SubmitAssignmentScreen> {
         child: ClipRRect(
           borderRadius: BorderRadius.circular(8),
           child: Image.file(
-            selectedImage!,
+            _selectedImage!,
             fit: BoxFit.cover,
           ),
         ),
@@ -102,16 +227,29 @@ class _SubmitAssignmentScreenState extends State<SubmitAssignmentScreen> {
       ],
     );
 
-    if(selectedFile != null){
+    if(_selectedFile != null){
       fileContent = Row(
       mainAxisAlignment: MainAxisAlignment.center,
       spacing: 10,
       children: [
         Icon(Icons.insert_drive_file),
-        Text(path.basename(selectedFile!.path),)
+        Text(path.basename(_selectedFile!.path),)
       ],
     );
 
+    }
+
+
+    if (_isloading) {
+      return Scaffold(
+        body: Center(
+          child: Image.asset(
+            'assets/image/loading.gif',
+            width: 120,
+            height: 120,
+          ),
+        ),
+      );
     }
 
     return Scaffold(
@@ -159,6 +297,7 @@ class _SubmitAssignmentScreenState extends State<SubmitAssignmentScreen> {
                             padding: EdgeInsetsGeometry.all(18),
                             
                             child: Form(
+                              key: _formkey,
                               child: Column(
                                 spacing: 20,
                                 children: [
@@ -177,27 +316,26 @@ class _SubmitAssignmentScreenState extends State<SubmitAssignmentScreen> {
                                     
                                     validator: (value){
                                       if(value == null){
-                                        return 'Please select a payment method';
+                                        return 'Please select a teacher';
                                       }
                                       return null;
                                     },
-                                    value: selectedTeacher,
-                                    items: [
-                                      DropdownMenuItem(
-                                        value: 'mr frank',
-                                        child: Text('Mr Frank')
-                                      ),
-                        
-                                      DropdownMenuItem(
-                                        value: 'mrs joy',
-                                        child: Text('Mrs joy'),
-                                      ),
-                                    ], 
-                                    onChanged: (value){
-                                      setState(() {
-                                        selectedTeacher = value;
-                                      });
-                                    }
+                                    value: _selectedTeacher,
+                                    items: 
+                                      _teachersList 
+                                      ?.map<DropdownMenuItem<String>>(
+                                          (data) => DropdownMenuItem<String>(
+                                            value: data['id']?.toString() ?? '',
+                                            child: Text('${data['first_name']} ${data['first_name']}'),
+                                          ),
+                                        ).toList() ??
+                                      [],
+                                    
+                                      onChanged: (value){
+                                        setState(() {
+                                          _selectedTeacher = value as String;
+                                        });
+                                      }
                                   ),
                         
                                   DropdownButtonFormField(
@@ -220,21 +358,19 @@ class _SubmitAssignmentScreenState extends State<SubmitAssignmentScreen> {
                                       return null;
                                     },
                         
-                                    value: selectedSubject,
-                                    items: [
-                                      DropdownMenuItem(
-                                        value: 'Mathematics',
-                                        child: Text('Mathematics')
-                                      ),
-                        
-                                      DropdownMenuItem(
-                                        value: 'English',
-                                        child: Text('English'),
-                                      ),
-                                    ], 
+                                    value: _selectedSubject,
+                                    items: 
+                                      _subjectList 
+                                      ?.map<DropdownMenuItem<String>>(
+                                          (data) => DropdownMenuItem<String>(
+                                            value: data['id']?.toString() ?? '',
+                                            child: Text(data['name']?.toString() ?? ''),
+                                          ),
+                                        ).toList() ??
+                                      [],
                                     onChanged: (value){
                                       setState(() {
-                                        selectedSubject = value;
+                                        _selectedSubject = value as String;
                                       });
                                     }
                                   ),
@@ -255,12 +391,18 @@ class _SubmitAssignmentScreenState extends State<SubmitAssignmentScreen> {
                                       }
                                       return null;
                                     },
+
+                                    initialValue: _assignemtCode,
+
+                                    onSaved: (value){
+                                      _assignemtCode = value;
+                                    },
                                     
                                   ),
 
                                   TextFormField(
                                     textAlignVertical: TextAlignVertical.top,
-                                    maxLines: 10, // Makes it a text area with 5 lines height
+                                    maxLines: 5, // Makes it a text area with 5 lines height
                                     keyboardType: TextInputType.multiline,
                                     decoration: InputDecoration(
                                       hintText: 'Submission note',
@@ -269,6 +411,12 @@ class _SubmitAssignmentScreenState extends State<SubmitAssignmentScreen> {
                                         borderRadius: BorderRadius.circular(12.0),
                                       ),
                                     ),
+
+                                    initialValue: _submissionNote,
+
+                                    onSaved: (value){
+                                      _submissionNote = value;
+                                    },
                                     // No validator since it's optional
                                   ),
 
@@ -303,7 +451,7 @@ class _SubmitAssignmentScreenState extends State<SubmitAssignmentScreen> {
                                     ), // or use any widget as the trigger
                                   ),
 
-                                  GestureDetector(
+                                  InkWell(
                                     onTap: _pickFile,
                                     child: Container(
                                       width: double.infinity,
@@ -319,20 +467,14 @@ class _SubmitAssignmentScreenState extends State<SubmitAssignmentScreen> {
                                         ),
                                       ),
                                     ), 
-                                  ),
-
-
-                        
+                                  ),            
                                   
                                   SizedBox(
                                     width: double.infinity,
                                     height: 50,
                                     child: ElevatedButton(
                                       onPressed: () {
-                                        // context.push('/student/pay-2');
-                                        // Navigator.of(context).push(
-                                        //   MaterialPageRoute(builder: (ctx) => SubmitAssignmentScreenTwo())
-                                        // );
+                                        addAssignment();
                                       },
                                       style: ElevatedButton.styleFrom(
                                         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -347,6 +489,10 @@ class _SubmitAssignmentScreenState extends State<SubmitAssignmentScreen> {
                                       ),
                                     ),
                                   ),
+
+                                  SizedBox(
+                                    height: 20,
+                                  )
                                 ],
                               )
                             )
