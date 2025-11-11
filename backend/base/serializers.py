@@ -1196,6 +1196,15 @@ class BankAccountSerializer(serializers.ModelSerializer):
         
 # --------------------------------------------- E commerce ------------------------------------ #
 
+class ProductMeasurementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductMeasurement
+        fields = [
+            'id',
+            'measurement',
+            'created_at'
+        ]
+
 
 class ProductCategoriesSerializer(serializers.ModelSerializer):
     class Meta:
@@ -1233,6 +1242,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'price',
             'discount_price',
             'rating',
+            'measurement',
             'image',
             'is_active',
             'created_at',
@@ -1272,6 +1282,7 @@ class CartSerializer(serializers.ModelSerializer):
             'user',
             'product',
             'product_name',
+            'measurement',
             'quantity',
             'total_price',
         ]

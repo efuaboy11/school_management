@@ -232,6 +232,11 @@ urlpatterns = [
     
     # ------------------------------------------ E commerce ------------------------------------------ 
     
+    # Product Measurement
+    path('product-measurement/', views.ProductMeasurementView.as_view(), name='product-measurement'),
+    path('product-measurement/<str:pk>/', views.ProductMeasurementRetrieveUpdateDestroy.as_view(), name='individual-product-measurement'),
+    path('delete-multiple-product-measurement/', views.DeleteMultipleProductMeasurementView.as_view(), name='delete-multiple-product-measurement'),
+    
     # Product Categories
     path('product-categories/', views.ProductCategoriesView.as_view(), name='product-categories'),
     path('product-categories/<str:pk>/', views.ProductCategoriesRetrieveUpdateDestroy.as_view(), name='individual-product-categories'),

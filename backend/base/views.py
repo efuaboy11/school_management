@@ -2410,6 +2410,44 @@ class ActiveBankAccountView(generics.ListAPIView):
 
 
 # --------------------------------------------- E commerce ------------------------------------ #
+
+class ProductMeasurementView(generics.ListCreateAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = ProductMeasurementSerializer,
+    queryset = ProductMeasurement.objects.all()
+    filter_backends = [ExactSearchFilter]
+    search_fields = ['measurement']
+    
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        if(user.role == Role.ADMIN or user.role == Role.STORE_KEEPER):
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"error": "You do not have permission."}, status=status.HTTP_403_FORBIDDEN) 
+    
+class ProductMeasurementRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ProductMeasurementSerializer
+    permission_classes = [IsAdminOrStoreKeeper]
+    queryset = ProductMeasurement.objects.all()
+    lookup_field = 'pk'
+    
+    
+class DeleteMultipleProductMeasurementView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrStoreKeeper]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = ProductMeasurement.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+ 
+
+
 class ProductCategoriesView(generics.ListCreateAPIView):
     permission_classes = [AllowAny]
     serializer_class = ProductCategoriesSerializer
@@ -2426,7 +2464,7 @@ class ProductCategoriesView(generics.ListCreateAPIView):
             serializer.save()
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
-            return Response({"error": "You do not have permission to create a notification."}, status=status.HTTP_403_FORBIDDEN)
+            return Response({"error": "You do not have permission."}, status=status.HTTP_403_FORBIDDEN)
         
         
 class ProductCategoriesRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
