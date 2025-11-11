@@ -52,7 +52,7 @@ class _SchoolFeesHistoryScreenState extends ConsumerState<SchoolFeesHistoryScree
 
   Future<void> _loadPaymentDetails(String query, context) async{
     try{
-      final respose = await ref.read(schoolFeesProvider.notifier).fetchSchoolFeesPayment(query, context);
+      final respose = await ref.read(schoolFeesProvider.notifier).fetchSchoolFeesPayment(query, context, '');
       if(respose != 'success'){
         _error = respose;
       }

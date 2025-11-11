@@ -127,13 +127,13 @@ const CreateSchoolEventPage = () => {
 
                     <div className="col-md-6">
                       <label htmlFor="email" className="form-label">Start Date<span className="text-danger">*</span></label>
-                      <input type="date" className={`site-input ${errors.startDate ? 'error-input' : ''}`} {...register('startDate', { required: true })} value={startDate} onChange={(e) => setStartDate(e.target.value)} placeholder='Start Date' />
+                      <input type="datetime-local" className={`site-input ${errors.startDate ? 'error-input' : ''}`} {...register('startDate', { required: true })} value={startDate} onChange={(e) => setStartDate(e.target.value)} placeholder='Start Date' />
                       {errors.startDate && <p className="error-text">This field is required</p>}
                     </div>
 
                     <div className="col-md-6">
                       <label htmlFor="email" className="form-label">End Date<span className="text-danger">*</span></label>
-                      <input type="date" className={`site-input ${errors.endDate ? 'error-input' : ''}`} {...register('endDate', { required: true })} value={endDate} onChange={(e) => setEndDate(e.target.value)} placeholder='Start Date' />
+                      <input type="datetime-local" className={`site-input ${errors.endDate ? 'error-input' : ''}`} {...register('endDate', { required: true })} value={endDate} onChange={(e) => setEndDate(e.target.value)} placeholder='Start Date' />
                       {errors.endDate && <p className="error-text">This field is required</p>}
                     </div>
 

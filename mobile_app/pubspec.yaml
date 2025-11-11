@@ -87,10 +87,24 @@ flutter:
     - assets/image/background.png
     - assets/image/background2.png
     - assets/image/background3.png
+    - assets/image/background4.png
+    - assets/image/background5.jpg
     - assets/image/verified.png
     - assets/image/error.png
     - assets/image/search_not_found.png
     - assets/image/404.png
+    - assets/image/school_girl.png
+    - assets/image/school_girl2.png
+    - assets/image/school_girl3.png
+    - assets/image/school_girl4.png
+    - assets/image/boy.png
+    - assets/image/uniform.png
+    - assets/image/uniform_set.png
+    - assets/image/uniform2.png
+    - assets/image/school_bag.png
+    - assets/image/shoe.png
+    - assets/image/stationary.png
+    
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

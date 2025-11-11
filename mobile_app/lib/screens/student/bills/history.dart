@@ -52,7 +52,7 @@ class _BillsHistoryScreenState extends ConsumerState<BillsHistoryScreen> {
 
   Future<void> _loadPaymentDetails(String query, context) async{
     try{
-      final respose = await ref.read(billsProvider.notifier).fetchBillsPayment(query, context);
+      final respose = await ref.read(billsProvider.notifier).fetchBillsPayment(query, context, '');
       if(respose != 'success'){
         _error = respose;
       }
@@ -164,7 +164,7 @@ class _BillsHistoryScreenState extends ConsumerState<BillsHistoryScreen> {
                             width: 300,
                             height: 300,
                           ),
-                          Text("No matching bill found", textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleMedium,),
+                          Text("No bill found", textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleMedium,),
                           
 
                         ],

@@ -10,11 +10,21 @@ import 'package:mobile_app/session_active.dart';
 class BillsNotifier extends StateNotifier<List<Bills>> {
   BillsNotifier() : super([]);
 
-  Future<String> fetchBillsPayment(String query, BuildContext context) async {
+  Future<String> fetchBillsPayment(String query, BuildContext context, String type) async {
     final token = await AuthService.getAccessToken();
-    final String baseUrl =
-        'https://school.amanilightequity.com/api/bills-payment/?search=$query';
+    String baseUrl =
+      'https://school.amanilightequity.com/api/bills-payment/?search=$query';
 
+    if(type == 'approved'){
+      baseUrl =
+        'https://school.amanilightequity.com/api/bills-payment/approved/?search=$query';
+    }else if(type == 'pending'){
+      baseUrl =
+        'https://school.amanilightequity.com/api/bills-payment/pending/?search=$query';
+    }else if(type == 'declined'){
+      baseUrl =
+        'https://school.amanilightequity.com/api/bills-payment/declined/?search=$query';
+    }
     try {
       final response = await http.get(
         Uri.parse(baseUrl),
@@ -49,6 +59,61 @@ class BillsNotifier extends StateNotifier<List<Bills>> {
       return 'Failed to load student details... Try again';
     }
   } 
+
+
+  Future<double> getTotalBillsAmount(BuildContext context, String type) async {
+    double total = 0.0;
+
+    final token = await AuthService.getAccessToken();
+    String baseUrl =
+      'https://school.amanilightequity.com/api/bills-payment/';
+
+
+    if(type == 'approved'){
+      baseUrl =
+        'https://school.amanilightequity.com/api/bills-payment/approved/';
+    }else if(type == 'pending'){
+      baseUrl =
+        'https://school.amanilightequity.com/api/bills-payment/pending/';
+    }else if(type == 'declined'){
+      baseUrl =
+        'https://school.amanilightequity.com/api/bills-payment/declined/';
+    }
+    try {
+      final response = await http.get(
+        Uri.parse(baseUrl),
+        headers: {'Authorization': 'Bearer $token'},
+      );
+
+      if(response.statusCode == 200) {
+        final List data = json.decode(response.body);
+
+        for (var item in data) {
+          total += double.tryParse(item['bill_name']['amount'].toString()) ?? 0.0;
+        }
+
+        return total;
+
+
+      } else {
+        final errorData = jsonDecode(response.body);
+        final errorMessages = errorData.values.join(", ");
+        print(errorMessages);
+        return 0.00;
+      }
+      
+
+    } catch (e, stackTrace) {
+      print('Unexpected error occurred: $e');
+      print('Stack trace: $stackTrace');
+      return 0.00;
+    }
+  }
+
+
+
+
+
 }
 
 final billsProvider =

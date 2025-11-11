@@ -8,6 +8,7 @@ class CustomColors extends ThemeExtension<CustomColors>{
     required this.declined,
     required this.lightBorder,
     required this.lightText,
+    required this.lightBg,
   });
 
   final Color successful;
@@ -15,6 +16,7 @@ class CustomColors extends ThemeExtension<CustomColors>{
   final Color declined;
   final Color lightBorder;
   final Color lightText;
+  final Color lightBg;
 
   @override
   CustomColors copyWith({
@@ -23,6 +25,7 @@ class CustomColors extends ThemeExtension<CustomColors>{
     Color? declined,
     Color ? lightBorder,
     Color ? lightText,
+    Color ? lightBg,
   }){
     return CustomColors(
       successful: successful ?? this.successful, 
@@ -30,6 +33,7 @@ class CustomColors extends ThemeExtension<CustomColors>{
       declined: declined ?? this.declined,
       lightBorder: lightBorder ?? this.lightBorder,
       lightText: lightText ?? this.lightText,
+      lightBg: lightBg ?? this.lightBg
     );
       
   }
@@ -42,7 +46,8 @@ class CustomColors extends ThemeExtension<CustomColors>{
       pending: Color.lerp(pending, other.pending, t)!, 
       declined: Color.lerp(declined, other.declined, t)!,
       lightBorder: Color.lerp(lightBorder, other.lightBorder, t)!,
-      lightText: Color.lerp(lightText, other.lightText, t)!
+      lightText: Color.lerp(lightText, other.lightText, t)!, 
+      lightBg: Color.lerp(lightBg, other.lightBg, t)!,
     );
   }
 }

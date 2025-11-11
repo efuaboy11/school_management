@@ -6,6 +6,12 @@ import 'package:mobile_app/screens/Auth/forgot_password.dart';
 import 'package:mobile_app/screens/Auth/forgot_password_success.dart';
 import 'package:mobile_app/screens/Auth/login.dart';
 import 'package:mobile_app/screens/splash_screen.dart';
+import 'package:mobile_app/screens/store/cart/cart.dart';
+import 'package:mobile_app/screens/store/favourite_product/favourite.dart';
+import 'package:mobile_app/screens/store/home.dart';
+import 'package:mobile_app/screens/store/order/order_history.dart';
+import 'package:mobile_app/screens/store/order/order_receipt.dart';
+import 'package:mobile_app/screens/store/products/Individual_product.dart';
 import 'package:mobile_app/screens/student/assignment/assigment.dart';
 import 'package:mobile_app/screens/student/assignment_submission/assigment_submission.dart';
 import 'package:mobile_app/screens/student/assignment_submission/submit_assignment.dart';
@@ -23,6 +29,7 @@ import 'package:mobile_app/screens/student/school_fees/history.dart';
 import 'package:mobile_app/screens/student/check_result/check_result.dart';
 import 'package:mobile_app/screens/student/user_profile/user_profile.dart';
 import 'package:mobile_app/screens/student/help/help.dart';
+import 'package:mobile_app/screens/store/products/all_product.dart';
 import 'package:mobile_app/widgets/page_transition.dart';
 
 bool get isLoggedIn => false;
@@ -274,6 +281,85 @@ final GoRouter appRouter = GoRouter(
         transitionsBuilder: platformPageTransitionBuilder,
         key: state.pageKey,
         child: HelpScreen()
+      ),
+    ),
+
+
+
+    // ------------------- ++++++++++++++++++++++++++++++ ----------------------------- +++++++++++++++++++++++
+    // ------------------- +++++++++++++++++++++++++++++ --------------------------------- ++++++++++++++++++++
+
+    GoRoute(
+      path: '/store/home',
+      name: 'store-home',
+      pageBuilder:(context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
+        key: state.pageKey,
+        child: StoreHomeScreen()
+      ),
+    ),
+
+
+    GoRoute(
+      path: '/store/product',
+      name: 'store-product',
+      pageBuilder:(context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
+        key: state.pageKey,
+        child: AllProductScreen()
+      ),
+    ),
+
+    GoRoute(
+      path: '/store/favourite',
+      name: 'store-favourite',
+      pageBuilder:(context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
+        key: state.pageKey,
+        child: FavouriteProductScreen()
+      ),
+    ),
+
+    GoRoute(
+      path: '/store/cart',
+      name: 'store-cart',
+      pageBuilder:(context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
+        key: state.pageKey,
+        child: CartScreen()
+      ),
+    ),
+
+
+    GoRoute(
+      path: '/store/product/individual',
+      name: 'store-product-indvidual',
+      pageBuilder:(context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
+        key: state.pageKey,
+        child: IndividualProductScreen()
+      ),
+    ),
+
+
+    GoRoute(
+      path: '/store/orders',
+      name: 'store-orders',
+      pageBuilder:(context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
+        key: state.pageKey,
+        child: OrderHistoryScreen()
+      ),
+    ),
+
+
+    GoRoute(
+      path: '/store/orders/receipt',
+      name: 'store-orders-receipt',
+      pageBuilder:(context, state) => CustomTransitionPage(
+        transitionsBuilder: platformPageTransitionBuilder,
+        key: state.pageKey,
+        child: OrdersDetailScreen()
       ),
     ),
 

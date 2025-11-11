@@ -246,6 +246,19 @@ String formatCurrentDate(String dateString) {
   }
 }
 
+String getTimeOfDayGreeting() {
+  final now = DateTime.now();
+  final hour = now.hour;
+
+  if (hour >= 0 && hour < 12) {
+    return 'Morning';
+  } else if (hour >= 12 && hour < 16) {
+    return 'Afternoon';
+  } else {
+    return 'Evening';
+  }
+}
+
 
 String formatMoney(String amount) {
   try {

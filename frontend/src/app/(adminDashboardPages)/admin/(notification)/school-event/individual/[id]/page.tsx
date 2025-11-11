@@ -260,12 +260,12 @@ const IndivivdualEvent = ({ params }: { params: Promise<{ id: string }> }) => {
 
                               <div className="col-md-6">
                                 <label htmlFor="email" className="form-label">Start Date</label>
-                                <input type="date" className={`site-input ${errors.startDate ? 'error-input' : ''}`} {...register('startDate')} value={startDate} onChange={(e) => setStartDate(e.target.value)} placeholder='Start Date' />
+                                <input type="datetime-local" className={`site-input ${errors.startDate ? 'error-input' : ''}`} {...register('startDate')} value={startDate} onChange={(e) => setStartDate(e.target.value)} placeholder='Start Date' />
                               </div>
 
                               <div className="col-md-6">
                                 <label htmlFor="email" className="form-label">End Date</label>
-                                <input type="date" className={`site-input ${errors.endDate ? 'error-input' : ''}`} {...register('endDate')} value={endDate} onChange={(e) => setEndDate(e.target.value)} placeholder='Start Date' />
+                                <input type="datetime-local" className={`site-input ${errors.endDate ? 'error-input' : ''}`} {...register('endDate')} value={endDate} onChange={(e) => setEndDate(e.target.value)} placeholder='Start Date' />
                               </div>
 
 

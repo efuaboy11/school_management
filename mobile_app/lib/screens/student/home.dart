@@ -1,34 +1,278 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
-// import 'package:carousel_slider/carousel_slider.dart';
-// import 'package:mobile_app/screens/student/school_fees/history.dart';
+import 'package:mobile_app/auth_service.dart';
+import 'package:mobile_app/providers/assignment.dart';
+import 'package:mobile_app/providers/class_notification.dart';
+import 'package:mobile_app/providers/student_details.dart';
+import 'package:mobile_app/providers/assignment_submission.dart';
+import 'package:mobile_app/screens/student/school_fees/fee_details.dart';
 import 'package:mobile_app/theme.dart';
+import 'package:mobile_app/utils.dart';
 import 'package:mobile_app/widgets/carousel.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:mobile_app/widgets/student/menu.dart';
 import 'package:mobile_app/widgets/student/tabs.dart';
+import 'package:mobile_app/screens/student/class_notifications/class_notifcation_details.dart';
+import 'package:mobile_app/screens/student/bills/bill_details.dart';
+import 'package:mobile_app/providers/school_fee.dart';
+import 'package:mobile_app/providers/billls.dart';
+import 'package:http/http.dart' as http;
+
+class StudentHomeScreen extends ConsumerStatefulWidget {
+  const StudentHomeScreen({super.key});
+
+  @override
+  ConsumerState<StudentHomeScreen> createState() => _StudentHomeScreenState();
+}
+
+class _StudentHomeScreenState extends ConsumerState<StudentHomeScreen> {
+
+  bool _loading = true;
+  bool _notificationLoader = true;
+  bool _schoolFeesLoader = true;
+  bool _billsLoader = true;
+
+  String? _error;
+
+  String _assignemtLength = '0';
+  String _assignmentSubmittedLength = '0';
+  
+
+  double _pendingFees = 0;
+  double _declinedFees = 0;
+  double _successfulFees = 0;
+  double _schoolFeesTotal = 0;
+
+  double _billsPending = 0;
+  double _billsDeclined = 0;
+  double _billsSuccessful = 0;
+  double _billsTotal = 0;
 
 
-class StudentHomeScreen extends StatelessWidget {
-  StudentHomeScreen({super.key});
-  final double pending = 100;
-  final double declined = 50;
-  final double successful = 60;
 
-  final double billspending = 100;
-  final double billsdeclined = 50;
-  final double billssuccessful = 60;
+  Future<void> _updateNotificationStatus(int notificationId, context) async{
+    // Implement the logic to update notification status here
+    // POST /notifications/schoolnotification/5/read/
+    // POST /notifications/staffnotification/2/read/
+    // POST /notifications/classnotification/9/read/
 
-  final List<String> imgList = [
-    "https://picsum.photos/800/400?img=1",
-    "https://picsum.photos/800/400?img=2",
-    "https://picsum.photos/800/400?img=3",
-  ];
+    print('updating notification status for id: $notificationId');
+
+    final token = await AuthService.getAccessToken();
+
+    try{
+      final response = await http.post(
+        Uri.parse(
+          'https://school.amanilightequity.com/api/update-notification/classnotification/$notificationId'
+        ),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        
+      );
+
+      if(response.statusCode == 200 || response.statusCode == 201){
+        showSnackbar(context, 'Notification status updated successfully');
+        print(response.body);
+      }else{
+        final errorData = jsonDecode(response.body);
+        final errorMessages = errorData.values.join(", ");
+        print(errorMessages);
+        showSnackbar(context, errorMessages);
+      }
+    }catch(e){
+      showSnackbar(context, 'Failed to update notification status');
+      print(e);
+    }
+  }
+
+
+  
+
+
+  Future<void> _loadStudentDetails() async{
+    try{
+      final respose = await ref.read(studentDetailsProvider.notifier).fetchStudentDetails(context);
+      if(respose != 'success'){
+        _error = respose;
+      }
+    }finally{
+      setState(() {
+        _loading = false;
+      });
+    }
+  }
+
+  Future<void> _loadAssignment() async{
+
+    final respose = await ref.read(assignmentProvider.notifier).fetchAssignmentPayment('', context);
+    final assignmentDetails = ref.read(assignmentProvider);  
+    _assignemtLength = assignmentDetails.length.toString();
+    
+
+      
+    if(respose != 'success'){
+      showSnackbar(context, 'respose');
+    }
+    
+  }
+
+
+  Future<void> _loadAssignmentSubmitted() async{
+
+    final respose = await ref.read(assignmentSubmissionProvider.notifier).fetchAssignmentSubmission('', context);
+    final assignmentSubmissionDetails = ref.read(assignmentSubmissionProvider);
+    _assignmentSubmittedLength = assignmentSubmissionDetails.length.toString();
+
+    if(respose != 'success'){
+      showSnackbar(context, 'respose');
+    }
+    
+  }
+
+  Future <void> _totalSchoolFees() async{
+    final respose = await ref.read(schoolFeesProvider.notifier).getTotalSchoolFeesAmount(context, '');
+    _schoolFeesTotal = respose;
+  }
+
+  Future<void> _totalApprovedSchoolFees() async{
+    final respose = await ref.read(schoolFeesProvider.notifier).getTotalSchoolFeesAmount(context, 'approved');
+    _successfulFees = respose;
+  }
+
+  Future<void> _totalDeclinedSchoolFees() async{
+    final respose = await ref.read(schoolFeesProvider.notifier).getTotalSchoolFeesAmount(context, 'declined');
+    _declinedFees = respose;
+  }
+
+  Future<void> _totalPendingSchoolFees() async{
+    final respose = await ref.read(schoolFeesProvider.notifier).getTotalSchoolFeesAmount(context, 'pending');
+    _pendingFees = respose;
+  }
+
+
+  Future<void> _totalBills() async{
+    final respose = await ref.read(billsProvider.notifier).getTotalBillsAmount(context, '');
+    _billsTotal = respose;
+  }
+
+  Future<void> _totalApprovedBills() async{
+    final respose = await ref.read(billsProvider.notifier).getTotalBillsAmount(context, 'approved');
+    _billsSuccessful = respose;
+  }
+
+  Future<void> _totalDeclinedBills() async{
+    final respose = await ref.read(billsProvider.notifier).getTotalBillsAmount(context, 'declined');
+    _billsDeclined = respose;
+  }
+
+  Future<void> _totalPendingBills() async{
+    final respose = await ref.read(billsProvider.notifier).getTotalBillsAmount(context, 'pending');
+    _billsPending = respose;
+  }
+
+
+  Future<void> _loadAllNotification(String query, context) async{
+    final respose = await ref.read(classNotificationProvider.notifier).fetchClassNotificationPayment(query, context, '');
+    if(respose != 'success'){
+      showSnackbar(context, respose);
+    }
+    if(_notificationLoader){
+      setState(() {
+        _notificationLoader = false;
+      });
+    }
+    
+  }
+
+  Future<void> _loadFeesDetails(String query, context) async{
+    try{
+      final respose = await ref.read(schoolFeesProvider.notifier).fetchSchoolFeesPayment(query, context, '');
+      if(respose != 'success'){
+        showSnackbar(context, respose);
+      }
+    }finally{
+      if(_schoolFeesLoader){
+        setState(() {
+          _schoolFeesLoader = false;
+        });
+      }
+      
+    }
+  }
+
+  Future<void> _loadBillaDetails(String query, context) async{
+    try{
+      final respose = await ref.read(billsProvider.notifier).fetchBillsPayment(query, context, '');
+      if(respose != 'success'){
+       showSnackbar(context, respose);
+      }
+    }finally{
+      if(_billsLoader){
+        setState(() {
+          _billsLoader = false;
+        });
+      }
+      
+    }
+  }
+
+
+
+
+  @override
+  void initState() {
+    super.initState();
+    AuthService.isTokenExpired().then((isExpired){
+      if(isExpired) {
+        if(!mounted) return;
+        context.go('/login');
+        AuthService.logout();
+      }
+    });
+    _loadStudentDetails();
+    _loadAssignment();
+    _loadAssignmentSubmitted();
+    _loadAllNotification('', context);
+    _totalApprovedSchoolFees();
+    _totalDeclinedSchoolFees();
+    _totalPendingSchoolFees();
+    _totalSchoolFees();
+    _loadFeesDetails('', context);
+    _totalApprovedBills();
+    _totalDeclinedBills();
+    _totalPendingBills();
+    _totalBills();
+    _loadBillaDetails('', context);
+  }
+
+
+  
 
   @override
   Widget build(BuildContext context) {
   final GlobalKey<ScaffoldState> scaffoldKey = GlobalKey<ScaffoldState>();
   final customColors = Theme.of(context).extension<CustomColors>()!;
+  final studentDetails = ref.watch(studentDetailsProvider);
+
+  void openEditOverlay(id, subject, body, teacherPosted, datePosted, status){
+    showModalBottomSheet(useSafeArea: true, isScrollControlled: true, context: context, builder: (ctx) => 
+      ClassNotificationDetails(subject: subject, body: body, teacherPosted: teacherPosted, datePosted: datePosted, status: status)
+    );
+
+    if(status == 'unread'){
+      _updateNotificationStatus(id, context);
+
+    }
+
+  }
+
+  
+
 
   Widget buildGridItem(BuildContext context, IconData icon, String label, String route, double width, {Color? iconColor}) {
     return SizedBox(
@@ -46,7 +290,45 @@ class StudentHomeScreen extends StatelessWidget {
     ),
   );
 }
+  
+    if (_loading) {
+      return Scaffold(
+        body: Center(
+          child: Image.asset(
+            'assets/image/loading.gif',
+            width: 120,
+            height: 120,
+          ),
+        ),
+      );
+    }
 
+
+    if (_error != null) {
+      return Scaffold(
+        body: Center(child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Image.asset(
+              'assets/image/error.png',
+              width: 300,
+              height: 300,
+            ),
+            Text("Error: $_error", textAlign: TextAlign.center, style: Theme.of(context).textTheme.bodySmall,),
+            SizedBox(height: 15,),
+            ElevatedButton.icon(
+              icon: Icon(Icons.dashboard),
+              label: Text('Home'),
+              onPressed: () {
+                context.go('/student/home');
+              },
+            ),
+
+          ],
+        )),
+        bottomNavigationBar: StudentTab(),
+      );
+    }
     return Scaffold(
       key: scaffoldKey,
       drawer: Drawer(
@@ -58,7 +340,7 @@ class StudentHomeScreen extends StatelessWidget {
         leading: IconButton(onPressed: (){
           context.go('/student/user-profile');
         }, icon: Icon(Icons.person_3_rounded), color: customColors.lightText,),
-        title: Text('Good Afternoon', style: TextStyle(fontSize: 15,)),
+        title: Text('Good ${getTimeOfDayGreeting()}', style: TextStyle(fontSize: 15,)),
 
         actions: [
           IconButton(
@@ -97,13 +379,13 @@ class StudentHomeScreen extends StatelessWidget {
                             children: [
                               CircleAvatar(
                                 radius: 25,
-                                backgroundImage: AssetImage('assets/image/passports.jpg'),
+                                backgroundImage: NetworkImage(studentDetails.passport),
                               ),
                               SizedBox(width: 10),
                               Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  Text('Greetings Shara!', style: TextStyle(color: Colors.white, fontSize: 17)),
+                                  Text('Greetings ${formatName(studentDetails.firstName)}!', style: TextStyle(color: Colors.white, fontSize: 17)),
                                   Text('How can we be off help today?', style: TextStyle(color: Colors.white, fontSize: 14)),
                                 ],
                               )
@@ -117,7 +399,7 @@ class StudentHomeScreen extends StatelessWidget {
                               child: Padding(
                                 padding: const EdgeInsets.symmetric(vertical: 10),
                                 child: Text(
-                                  'Primary 1',
+                                  '${formatName(studentDetails.studentClass)} ',
                                   style: TextStyle(
                                     color: Theme.of(context).colorScheme.onPrimaryContainer,
                                     fontWeight: FontWeight.bold,
@@ -187,7 +469,7 @@ class StudentHomeScreen extends StatelessWidget {
                         child: Row(
                           children: [
                             Expanded(
-                              child: Card(
+                               child: Card(
                                 child: Padding(
                                   padding: const EdgeInsets.only(left: 15, right: 15, bottom: 10, top: 10),
                                   child: Column(
@@ -203,7 +485,7 @@ class StudentHomeScreen extends StatelessWidget {
                               
                                       Text('Student ID',),
                                         
-                                      Text('SBHSISE34', style: TextStyle(fontSize: 18,),)
+                                      Text(studentDetails.userID, style: TextStyle(fontSize: 18,),)
                                     ],
                                   ),
                                 ),
@@ -230,16 +512,13 @@ class StudentHomeScreen extends StatelessWidget {
                               
                                       Text('Class'),
                                         
-                                      Text('Primary1', style: TextStyle(fontSize: 18,),)
+                                      Text(formatName(studentDetails.studentClass), style: TextStyle(fontSize: 18,),)
                                     ],
                                   ),
                                 ),
                                                           
                               ),
                             ),
-                      
-                      
-                      
                             
                           ],
                         ),
@@ -264,7 +543,7 @@ class StudentHomeScreen extends StatelessWidget {
                           
                                   SizedBox(height: 15,),
                           
-                                  Text('5', style: TextStyle(fontSize: 28),),
+                                  Text(_assignemtLength, style: TextStyle(fontSize: 28),),
                                     
                                   Text('Assignment Given'),
                                 ],
@@ -291,7 +570,7 @@ class StudentHomeScreen extends StatelessWidget {
                           
                                   SizedBox(height: 15,),
                           
-                                  Text('5', style: TextStyle(fontSize: 28),),
+                                  Text(_assignmentSubmittedLength, style: TextStyle(fontSize: 28),),
                                     
                                   Text('Assignment Done'),
                                 ],
@@ -312,7 +591,7 @@ class StudentHomeScreen extends StatelessWidget {
             
                     Card(
                       child: Padding(
-                        padding: const EdgeInsets.all(15),
+                        padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
                         child: SizedBox(
                           // height: 400,
                           child: Column(
@@ -320,164 +599,89 @@ class StudentHomeScreen extends StatelessWidget {
                             children: [
                               Text('Recent Class Notification'),
                               SizedBox(height: 10,),
-                              ListView(
-                                padding: EdgeInsets.zero,
-                                  shrinkWrap: true,
-                                  physics: NeverScrollableScrollPhysics(),
-                                  children: [
-                                    Container(
-                                      padding: EdgeInsets.only(bottom: 10, top: 10),
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                          bottom: BorderSide(
-                                            color: customColors.lightBorder,
-                                            width: 1.0
-                                          )
-                                        )
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.topRight,
-                                            child: Text('25mins', style: TextStyle(fontSize: 12, color: customColors.lightText),),
-                                          ),
-                                                                  
-                                          Text('Posted by: Iseghohimhen',),
-                                                                  
-                                          Text('LOremmmmmm', style: TextStyle(color: customColors.lightText),)
-                                                                  
-                                        ],
-                                      ),
-                                    ),
-                          
-                                    Container(
-                                      padding: EdgeInsets.only(bottom: 10, top: 10),
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                          bottom: BorderSide(
-                                            color: customColors.lightBorder,
-                                            width: 1.0
-                                          )
-                                        )
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.topRight,
-                                            child: Text('25mins', style: TextStyle(fontSize: 12, color: customColors.lightText),),
-                                          ),
-                                                                  
-                                          Text('Posted by: Iseghohimhen',),
-                                                                  
-                                          Text('LOremmmmmm', style: TextStyle(color: customColors.lightText),)
-                                                                  
-                                        ],
-                                      ),
-                                    ),
-            
-                                    Container(
-                                      padding: EdgeInsets.only(bottom: 10, top: 10),
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                          bottom: BorderSide(
-                                            color: customColors.lightBorder,
-                                            width: 1.0
-                                          )
-                                        )
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.topRight,
-                                            child: Text('25mins', style: TextStyle(fontSize: 12, color: customColors.lightText),),
-                                          ),
-                                                                  
-                                          Text('Posted by: Iseghohimhen',),
-                                                                  
-                                          Text('LOremmmmmm', style: TextStyle(color: customColors.lightText),)
-                                                                  
-                                        ],
-                                      ),
-                                    ),
-            
-                                    Container(
-                                      padding: EdgeInsets.only(bottom: 10, top: 10),
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                          bottom: BorderSide(
-                                            color: customColors.lightBorder,
-                                            width: 1.0
-                                          )
-                                        )
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.topRight,
-                                            child: Text('25mins', style: TextStyle(fontSize: 12, color: customColors.lightText),),
-                                          ),
-                                                                  
-                                          Text('Posted by: Iseghohimhen',),
-                                                                  
-                                          Text('LOremmmmmm', style: TextStyle(color: customColors.lightText),)
-                                                                  
-                                        ],
-                                      ),
-                                    ),
-            
-                                    Container(
-                                      padding: EdgeInsets.only(bottom: 10, top: 10),
-                                      decoration: BoxDecoration(
-                                        border: Border(
-                                          bottom: BorderSide(
-                                            color: customColors.lightBorder,
-                                            width: 1.0
-                                          )
-                                        )
-                                      ),
-                                      child: Column(
-                                        crossAxisAlignment: CrossAxisAlignment.start,
-                                        children: [
-                                          Align(
-                                            alignment: Alignment.topRight,
-                                            child: Text('25mins', style: TextStyle(fontSize: 12, color: customColors.lightText),),
-                                          ),
-                                                                  
-                                          Text('Posted by: Iseghohimhen',),
-                                                                  
-                                          Text('LOremmmmmm', style: TextStyle(color: customColors.lightText),)
-                                                                  
-                                        ],
-                                      ),
-                                    ),
-                                    SizedBox(height: 20,),
-            
-                                    SizedBox(
-                                      width: double.infinity,
-                                      height: 50,
-                                      child: ElevatedButton(
-                                        onPressed: () {},
-                                        style: ElevatedButton.styleFrom(
-                                          backgroundColor: Theme.of(context).colorScheme.primary,
-                                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
-                                        ),
-                                        child: Text(
-                                          "View All",
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            color: Colors.white,
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-            
-                                    SizedBox(height: 10,),
-                                  ],
+
+                              _notificationLoader ? 
+                                Center(
+                                  child: CircularProgressIndicator(),
                                 )
+                              :
+
+                              Consumer(
+                                builder: (context, ref, child) {
+                                  final notificationList = ref.watch(classNotificationProvider);
+
+                                  if (notificationList.isEmpty) {
+                                    return Center(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Ooops... data not found",
+                                            textAlign: TextAlign.center,
+                                            style: Theme.of(context).textTheme.titleMedium,
+                                          ),
+                                        ],
+                                      ),
+                                    );
+                                  }
+
+                                  // 🔹 Take only the first 5 items (most recent)
+                                  final recentNotifications = notificationList.take(5).toList();
+
+                                  return ListView.builder(
+                                    shrinkWrap: true,
+                                    physics: const NeverScrollableScrollPhysics(),
+                                    itemCount: recentNotifications.length,
+                                    itemBuilder: (ctx, index) {
+                                      final notice = recentNotifications[index];
+
+                                      return Container(
+                                        decoration: BoxDecoration(
+                                          border: Border(
+                                            bottom: BorderSide(
+                                              color: customColors.lightBorder,
+                                              width: 1.0,
+                                            ),
+                                          ),
+                                        ),
+                                        child: ListTile(
+                                          onTap: () {
+                                            openEditOverlay(
+                                              notice.id,
+                                              notice.subject,
+                                              notice.text,
+                                              notice.teacherDetails,
+                                              notice.date,
+                                              notice.status,
+                                            );
+                                          },
+                                          contentPadding: EdgeInsets.zero,
+                                          leading: CircleAvatar(
+                                            backgroundColor: customColors.lightBorder,
+                                            child: Icon(
+                                              notice.status == 'read'
+                                                  ? Icons.notifications
+                                                  : Icons.notifications_active_outlined,
+                                            ),
+                                          ),
+                                          title: Text(formatName(notice.subject)),
+                                          trailing: Text(
+                                            formatCurrentDate(notice.date),
+                                            style: TextStyle(color: customColors.lightText),
+                                          ),
+                                          subtitle: Text(
+                                            formatName(notice.text),
+                                            style: TextStyle(color: customColors.lightText),
+                                            overflow: TextOverflow.ellipsis,
+                                            maxLines: 2,
+                                          ),
+                                        ),
+                                      );
+                                    },
+                                  );
+                                },
+                              ),
+
                             
                             ],
                           ),
@@ -505,7 +709,7 @@ class StudentHomeScreen extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('0', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                                    Text('$_schoolFeesTotal', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                                     Text('All Fees')
                                   ],
                                 ),
@@ -513,7 +717,7 @@ class StudentHomeScreen extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('0', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                                    Text('$_pendingFees', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                                     Text('Pending')
                                   ],
                                 ),
@@ -521,15 +725,15 @@ class StudentHomeScreen extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('0', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
-                                    Text('Success')
+                                    Text('$_successfulFees', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                                    Text('Successful')
                                   ],
                                 ),
             
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('0', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                                    Text('$_declinedFees', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                                     Text('Declined')
                                   ],
                                 ),
@@ -544,7 +748,7 @@ class StudentHomeScreen extends StatelessWidget {
                               ],
                             ),
             
-                            SizedBox(height: 20,),
+                            SizedBox(height: 40,),
             
                               SizedBox(
                                 width: double.infinity,
@@ -552,7 +756,7 @@ class StudentHomeScreen extends StatelessWidget {
                                 child:BarChart(
                                   BarChartData(
                                     alignment: BarChartAlignment.spaceAround,
-                                    maxY: 120, // highest bar value + some space
+                                    maxY: _schoolFeesTotal, // highest bar value + some space
                                     barTouchData: BarTouchData(enabled: true),
                                     titlesData: FlTitlesData(
                                       leftTitles: AxisTitles(
@@ -587,19 +791,19 @@ class StudentHomeScreen extends StatelessWidget {
                                       BarChartGroupData(
                                         x: 0,
                                         barRods: [
-                                          BarChartRodData(toY: pending, color: Colors.orange, width: 20),
+                                          BarChartRodData(toY: _pendingFees, color: Colors.orange, width: 20),
                                         ],
                                       ),
                                       BarChartGroupData(
                                         x: 1,
                                         barRods: [
-                                          BarChartRodData(toY: declined, color: Colors.red, width: 20),
+                                          BarChartRodData(toY: _declinedFees, color: Colors.red, width: 20),
                                         ],
                                       ),
                                       BarChartGroupData(
                                         x: 2,
                                         barRods: [
-                                          BarChartRodData(toY: successful, color: Colors.green, width: 20),
+                                          BarChartRodData(toY: _successfulFees, color: Colors.green, width: 20),
                                         ],
                                       ),
                                     ],
@@ -614,7 +818,7 @@ class StudentHomeScreen extends StatelessWidget {
                     SizedBox(height: 15,),
                     Card(
                       child: Padding(
-                        padding: EdgeInsets.all(20),
+                        padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -623,65 +827,77 @@ class StudentHomeScreen extends StatelessWidget {
                             Text('Note: Red means declined, yellow means pending, green means approved'),
                             SizedBox(height: 16,),
             
-                            ListView(
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              children: [
-                                ListTile(
-                                  contentPadding: EdgeInsets.zero,
-                                  leading: CircleAvatar(
-                                    backgroundColor: customColors.successful,
-                                    child: Icon(Icons.check,  color: Colors.white,),
-                                  ),
-                                  title: Text('School Fess'),
-                                  trailing: Text('4000 NGN', style: TextStyle(fontSize: 14),),
-                                ),
-            
-            
-                                ListTile(
-                                  contentPadding: EdgeInsets.zero,
-                                  leading: CircleAvatar(
-                                    backgroundColor: customColors.declined,
-                                    child: Icon(Icons.cancel_outlined, color: Colors.white,),
-                                  ),
-                                  title: Text('P.T.A'),
-                                  trailing: Text('4000 NGN', style: TextStyle(fontSize: 14),),
-                                ),
-            
-            
-                                ListTile(
-                                  contentPadding: EdgeInsets.zero,
-                                  leading: CircleAvatar(
-                                    backgroundColor: customColors.pending,
-                                    child: Icon(Icons.hourglass_top,  color: Colors.white,),
-                                  ),
-                                  title: Text('P.T.A'),
-                                  trailing: Text('4000 NGN', style: TextStyle(fontSize: 14),),
-                                ),
-            
-                                ListTile(
-                                  contentPadding: EdgeInsets.zero,
-                                  leading: CircleAvatar(
-                                    backgroundColor: customColors.pending,
-                                    child: Icon(Icons.hourglass_top,  color: Colors.white,),
-                                  ),
-                                  title: Text('School Fees'),
-                                  trailing: Text('4000 NGN', style: TextStyle(fontSize: 14),),
-                                ),
-            
-                                ListTile(
-                                  contentPadding: EdgeInsets.zero,
-                                  leading: CircleAvatar(
-                                    backgroundColor: customColors.declined,
-                                    child: Icon(Icons.cancel,  color: Colors.white,),
-                                  ),
-                                  title: Text('P.T.A'),
-                                  trailing: Text('4000 NGN', style: TextStyle(fontSize: 14),),
-                                ),
-            
-                              ],
-                            )
+                            Consumer(
+                              builder: (context, ref, child) {
+                                final schoolFeesList = ref.watch(schoolFeesProvider);
+                                if (schoolFeesList.isEmpty) {
+                                  return  Center(child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Icon(Icons.error_outline),
+                                        Text("No fees available", textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleMedium,),
+
+                                      ],
+                                    )
+                                  );
+                                }
+                                final recentFees = schoolFeesList.take(5).toList();
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: recentFees.length,
+                                  itemBuilder: (ctx, index){
+                                    final fee = recentFees[index];
+                                
+                                    Widget status = CircleAvatar(
+                                      backgroundColor: customColors.successful,
+                                      child: Icon(Icons.check,  color: Colors.white,),
+                                    );
+                                
+                                    if(fee.status == 'pending'){
+                                      status = CircleAvatar(
+                                        backgroundColor: customColors.pending,
+                                        child: Icon(Icons.hourglass_top,  color: Colors.white,),
+                                      );
+                                    }
+                                
+                                    if(fee.status == 'declined'){
+                                      status = CircleAvatar(
+                                        backgroundColor: customColors.declined,
+                                        child: Icon(Icons.cancel_outlined, color: Colors.white,),
+                                      );
+                                    }
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            color: customColors.lightBorder,
+                                            width: 1.0
+                                          )
+                                        )
+                                        
+                                      ),
+                                      child: ListTile(
+                                        
+                                        onTap: (){
+                                          // context.push('/student/fees-history/detail/${fee.id}');
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(builder: (ctx) => SchoolFeesDetailScreen(feeDetails: fee,)) 
+                                          );
+                                        },
+                                        contentPadding: EdgeInsets.zero,
+                                      
+                                        leading: status,
+                                        title: Text(formatName(fee.feeTypeDetails['fee_choice'])),
+                                        trailing: Text('${formatMoney(fee.feeTypeDetails['amount'].toString())} NGN', style: TextStyle(fontSize: 14),),
+                                        subtitle: Text(formatDate(fee.date)),
+                                      ),
+                                    );
+                                  },  
+                                );
+                              },
+                                
+                            ),
                           ],
                         ),
                       ),
@@ -707,7 +923,7 @@ class StudentHomeScreen extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('0', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                                    Text('$_billsTotal', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                                     Text('All Bills')
                                   ],
                                 ),
@@ -715,7 +931,7 @@ class StudentHomeScreen extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('0', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                                    Text('$_billsPending', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                                     Text('Pending')
                                   ],
                                 ),
@@ -723,7 +939,7 @@ class StudentHomeScreen extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('0', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                                    Text('$_billsSuccessful', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                                     Text('Success')
                                   ],
                                 ),
@@ -731,7 +947,7 @@ class StudentHomeScreen extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
-                                    Text('0', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
+                                    Text('$_billsDeclined', style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),),
                                     Text('Declined')
                                   ],
                                 ),
@@ -746,7 +962,7 @@ class StudentHomeScreen extends StatelessWidget {
                               ],
                             ),
             
-                            SizedBox(height: 49,),
+                            SizedBox(height: 55,),
             
                             SizedBox(
                               width: double.infinity,
@@ -757,21 +973,21 @@ class StudentHomeScreen extends StatelessWidget {
                                   centerSpaceRadius: 40, // empty circle in middle (optional)
                                   sections: [
                                     PieChartSectionData(
-                                      value: pending,
+                                      value: _billsPending,
                                       title: "Pending",
                                       color: Colors.orange,
                                       radius: 100,
                                       titleStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
                                     ),
                                     PieChartSectionData(
-                                      value: declined,
+                                      value: _billsDeclined,
                                       title: "Declined",
                                       color: Colors.red,
                                       radius: 100,
                                       titleStyle: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: Colors.white),
                                     ),
                                     PieChartSectionData(
-                                      value: successful,
+                                      value: _billsSuccessful,
                                       title: "Success",
                                       color: Colors.green,
                                       radius: 100,
@@ -792,7 +1008,7 @@ class StudentHomeScreen extends StatelessWidget {
            
                     Card(
                       child: Padding(
-                        padding: EdgeInsets.all(20),
+                        padding: const EdgeInsets.only(top: 15, left: 15, right: 15),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -801,64 +1017,84 @@ class StudentHomeScreen extends StatelessWidget {
                             Text('Note: Red means declined, yellow means pending, green means approved'),
                             SizedBox(height: 16,),
             
-                            ListView(
-                              padding: EdgeInsets.zero,
-                              shrinkWrap: true,
-                              physics: NeverScrollableScrollPhysics(),
-                              children: [
-                                ListTile(
-                                  contentPadding: EdgeInsets.zero,
-                                  leading: CircleAvatar(
-                                    backgroundColor: customColors.successful,
-                                    child: Icon(Icons.check,  color: Colors.white,),
-                                  ),
-                                  title: Text('Utilty bill'),
-                                  trailing: Text('4000 NGN', style: TextStyle(fontSize: 14),),
-                                ),
-            
-            
-                                ListTile(
-                                  contentPadding: EdgeInsets.zero,
-                                  leading: CircleAvatar(
-                                    backgroundColor: customColors.declined,
-                                    child: Icon(Icons.cancel_outlined, color: Colors.white,),
-                                  ),
-                                  title: Text('Utilty bill'),
-                                  trailing: Text('4000 NGN', style: TextStyle(fontSize: 14),),
-                                ),
-            
-            
-                                ListTile(
-                                  contentPadding: EdgeInsets.zero,
-                                  leading: CircleAvatar(
-                                    backgroundColor: customColors.pending,
-                                    child: Icon(Icons.hourglass_top,  color: Colors.white,),
-                                  ),
-                                  title: Text('Hostel due'),
-                                  trailing: Text('4000 NGN', style: TextStyle(fontSize: 14),),
-                                ),
-            
-                                ListTile(
-                                  contentPadding: EdgeInsets.zero,
-                                  leading: CircleAvatar(
-                                    backgroundColor: customColors.pending,
-                                    child: Icon(Icons.hourglass_top,  color: Colors.white,),
-                                  ),
-                                  title: Text('Class due'),
-                                  trailing: Text('4000 NGN', style: TextStyle(fontSize: 14),),
-                                ),
-            
-                                ListTile(
-                                  contentPadding: EdgeInsets.zero,
-                                  leading: CircleAvatar(
-                                    backgroundColor: customColors.declined,
-                                    child: Icon(Icons.cancel,  color: Colors.white,),
-                                  ),
-                                  title: Text('Utilty bill'),
-                                  trailing: Text('4000 NGN', style: TextStyle(fontSize: 14),),
-                                ),
-            
-                              ],
+                            Consumer(
+                              builder: (context, ref, child) {
+                                final billsList = ref.watch(billsProvider);
+                                if (billsList.isEmpty) {
+                                  return  Center(child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.center,
+                                      children: [
+                                        Image.asset(
+                                          'assets/image/404.png',
+                                          width: 300,
+                                          height: 300,
+                                        ),
+                                        Text("No matching bill found", textAlign: TextAlign.center, style: Theme.of(context).textTheme.titleMedium,),
+                                        
+
+                                      ],
+                                    )
+                                  );
+                                }
+
+                                final recentBills = billsList.take(5).toList();
+
+                                
+                                return ListView.builder(
+                                  shrinkWrap: true,
+                                  physics: NeverScrollableScrollPhysics(),
+                                  itemCount: recentBills.length,
+                                  itemBuilder: (ctx, index){
+                                    final bill = recentBills[index];
+                                
+                                    Widget status = CircleAvatar(
+                                      backgroundColor: customColors.successful,
+                                      child: Icon(Icons.check,  color: Colors.white,),
+                                    );
+                                
+                                    if(bill.status == 'pending'){
+                                      status = CircleAvatar(
+                                        backgroundColor: customColors.pending,
+                                        child: Icon(Icons.hourglass_top,  color: Colors.white,),
+                                      );
+                                    }
+                                
+                                    if(bill.status == 'declined'){
+                                      status = CircleAvatar(
+                                        backgroundColor: customColors.declined,
+                                        child: Icon(Icons.cancel_outlined, color: Colors.white,),
+                                      );
+                                    }
+                                    return Container(
+                                      decoration: BoxDecoration(
+                                        border: Border(
+                                          bottom: BorderSide(
+                                            color: customColors.lightBorder,
+                                            width: 1.0
+                                          )
+                                        )
+                                        
+                                      ),
+                                      child: ListTile(
+                                        
+                                        onTap: (){
+                                          Navigator.of(context).push(
+                                            MaterialPageRoute(builder: (ctx) => BillsDetailScreen(billDetails: bill)) 
+                                          );
+                                        },
+                                        contentPadding: EdgeInsets.zero,
+                                      
+                                        leading: status,
+                                        title: Text(formatName(bill.billTypeDetails['bill_name'])),
+                                        trailing: Text('${formatMoney(bill.billTypeDetails['amount'].toString())} NGN', style: TextStyle(fontSize: 14),),
+                                        subtitle: Text(formatDate(bill.date)),
+                                      ),
+                                    );
+                                  },  
+                                );
+                              },
+                              
+                              
                             )
                           ],
                         ),
@@ -895,7 +1131,9 @@ class StudentHomeScreen extends StatelessWidget {
                               width: double.infinity,
                               height: 50,
                               child: ElevatedButton(
-                                onPressed: () {},
+                                onPressed: () {
+                                  context.push('/student/help');
+                                },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: Theme.of(context).colorScheme.primary,
                                   shape: RoundedRectangleBorder(

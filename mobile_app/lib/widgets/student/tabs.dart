@@ -23,7 +23,7 @@ class StudentTab extends StatelessWidget {
             context.go('/student/home');
             break;
           case 1:
-            context.go('/login');
+            context.go('/store/home');
             break;
           case 2:
             context.push('/student/help');

@@ -69,7 +69,8 @@ class MyApp extends StatelessWidget {
             pending: lightPending,
             declined: lightDeclined,
             lightBorder: Color.fromRGBO(204, 204, 204, 1.0),
-            lightText: Color.fromRGBO(115, 123, 125, 1)
+            lightText: Color.fromRGBO(115, 123, 125, 1),
+            lightBg: Color.fromRGBO(240, 240, 240, 1.0)
           )
         ],
         colorScheme: ColorScheme.fromSeed(
@@ -93,7 +94,8 @@ class MyApp extends StatelessWidget {
             pending: darkPending,
             declined: darkDeclined,
             lightBorder: Color.fromRGBO(51, 51, 51, 1.0),
-            lightText: Color.fromRGBO(160, 160, 160, 1)
+            lightText: Color.fromRGBO(160, 160, 160, 1),
+            lightBg: Color(0xFF1C1C1E)
           )
         ],
         colorScheme: ColorScheme.fromSeed(

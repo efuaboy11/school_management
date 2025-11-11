@@ -241,7 +241,7 @@ class _MenuBarWidgetState extends State<MenuBarWidget> {
                   leading: const Icon(Icons.store),
                   title: const Text('Store'),
                   onTap: () {
-                    context.push('/student/check-result');
+                    context.push('/store/home');
                   },
                 ),
 
