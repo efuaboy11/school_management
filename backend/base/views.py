@@ -2413,7 +2413,7 @@ class ActiveBankAccountView(generics.ListAPIView):
 
 class ProductMeasurementView(generics.ListCreateAPIView):
     permission_classes = [AllowAny]
-    serializer_class = ProductMeasurementSerializer,
+    serializer_class = ProductMeasurementSerializer
     queryset = ProductMeasurement.objects.all()
     filter_backends = [ExactSearchFilter]
     search_fields = ['measurement']
@@ -2427,6 +2427,7 @@ class ProductMeasurementView(generics.ListCreateAPIView):
             return Response(serializer.data, status=status.HTTP_201_CREATED)
         else:
             return Response({"error": "You do not have permission."}, status=status.HTTP_403_FORBIDDEN) 
+   
     
 class ProductMeasurementRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = ProductMeasurementSerializer

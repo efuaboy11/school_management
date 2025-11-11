@@ -1228,15 +1228,15 @@ class ShortProductCategoriesSerializer(serializers.ModelSerializer):
         
         
 class ProductSerializer(serializers.ModelSerializer):
-    category_name = serializers.SerializerMethodField()
+    categories_name = serializers.SerializerMethodField()
     
     class Meta:
         model = Product
         fields = [
             'id',
             'product_id',
-            'category',
-            'category_name',
+            'categories',
+            'categories_name',
             'name',
             'description',
             'price',
@@ -1248,9 +1248,9 @@ class ProductSerializer(serializers.ModelSerializer):
             'created_at',
         ]
         
-    def get_category_name(self, obj):  
-        category = obj.category
-        serializer = ShortProductCategoriesSerializer(instance=category, many=False)
+    def get_categories_name(self, obj):  
+        categories = obj.categories
+        serializer = ShortProductCategoriesSerializer(instance=categories, many=True)
         return serializer.data
 
 
