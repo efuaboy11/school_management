@@ -696,7 +696,11 @@ class Product(models.Model):
         if not self.product_id:
             self.product_id = self.generate_product_id()
         super(Product, self).save(*args, **kwargs)    
-            
+          
+          
+class PopularProduct(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE) 
+    created_at = models.DateTimeField(auto_now_add=True)  
 
   
 class FavouriteProduct(models.Model):

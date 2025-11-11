@@ -1286,6 +1286,24 @@ class FavouriteProductSerializer(serializers.ModelSerializer):
         product = obj.product
         serializer = ProductSerializer(instance=product, many=False)
         return serializer.data
+    
+    
+    
+class PopularProductSerializer(serializers.ModelSerializer):
+    product_name = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = PopularProduct
+        fields = [
+            'id',
+            'product',
+            'product_name',
+            'created_at'
+        ]
+    def get_product_name(self, obj):  
+        product = obj.product
+        serializer = ProductSerializer(instance=product, many=False)
+        return serializer.data
         
         
 class CartSerializer(serializers.ModelSerializer):

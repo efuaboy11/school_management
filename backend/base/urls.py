@@ -232,6 +232,7 @@ urlpatterns = [
     
     # ------------------------------------------ E commerce ------------------------------------------ 
     
+    
     # Product Measurement
     path('product-measurement/', views.ProductMeasurementView.as_view(), name='product-measurement'),
     path('product-measurement/<str:pk>/', views.ProductMeasurementRetrieveUpdateDestroy.as_view(), name='individual-product-measurement'),
@@ -251,6 +252,10 @@ urlpatterns = [
     path('favorite-products/', views.FavoriteProductsView.as_view(), name='favorite-products'),
     path('favorite-products/<str:pk>/', views.FavoriteProductsRetrieveUpdateDestroy.as_view(), name='individual-favorite-products'),
     
+    #Popular Product
+    path('popular-product/', views.PopularProductView.as_view(), name='popular-product'),
+    path('popular-product/<str:pk>/', views.PopularProductRetrieveUpdateDestroy.as_view(), name='individual-popular-product'),
+    path('delete-multiple-popular-product/', views.DeleteMultiplePopularProductView.as_view(), name='delete-multiple-popular-product'),
     
     
     #Cart
