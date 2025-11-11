@@ -649,6 +649,8 @@ class BankAccount(models.Model):
 class ProductMeasurement(models.Model):
     measurement = models.CharField(max_length=100, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
+    def __str__(self):
+        return self.measurement
     
 
 class ProductCategories(models.Model):
