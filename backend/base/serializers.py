@@ -1204,6 +1204,15 @@ class ProductMeasurementSerializer(serializers.ModelSerializer):
             'measurement',
             'created_at'
         ]
+        
+        
+        
+class ShortProductMeasurementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductMeasurement
+        fields = [
+            'measurement',
+        ]
 
 
 class ProductCategoriesSerializer(serializers.ModelSerializer):
@@ -1229,6 +1238,7 @@ class ShortProductCategoriesSerializer(serializers.ModelSerializer):
         
 class ProductSerializer(serializers.ModelSerializer):
     categories_name = serializers.SerializerMethodField()
+    measurement_name = serializers.SerializerMethodField()
     
     class Meta:
         model = Product
@@ -1243,6 +1253,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'discount_price',
             'rating',
             'measurement',
+            'measurement_name',
             'image',
             'is_active',
             'created_at',
@@ -1251,6 +1262,11 @@ class ProductSerializer(serializers.ModelSerializer):
     def get_categories_name(self, obj):  
         categories = obj.categories
         serializer = ShortProductCategoriesSerializer(instance=categories, many=True)
+        return serializer.data
+    
+    def get_measurement_name(self, obj):
+        measurement = obj.measurement
+        serializer = ShortProductMeasurementSerializer(instance=measurement, many=True)
         return serializer.data
 
 
@@ -1274,7 +1290,7 @@ class FavouriteProductSerializer(serializers.ModelSerializer):
         
 class CartSerializer(serializers.ModelSerializer):
     product_name = serializers.SerializerMethodField()
-    
+    measurement_name = serializers.SerializerMethodField()
     class Meta:
         model = Cart
         fields = [
@@ -1291,6 +1307,11 @@ class CartSerializer(serializers.ModelSerializer):
     def get_product_name(self, obj):  
         product = obj.product
         serializer = ProductSerializer(instance=product, many=False)
+        return serializer.data
+    
+    def get_measurement_name(self, obj):
+        measurement = obj.measurement
+        serializer = ShortProductMeasurementSerializer(instance=measurement, many=False)
         return serializer.data
     
     
