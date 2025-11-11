@@ -2490,7 +2490,7 @@ class ProductView(generics.ListCreateAPIView):
     permission_classes = [AllowAny]
     serializer_class = ProductSerializer
     filter_backends = [ExactSearchFilter]
-    search_fields = ['name', 'product_id', 'category__name', 'price', 'discount_price', 'price']
+    search_fields = ['name', 'product_id', 'categories__name', 'price', 'discount_price', 'price']
     
     def get_queryset(self):
         queryset = Product.objects.all()
