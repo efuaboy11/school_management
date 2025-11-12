@@ -1261,10 +1261,16 @@ class ShortProductCategoriesSerializer(serializers.ModelSerializer):
             'is_active'
         ]
         
+class ProductImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ProductImage
+        fields = ['id', 'image']
+        
         
 class ProductSerializer(serializers.ModelSerializer):
     categories_name = serializers.SerializerMethodField()
     measurement_name = serializers.SerializerMethodField()
+    images = ProductImageSerializer(many=True, read_only=True) 
     
     class Meta:
         model = Product
@@ -1281,6 +1287,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'measurement',
             'measurement_name',
             'image',
+            'images',
             'is_active',
             'created_at',
         ]
