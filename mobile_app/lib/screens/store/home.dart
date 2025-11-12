@@ -2,7 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_app/auth_service.dart';
+import 'package:mobile_app/providers/store/product.dart';
+import 'package:mobile_app/providers/store/product_catogries.dart';
 import 'package:mobile_app/providers/student_details.dart';
+import 'package:mobile_app/providers/store/popular_product.dart';
 import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/utils.dart';
 import 'package:mobile_app/widgets/custom_container.dart';
@@ -27,40 +30,40 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
   final controller = CarouselSliderController();
 
 
-  final List<Map<String, dynamic>> _product = [
-    {
-      'id': 1,
-      'img': 'assets/image/uniform2.png',
-      'title': 'Uniform',
-      'description': 'Complete school uniform for all classes',
-      'price': '5000',
-      'rating': 4.5,
-    },
-    {
-      'id': 2,
-      'img': 'assets/image/school_bag.png',
-      'title': 'Bags',
-      'description': 'Durable and spacious school bags',
-      'price': '3000',
-      'rating': 4.0,
+  // final List<Map<String, dynamic>> _product = [
+  //   {
+  //     'id': 1,
+  //     'img': 'assets/image/uniform2.png',
+  //     'title': 'Uniform',
+  //     'description': 'Complete school uniform for all classes',
+  //     'price': '5000',
+  //     'rating': 4.5,
+  //   },
+  //   {
+  //     'id': 2,
+  //     'img': 'assets/image/school_bag.png',
+  //     'title': 'Bags',
+  //     'description': 'Durable and spacious school bags',
+  //     'price': '3000',
+  //     'rating': 4.0,
 
-    },
-    { 'id': 3,
-      'img': 'assets/image/shoe.png',
-      'title': 'Shoes',
-      'description': 'Comfortable and stylish school shoes',
-      'price': '4000',
-      'rating': 4.2,
-    },
-    {
-      'id': 4,
-      'img': 'assets/image/stationary.png',
-      'title': 'Stationaries',
-      'description': 'All essential school stationaries',
-      'price': '1500',
-      'rating': 4.8,
-    },
-  ];
+  //   },
+  //   { 'id': 3,
+  //     'img': 'assets/image/shoe.png',
+  //     'title': 'Shoes',
+  //     'description': 'Comfortable and stylish school shoes',
+  //     'price': '4000',
+  //     'rating': 4.2,
+  //   },
+  //   {
+  //     'id': 4,
+  //     'img': 'assets/image/stationary.png',
+  //     'title': 'Stationaries',
+  //     'description': 'All essential school stationaries',
+  //     'price': '1500',
+  //     'rating': 4.8,
+  //   },
+  // ];
 
 
 
@@ -83,6 +86,34 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
     }
   }
 
+  Future<void> _loadProductCategories() async{
+    final response = await ref.read(productCategoriesProvider.notifier).fetchProductCategories('', context);
+
+    if(response != 'success'){
+      if(!mounted) return;
+      showSnackbar(context, response);
+    }
+  }
+
+
+  Future<void> _loadProduct() async{
+    final response = await ref.read(productProvider.notifier).fetchProduct('', context);
+
+    if(response != 'success'){
+      if(!mounted) return;
+      showSnackbar(context, 'respose');
+    }
+  }
+
+    Future<void> _loadPopularProduct() async{
+    final response = await ref.read(popularProductProvider.notifier).fetchPopularProduct('', context);
+
+    if(response != 'success'){
+      if(!mounted) return;
+      showSnackbar(context, response);
+    }
+  }
+
 
 
   @override
@@ -97,6 +128,9 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
     });
 
     _loadStudentDetails();
+    _loadProductCategories();
+    _loadProduct();
+    _loadPopularProduct();
   }
 
 
@@ -107,12 +141,24 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
     final customColors = Theme.of(context).extension<CustomColors>()!;
     final studentDetails = ref.watch(studentDetailsProvider);
 
+    final productCategoriesList = ref.watch(productCategoriesProvider);
+    final recentProductCategories = productCategoriesList.take(2).toList();
+
+    final productList = ref.watch(productProvider);
+    final recentProduct = productList.take(15).toList();
+
+    final popularProductList = ref.watch(popularProductProvider);
+    final recentPopularProductList = popularProductList.take(5).toList();
+    
+
     Widget buildGridItem(
       BuildContext context, 
       String img,  
       String title,
       String description,
       String price,
+      dynamic discountPrice,
+      double rating,
       double width,
       Function() onAddToCart,
     ){
@@ -151,7 +197,7 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                       padding: const EdgeInsets.only(right: 5, top: 10),
                       child: FittedBox(
                         fit: BoxFit.contain, // ✅ Show full image without cutting
-                        child: Image.asset(
+                        child: Image.network(
                           img,
                         ),
                       ),
@@ -174,11 +220,14 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
         
               Row(
                 children: [
-                  Icon(Icons.star, size: 20, color: Colors.amber,),
-                  Icon(Icons.star, size: 20, color: Colors.amber,),
-                  Icon(Icons.star, size: 20, color: Colors.amber,),
-                  Icon(Icons.star_half, size: 20, color: Colors.amber,),
-                  Icon(Icons.star_border_outlined, size: 20, color: customColors.lightText,),
+                  Icon(Icons.star, size: 14, color: Colors.amber,),
+                  Text(
+                    '$rating [star rating]',
+                    style: TextStyle(
+                      
+                      fontSize: 14,
+                    ),
+                  )
                 ],
               ),
         
@@ -439,38 +488,38 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                       ],
                     ),
 
-                    Row(
-                      spacing: 10,
+                    Wrap(
+                      spacing: 10, // if you're using Flutter 3.24+; otherwise use SizedBox(width: 10)
                       children: [
                         InkWell(
+                          onTap: () {
+                            print('Tapped on All');
+                          },
                           child: CustomContainer(
                             color: Theme.of(context).colorScheme.primary,
-                            child: Text('All', style: TextStyle(color: Colors.white),),
-                            
+                            child: const Text(
+                              'All',
+                              style: TextStyle(color: Colors.white),
+                            ),
                           ),
                         ),
 
-                        InkWell(
-                          child: CustomContainer(
-                            child: Text('Uniform'),
-                          ),
-                        ),
-
-                        InkWell(
-                          child: CustomContainer(
-                            child: Text('Sport Wear'),
-                          ),
-                        ),
-
-                        InkWell(
-                          child: CustomContainer(
-                            child: Text('Stationaries'),
-                          ),
-                        ),
-
-
+                        
+                        if (recentProductCategories.isNotEmpty)
+                          ...recentProductCategories.map((cat) {
+                            return InkWell(
+                              onTap: () {
+                                // Handle tap
+                                // print('Tapped on $cat');
+                              },
+                              child: CustomContainer(
+                                child: Text(cat.categoryName),
+                              ),
+                            );
+                          }),
                       ],
                     ),
+
 
                     SizedBox(height: 5,),
 
@@ -483,33 +532,62 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                       
                     ),
 
-                    SizedBox(
-                      width: double.infinity,
-                      child: 
-                            LayoutBuilder(
-                              builder: (context, constraints) {
-                                double totalWidth = constraints.maxWidth;
-                                int itemsPerRow = 2; // Or 4 depending on screen size or design
-           
-                                
-                                double spacing = 15;
-                                double itemWidth = (totalWidth - (spacing * (itemsPerRow - 1))) / itemsPerRow;
-           
-                                return Wrap(
-                                  spacing: spacing,
-                                  runSpacing: spacing,
-                                  children: [
-                                    buildGridItem(context, 'assets/image/school_girl2.png', 'Lady School Uniform', 'This is a girl full dressed with complete uniform', '50,000', itemWidth, (){
+
+                    recentProduct.isEmpty ?
+                      CustomContainer(
+                        width: double.infinity,
+                        height: 200,
+                        child: Center(
+                          child: Text('No product avalaible '),
+                        ),
+                      )
+                    :
+
+                      SizedBox(
+                        width: double.infinity,
+                        child: 
+                          LayoutBuilder(
+                            builder: (context, constraints) {
+                              double totalWidth = constraints.maxWidth;
+                              int itemsPerRow = 2; // responsive columns
+                              double spacing = 15;
+
+                              // Compute item width and height ratio for childAspectRatio
+                              double itemWidth =
+                                  (totalWidth - (spacing * (itemsPerRow - 1))) / itemsPerRow;
+                              double itemHeight = 360; // Approx height of each card (from your widget)
+
+                              return GridView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: recentProduct.length,
+                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: itemsPerRow,
+                                  crossAxisSpacing: spacing,   // horizontal gap between items
+                                  mainAxisSpacing: spacing,    // ✅ vertical gap between rows
+                                  childAspectRatio: itemWidth / itemHeight, // controls shape
+                                ),
+                                itemBuilder: (ctx, index) {
+                                  final pro = recentProduct[index];
+                                  return buildGridItem(
+                                    context,
+                                    pro.image,
+                                    pro.productName,
+                                    pro.description,
+                                    pro.price,
+                                    pro.discountPrice,
+                                    pro.rating,
+                                    itemWidth,
+                                    () {
                                       context.push('/eh/');
-                                    }),
-                                    buildGridItem(context, 'assets/image/boy.png', 'Boy School Uniform', 'This is a boy full dressed with complete uniform', '36,210', itemWidth, (){}),
-                                    buildGridItem(context, 'assets/image/uniform.png', 'School Uniform', 'Our new quality uniform, made of slik and fibre', '75,300', itemWidth, (){}),
-                                    buildGridItem(context, 'assets/image/school_girl4.png', 'Grade 4 Monday Wear', 'Our new quality uniform, made of slik and fibre', '13,300', itemWidth, (){}),
-                                  ],
-                                );
-                              },
-                            ),                 
-                    ),
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                          )
+                
+                      ),
 
 
                     SizedBox(height: 10,),
@@ -523,99 +601,109 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                       
                     ),
 
-                    Column(
-                      children: [
-                        CarouselSlider.builder(
-                          carouselController: controller,
-                          itemCount: _product.length, 
-                          itemBuilder: (context, index, realIndex){
-                            // return Image.asset(_product[index]['img'])
-                            return CustomContainer(
-                              child: Row(
-                                // crossAxisAlignment: CrossAxisAlignment.center,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  Image.asset(_product[index]['img'], height: 100, width: 100,),
-                                  
+                    recentPopularProductList.isEmpty ?
+                      CustomContainer(
+                        width: double.infinity,
+                        height: 200,
+                        child: Center(
+                          child: Text('No popular product avalaible '),
+                        ),
+                      )
 
-                                  SizedBox(width: 20,),
-
-                                  Expanded(
+                    :  Column(
+                        children: [
+                          CarouselSlider.builder(
+                            carouselController: controller,
+                            itemCount: recentPopularProductList.length, 
+                            itemBuilder: (context, index, realIndex){
+                              // return Image.asset(_product[index]['img'])
+                              final pro = recentPopularProductList[index];
+                              return CustomContainer(
+                                child: Row(
+                                  // crossAxisAlignment: CrossAxisAlignment.center,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Image.network(pro.productDetails['image'], height: 100, width: 100,),
                                     
-                                    child: Column(
-                                      crossAxisAlignment: CrossAxisAlignment.start,
-                                      children: [
-                                        Text(formatName(_product[index]['title']), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16), overflow: TextOverflow.ellipsis, maxLines: 1,),
-                                        SizedBox(height: 5,),
-                                        
 
-                                        Row(
-                                          children: [
-                                            Icon(Icons.star, size: 14, color: Colors.amber,),
-                                            Text(
-                                              '${_product[index]['rating']} [star rating]',
-                                              style: TextStyle(
-                                                
-                                                fontSize: 14,
-                                              ),
-                                            )
-                                          ],
-                                        ),
+                                    SizedBox(width: 20,),
 
-                                        SizedBox(height: 10,),
+                                    Expanded(
+                                      
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        children: [
+                                          Text(formatName(pro.productDetails['name']), style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16), overflow: TextOverflow.ellipsis, maxLines: 1,),
+                                          SizedBox(height: 5,),
+                                          
 
-                                        Text('NGN ${formatMoney(_product[index]['price'])}', style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15,
-                                        ),),
-
-                                        SizedBox(height: 10,),
-
-                                        Expanded(
-                                          child: Row(
-                                            spacing: 8,
+                                          Row(
                                             children: [
-                                              InkWell(
-                                                child: Icon(Icons.add_shopping_cart, size: 20,)
-                                              ),
-                                              InkWell(
-                                                child: Icon(Icons.favorite_outline, size: 20,)
-                                              ),
-                                              
+                                              Icon(Icons.star, size: 14, color: Colors.amber,),
+                                              Text(
+                                                '${pro.productDetails['rating']} [star rating]',
+                                                style: TextStyle(
+                                                  
+                                                  fontSize: 14,
+                                                ),
+                                              )
                                             ],
                                           ),
-                                        )
 
-                                      ],
-                                    ),
-                                  )
-                                ],
-                              ),
-                            );
-                          }, 
-                          options: CarouselOptions(
-                            height: 130,
-                            autoPlay: true,
-                            enlargeCenterPage: true,
-                            onPageChanged: (index, reason) => setState(() => activeIndex = index),
-                          )
-                        ),
+                                          SizedBox(height: 10,),
 
-                        const SizedBox(height: 12),
+                                          Text('NGN ${formatMoney(pro.productDetails['price'])}', style: TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 15,
+                                          ),),
 
-                        AnimatedSmoothIndicator(
-                          activeIndex: activeIndex,
-                          count: _product.length,
-                          effect: ExpandingDotsEffect( // you can change style
-                            dotHeight: 10,
-                            dotWidth: 10,
-                            activeDotColor: Theme.of(context).colorScheme.primary,
-                            dotColor: Colors.grey,
+                                          SizedBox(height: 10,),
+
+                                          Expanded(
+                                            child: Row(
+                                              spacing: 8,
+                                              children: [
+                                                InkWell(
+                                                  child: Icon(Icons.add_shopping_cart, size: 20,)
+                                                ),
+                                                InkWell(
+                                                  child: Icon(Icons.favorite_outline, size: 20,)
+                                                ),
+                                                
+                                              ],
+                                            ),
+                                          )
+
+                                        ],
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              );
+                            }, 
+                            options: CarouselOptions(
+                              height: 130,
+                              autoPlay: true,
+                              enlargeCenterPage: true,
+                              onPageChanged: (index, reason) => setState(() => activeIndex = index),
+                            )
                           ),
-                          onDotClicked: (index) => controller.animateToPage(index),
-                        ),
-                      ],
-                    ),
+
+                          const SizedBox(height: 12),
+
+                          AnimatedSmoothIndicator(
+                            activeIndex: activeIndex,
+                            count: recentPopularProductList.length,
+                            effect: ExpandingDotsEffect( // you can change style
+                              dotHeight: 10,
+                              dotWidth: 10,
+                              activeDotColor: Theme.of(context).colorScheme.primary,
+                              dotColor: Colors.grey,
+                            ),
+                            onDotClicked: (index) => controller.animateToPage(index),
+                          ),
+                        ],
+                      ),
 
                     SizedBox(height: 10,),
 
@@ -633,7 +721,7 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                       child: Row(
                         children: [
                           Expanded(
-                            flex: 5,
+                            flex: 6,
                             child: Column(                
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -688,7 +776,7 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                           
 
                           Expanded(
-                            flex: 5,
+                            flex: 4,
                             child: Image.asset('assets/image/uniform_set.png')
                           )
                         ],
@@ -723,10 +811,10 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                                   spacing: spacing,
                                   runSpacing: spacing,
                                   children: [
-                                    buildGridItem(context, 'assets/image/school_girl2.png', 'Lady School Uniform', 'This is a girl full dressed with complete uniform', '50,000', itemWidth, (){}),
-                                    buildGridItem(context, 'assets/image/boy.png', 'Boy School Uniform', 'This is a boy full dressed with complete uniform', '36,210', itemWidth, (){}),
-                                    buildGridItem(context, 'assets/image/uniform.png', 'School Uniform', 'Our new quality uniform, made of slik and fibre', '75,300', itemWidth, (){}),
-                                    buildGridItem(context, 'assets/image/school_girl4.png', 'Grade 4 Monday Wear', 'Our new quality uniform, made of slik and fibre', '13,300', itemWidth, (){}),
+                                    buildGridItem(context, 'assets/image/school_girl2.png', 'Lady School Uniform', 'This is a girl full dressed with complete uniform', '50,000', '50,000', 4, itemWidth, (){}),
+                                    buildGridItem(context, 'assets/image/boy.png', 'Boy School Uniform', 'This is a boy full dressed with complete uniform', '36,210', '50,000', itemWidth, 4, (){}),
+                                    buildGridItem(context, 'assets/image/uniform.png', 'School Uniform', 'Our new quality uniform, made of slik and fibre', '75,300', '50,000', itemWidth, 4, (){}),
+                                    buildGridItem(context, 'assets/image/school_girl4.png', 'Grade 4 Monday Wear', 'Our new quality uniform, made of slik and fibre', '13,300', '50,000', 4, itemWidth, (){}),
                                   ],
                                 );
                               },

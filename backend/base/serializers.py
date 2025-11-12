@@ -1282,9 +1282,10 @@ class FavouriteProductSerializer(serializers.ModelSerializer):
             'product_name',
             'created_at'
         ]
+        
     def get_product_name(self, obj):  
         product = obj.product
-        serializer = ProductSerializer(instance=product, many=False)
+        serializer = ProductSerializer(instance=product, many=False, context=self.context)
         return serializer.data
     
     
@@ -1302,7 +1303,7 @@ class PopularProductSerializer(serializers.ModelSerializer):
         ]
     def get_product_name(self, obj):  
         product = obj.product
-        serializer = ProductSerializer(instance=product, many=False)
+        serializer = ProductSerializer(instance=product, many=False, context=self.context)
         return serializer.data
         
         
@@ -1324,7 +1325,7 @@ class CartSerializer(serializers.ModelSerializer):
         
     def get_product_name(self, obj):  
         product = obj.product
-        serializer = ProductSerializer(instance=product, many=False)
+        serializer = ProductSerializer(instance=product, many=False, context=self.context)
         return serializer.data
     
     def get_measurement_name(self, obj):

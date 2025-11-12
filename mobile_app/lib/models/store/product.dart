@@ -1,0 +1,43 @@
+
+class Product {
+  final int id;
+  final String productId;
+  final List<dynamic> categoriesDetails;
+  final String productName;
+  final String price;
+  final dynamic discountPrice;
+  final double rating;
+  final List<dynamic> measurementDetails;
+  final String image;
+  final String description;
+
+
+  const Product({
+    required this.id,
+    required this.productId,
+    required this.categoriesDetails,
+    required this.productName,
+    required this.price,
+    required this.discountPrice,
+    required this.rating,
+    required this.measurementDetails,
+    required this.image,
+    required this.description,
+  });
+
+
+  factory Product.fromJson(Map<String, dynamic> json){
+    return Product(
+      id: json['id'], 
+      productId: json['product_id'], 
+      categoriesDetails: json['categories_name'], 
+      productName: json['name'],
+      price: json['price'],
+      discountPrice: json['discount_price'],
+      rating: json['rating'],
+      measurementDetails: json['measurement_name'],
+      image: json['image'],
+      description: json['description'], 
+    );
+  }
+}

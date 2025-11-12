@@ -124,14 +124,19 @@ class _UserProfileScreenState extends ConsumerState<IndividualProductScreen> {
               Positioned(
                 top: 80,
                 left: 10,
-                child: LiquidDisplay(
-                  padding: EdgeInsets.all(8),
-                  child: InkWell(
-                    onTap: (){
-                      context.pop();
-                    },
-                    child: PlatformBackButton(),
-                  )
+                child: InkWell(
+                  onTap: (){
+                    context.pop();
+                  },
+                  child: LiquidDisplay(
+                    padding: EdgeInsets.all(8),
+                    child: InkWell(
+                      onTap: (){
+                        context.pop();
+                      },
+                      child: PlatformBackButton(),
+                    )
+                  ),
                 ),
               ),
 
@@ -142,7 +147,7 @@ class _UserProfileScreenState extends ConsumerState<IndividualProductScreen> {
                   padding: EdgeInsets.all(8),
                   child: InkWell(
                     onTap: (){
-                      // context.pop();
+                      context.pop();
                     },
                     child: Icon(Icons.logout),
                   )
@@ -152,7 +157,7 @@ class _UserProfileScreenState extends ConsumerState<IndividualProductScreen> {
 
               Positioned(
                 top: 40,
-                left: 30,
+                
                 
                 child: FadeCarousel(width: 350, height: 350, duration: 15, images: _imgList,),
               ),
