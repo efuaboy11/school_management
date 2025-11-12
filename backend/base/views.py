@@ -2533,7 +2533,7 @@ class ProductView(generics.ListCreateAPIView):
         status = self.request.query_params.get('status')
         
         if product_category:
-            queryset = queryset.filter(category=product_category)
+            queryset = queryset.filter(categories=product_category)
             
         if status:
             if status == 'active':

@@ -15,7 +15,7 @@ class FadeCarousel extends StatefulWidget {
   final double height;
   final int duration;
 
-  final List<String> images;
+  final List<dynamic> images;
 
   @override
   State<FadeCarousel> createState() => _FadeCarouselState();
@@ -25,7 +25,7 @@ class _FadeCarouselState extends State<FadeCarousel> {
   int _currentIndex = 0;
   late Timer _timer;
 
-  List<String> get imgList => widget.images;
+  List<dynamic> get imgList => widget.images;
 
   @override
   void initState() {
@@ -52,9 +52,9 @@ class _FadeCarouselState extends State<FadeCarousel> {
             duration: const Duration(seconds: 1), // fade speed
             switchInCurve: Curves.easeIn,
             switchOutCurve: Curves.easeOut,
-            child: Image.asset(
-              imgList[_currentIndex],
-              key: ValueKey<String>(imgList[_currentIndex]),
+            child: Image.network(
+              imgList[_currentIndex].image,
+              key: ValueKey<String>(imgList[_currentIndex].id.toString()),
               width: widget.width,
               height: widget.height,
             ),

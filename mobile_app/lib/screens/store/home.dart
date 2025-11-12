@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_app/auth_service.dart';
+import 'package:mobile_app/providers/store/front_images.dart';
 import 'package:mobile_app/providers/store/product.dart';
 import 'package:mobile_app/providers/store/product_catogries.dart';
+import 'package:mobile_app/providers/store/special_provider.dart';
 import 'package:mobile_app/providers/student_details.dart';
 import 'package:mobile_app/providers/store/popular_product.dart';
 import 'package:mobile_app/theme.dart';
@@ -67,23 +69,14 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
 
 
 
-  final List<String> _imgList = [
-    "assets/image/school_girl.png",
-    "assets/image/school_girl2.png",
-    "assets/image/school_girl3.png",
-  ];
 
   Future<void> _loadStudentDetails() async{
-    try{
-      final respose = await ref.read(studentDetailsProvider.notifier).fetchStudentDetails(context);
-      if(respose != 'success'){
-        _error = respose;
-      }
-    }finally{
-      setState(() {
-        _loading = false;
-      });
+
+    final respose = await ref.read(studentDetailsProvider.notifier).fetchStudentDetails(context);
+    if(respose != 'success'){
+      _error = respose;
     }
+    
   }
 
   Future<void> _loadProductCategories() async{
@@ -105,13 +98,43 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
     }
   }
 
-    Future<void> _loadPopularProduct() async{
+  Future<void> _loadPopularProduct() async{
     final response = await ref.read(popularProductProvider.notifier).fetchPopularProduct('', context);
+    if(response != 'success'){
+      if(!mounted) return;
+      showSnackbar(context, response);
+    }
+  }
+
+
+  Future<void> _loadSpecialProduct() async{
+    final response = await ref.read(specialProductProvider.notifier).fetchSpecialProduct('', context);
 
     if(response != 'success'){
       if(!mounted) return;
       showSnackbar(context, response);
     }
+  }
+
+  Future<void> _loadFrontImage() async{
+    final response = await ref.read(frontImagesProvider.notifier).fetchFrontImages('', context);
+
+    if(response != 'success'){
+      if(!mounted) return;
+      showSnackbar(context, response);
+    }
+  }
+
+  Future<void> _loadSpecialData() async{
+
+    await _loadSpecialProduct();
+    await _loadPopularProduct();
+    await _loadFrontImage();
+
+    setState(() {
+      _loading = false;
+    });
+    
   }
 
 
@@ -126,11 +149,15 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
         AuthService.logout();
       }
     });
-
+    _loadSpecialData();
     _loadStudentDetails();
     _loadProductCategories();
     _loadProduct();
-    _loadPopularProduct();
+
+    
+    
+
+
   }
 
 
@@ -145,10 +172,16 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
     final recentProductCategories = productCategoriesList.take(2).toList();
 
     final productList = ref.watch(productProvider);
-    final recentProduct = productList.take(15).toList();
+    final recentProduct = productList.take(16).toList();
 
     final popularProductList = ref.watch(popularProductProvider);
     final recentPopularProductList = popularProductList.take(5).toList();
+ 
+    final specialProductList = ref.watch(specialProductProvider);
+    final specialProduct = specialProductList.isNotEmpty ? specialProductList[0] : null;
+
+    final frontImagesList = ref.watch(frontImagesProvider);
+
     
 
     Widget buildGridItem(
@@ -232,11 +265,32 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
               ),
         
               SizedBox(height: 5,),
-        
-              Text('NGN ${formatMoney(price)}', style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 17,
-              ),),
+
+              (discountPrice != null) ?
+                Wrap(
+                  children: [
+                    Text('₦${formatMoney(price)}', style: TextStyle(
+                      decoration: TextDecoration.lineThrough,
+                      color: customColors.lightText,
+                      fontSize: 13,
+                    ),),
+
+                    SizedBox(width: 10,),
+
+                    Text('₦${formatMoney(discountPrice)}', style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),),
+                  ],
+                )
+                
+              :
+              
+                Text('₦${formatMoney(price)}', style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 15,
+                    ),),
+               
         
               SizedBox(height: 15,),
         
@@ -421,7 +475,11 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                         Positioned(
                           right: 5,
                           
-                          child: FadeCarousel(width: 200, height: 200, duration: 5, images: _imgList,),
+                          child: 
+                            frontImagesList.isEmpty ?
+                              Image.asset('assets/image/school_girl.png', width: 200, height: 200,)
+                            :
+                              FadeCarousel(width: 200, height: 200, duration: 5, images: frontImagesList,),
                         ),
 
                         Positioned(
@@ -652,10 +710,31 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
 
                                           SizedBox(height: 10,),
 
-                                          Text('NGN ${formatMoney(pro.productDetails['price'])}', style: TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            fontSize: 15,
-                                          ),),
+                                          (pro.productDetails['discount_price'] != null) ?
+                                            Wrap(
+                                              children: [
+                                                Text('₦${formatMoney(pro.productDetails['price'])}', style: TextStyle(
+                                                  decoration: TextDecoration.lineThrough,
+                                                  color: customColors.lightText,
+                                                  fontSize: 13,
+                                                ),),
+
+                                                SizedBox(width: 10,),
+
+                                                Text('₦${formatMoney(pro.productDetails['discount_price'])}', style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15,
+                                                ),),
+                                              ],
+                                            )
+                                            
+                                          :
+                                          
+                                            Text('₦${formatMoney(pro.productDetails['price'])}', style: TextStyle(
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 15,
+                                            ),),
+
 
                                           SizedBox(height: 10,),
 
@@ -716,6 +795,16 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                       
                     ),
 
+                    specialProductList.isEmpty ?
+                      CustomContainer(
+                        width: double.infinity,
+                        height: 200,
+                        child: Center(
+                          child: Text('No popular product avalaible '),
+                        ),
+                      )
+                    :
+
                     CustomContainer(
                       padding: EdgeInsets.all(15),
                       child: Row(
@@ -725,16 +814,16 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                             child: Column(                
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                Text('School Uniform', style: Theme.of(context).textTheme.titleLarge,),
+                                Text(formatName(specialProduct!.productDetails['name']), style: Theme.of(context).textTheme.titleLarge,),
                                 SizedBox(height: 10,),
-                                Text('Complete school uniform for all classes', overflow: TextOverflow.ellipsis, maxLines: 2,),
+                                Text(formatName(specialProduct.productDetails['description']), overflow: TextOverflow.ellipsis, maxLines: 2,),
                                 SizedBox(height: 5,),
                                 Row(
                                   
                                   children: [
                                     Icon(Icons.star, size: 14, color: Colors.amber,),
                                     Text(
-                                      '4.5 [star rating]',
+                                      '${specialProduct.productDetails['rating']} [star rating]',
                                       style: TextStyle(
                                         
                                         fontSize: 14,
@@ -744,9 +833,31 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                                 ),
                                 SizedBox(height: 10,),
 
-                                Text('NGN 4,000', style: Theme.of(context).textTheme.titleMedium!.copyWith(
-                                  fontWeight: FontWeight.bold
-                                ),),
+
+                                (specialProduct.productDetails['discount_price'] != null) ?
+                                  Wrap(
+                                    children: [
+                                      Text('₦${formatMoney(specialProduct.productDetails['price'])}', style: TextStyle(
+                                        decoration: TextDecoration.lineThrough,
+                                        color: customColors.lightText,
+                                        fontSize: 13,
+                                      ),),
+
+                                      SizedBox(width: 10,),
+
+                                      Text('₦${formatMoney(specialProduct.productDetails['discount_price'])}', style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        fontSize: 15,
+                                      ),),
+                                    ],
+                                  )
+                                  
+                                :
+                                
+                                  Text('₦${formatMoney(specialProduct.productDetails['price'])}', style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                                  fontSize: 15,
+                                            ),),
                             
                                 SizedBox(height: 15,),
                             
@@ -777,7 +888,7 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
 
                           Expanded(
                             flex: 4,
-                            child: Image.asset('assets/image/uniform_set.png')
+                            child: Image.network(specialProduct.productDetails['image'])
                           )
                         ],
                       ),
@@ -795,31 +906,31 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                       
                     ),
 
-                    SizedBox(
-                      width: double.infinity,
-                      child: 
-                            LayoutBuilder(
-                              builder: (context, constraints) {
-                                double totalWidth = constraints.maxWidth;
-                                int itemsPerRow = 2; // Or 4 depending on screen size or design
+                    // SizedBox(
+                    //   width: double.infinity,
+                    //   child: 
+                    //         LayoutBuilder(
+                    //           builder: (context, constraints) {
+                    //             double totalWidth = constraints.maxWidth;
+                    //             int itemsPerRow = 2; // Or 4 depending on screen size or design
            
                                 
-                                double spacing = 15;
-                                double itemWidth = (totalWidth - (spacing * (itemsPerRow - 1))) / itemsPerRow;
+                    //             double spacing = 15;
+                    //             double itemWidth = (totalWidth - (spacing * (itemsPerRow - 1))) / itemsPerRow;
            
-                                return Wrap(
-                                  spacing: spacing,
-                                  runSpacing: spacing,
-                                  children: [
-                                    buildGridItem(context, 'assets/image/school_girl2.png', 'Lady School Uniform', 'This is a girl full dressed with complete uniform', '50,000', '50,000', 4, itemWidth, (){}),
-                                    buildGridItem(context, 'assets/image/boy.png', 'Boy School Uniform', 'This is a boy full dressed with complete uniform', '36,210', '50,000', itemWidth, 4, (){}),
-                                    buildGridItem(context, 'assets/image/uniform.png', 'School Uniform', 'Our new quality uniform, made of slik and fibre', '75,300', '50,000', itemWidth, 4, (){}),
-                                    buildGridItem(context, 'assets/image/school_girl4.png', 'Grade 4 Monday Wear', 'Our new quality uniform, made of slik and fibre', '13,300', '50,000', 4, itemWidth, (){}),
-                                  ],
-                                );
-                              },
-                            ),                 
-                    )
+                    //             return Wrap(
+                    //               spacing: spacing,
+                    //               runSpacing: spacing,
+                    //               children: [
+                    //                 buildGridItem(context, 'assets/image/school_girl2.png', 'Lady School Uniform', 'This is a girl full dressed with complete uniform', '50,000', '50,000', 4, itemWidth, (){}),
+                    //                 buildGridItem(context, 'assets/image/boy.png', 'Boy School Uniform', 'This is a boy full dressed with complete uniform', '36,210', '50,000', itemWidth, 4, (){}),
+                    //                 buildGridItem(context, 'assets/image/uniform.png', 'School Uniform', 'Our new quality uniform, made of slik and fibre', '75,300', '50,000', itemWidth, 4, (){}),
+                    //                 buildGridItem(context, 'assets/image/school_girl4.png', 'Grade 4 Monday Wear', 'Our new quality uniform, made of slik and fibre', '13,300', '50,000', 4, itemWidth, (){}),
+                    //               ],
+                    //             );
+                    //           },
+                    //         ),                 
+                    // )
 
                     
 
