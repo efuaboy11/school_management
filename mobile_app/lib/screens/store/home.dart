@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_app/auth_service.dart';
+import 'package:mobile_app/models/store/product.dart';
 import 'package:mobile_app/providers/store/front_images.dart';
 import 'package:mobile_app/providers/store/product.dart';
 import 'package:mobile_app/providers/store/product_catogries.dart';
@@ -30,42 +31,9 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
 
   int activeIndex = 0;
   final controller = CarouselSliderController();
-
-
-  // final List<Map<String, dynamic>> _product = [
-  //   {
-  //     'id': 1,
-  //     'img': 'assets/image/uniform2.png',
-  //     'title': 'Uniform',
-  //     'description': 'Complete school uniform for all classes',
-  //     'price': '5000',
-  //     'rating': 4.5,
-  //   },
-  //   {
-  //     'id': 2,
-  //     'img': 'assets/image/school_bag.png',
-  //     'title': 'Bags',
-  //     'description': 'Durable and spacious school bags',
-  //     'price': '3000',
-  //     'rating': 4.0,
-
-  //   },
-  //   { 'id': 3,
-  //     'img': 'assets/image/shoe.png',
-  //     'title': 'Shoes',
-  //     'description': 'Comfortable and stylish school shoes',
-  //     'price': '4000',
-  //     'rating': 4.2,
-  //   },
-  //   {
-  //     'id': 4,
-  //     'img': 'assets/image/stationary.png',
-  //     'title': 'Stationaries',
-  //     'description': 'All essential school stationaries',
-  //     'price': '1500',
-  //     'rating': 4.8,
-  //   },
-  // ];
+  List<Product>? uniformList;
+  List<Product>? productList;
+  List<Product>? recentProduct;
 
 
 
@@ -89,9 +57,23 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
   }
 
 
-  Future<void> _loadProduct() async{
-    final response = await ref.read(productProvider.notifier).fetchProduct('', context);
+  Future<void> _uniformProduct() async{
+    final response = await ref.read(productProvider.notifier).fetchProduct('', '2', context,);
+    uniformList = ref.read(productProvider);
+    
+    
 
+    if(response != 'success'){
+      if(!mounted) return;
+      showSnackbar(context, 'respose');
+    }
+  }
+  
+
+  Future<void> _loadProduct() async{
+    final response = await ref.read(productProvider.notifier).fetchProduct('', '', context,);
+    productList = ref.read(productProvider);
+    recentProduct = productList!.take(30).toList();
     if(response != 'success'){
       if(!mounted) return;
       showSnackbar(context, 'respose');
@@ -130,6 +112,7 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
     await _loadSpecialProduct();
     await _loadPopularProduct();
     await _loadFrontImage();
+    await _uniformProduct();
 
     setState(() {
       _loading = false;
@@ -171,8 +154,8 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
     final productCategoriesList = ref.watch(productCategoriesProvider);
     final recentProductCategories = productCategoriesList.take(2).toList();
 
-    final productList = ref.watch(productProvider);
-    final recentProduct = productList.take(16).toList();
+    
+    
 
     final popularProductList = ref.watch(popularProductProvider);
     final recentPopularProductList = popularProductList.take(5).toList();
@@ -591,7 +574,7 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                     ),
 
 
-                    recentProduct.isEmpty ?
+                    recentProduct!.isEmpty ?
                       CustomContainer(
                         width: double.infinity,
                         height: 200,
@@ -618,7 +601,7 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                               return GridView.builder(
                                 shrinkWrap: true,
                                 physics: const NeverScrollableScrollPhysics(),
-                                itemCount: recentProduct.length,
+                                itemCount: recentProduct!.length,
                                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                   crossAxisCount: itemsPerRow,
                                   crossAxisSpacing: spacing,   // horizontal gap between items
@@ -626,7 +609,7 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                                   childAspectRatio: itemWidth / itemHeight, // controls shape
                                 ),
                                 itemBuilder: (ctx, index) {
-                                  final pro = recentProduct[index];
+                                  final pro = recentProduct![index];
                                   return buildGridItem(
                                     context,
                                     pro.image,
@@ -906,33 +889,66 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                       
                     ),
 
-                    // SizedBox(
-                    //   width: double.infinity,
-                    //   child: 
-                    //         LayoutBuilder(
-                    //           builder: (context, constraints) {
-                    //             double totalWidth = constraints.maxWidth;
-                    //             int itemsPerRow = 2; // Or 4 depending on screen size or design
-           
-                                
-                    //             double spacing = 15;
-                    //             double itemWidth = (totalWidth - (spacing * (itemsPerRow - 1))) / itemsPerRow;
-           
-                    //             return Wrap(
-                    //               spacing: spacing,
-                    //               runSpacing: spacing,
-                    //               children: [
-                    //                 buildGridItem(context, 'assets/image/school_girl2.png', 'Lady School Uniform', 'This is a girl full dressed with complete uniform', '50,000', '50,000', 4, itemWidth, (){}),
-                    //                 buildGridItem(context, 'assets/image/boy.png', 'Boy School Uniform', 'This is a boy full dressed with complete uniform', '36,210', '50,000', itemWidth, 4, (){}),
-                    //                 buildGridItem(context, 'assets/image/uniform.png', 'School Uniform', 'Our new quality uniform, made of slik and fibre', '75,300', '50,000', itemWidth, 4, (){}),
-                    //                 buildGridItem(context, 'assets/image/school_girl4.png', 'Grade 4 Monday Wear', 'Our new quality uniform, made of slik and fibre', '13,300', '50,000', 4, itemWidth, (){}),
-                    //               ],
-                    //             );
-                    //           },
-                    //         ),                 
-                    // )
+                    uniformList!.isEmpty ?
+                      CustomContainer(
+                        width: double.infinity,
+                        height: 200,
+                        child: Center(
+                          child: Text('No product avalaible '),
+                        ),
+                      )
+                    :
 
-                    
+                      SizedBox(
+                        width: double.infinity,
+                        child: 
+                          LayoutBuilder(
+                            builder: (context, constraints) {
+                              double totalWidth = constraints.maxWidth;
+                              int itemsPerRow = 2; // responsive columns
+                              double spacing = 15;
+
+                              // Compute item width and height ratio for childAspectRatio
+                              double itemWidth =
+                                  (totalWidth - (spacing * (itemsPerRow - 1))) / itemsPerRow;
+                              double itemHeight = 360; // Approx height of each card (from your widget)
+
+                              return GridView.builder(
+                                shrinkWrap: true,
+                                physics: const NeverScrollableScrollPhysics(),
+                                itemCount: uniformList!.length,
+                                gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: itemsPerRow,
+                                  crossAxisSpacing: spacing,   // horizontal gap between items
+                                  mainAxisSpacing: spacing,    // ✅ vertical gap between rows
+                                  childAspectRatio: itemWidth / itemHeight, // controls shape
+                                ),
+                                itemBuilder: (ctx, index) {
+                                  final pro = uniformList![index];
+                                  return buildGridItem(
+                                    context,
+                                    pro.image,
+                                    pro.productName,
+                                    pro.description,
+                                    pro.price,
+                                    pro.discountPrice,
+                                    pro.rating,
+                                    itemWidth,
+                                    () {
+                                      context.push('/eh/');
+                                    },
+                                  );
+                                },
+                              );
+                            },
+                          )
+                
+                      ),
+
+
+                      SizedBox(height: 50,)
+
+
 
 
                     

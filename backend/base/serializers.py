@@ -1347,6 +1347,7 @@ class CartSerializer(serializers.ModelSerializer):
             'product',
             'product_name',
             'measurement',
+            'measurement_name',
             'quantity',
             'total_price',
         ]

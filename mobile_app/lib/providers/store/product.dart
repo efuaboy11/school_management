@@ -10,10 +10,11 @@ import 'package:mobile_app/session_active.dart';
 class ProductNotifier extends StateNotifier<List<Product>> {
   ProductNotifier() : super([]);
 
-  Future<String> fetchProduct(String query, BuildContext context) async {
+  Future<String> fetchProduct(String query, String category, BuildContext context) async {
     final token = await AuthService.getAccessToken();
+
     String baseUrl =
-      'https://school.amanilightequity.com/api/product/';
+      'https://school.amanilightequity.com/api/product/?status=active&&product_category=$category';
     try {
       final response = await http.get(
         Uri.parse(baseUrl),
