@@ -2652,7 +2652,7 @@ class SpecialProductView(generics.ListCreateAPIView):
     def get_queryset(self):
         product = SpecialProduct.objects.first()
         if product:
-            return SpecialProduct.objects.get(pk=product.pk)
+            return SpecialProduct.objects.filter(pk=product.pk)
         return SpecialProduct.objects.none() 
     
     def post(self, request, *args, **kwargs):
