@@ -646,6 +646,11 @@ class BankAccount(models.Model):
 
 # ------------------------------------------------- E - commerce ----------------------------------- #
 
+class ECommerceFrontImage(models.Model):
+    image = models.ImageField(upload_to='ecommerce_images/', blank=True, null=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+
 class ProductMeasurement(models.Model):
     measurement = models.CharField(max_length=100, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
@@ -702,12 +707,18 @@ class PopularProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE) 
     created_at = models.DateTimeField(auto_now_add=True)  
 
+
+class SpecialProduct(models.Model):
+    product = models.ForeignKey(Product, on_delete=models.CASCADE) 
+    created_at = models.DateTimeField(auto_now_add=True)  
+
   
 class FavouriteProduct(models.Model):
     user = models.OneToOneField(Users,on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE) 
     created_at = models.DateTimeField(auto_now_add=True)
-    
+  
+  
 class Cart(models.Model):
     user = models.ForeignKey(Users,on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

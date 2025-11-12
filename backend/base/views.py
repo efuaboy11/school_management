@@ -2411,6 +2411,41 @@ class ActiveBankAccountView(generics.ListAPIView):
 
 # --------------------------------------------- E commerce ------------------------------------ #
 
+class ECommerceFrontImageView(generics.ListCreateAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = ECommerceFrontImageSerializer
+    queryset = ECommerceFrontImage.objects.all()
+    
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        if(user.role == Role.ADMIN or user.role == Role.STORE_KEEPER):
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"error": "You do not have permission."}, status=status.HTTP_403_FORBIDDEN) 
+   
+    
+class ECommerceFrontImageRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = ECommerceFrontImageSerializer
+    permission_classes = [IsAdminOrStoreKeeper]
+    queryset = ECommerceFrontImage.objects.all()
+    lookup_field = 'pk'
+    
+    
+class DeleteMultipleEcommerceFrontImage(generics.GenericAPIView):
+    permission_classes = [IsAdminOrStoreKeeper]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = ECommerceFrontImage.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+ 
+
 class ProductMeasurementView(generics.ListCreateAPIView):
     permission_classes = [AllowAny]
     serializer_class = ProductMeasurementSerializer
@@ -2609,6 +2644,50 @@ class DeleteMultiplePopularProductView(generics.GenericAPIView):
         return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
        
     
+class SpecialProductView(generics.ListCreateAPIView):
+    permission_classes = [AllowAny]
+    serializer_class = SpecialProductSerializer
+    
+    
+    def get_queryset(self):
+        product = SpecialProduct.objects.first()
+        if product:
+            return SpecialProduct.objects.get(pk=product.pk)
+        return SpecialProduct.objects.none() 
+    
+    def post(self, request, *args, **kwargs):
+        user = request.user
+        if(user.role == Role.ADMIN or user.role == Role.STORE_KEEPER):
+            serializer = self.get_serializer(data=request.data)
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        else:
+            return Response({"error": "You do not have permission."}, status=status.HTTP_403_FORBIDDEN) 
+   
+    
+class SpecialProductRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = SpecialProductSerializer
+    permission_classes = [IsAdminOrStoreKeeper]
+    queryset = SpecialProduct.objects.all()
+    lookup_field = 'pk'
+    
+    
+class DeleteMultipleSpecialProduct(generics.GenericAPIView):
+    permission_classes = [IsAdminOrStoreKeeper]
+    serializer_class = DeleteMultipleIDSerializer
+    
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        ids = serializer.validated_data['ids']
+        deleted_count, _ = SpecialProduct.objects.filter(id__in=ids).delete()
+        return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
+ 
+   
+    
+
+
 class CartView(generics.ListCreateAPIView):
     permission_classes = [IsAuthenticated]
     serializer_class = CartSerializer

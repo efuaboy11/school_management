@@ -1196,6 +1196,32 @@ class BankAccountSerializer(serializers.ModelSerializer):
         
 # --------------------------------------------- E commerce ------------------------------------ #
 
+class ECommerceFrontImageSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ECommerceFrontImage
+        fields = [
+            'id',
+            'image',
+            'created_at',
+        ]
+        
+        
+class SpecialProductSerializer(serializers.ModelSerializer):
+    product_name = serializers.SerializerMethodField()
+    class Meta:
+        model = SpecialProduct
+        fields = [
+            'id',
+            'product',
+            'product_name',
+            'created_at'
+        ]
+        
+    def get_product_name(self, obj):  
+        product = obj.product
+        serializer = ProductSerializer(instance=product, many=False, context=self.context)
+        return serializer.data
+
 class ProductMeasurementSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductMeasurement

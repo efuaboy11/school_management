@@ -231,6 +231,16 @@ urlpatterns = [
     path('delete-multiple-bank-account/', views.DeleteMultipleBankAccountView.as_view(), name='delete_multiple_bank_account' ),
     
     # ------------------------------------------ E commerce ------------------------------------------ 
+    #E-commerce image
+    path('e-commerce-image/', views.ECommerceFrontImageView.as_view(), name='e-commerce-image'),
+    path('e-commerce-image/<str:pk>/', views.ECommerceFrontImageRetrieveUpdateDestroy.as_view(), name='individual-e-commerce-image'),
+    path('delete-multiple-e-commerce-image/', views.DeleteMultipleEcommerceFrontImage.as_view(), name='delete-multiple-e-commerce-image'),
+    
+    
+    # Special product
+    path('special-product/', views.SpecialProductView.as_view(), name='special-product'),
+    path('special-product/<str:pk>/', views.SpecialProductRetrieveUpdateDestroy.as_view(), name='individual-special-product'),
+    path('delete-multiple-special-product/', views.DeleteMultipleSpecialProduct.as_view(), name='delete-multiple-special-product'),
     
     
     # Product Measurement
