@@ -678,8 +678,6 @@ class ProductCategories(models.Model):
             
     
     
- 
-    
 class Product(models.Model):
     product_id = models.CharField(max_length=100, null=True, blank=True)
     categories = models.ManyToManyField(ProductCategories, related_name='products', blank=True)
@@ -690,7 +688,9 @@ class Product(models.Model):
     rating = models.FloatField(default=0)
     measurement = models.ManyToManyField(ProductMeasurement, related_name='products', blank=True, null=True)
     image = models.ImageField(upload_to='product_images/', blank=True, null=True)
-
+    image_two = models.ImageField(upload_to='product_images/', blank=True, null=True)
+    image_three = models.ImageField(upload_to='product_images/', blank=True, null=True)
+    
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     
@@ -705,17 +705,7 @@ class Product(models.Model):
             self.product_id = self.generate_product_id()
         super(Product, self).save(*args, **kwargs)    
           
- 
-class ProductImage(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE, related_name='images')
-    image = models.ImageField(upload_to='product_images/')
-    uploaded_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"Image for {self.product.name}"
-    
-   
-            
+          
 class PopularProduct(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE) 
     created_at = models.DateTimeField(auto_now_add=True)  
