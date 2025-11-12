@@ -1282,6 +1282,8 @@ class ProductSerializer(serializers.ModelSerializer):
             'measurement',
             'measurement_name',
             'image',
+            'image_two',
+            'image_three',
             'is_active',
             'created_at',
         ]
