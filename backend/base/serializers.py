@@ -1237,6 +1237,7 @@ class ShortProductMeasurementSerializer(serializers.ModelSerializer):
     class Meta:
         model = ProductMeasurement
         fields = [
+            'id',
             'measurement',
         ]
 
@@ -1350,6 +1351,7 @@ class CartSerializer(serializers.ModelSerializer):
             'measurement_name',
             'quantity',
             'total_price',
+            'date',
         ]
         
         
