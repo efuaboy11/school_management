@@ -2839,7 +2839,7 @@ class CreateOrderView(APIView):
                 "product_id": item.product.product_id,
                 "name": item.product.name,
                 "quantity": item.quantity,
-                "measurement": item.measurement,
+                # "measurement": item.mea,
                 "price": float(price),
                 "total_price" : float(total)
             })

@@ -16,6 +16,7 @@ import 'package:mobile_app/widgets/store/tabs.dart';
 import 'package:mobile_app/widgets/fade_images.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
+import 'package:mobile_app/screens/store/cart/add_to_cart.dart';
 
 class StoreHomeScreen extends ConsumerStatefulWidget {
   const StoreHomeScreen({super.key});
@@ -165,7 +166,41 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
 
     final frontImagesList = ref.watch(frontImagesProvider);
 
-    
+
+    void openDetailsOverlay(
+        int productId, 
+        String productName, 
+        String description, 
+        String price,
+        dynamic discountPrice,
+        double rating,
+        List<dynamic> measurementDetails,
+        dynamic image,
+        dynamic imageTwo,
+        dynamic imageThree,
+
+      ){
+        showModalBottomSheet(
+          useSafeArea: true, 
+          isScrollControlled: true, 
+          context: context, 
+          builder: (ctx) => 
+          AddtoCart(
+            productId: productId, 
+            productName: productName, 
+            description: description, 
+            price: price, 
+            discountPrice: 
+            discountPrice, 
+            rating: rating, 
+            measurementDetails: 
+            measurementDetails, 
+            image: image, 
+            imageTwo: imageTwo, 
+            imageThree: imageThree
+          )
+        );
+    }
 
     Widget buildGridItem(
       BuildContext context, 
@@ -620,7 +655,17 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                                     pro.rating,
                                     itemWidth,
                                     () {
-                                      context.push('/eh/');
+                                      openDetailsOverlay(
+                                        pro.id, 
+                                        pro.productName, 
+                                        pro.description, 
+                                        pro.price, 
+                                        pro.discountPrice, 
+                                        pro.rating, 
+                                        pro.measurementDetails, 
+                                        pro.image, 
+                                        pro.imageTwo, 
+                                        pro.imageThree);
                                     },
                                   );
                                 },

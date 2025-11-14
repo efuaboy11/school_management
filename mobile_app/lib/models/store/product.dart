@@ -9,6 +9,8 @@ class Product {
   final double rating;
   final List<dynamic> measurementDetails;
   final String image;
+  final dynamic imageTwo;
+  final dynamic imageThree;
   final String description;
 
 
@@ -22,6 +24,8 @@ class Product {
     required this.rating,
     required this.measurementDetails,
     required this.image,
+    required this.imageThree,
+    required this.imageTwo,
     required this.description,
   });
 
@@ -37,6 +41,8 @@ class Product {
       rating: json['rating'],
       measurementDetails: json['measurement_name'],
       image: json['image'],
+      imageTwo: json['image_two'],
+      imageThree: json['image_three'],
       description: json['description'], 
     );
   }
