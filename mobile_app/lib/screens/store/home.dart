@@ -17,6 +17,9 @@ import 'package:mobile_app/widgets/fade_images.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:mobile_app/screens/store/cart/add_to_cart.dart';
+import 'package:mobile_app/screens/store/producr_search_deligate.dart';
+import 'package:mobile_app/screens/store/products/all_product.dart';
+import 'package:mobile_app/screens/store/products/Individual_product.dart'; 
 
 class StoreHomeScreen extends ConsumerStatefulWidget {
   const StoreHomeScreen({super.key});
@@ -35,6 +38,8 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
   List<Product>? uniformList;
   List<Product>? productList;
   List<Product>? recentProduct;
+
+  final recentSearches = ['Shoes', 'Phone', 'Laptop'];
 
 
 
@@ -203,7 +208,8 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
     }
 
     Widget buildGridItem(
-      BuildContext context, 
+      BuildContext context,
+      Product pro, 
       String img,  
       String title,
       String description,
@@ -216,7 +222,9 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
 
       return InkWell(
         onTap: (){
-          context.push('/store/product/individual');
+          Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => IndividualProductScreen(product: pro)),
+          );
         },
         child: SizedBox(
           width: width,
@@ -344,6 +352,7 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
 
     }
   
+  
     if (_loading) {
       return Scaffold(
         body: Center(
@@ -444,18 +453,34 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                     Row(
                       children: [
                         Expanded(
-                          child: TextField(
-                            // controller: _searchController,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 12.0),
-                              hintText: 'Search',
-                              prefixIcon: Icon(Icons.search),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(12.0),
-                              ),               
+                          child: GestureDetector(
+                            onTap: () async {
+                              final result = await showSearch(
+                                context: context,
+                                delegate: ProductSearchDelegate(         
+                                  allProducts: productList! ,
+                                ),
+                              );
+
+                              if (result != null && result.isNotEmpty) {
+                                print("User selected: $result");
+                              }
+                            },
+                            child: AbsorbPointer(
+                              child: TextField(
+                                readOnly: true,
+                                decoration: InputDecoration(
+                                  contentPadding: EdgeInsets.symmetric(vertical: 1.0, horizontal: 12.0),
+                                  hintText: 'Search',
+                                  prefixIcon: Icon(Icons.search),
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(12.0),
+                                  ),
+                                ),
+                                style: TextStyle(fontSize: 14.0),
+                              ),
                             ),
-                            style: TextStyle(fontSize: 14.0), // smaller text
-                          ),
+                          )
                         ),
 
                         const SizedBox(width: 10,),
@@ -565,7 +590,8 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                     ),
 
                     Wrap(
-                      spacing: 10, // if you're using Flutter 3.24+; otherwise use SizedBox(width: 10)
+                      spacing: 10,
+                      runSpacing: 10, // if you're using Flutter 3.24+; otherwise use SizedBox(width: 10)
                       children: [
                         InkWell(
                           onTap: () {
@@ -585,8 +611,10 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                           ...recentProductCategories.map((cat) {
                             return InkWell(
                               onTap: () {
-                                // Handle tap
-                                // print('Tapped on $cat');
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(builder: (context) => AllProductScreen(id: cat.id.toString(),)),
+                                );
+
                               },
                               child: CustomContainer(
                                 child: Text(cat.categoryName),
@@ -647,6 +675,7 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                                   final pro = recentProduct![index];
                                   return buildGridItem(
                                     context,
+                                    pro,
                                     pro.image,
                                     pro.productName,
                                     pro.description,
@@ -771,6 +800,20 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                                               spacing: 8,
                                               children: [
                                                 InkWell(
+                                                  onTap: 
+                                                    () {
+                                                    openDetailsOverlay(
+                                                      pro.id, 
+                                                      pro.productDetails['name'], 
+                                                      pro.productDetails['description'], 
+                                                      pro.productDetails['price'], 
+                                                      pro.productDetails['discount_price'], 
+                                                      pro.productDetails['rating'], 
+                                                      pro.productDetails['measurement_name'], 
+                                                      pro.productDetails['image'], 
+                                                      pro.productDetails['image_two'], 
+                                                      pro.productDetails['image_three']);
+                                                  },
                                                   child: Icon(Icons.add_shopping_cart, size: 20,)
                                                 ),
                                                 InkWell(
@@ -892,7 +935,20 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                                 SizedBox(
                                       height: 35,
                                       child: ElevatedButton.icon(
-                                        onPressed: (){},
+                                        onPressed: 
+                                          () {
+                                          openDetailsOverlay(
+                                            specialProduct.id, 
+                                            specialProduct.productDetails['name'], 
+                                            specialProduct.productDetails['description'], 
+                                            specialProduct.productDetails['price'], 
+                                            specialProduct.productDetails['discount_price'], 
+                                            specialProduct.productDetails['rating'], 
+                                            specialProduct.productDetails['measurement_name'], 
+                                            specialProduct.productDetails['image'], 
+                                            specialProduct.productDetails['image_two'], 
+                                            specialProduct.productDetails['image_three']);
+                                        },
                                         style: ElevatedButton.styleFrom(
                                           backgroundColor: Theme.of(context).colorScheme.primary,
                                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
@@ -972,6 +1028,7 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                                   final pro = uniformList![index];
                                   return buildGridItem(
                                     context,
+                                    pro,
                                     pro.image,
                                     pro.productName,
                                     pro.description,
@@ -980,7 +1037,18 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                                     pro.rating,
                                     itemWidth,
                                     () {
-                                      context.push('/eh/');
+                                      openDetailsOverlay(
+                                        pro.id, 
+                                        pro.productName, 
+                                        pro.description, 
+                                        pro.price, 
+                                        pro.discountPrice, 
+                                        pro.rating, 
+                                        pro.measurementDetails, 
+                                        pro.image, 
+                                        pro.imageTwo, 
+                                        pro.imageThree
+                                      );
                                     },
                                   );
                                 },

@@ -4,15 +4,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_app/auth_service.dart';
+import 'package:mobile_app/models/store/product.dart';
 import 'package:mobile_app/providers/student_details.dart';
+import 'package:mobile_app/screens/store/cart/add_to_cart.dart';
+import 'package:mobile_app/screens/store/home.dart';
+import 'package:mobile_app/utils.dart';
 import 'package:mobile_app/widgets/custom_container.dart';
-import 'package:mobile_app/widgets/fade_images.dart';
+import 'package:mobile_app/widgets/fade_image_two.dart';
+// import 'package:mobile_app/widgets/fade_images.dart';
 import 'package:mobile_app/widgets/liquid_display.dart';
 import 'package:mobile_app/widgets/platform_back_button.dart';
 import 'package:mobile_app/widgets/store/tabs.dart';
 
 class IndividualProductScreen extends ConsumerStatefulWidget {
-  const IndividualProductScreen({super.key});
+  const IndividualProductScreen({super.key, required this.product});
+
+  final Product product;
 
   @override
   ConsumerState<IndividualProductScreen> createState() => _UserProfileScreenState();
@@ -21,16 +28,22 @@ class IndividualProductScreen extends ConsumerStatefulWidget {
 class _UserProfileScreenState extends ConsumerState<IndividualProductScreen> {
   bool _loading = true;
   String? _error;
-
-  final List<String> _imgList = [
-    "assets/image/uniform_set.png",
-    "assets/image/school_girl2.png",
-    "assets/image/school_girl3.png",
-  ];
+  late List<String> _imgList;
 
   @override
   void initState() {
     super.initState();
+    _imgList = [
+      widget.product.image,
+      if (widget.product.imageTwo != null && widget.product.imageTwo!.isNotEmpty)
+        widget.product.imageTwo!,
+      if (widget.product.imageThree != null && widget.product.imageThree!.isNotEmpty)
+        widget.product.imageThree!,
+    ];
+
+    
+
+
     AuthService.isTokenExpired().then((isExpired){
       if(isExpired) {
         if(!mounted) return;
@@ -53,6 +66,44 @@ class _UserProfileScreenState extends ConsumerState<IndividualProductScreen> {
       });
     }
   }
+
+
+  void openDetailsOverlay(
+    int productId, 
+    String productName, 
+    String description, 
+    String price,
+    dynamic discountPrice,
+    double rating,
+    List<dynamic> measurementDetails,
+    dynamic image,
+    dynamic imageTwo,
+    dynamic imageThree,
+
+  ){
+    showModalBottomSheet(
+      useSafeArea: true, 
+      isScrollControlled: true, 
+      context: context, 
+      builder: (ctx) => 
+
+      AddtoCart(
+        productId: productId, 
+        productName: productName, 
+        description: description, 
+        price: price, 
+        discountPrice: 
+        discountPrice, 
+        rating: rating, 
+        measurementDetails: 
+        measurementDetails, 
+        image: image, 
+        imageTwo: imageTwo, 
+        imageThree: imageThree
+      )
+    );
+  }
+
 
   
 
@@ -90,7 +141,9 @@ class _UserProfileScreenState extends ConsumerState<IndividualProductScreen> {
               icon: Icon(Icons.dashboard),
               label: Text('Home'),
               onPressed: () {
-                context.go('/student/home');
+              Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => StoreHomeScreen()),
+              );
               },
             ),
 
@@ -111,7 +164,7 @@ class _UserProfileScreenState extends ConsumerState<IndividualProductScreen> {
             children: [
               Container(
                 width: double.infinity,
-                height: 400,
+                height: 450,
                 decoration: BoxDecoration(
                   image: DecorationImage(
                     image: AssetImage('assets/image/background5.jpg'), // Replace with your image
@@ -126,13 +179,13 @@ class _UserProfileScreenState extends ConsumerState<IndividualProductScreen> {
                 left: 10,
                 child: InkWell(
                   onTap: (){
-                    context.pop();
+                    Navigator.of(context).pop();
                   },
                   child: LiquidDisplay(
                     padding: EdgeInsets.all(8),
                     child: InkWell(
                       onTap: (){
-                        context.pop();
+                        Navigator.of(context).pop();
                       },
                       child: PlatformBackButton(),
                     )
@@ -147,7 +200,7 @@ class _UserProfileScreenState extends ConsumerState<IndividualProductScreen> {
                   padding: EdgeInsets.all(8),
                   child: InkWell(
                     onTap: (){
-                      context.pop();
+                      Navigator.of(context).pop();
                     },
                     child: Icon(Icons.logout),
                   )
@@ -155,11 +208,20 @@ class _UserProfileScreenState extends ConsumerState<IndividualProductScreen> {
               ),
 
 
-              Positioned(
-                top: 40,
-                
-                
-                child: FadeCarousel(width: 350, height: 350, duration: 15, images: _imgList,),
+              Positioned.fill(
+                top: 100,
+                child: 
+                  widget.product.imageTwo == null && widget.product.imageThree == null  
+                  ?  
+                  Image.network(
+                    widget.product.image,
+                    fit: BoxFit.contain,
+                  )
+                  :
+                  FadeCarouselTwo(
+                    duration: 15,
+                    images: _imgList,
+                  ),
               ),
             ],
           ), 
@@ -177,8 +239,9 @@ class _UserProfileScreenState extends ConsumerState<IndividualProductScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text('School Uniform', 
-                          style: TextStyle(fontSize: 25, fontWeight: FontWeight.bold),
+                        Text(formatName(widget.product.productName), 
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)
+                          
                         ),
 
                         IconButton(
@@ -194,7 +257,7 @@ class _UserProfileScreenState extends ConsumerState<IndividualProductScreen> {
                         children: [
                           Icon(Icons.star, size: 14, color: Colors.amber,),
                           Text(
-                            '4.5 [star rating]',
+                            '${widget.product.rating} [star rating]',
                             style: TextStyle(
                               
                               fontSize: 14,
@@ -208,7 +271,31 @@ class _UserProfileScreenState extends ConsumerState<IndividualProductScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text('NGN 5,000', style: TextStyle(fontSize: 18),),
+                          (widget.product.discountPrice != null) ?
+                            Wrap(
+                              children: [
+                                Text('₦${formatMoney(widget.product.price)}', style: TextStyle(
+                                  decoration: TextDecoration.lineThrough,
+                                  fontSize: 13,
+                                ),),
+
+                                SizedBox(width: 10,),
+
+                                Text('₦${formatMoney(widget.product.discountPrice)}', style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),),
+                              ],
+                            )
+                            
+                          :
+                          
+                            Text('₦${formatMoney(widget.product.price)}', style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),),
+               
+        
                           Icon(Icons.monetization_on)
 
                         ],
@@ -217,7 +304,7 @@ class _UserProfileScreenState extends ConsumerState<IndividualProductScreen> {
 
                     SizedBox(height: 5,),
 
-                    Text('Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet sequi porro cumque incidunt dolorum id enim quibusdam quod autem. Aperiam quasi, saepe dignissimos quo necessitatibus enim rerum deserunt amet numquam!'),
+                    Text(formatName(widget.product.description)),
 
                     SizedBox(height: 10,),
 
@@ -225,7 +312,19 @@ class _UserProfileScreenState extends ConsumerState<IndividualProductScreen> {
                           width: double.infinity,
                           height: 50,
                           child: ElevatedButton(
-                            onPressed: (){},
+                            onPressed: () {
+                              openDetailsOverlay(
+                                widget.product.id, 
+                                widget.product.productName, 
+                                widget.product.description, 
+                                widget.product.price, 
+                                widget.product.discountPrice, 
+                                widget.product.rating, 
+                                widget.product.measurementDetails, 
+                                widget.product.image, 
+                                widget.product.imageTwo, 
+                                widget.product.imageThree);
+                            },
                             style: ElevatedButton.styleFrom(
                               backgroundColor: Theme.of(context).colorScheme.primary,
                               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
@@ -249,7 +348,6 @@ class _UserProfileScreenState extends ConsumerState<IndividualProductScreen> {
           
         ],
       ),
-      bottomNavigationBar: StoreTab(),
 
     );
   }

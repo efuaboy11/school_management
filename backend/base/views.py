@@ -2878,7 +2878,16 @@ class CreateOrderView(APIView):
         
         
         
-
+class OrderView(generics.ListAPIView):
+    permission_classes = [IsAuthenticated]
+    serializer_class = OrderSerializer
+    queryset = Order.objects.all()
+    
+    def get_queryset(self):
+        user = self.request.user
+        return Order.objects.filter(user=user)
+    
+       
             
   
   

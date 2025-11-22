@@ -278,6 +278,7 @@ urlpatterns = [
     #Order
     path('webhook/paystack/', views.PaystackWebhookView.as_view(), name='paystack-webhook'),
     path('create-order/', views.CreateOrderView.as_view(), name='create-order'),
+    path('order/', views.OrderView.as_view(), name='order'),
     
     #current User
     path('me/', views.CurrentUserView.as_view(), name='current-user'),

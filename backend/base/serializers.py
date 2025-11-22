@@ -1370,11 +1370,20 @@ class CartSerializer(serializers.ModelSerializer):
 class EditingCartItemSerializer(serializers.Serializer):
     product = serializers.IntegerField()
     
+        
+class OrderSerializer(serializers.Serializer):
     
+    class Meta:
+        model = Order
+        fields = [
+            'id',
+            'user',
+            'products',
+            'status',
+            'reference',
+            'created_at',
+        ]
     
-        
-        
-        
 
 
 

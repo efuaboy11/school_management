@@ -260,15 +260,24 @@ String getTimeOfDayGreeting() {
 }
 
 
+
+
 String formatMoney(String amount) {
   try {
-    final parsed = int.parse(amount);
+    // Convert to double first so values like "40.0" will parse successfully
+    final double parsedDouble = double.parse(amount);
+
+    // Strip off decimals by converting to int
+    final int value = parsedDouble.toInt();
+
+    // Format with commas
     final formatter = NumberFormat('#,###');
-    return formatter.format(parsed);
+    return formatter.format(value);
   } catch (e) {
-    return amount; // return original if parsing fails
+    return amount; // fallback if parsing fails
   }
 }
+
 
 String  getFileName(String url){
   final filename = path.basename(url);

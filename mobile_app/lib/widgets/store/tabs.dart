@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
+import 'package:mobile_app/screens/store/products/all_product.dart';
 
 class StoreTab extends StatelessWidget {
   const StoreTab({super.key});
@@ -23,7 +24,9 @@ class StoreTab extends StatelessWidget {
             context.go('/store/home');
             break;
           case 1:
-            context.push('/store/product');
+            Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => AllProductScreen()),
+            );
             break;
           case 2:
             context.push('/store/favourite');
