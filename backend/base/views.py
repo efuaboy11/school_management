@@ -2871,7 +2871,7 @@ class CreateOrderView(APIView):
         return Response({
             "message": "Order created successfully",
             "order_id": order.id,
-            "payment_url": paystack_response['data']['authorization_url'],
+            # "payment_url": paystack_response['data']['authorization_url'],
             "reference": reference,
             "public_key": settings.PAYSTACK_PUBLIC_KEY
         }, status=status.HTTP_201_CREATED)
