@@ -1371,7 +1371,7 @@ class EditingCartItemSerializer(serializers.Serializer):
     product = serializers.IntegerField()
     
         
-class OrderSerializer(serializers.Serializer):
+class OrderSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Order
