@@ -1379,7 +1379,7 @@ class OrderSerializer(serializers.ModelSerializer):
         fields = [
             'id',
             'user',
-            'user_details'
+            'user_details',
             'products',
             'status',
             'reference',
