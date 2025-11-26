@@ -1372,17 +1372,24 @@ class EditingCartItemSerializer(serializers.Serializer):
     
         
 class OrderSerializer(serializers.ModelSerializer):
-    
+    user_details = serializers.SerializerMethodField()
+
     class Meta:
         model = Order
         fields = [
             'id',
             'user',
+            'user_details'
             'products',
             'status',
             'reference',
             'created_at',
         ]
+        
+    def get_user_details(self, obj):
+        user = obj.user
+        serializer = UsersSerializer(instance=user, many=False)
+        return serializer.data
     
 
 

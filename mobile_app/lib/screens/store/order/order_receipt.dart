@@ -1,18 +1,27 @@
 
 import 'package:flutter/material.dart';
+import 'package:mobile_app/models/store/order_history.dart';
 import 'package:mobile_app/theme.dart';
+import 'package:mobile_app/utils.dart';
 // import 'package:mobile_app/models/bills.dart';
 // import 'package:mobile_app/theme.dart';
 // import 'package:mobile_app/utils.dart';
 import 'package:mobile_app/widgets/custom_container.dart';
 
-class OrdersDetailScreen extends StatelessWidget{
-  const OrdersDetailScreen({super.key,});
+class OrdersDetailScreen extends StatefulWidget{
+  const OrdersDetailScreen({super.key, required this.order});
 
+  final OrderHistory order;
 
+  @override
+  State<OrdersDetailScreen> createState() => _OrdersDetailScreenState();
+}
+
+class _OrdersDetailScreenState extends State<OrdersDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final customColors = Theme.of(context).extension<CustomColors>()!;
+    
 
     // Widget status = Container(
     //   padding: EdgeInsets.all(10),
@@ -118,11 +127,11 @@ class OrdersDetailScreen extends StatelessWidget{
               
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
-                children: const [
-                  _ReceiptRow(title: "Status", value: "✅ Paid"),
+                children:  [
+                  _ReceiptRow(title: "Status", value: formatName(widget.order.status)),
                   _ReceiptRow(title: "Paid To", value: "SchoolMart Online Store"),
                   _ReceiptRow(title: "Paid By", value: "John Doe"),
-                  _ReceiptRow(title: "Order Date", value: "08 Nov 2025, 2:34 PM"),
+                  _ReceiptRow(title: "Order Date", value: formatDateTime(widget.order.createdAt)),
                 ],
               ),
             ),

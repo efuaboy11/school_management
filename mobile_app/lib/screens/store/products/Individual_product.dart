@@ -112,7 +112,7 @@ class _UserProfileScreenState extends ConsumerState<IndividualProductScreen> {
     // final studentDetails = ref.watch(studentDetailsProvider);
     // final customColors = Theme.of(context).extension<CustomColors>()!;
 
-
+    
     if (_loading) {
       return Scaffold(
         body: Center(

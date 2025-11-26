@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_app/auth_service.dart';
-import 'package:mobile_app/providers/school_fee.dart';
+import 'package:mobile_app/providers/store/order_history.dart';
 
 import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/utils.dart';
@@ -38,7 +38,7 @@ class _OrderHistoryScreenState extends ConsumerState<OrderHistoryScreen> {
       }
     });
 
-    _loadPaymentDetails('', context);
+    _loadDetails('', context);
   }
 
   @override
@@ -49,9 +49,9 @@ class _OrderHistoryScreenState extends ConsumerState<OrderHistoryScreen> {
   }
 
 
-  Future<void> _loadPaymentDetails(String query, context) async{
+  Future<void> _loadDetails(String query, context) async{
     try{
-      final respose = await ref.read(schoolFeesProvider.notifier).fetchSchoolFeesPayment(query, context, '');
+      final respose = await ref.read(orderHistoryProvider.notifier).fetchOrderHistory(query, context,);
       if(respose != 'success'){
         _error = respose;
       }
@@ -116,32 +116,10 @@ class _OrderHistoryScreenState extends ConsumerState<OrderHistoryScreen> {
         padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 15),
         child: Column(
           children: [
-            TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                contentPadding: EdgeInsets.symmetric(vertical: 10.0, horizontal: 12.0),
-                hintText: 'Search',
-                prefixIcon: Icon(Icons.search),
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12.0),
-                ),               
-              ),
-              onChanged: (value) {
-                if (_debounce?.isActive ?? false) _debounce!.cancel();
-
-                _debounce = Timer(const Duration(milliseconds: 500), () {
-                  _loadPaymentDetails(value, context);
-                });
-              },
-              style: TextStyle(fontSize: 14.0), // smaller text
-            ),
-
-            SizedBox(height: 15,),
-
             Expanded(
               child: Consumer(
                 builder: (context, ref, child) {
-                  final schoolFeesList = ref.watch(schoolFeesProvider);
+                  final schoolFeesList = ref.watch(orderHistoryProvider);
                   if (schoolFeesList.isEmpty) {
                     return  Center(child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
@@ -164,20 +142,26 @@ class _OrderHistoryScreenState extends ConsumerState<OrderHistoryScreen> {
                     itemCount: schoolFeesList.length,
                     itemBuilder: (ctx, index){
                       final fee = schoolFeesList[index];
+                      double totalAmount = 0;
+
+                      for (var item in fee.products){
+                        totalAmount += double.tryParse(item['price'].toString()) ?? 0.0;
+                      }
+                      
                   
                       Widget status = CircleAvatar(
                         backgroundColor: customColors.successful,
                         child: Icon(Icons.check,  color: Colors.white,),
                       );
                   
-                      if(fee.status == 'pending'){
+                      if(fee.status == 'processing'){
                         status = CircleAvatar(
                           backgroundColor: customColors.pending,
                           child: Icon(Icons.hourglass_top,  color: Colors.white,),
                         );
                       }
                   
-                      if(fee.status == 'declined'){
+                      if(fee.status == 'failed'){
                         status = CircleAvatar(
                           backgroundColor: customColors.declined,
                           child: Icon(Icons.cancel_outlined, color: Colors.white,),
@@ -204,9 +188,9 @@ class _OrderHistoryScreenState extends ConsumerState<OrderHistoryScreen> {
                           contentPadding: EdgeInsets.zero,
                         
                           leading: status,
-                          title: Text(formatName(fee.feeTypeDetails['fee_choice'])),
-                          trailing: Text('${formatMoney(fee.feeTypeDetails['amount'].toString())} NGN', style: TextStyle(fontSize: 14),),
-                          subtitle: Text(formatDate(fee.date)),
+                          title: Text(formatName(fee.reference), style: TextStyle(fontSize: 13),),
+                          trailing: Text('${formatMoney(totalAmount.toString())} NGN', style: TextStyle(fontSize: 14),),
+                          subtitle: Text(formatDate(fee.createdAt)),
                         ),
                       );
                     },  
