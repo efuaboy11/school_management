@@ -719,7 +719,7 @@ class SpecialProduct(models.Model):
 
   
 class FavouriteProduct(models.Model):
-    user = models.ManyToManyField(Users,on_delete=models.CASCADE)
+    user = models.ForeignKey(Users,on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE) 
     created_at = models.DateTimeField(auto_now_add=True)
   
