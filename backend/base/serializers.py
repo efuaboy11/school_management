@@ -1266,6 +1266,8 @@ class ShortProductCategoriesSerializer(serializers.ModelSerializer):
 class ProductSerializer(serializers.ModelSerializer):
     categories_name = serializers.SerializerMethodField()
     measurement_name = serializers.SerializerMethodField()
+    is_favourite = serializers.SerializerMethodField()
+    
     
     
     class Meta:
@@ -1287,6 +1289,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'image_three',
             'is_active',
             'created_at',
+            'is_favourite',
         ]
         
     def get_categories_name(self, obj):  
@@ -1298,6 +1301,13 @@ class ProductSerializer(serializers.ModelSerializer):
         measurement = obj.measurement
         serializer = ShortProductMeasurementSerializer(instance=measurement, many=True)
         return serializer.data
+    
+    def get_is_favourite(self, obj):
+        user = self.context["request"].user
+        if not user.is_authenticated:
+            return False
+
+        return FavouriteProduct.objects.filter(user=user, product=obj).exists()
 
 
 class FavouriteProductSerializer(serializers.ModelSerializer):
@@ -1318,6 +1328,9 @@ class FavouriteProductSerializer(serializers.ModelSerializer):
         serializer = ProductSerializer(instance=product, many=False, context=self.context)
         return serializer.data
     
+    
+class RemoveFavouriteSerializer(serializers.Serializer):
+    product_id = serializers.CharField()
     
     
 class PopularProductSerializer(serializers.ModelSerializer):

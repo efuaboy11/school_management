@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_app/auth_service.dart';
 import 'package:mobile_app/providers/store/order_history.dart';
+import 'package:mobile_app/screens/store/order/order_receipt.dart';
 
 import 'package:mobile_app/theme.dart';
 import 'package:mobile_app/utils.dart';
@@ -119,8 +120,8 @@ class _OrderHistoryScreenState extends ConsumerState<OrderHistoryScreen> {
             Expanded(
               child: Consumer(
                 builder: (context, ref, child) {
-                  final schoolFeesList = ref.watch(orderHistoryProvider);
-                  if (schoolFeesList.isEmpty) {
+                  final orderList = ref.watch(orderHistoryProvider);
+                  if (orderList.isEmpty) {
                     return  Center(child: Column(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
@@ -139,12 +140,12 @@ class _OrderHistoryScreenState extends ConsumerState<OrderHistoryScreen> {
                   return ListView.builder(
                     // shrinkWrap: true,
                     // physics: NeverScrollableScrollPhysics(),
-                    itemCount: schoolFeesList.length,
+                    itemCount: orderList.length,
                     itemBuilder: (ctx, index){
-                      final fee = schoolFeesList[index];
+                      final order = orderList[index];
                       double totalAmount = 0;
 
-                      for (var item in fee.products){
+                      for (var item in order.products){
                         totalAmount += double.tryParse(item['price'].toString()) ?? 0.0;
                       }
                       
@@ -154,14 +155,14 @@ class _OrderHistoryScreenState extends ConsumerState<OrderHistoryScreen> {
                         child: Icon(Icons.check,  color: Colors.white,),
                       );
                   
-                      if(fee.status == 'processing'){
+                      if(order.status == 'processing'){
                         status = CircleAvatar(
                           backgroundColor: customColors.pending,
                           child: Icon(Icons.hourglass_top,  color: Colors.white,),
                         );
                       }
                   
-                      if(fee.status == 'failed'){
+                      if(order.status == 'failed'){
                         status = CircleAvatar(
                           backgroundColor: customColors.declined,
                           child: Icon(Icons.cancel_outlined, color: Colors.white,),
@@ -180,17 +181,16 @@ class _OrderHistoryScreenState extends ConsumerState<OrderHistoryScreen> {
                         child: ListTile(
                           
                           onTap: (){
-                            context.push('/store/orders/receipt');
-                            // Navigator.of(context).push(
-                            //   MaterialPageRoute(builder: (ctx) => SchoolFeesDetailScreen(feeDetails: fee,)) 
-                            // );
+                            Navigator.of(context).push(
+                              MaterialPageRoute(builder: (ctx) => OrdersDetailScreen(order: order, total: totalAmount)) 
+                            );
                           },
                           contentPadding: EdgeInsets.zero,
                         
                           leading: status,
-                          title: Text(formatName(fee.reference), style: TextStyle(fontSize: 13),),
+                          title: Text(formatName(order.reference), style: TextStyle(fontSize: 13),),
                           trailing: Text('${formatMoney(totalAmount.toString())} NGN', style: TextStyle(fontSize: 14),),
-                          subtitle: Text(formatDate(fee.createdAt)),
+                          subtitle: Text(formatDate(order.createdAt)),
                         ),
                       );
                     },  

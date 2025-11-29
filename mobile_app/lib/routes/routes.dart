@@ -10,7 +10,6 @@ import 'package:mobile_app/screens/store/cart/cart.dart';
 import 'package:mobile_app/screens/store/favourite_product/favourite.dart';
 import 'package:mobile_app/screens/store/home.dart';
 import 'package:mobile_app/screens/store/order/order_history.dart';
-import 'package:mobile_app/screens/store/order/order_receipt.dart';
 import 'package:mobile_app/screens/student/assignment/assigment.dart';
 import 'package:mobile_app/screens/student/assignment_submission/assigment_submission.dart';
 import 'package:mobile_app/screens/student/assignment_submission/submit_assignment.dart';
@@ -334,16 +333,6 @@ final GoRouter appRouter = GoRouter(
       ),
     ),
 
-
-    GoRoute(
-      path: '/store/orders/receipt',
-      name: 'store-orders-receipt',
-      pageBuilder:(context, state) => CustomTransitionPage(
-        transitionsBuilder: platformPageTransitionBuilder,
-        key: state.pageKey,
-        child: OrdersDetailScreen()
-      ),
-    ),
 
     
 

@@ -260,6 +260,7 @@ urlpatterns = [
     
     #Favorite Products
     path('favorite-products/', views.FavoriteProductsView.as_view(), name='favorite-products'),
+    path('remove-favourite-product/', views.RemoveFavoriteProductView.as_view(), name='remove-favorite-products'),
     path('favorite-products/<str:pk>/', views.FavoriteProductsRetrieveUpdateDestroy.as_view(), name='individual-favorite-products'),
     
     #Popular Product

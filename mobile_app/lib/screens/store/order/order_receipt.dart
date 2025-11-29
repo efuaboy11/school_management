@@ -9,9 +9,10 @@ import 'package:mobile_app/utils.dart';
 import 'package:mobile_app/widgets/custom_container.dart';
 
 class OrdersDetailScreen extends StatefulWidget{
-  const OrdersDetailScreen({super.key, required this.order});
+  const OrdersDetailScreen({super.key, required this.order, required this.total});
 
   final OrderHistory order;
+  final double total;
 
   @override
   State<OrdersDetailScreen> createState() => _OrdersDetailScreenState();
@@ -130,7 +131,7 @@ class _OrdersDetailScreenState extends State<OrdersDetailScreen> {
                 children:  [
                   _ReceiptRow(title: "Status", value: formatName(widget.order.status)),
                   _ReceiptRow(title: "Paid To", value: "SchoolMart Online Store"),
-                  _ReceiptRow(title: "Paid By", value: "John Doe"),
+                  _ReceiptRow(title: "Paid By", value: "${formatName(widget.order.userDetails['first_name'])}  ${formatName(widget.order.userDetails['last_name'])}"),
                   _ReceiptRow(title: "Order Date", value: formatDateTime(widget.order.createdAt)),
                 ],
               ),
@@ -151,18 +152,26 @@ class _OrdersDetailScreenState extends State<OrdersDetailScreen> {
                 border: Border.all(color: customColors.lightBorder),
               ),
               child: Column(
-                children: const [
-                  _ItemRow(name: "School Uniform", qty: 2, price: 6000),
-                  _ItemRow(name: "Sports Kit", qty: 1, price: 3500),
-                  _ItemRow(name: "Textbook Set", qty: 1, price: 8000),
+                children: [
+                  ...widget.order.products.map((data) {
+                    return _ItemRow(
+                      name: data['name'],
+                      qty: data['quantity'],
+                      price: data['price'],
+                    );
+                  }),
+
                   Divider(),
+
                   _ItemRow(
-                      name: "Total Amount",
-                      qty: null,
-                      price: 17500,
-                      isTotal: true),
+                    name: "Total Amount",
+                    qty: null,
+                    price: widget.total,
+                    isTotal: true,
+                  ),
                 ],
               ),
+
             ),
 
             const Spacer(),
@@ -187,7 +196,7 @@ class _OrdersDetailScreenState extends State<OrdersDetailScreen> {
               ),
             ),
           ],
-        ),
+        ), 
       ),
       
     );
@@ -249,7 +258,7 @@ class _ItemRow extends StatelessWidget {
           if (qty != null)
             Text("x$qty", style: textStyle.copyWith(color: Colors.grey[700])),
           const SizedBox(width: 10),
-          Text("₦${price.toStringAsFixed(0)}", style: textStyle),
+          Text("₦${formatMoney(price.toStringAsFixed(0))}", style: textStyle),
         ],
       ),
     );

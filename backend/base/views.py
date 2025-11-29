@@ -2605,6 +2605,27 @@ class FavoriteProductsRetrieveUpdateDestroy(generics.RetrieveUpdateDestroyAPIVie
     lookup_field = 'pk' 
     
     
+class RemoveFavoriteProductView(generics.GenericAPIView):
+    serializer_class = RemoveFavouriteSerializer
+    permission_classes = [IsAuthenticated]
+    
+    def delete(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        serializer.is_valid(raise_exception=True)
+        
+        product_id = serializer.validated_data['product_id']
+        user = request.user
+        
+        fav = FavouriteProduct.objects.filter(user=user, product=product_id)
+        if not fav.exists():
+            return Response({'error': 'Product not in favourite'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        fav.delete()
+        
+        return Response({"message": "Removed from favourites."}, status=status.HTTP_200_OK) 
+        
+
+    
  
 class PopularProductView(generics.ListCreateAPIView):
     permission_classes = [AllowAny]

@@ -704,6 +704,8 @@ class Product(models.Model):
         if not self.product_id:
             self.product_id = self.generate_product_id()
         super(Product, self).save(*args, **kwargs)    
+      
+      
           
           
 class PopularProduct(models.Model):
@@ -717,9 +719,10 @@ class SpecialProduct(models.Model):
 
   
 class FavouriteProduct(models.Model):
-    user = models.OneToOneField(Users,on_delete=models.CASCADE)
+    user = models.ManyToManyField(Users,on_delete=models.CASCADE)
     product = models.ForeignKey(Product, on_delete=models.CASCADE) 
     created_at = models.DateTimeField(auto_now_add=True)
+  
   
   
 class Cart(models.Model):
