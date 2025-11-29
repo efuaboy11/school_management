@@ -2609,7 +2609,7 @@ class RemoveFavoriteProductView(generics.GenericAPIView):
     serializer_class = RemoveFavouriteSerializer
     permission_classes = [IsAuthenticated]
     
-    def delete(self, request, *args, **kwargs):
+    def post(self, request, *args, **kwargs):
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         
