@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_app/auth_service.dart';
 import 'package:mobile_app/models/store/product.dart';
+import 'package:mobile_app/providers/store/favourite_product.dart';
 import 'package:mobile_app/providers/store/front_images.dart';
 import 'package:mobile_app/providers/store/product.dart';
 import 'package:mobile_app/providers/store/product_catogries.dart';
@@ -32,6 +33,9 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
 
   bool _loading = true;
   String? _error;
+
+  bool _favouriteLoader = false;
+  int? _selectedItemId;
 
   int activeIndex = 0;
   final controller = CarouselSliderController();
@@ -126,6 +130,82 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
     
   }
 
+  Future<void> _addFavourite(String productID, int itemId) async{
+    setState(() {
+      _selectedItemId = itemId;
+      _favouriteLoader = true;
+    });
+
+    try{
+      final response = await ref.read(favouriteProductProvider.notifier).addFavouriteProduct(productID);
+      if(!mounted) return;
+      await _loadProduct();
+      _uniformProduct();  
+      _loadPopularProduct();
+       _loadSpecialProduct();
+      print('add');
+
+      if(response != 'success'){
+        if(!mounted) return;
+        showSnackbar(context, response);
+      }
+    }finally{
+      if(_favouriteLoader){
+        setState(() {
+          _favouriteLoader = false;
+        });
+      }
+    }
+
+
+
+  }
+
+
+  Future<void> _removeFavourite(String productID, int itemId) async{
+    setState(() {
+      _selectedItemId = itemId;
+      _favouriteLoader = true;
+    });
+
+    try{
+      final response = await ref.read(favouriteProductProvider.notifier).removeFavouriteProduct(productID);
+      if(!mounted) return;
+      await ref.read(productProvider.notifier).fetchProduct('', '', context);
+      await _loadProduct();
+      _uniformProduct();  
+      _loadPopularProduct();
+      _loadSpecialProduct();
+      
+
+      if(response != 'success'){
+        if(!mounted) return;
+        showSnackbar(context, response);
+      }
+
+    }finally{
+      if(_favouriteLoader){
+        setState(() {
+          _favouriteLoader = false;
+        });
+      }
+    }
+  }
+
+
+  Future<void> _toggleFavouriteProduct(bool status, String productID, int itemId) async{
+    if(status){
+      _removeFavourite(productID, itemId);
+    }else{
+      _addFavourite(productID, itemId);
+    }  
+  }
+
+
+
+
+   
+
 
 
   @override
@@ -216,6 +296,8 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
       String price,
       dynamic discountPrice,
       double rating,
+      bool status,
+      int itemId,
       double width,
       Function() onAddToCart,
     ){
@@ -245,15 +327,35 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                     top: 0,
                     right: 0,
                     child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.favorite_border_outlined),
+                      onPressed: (){
+                        
+                        _toggleFavouriteProduct(status, pro.id.toString(), itemId);
+                      },
+                      icon: 
+                        (_favouriteLoader && _selectedItemId == pro.id) ?
+                          SizedBox(
+                            width: 10,
+                            height: 10,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: customColors.lightText,
+                            ),
+                          )
+                        :
+                      
+                          !status ? 
+                            const Icon(Icons.favorite_border_outlined)
+                          : const Icon(
+                              Icons.favorite,
+                              color: Colors.red,
+                            ),
                     ),
                   ),
               
                   // Image that adjusts automatically to container without cropping
                   Positioned.fill(
                     child: Padding(
-                      padding: const EdgeInsets.only(right: 5, top: 10),
+                      padding: const EdgeInsets.only(right: 5, top: 30),
                       child: FittedBox(
                         fit: BoxFit.contain, // ✅ Show full image without cutting
                         child: Image.network(
@@ -430,6 +532,7 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
           const SizedBox(width: 15),
 
           InkWell(
+            onTap: () => context.pushReplacement('/student/home'),
             child: CustomContainer(
               child: Icon(Icons.logout),
             ),
@@ -682,6 +785,8 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                                     pro.price,
                                     pro.discountPrice,
                                     pro.rating,
+                                    pro.status,
+                                    pro.id,
                                     itemWidth,
                                     () {
                                       openDetailsOverlay(
@@ -694,7 +799,8 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                                         pro.measurementDetails, 
                                         pro.image, 
                                         pro.imageTwo, 
-                                        pro.imageThree);
+                                        pro.imageThree
+                                      );
                                     },
                                   );
                                 },
@@ -817,7 +923,27 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                                                   child: Icon(Icons.add_shopping_cart, size: 20,)
                                                 ),
                                                 InkWell(
-                                                  child: Icon(Icons.favorite_outline, size: 20,)
+                                                  onTap: (){
+                                                    _toggleFavouriteProduct(pro.productDetails['is_favourite'], pro.productDetails['id'].toString(), pro.id);
+                                                  },
+                                                  child: 
+                                                    (_favouriteLoader && _selectedItemId == pro.id) ?
+                                                      SizedBox(
+                                                        width: 10,
+                                                        height: 10,
+                                                        child: CircularProgressIndicator(
+                                                          strokeWidth: 2,
+                                                          color: customColors.lightText,
+                                                        ),
+                                                      )
+                                                    :
+                                                  
+                                                      !pro.productDetails['is_favourite'] ? 
+                                                        const Icon(Icons.favorite_border_outlined)
+                                                      : const Icon(
+                                                          Icons.favorite,
+                                                          color: Colors.red,
+                                                        ),
                                                 ),
                                                 
                                               ],
@@ -1035,6 +1161,8 @@ class _StoreHomeScreenState extends ConsumerState<StoreHomeScreen> {
                                     pro.price,
                                     pro.discountPrice,
                                     pro.rating,
+                                    pro.status,
+                                    pro.id,
                                     itemWidth,
                                     () {
                                       openDetailsOverlay(

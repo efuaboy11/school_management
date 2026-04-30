@@ -82,15 +82,7 @@ class _OrdersDetailScreenState extends State<OrdersDetailScreen> {
     return Scaffold(
       appBar: AppBar(
         title: Text('Payment receipt', style: TextStyle(fontSize: 18)),
-        actions: [
-          InkWell(
-            child: CustomContainer(
-              child: Icon(Icons.logout),
-            ),
-          ),       
-
-          const SizedBox(width: 15),
-        ],
+        
 
 
       ),

@@ -49,6 +49,77 @@ class FavouriteProductNotifier extends StateNotifier<List<FavouriteProduct>> {
     }
   } 
 
+
+  Future<String> addFavouriteProduct(String product)async{
+    final token = await AuthService.getAccessToken();
+    final userId = await AuthService.getUserId();
+
+    final Map<String, dynamic> payLoad = {
+      'user': userId,
+      'product': product,
+
+    };
+
+    try{
+      final response = await http.post(
+        Uri.parse('https://school.amanilightequity.com/api/favorite-products/'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode(payLoad),
+      );
+
+      if(response.statusCode == 200 || response.statusCode == 201){
+        return 'success';
+      }else{
+        final errorData = jsonDecode(response.body);
+        final errorMessages = errorData.values.join(", ");
+        print(errorMessages);
+        return errorMessages;
+      }
+    }catch(e, stackTrace){
+      print('Unexpected error occurred: $e');
+      print('Stack trace: $stackTrace');
+      return 'Failed to add to cart... Try again';
+    }
+  }
+
+
+
+  Future<String> removeFavouriteProduct(String product)async{
+    final token = await AuthService.getAccessToken();
+
+    final Map<String, dynamic> payLoad = {
+      'product_id': product,
+
+    };
+
+    try{
+      final response = await http.post(
+        Uri.parse('https://school.amanilightequity.com/api/remove-favourite-product/'),
+        headers: {
+          'Authorization': 'Bearer $token',
+          'Content-Type': 'application/json',
+        },
+        body: json.encode(payLoad),
+      );
+
+      if(response.statusCode == 200 || response.statusCode == 201){
+        return 'success';
+      }else{
+        final errorData = jsonDecode(response.body);
+        final errorMessages = errorData.values.join(", ");
+        print(errorMessages);
+        return errorMessages;
+      }
+    }catch(e, stackTrace){
+      print('Unexpected error occurred: $e');
+      print('Stack trace: $stackTrace');
+      return 'Failed to add to cart... Try again';
+    }
+  }
+
 }
 
 final favouriteProductProvider =

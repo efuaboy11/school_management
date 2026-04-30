@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import 'package:mobile_app/auth_service.dart';
 import 'package:mobile_app/models/store/product.dart';
+import 'package:mobile_app/providers/store/favourite_product.dart';
 import 'package:mobile_app/screens/store/cart/add_to_cart.dart';
 import 'package:mobile_app/screens/store/home.dart';
 import 'package:mobile_app/screens/store/products/Individual_product.dart'; 
@@ -30,6 +31,8 @@ class _AllProductScreenState extends ConsumerState<AllProductScreen> {
   String? _error;
   final _searchController = TextEditingController();
   Timer? _debounce;
+  bool _favouriteLoader = false;
+  int? _selectedItemId;
 
 
 
@@ -65,6 +68,71 @@ class _AllProductScreenState extends ConsumerState<AllProductScreen> {
       if(!mounted) return;
       showSnackbar(context, 'respose');
     }
+  }
+
+  Future<void> _addFavourite(String productID, int itemId) async{
+    setState(() {
+      _selectedItemId = itemId;
+      _favouriteLoader = true;
+    });
+
+    try{
+      final response = await ref.read(favouriteProductProvider.notifier).addFavouriteProduct(productID);
+      if(!mounted) return;
+      await _loadProduct();
+      print('add');
+
+      if(response != 'success'){
+        if(!mounted) return;
+        showSnackbar(context, response);
+      }
+    }finally{
+      if(_favouriteLoader){
+        setState(() {
+          _favouriteLoader = false;
+        });
+      }
+    }
+
+
+
+  }
+
+
+  Future<void> _removeFavourite(String productID, int itemId) async{
+    setState(() {
+      _selectedItemId = itemId;
+      _favouriteLoader = true;
+    });
+
+    try{
+      final response = await ref.read(favouriteProductProvider.notifier).removeFavouriteProduct(productID);
+      if(!mounted) return;
+      await ref.read(productProvider.notifier).fetchProduct('', '', context);
+      await _loadProduct();
+
+      
+
+      if(response != 'success'){
+        if(!mounted) return;
+        showSnackbar(context, response);
+      }
+
+    }finally{
+      if(_favouriteLoader){
+        setState(() {
+          _favouriteLoader = false;
+        });
+      }
+    }
+  }
+
+  Future<void> _toggleFavouriteProduct(bool status, String productID, int itemId) async{
+    if(status){
+      _removeFavourite(productID, itemId);
+    }else{
+      _addFavourite(productID, itemId);
+    }  
   }
 
   void openDetailsOverlay(
@@ -117,6 +185,8 @@ class _AllProductScreenState extends ConsumerState<AllProductScreen> {
       String price,
       dynamic discountPrice,
       double rating,
+      bool status,
+      int itemId,
       double width,
       Function() onAddToCart,
     ){
@@ -146,15 +216,34 @@ class _AllProductScreenState extends ConsumerState<AllProductScreen> {
                     top: 0,
                     right: 0,
                     child: IconButton(
-                      onPressed: () {},
-                      icon: const Icon(Icons.favorite_border_outlined),
+                      onPressed: () {
+                        _toggleFavouriteProduct(status, pro.id.toString(), itemId);
+                      },
+                      icon: 
+                        (_favouriteLoader && _selectedItemId == pro.id) ?
+                          SizedBox(
+                            width: 10,
+                            height: 10,
+                            child: CircularProgressIndicator(
+                              strokeWidth: 2,
+                              color: customColors.lightText,
+                            ),
+                          )
+                        :
+                      
+                          !status ? 
+                            const Icon(Icons.favorite_border_outlined)
+                          : const Icon(
+                              Icons.favorite,
+                              color: Colors.red,
+                            ),
                     ),
                   ),
               
                   // Image that adjusts automatically to container without cropping
                   Positioned.fill(
                     child: Padding(
-                      padding: const EdgeInsets.only(right: 5, top: 10),
+                      padding: const EdgeInsets.only(right: 5, top: 30),
                       child: FittedBox(
                         fit: BoxFit.contain, // ✅ Show full image without cutting
                         child: Image.network(
@@ -389,6 +478,8 @@ class _AllProductScreenState extends ConsumerState<AllProductScreen> {
                             pro.price,
                             pro.discountPrice,
                             pro.rating,
+                            pro.status,
+                            pro.id,
                             itemWidth,
                             () {
                               openDetailsOverlay(
@@ -423,6 +514,7 @@ class _AllProductScreenState extends ConsumerState<AllProductScreen> {
         title: Text('Product',  style: TextStyle(fontSize: 18),),
         actions: [
           InkWell(
+            onTap: () => context.push('/store/cart'),
             child: CustomContainer(
               child: Icon(Icons.shopping_cart_outlined),
             ),
@@ -431,6 +523,7 @@ class _AllProductScreenState extends ConsumerState<AllProductScreen> {
           const SizedBox(width: 15),
 
           InkWell(
+            onTap: () => context.pushReplacement('/student/home'),
             child: CustomContainer(
               child: Icon(Icons.logout),
             ),

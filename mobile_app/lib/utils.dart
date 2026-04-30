@@ -160,9 +160,12 @@ Future<String> makePayement(
     final response = await http.post(
       Uri.parse("https://school.amanilightequity.com/api/initialize-payment/"),
       headers: {
-        'Authorization': 'Bearer $token',
-        'Content-Type': 'application/json',
-      },
+  'Authorization': 'Bearer $token',
+  'Content-Type': 'application/json',
+  'Accept': 'application/json',
+  'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64)',
+},
+
       body: json.encode({
         // ✅ Encode the body as JSON
         'email': email,
@@ -193,7 +196,9 @@ Future<String> makePayement(
     } else {
       final errorData = jsonDecode(response.body);
       final errorMessages = errorData.values.join(", ");
+      print(errorMessages);
       return errorMessages;
+      
     }
   } catch (e) {
     print(e);

@@ -434,6 +434,105 @@ class SubjectResult(models.Model):
         return f"{self.student_result.student} - {self.subject}"
 
 
+# ---------------------------------------------- Student Evaluation (Weekly) ------------------------------------------- #
+# Stores weekly scores per subject per term/session, with criteria (assignment, classwork, participation, etc.)
+# and flags for strong subjects / subjects to improve.
+
+
+class TeacherEvaluationFeatures(models.Model):
+    teacher = models.ForeignKey(
+        Staff, on_delete=models.CASCADE,
+        limit_choices_to={'role': 'teacher'},
+        null=True, blank=True,
+        related_name='student_evaluations'
+    )
+    
+    feature_name = models.CharField(
+        max_length=100,
+        help_text="e.g. assignment, classwork, class_participation",
+    )
+    # This means that a feature name can exit for each teacher separately, but the same teacher can't have duplicate feature names.
+    class Meta:
+        unique_together = [['teacher', 'feature_name']]
+    
+    is_active = models.BooleanField(default=True)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+
+class StudentEvaluation(models.Model):
+    """
+    One record per student per term per session per week.
+    Holds the student's strong subjects and subjects to improve for that week.
+    """
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    student_class = models.ForeignKey(StudentClass, on_delete=models.CASCADE)
+    term = models.ForeignKey(Term, on_delete=models.CASCADE)
+    session = models.ForeignKey(Session, on_delete=models.CASCADE)
+    week_number = models.PositiveIntegerField(help_text="Week number in the term (e.g. 1, 2, 3)")
+    teacher = models.ForeignKey(
+        Staff, on_delete=models.CASCADE,
+        limit_choices_to={'role': 'teacher'},
+        null=True, blank=True,
+        related_name='student_evaluations'
+    )
+    strong_subjects = models.ManyToManyField(
+        Subjects, related_name='evaluations_as_strong', blank=True,
+        help_text="Subjects the student is strong in"
+    )  
+    subjects_to_improve = models.ManyToManyField(
+        Subjects, related_name='evaluations_to_improve', blank=True,
+        help_text="Subjects the student needs to work on"
+    )
+    score_bench_mark = models.FloatField(blank=True, null=True)
+    subjects_scores = models.ManyToManyField('Subjects', through='SubjectWeeklyScore')
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name_plural = "Student Evaluations"
+        ordering = ['-session', '-term', 'week_number', 'student']
+        unique_together = [['student', 'term', 'session', 'week_number']]
+
+    def __str__(self):
+        return f"{self.student} - Term {self.term} Session {self.session} Week {self.week_number}"
+
+
+class SubjectWeeklyScore(models.Model):
+    student_evaluation = models.ForeignKey(
+        StudentEvaluation, on_delete=models.CASCADE, related_name='subject_weekly_scores'
+    )
+    subject = models.ForeignKey(Subjects, on_delete=models.CASCADE)
+    total_score = models.FloatField(
+        null=True, blank=True,
+        help_text="Overall score for this subject (e.g. 4.0 from criteria average)"
+    )
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name_plural = "Subject Weekly Scores"
+        unique_together = [['student_evaluation', 'subject']]
+
+    def __str__(self):
+        return f"{self.student_evaluation.student} - {self.subject} Week {self.student_evaluation.week_number}"
+
+
+class SubjectFeatureScore(models.Model):
+    subject_weekly_score = models.ForeignKey(
+        SubjectWeeklyScore, on_delete=models.CASCADE, related_name='feature_scores'
+    )
+    feature = models.ForeignKey(
+        TeacherEvaluationFeatures,
+        on_delete=models.CASCADE
+    ),
+    score = models.FloatField(help_text="Score obtained")
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    
+    def __str__(self):
+        return f"{self.subject_weekly_score.subject} - {self.feature_name}"
+
 
 def generate_scratch_pin():
     return ''.join(random.choices(string.digits, k=11))

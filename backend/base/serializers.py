@@ -787,12 +787,215 @@ class StudentResultSerializer(serializers.ModelSerializer):
             instance.save()
         
         return instance
-
-
+    
+    
 class FilterStudentResultSerializer(serializers.Serializer):
     student_class = serializers.CharField(required=False, allow_blank=True)
     term = serializers.CharField(required=False, allow_blank=True)
     session = serializers.CharField(required=False, allow_blank=True)
+   
+    
+    
+    
+    
+# ---------------------------------------------- Student Evaluation (Weekly) ------------------------------------------- #
+# Stores weekly scores per subject per term/session, with criteria (assignment, classwork, participation, etc.)
+# and flags for strong subjects / subjects to improve.
+
+class TeacherEvaluationFeaturesSerializer(serializers.ModelSerializer):
+    teacher_details = serializers.SerializerMethodField()
+    class Meta:
+        model = TeacherEvaluationFeatures
+        fields = [
+            'id',
+            'teacher',
+            'teacher_details',
+            'feature_name',
+            'is_active',
+            'created_at'
+        ]
+        
+    def get_teacher_details(self, obj):
+        teacher = obj.teacher
+        serializer = ShortStaffSerializer(
+            instance=teacher, many=False)
+        return serializer.data
+    
+    
+class SubjectFeatureScoreSerializer(serializers.ModelSerializer):
+    feature_name = serializers.CharField(source='feature.feature_name')
+
+    class Meta:
+        model = SubjectFeatureScore
+        fields = [
+            'feature',
+            'feature_name',
+            'score',
+            'created_at'
+        ]
+    
+
+class SubjectWeeklyScoreSerializer(serializers.ModelSerializer):
+    subject_name = serializers.SerializerMethodField()
+    features = serializers.SerializerMethodField()
+    class Meta:
+        model = SubjectWeeklyScore
+        fields = [
+            'id',
+            'student_evaluation',
+            'subject',
+            'subject_name', 
+            'total_score',
+            'features',
+            'created_at',
+        ]
+        
+    def get_subject_name(self, obj):
+        subject = obj.subject
+        serializer = ShortSubjectsSerializer(instance=subject, many=False)
+        return serializer.data
+    
+    def get_features(self, obj):
+        return [
+            {
+                fs.feature.feature_name: fs.score
+            }
+            for fs in obj.feature_scores.all()
+        ]
+    
+    
+class StudentEvaluationSerializer(serializers.ModelSerializer):
+    student_name = serializers.SerializerMethodField()
+    subject_evaluation = SubjectWeeklyScoreSerializer(many=True, required=False)
+    teacher_name = serializers.SerializerMethodField()
+    term_name = serializers.SerializerMethodField()
+    session_name = serializers.SerializerMethodField()
+    class_name = serializers.SerializerMethodField()
+    
+    class Meta:
+        model = StudentEvaluation
+        fields = [
+            'id',
+            'student',
+            'student_name',
+            'teacher',
+            'teacher_name',
+            'student_class',
+            'class_name',
+            'term',
+            'term_name',
+            'session',
+            'session_name',
+            'week_number',
+            'strong_subjects',
+            'subjects_to_improve',
+            'score_bench_mark',
+            'subject_evaluation',
+            'created_at',
+            'updated_at',    
+        ]
+        
+    def get_teacher_name(self, obj):
+        teacher = obj.teacher
+        serializer = ShortStaffSerializer(
+            instance=teacher, many=False)
+        return serializer.data
+    
+    
+    def get_class_name(self, obj):
+        student_class = obj.student_class
+        serializer = ShortStudentClassSerializer(
+            instance=student_class, many=False)
+        return serializer.data
+    
+    def get_term_name(self, obj):
+        term = obj.term
+        serializer = TermSerializer(
+            instance=term, many=False)
+        return serializer.data
+    
+    def get_session_name(self, obj):
+        session = obj.session
+        serializer = ShortSessionSerializer(
+            instance=session, many=False)
+        return serializer.data
+                                          
+    def get_student_name(self, obj):
+        student = obj.student
+        serializer = ShortStudentSerializer(instance=student, context=self.context, many=False)
+        return serializer.data
+    
+    def get_subject_evaluation(self, obj):
+        subject_evaluation = SubjectWeeklyScore.objects.filter(student_evaluation=obj)
+        serializer = SubjectWeeklyScoreSerializer(
+            instance=subject_evaluation, many=True)
+        return serializer.data
+    
+    
+    def create(self, validated_data):
+        subject_evaluation_data = validated_data.pop('subject_evaluation', [])
+        evaluation = StudentEvaluation.objects.create(**validated_data)
+
+        for subject_data in subject_evaluation_data:
+            features_data = subject_data.pop('features', [])  # 👈 pop features out
+            subject_data['student_evaluation_id'] = evaluation.id
+            subject_score = SubjectWeeklyScore.objects.create(**subject_data)
+
+            for feature_item in features_data:
+                feature_id = feature_item.get('feature')
+                score = feature_item.get('score')
+
+                feature_obj = TeacherEvaluationFeatures.objects.get(id=feature_id)
+                SubjectFeatureScore.objects.create(
+                    subject_weekly_score=subject_score,
+                    feature=feature_obj,
+                    score=score
+                )
+
+        return evaluation
+    
+    def update(self, instance, validated_data):
+        # 1️⃣ Update simple StudentEvaluation fields
+        subject_evaluation_data = validated_data.pop('subject_evaluation', [])
+        for attr, value in validated_data.items():
+            setattr(instance, attr, value)
+        instance.save()
+
+        # 2️⃣ Update SubjectWeeklyScore & SubjectFeatureScore
+        for subject_data in subject_evaluation_data:
+            subject_id = subject_data.get('id')
+            features_data = subject_data.pop('features', [])
+
+            # Update SubjectWeeklyScore
+            subject_score = SubjectWeeklyScore.objects.get(id=subject_id, student_evaluation=instance)
+            for key, value in subject_data.items():
+                setattr(subject_score, key, value)
+            subject_score.save()
+
+            # Update feature scores
+            for feature_item in features_data:
+                feature_id = feature_item.get('feature')
+                score = feature_item.get('score')
+                
+                # Get TeacherEvaluationFeature instance
+                feature_obj = TeacherEvaluationFeatures.objects.get(id=feature_id)
+
+                # Update or create SubjectFeatureScore
+                sub_feature_score, created = SubjectFeatureScore.objects.update_or_create(
+                    subject_weekly_score=subject_score,
+                    feature=feature_obj,
+                    defaults={'score': score}
+                )
+
+        return instance
+    
+    
+    
+    
+    
+
+
+
 
 
            

@@ -12,6 +12,7 @@ class Product {
   final dynamic imageTwo;
   final dynamic imageThree;
   final String description;
+  final bool status;
 
 
   const Product({
@@ -27,6 +28,7 @@ class Product {
     required this.imageThree,
     required this.imageTwo,
     required this.description,
+    required this.status,
   });
 
 
@@ -44,6 +46,7 @@ class Product {
       imageTwo: json['image_two'],
       imageThree: json['image_three'],
       description: json['description'], 
+      status: json['is_favourite']
     );
   }
 }

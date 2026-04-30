@@ -213,6 +213,7 @@ class _OrderHistoryScreenState extends ConsumerState<OrderHistoryScreen> {
         title: Text('My Orders', style: TextStyle(fontSize: 18)),
         actions: [
           InkWell(
+            onTap: () => context.pushReplacement('/student/home'),
             child: CustomContainer(
               child: Icon(Icons.logout),
             ),

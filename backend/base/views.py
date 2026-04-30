@@ -19,6 +19,7 @@ from rest_framework.filters import SearchFilter
 import json
 from django.views.decorators.csrf import csrf_exempt
 from django.utils.decorators import method_decorator
+from django.db.models import Prefetch
 
 
 
@@ -1566,6 +1567,182 @@ class DeleteMultipleEResultView(generics.GenericAPIView):
         deleted_count, _ = EResult.objects.filter(id__in=ids).delete()
         return Response({"message": f"{deleted_count} data deleted successfully."}, status=status.HTTP_204_NO_CONTENT)
 
+  
+  
+# ──────────────────────────────────────────────
+# TeacherEvaluationFeatures
+# ──────────────────────────────────────────────
+
+class TeacherEvaluationFeatureListCreateView(generics.ListCreateAPIView):
+    serializer_class = TeacherEvaluationFeaturesSerializer
+    permission_classes = [IsAdminOrTeacherorStudent]
+    
+    def get_queryset(self):
+        qs= TeacherEvaluationFeatures.objects.select_related('teacher').all()
+        teacher_id = self.request.query_params.get('teacher')
+        if teacher_id:
+            qs = qs.filter(teacher__id=teacher_id)
+            
+        return qs
+    
+    
+    
+class TeacherEvaluationFeatureRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = SubjectWeeklyScoreSerializer
+    permission_classes = [IsAdminOrTeacher]
+    queryset = SubjectWeeklyScore.objects.select_related(
+        'student_evaluation', 'subject'
+    ).prefetch_related('feature_scores__feature').all()
+    lookup_field = 'pk'
+    
+# ──────────────────────────────────────────────
+# SubjectWeeklyScore
+# ──────────────────────────────────────────────
+
+class SubjectWeeklyScoreListCreateView(generics.ListCreateAPIView):
+    serializer_class = SubjectWeeklyScoreSerializer
+    permission_classes = [IsAdminOrTeacherorStudent]
+    
+    
+    
+    def get_queryset(self):
+        qs = SubjectWeeklyScore.objects.select_related(
+            'student_evaluation', 'subject'
+        ).prefetch_related('feature_scores__feature').all()
+
+        evaluation_id = self.request.query_params.get('student_evaluation')
+        if evaluation_id:
+            qs = qs.filter(student_evaluation__id=evaluation_id)
+
+        subject_id = self.request.query_params.get('subject')
+        if subject_id:
+            qs = qs.filter(subject__id=subject_id)
+
+        return qs
+    
+  
+class SubjectWeeklyScoreRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = SubjectWeeklyScoreSerializer
+    permission_classes = [IsAdminOrTeacher]
+    queryset = SubjectWeeklyScore.objects.select_related(
+        'student_evaluation', 'subject'
+    ).prefetch_related('feature_scores__feature').all()  
+    lookup_field = 'pk'
+
+    
+# ──────────────────────────────────────────────
+# SubjectFeatureScore
+# ──────────────────────────────────────────────
+
+
+class SubjectFeatureScoreListCreateView(generics.ListCreateAPIView):
+    serializer_class = SubjectFeatureScoreSerializer
+    permission_classes = [IsAdminOrTeacherorStudent]
+    def get_queryset(self):
+        qs = SubjectFeatureScore.objects.select_related(
+            'subject_weekly_score', 'feature'
+        ).all()
+        
+        weekly_score_id = self.request.query_params.get('subject_weekly_score')
+        if weekly_score_id:
+            qs = qs.filter(subject_weekly_score__id=weekly_score_id)
+
+        return qs
+    
+    
+class SubjectFeatureScoreRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    permission_classes = [IsAdminOrTeacher]
+    serializer_class = SubjectFeatureScoreSerializer
+    queryset = SubjectFeatureScore.objects.select_related(
+        'subject_weekly_score', 'feature'
+    ).all()
+    lookup_field = 'pk'
+    
+    
+# ──────────────────────────────────────────────
+# StudentEvaluation  (main / most complex)
+# ──────────────────────────────────────────────
+
+class StudentEvaluationListCreateView(generics.ListCreateAPIView):
+    permission_classes = [IsAdminOrTeacherorStudent]
+    serializer_class = StudentEvaluationSerializer
+           
+    
+    def get_queryset(self):
+        qs = StudentEvaluation.objects.select_related(
+            'student', 'teacher', 'student_class', 'term', 'session'
+        ).prefetch_related(
+            Prefetch(
+                'subject_weekly_scores',
+                queryset=SubjectWeeklyScore.objects.prefetch_related('feature_scores__feature')
+            ),
+            'strong_subjects',
+            'subjects_to_improve',
+        ).all()
+        
+        
+        # ── filters ──────────────────────────────
+        student_id = self.request.query_params.get('student')
+        if student_id:
+            qs = qs.filter(student__id=student_id)
+
+        teacher_id = self.request.query_params.get('teacher')
+        if teacher_id:
+            qs = qs.filter(teacher__id=teacher_id)
+
+        class_id = self.request.query_params.get('student_class')
+        if class_id:
+            qs = qs.filter(student_class__id=class_id)
+
+        term_id = self.request.query_params.get('term')
+        if term_id:
+            qs = qs.filter(term__id=term_id)
+
+        session_id = self.request.query_params.get('session')
+        if session_id:
+            qs = qs.filter(session__id=session_id)
+
+        week_number = self.request.query_params.get('week_number')
+        if week_number:
+            qs = qs.filter(week_number=week_number)
+
+        return qs
+    
+    def perform_create(self, serializer): 
+        serializer.save()
+
+
+
+class StudentEvaluationRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyAPIView):
+    serializer_class = StudentEvaluationSerializer
+    permission_classes = [IsAdminOrTeacher]
+
+    def get_queryset(self):
+        return StudentEvaluation.objects.select_related(
+            'student', 'teacher', 'student_class', 'term', 'session'
+        ).prefetch_related(
+            Prefetch(
+                'subject_weekly_scores',
+                queryset=SubjectWeeklyScore.objects.prefetch_related('feature_scores__feature')
+            ),
+            'strong_subjects',
+            'subjects_to_improve',
+        ).all()
+
+    def update(self, request, *args, **kwargs):
+        # support both PUT and PATCH
+        partial = kwargs.pop('partial', False)
+        instance = self.get_object()
+        serializer = self.get_serializer(instance, data=request.data, partial=partial)
+        serializer.is_valid(raise_exception=True)
+        self.perform_update(serializer)
+        return Response(serializer.data)
+    
+    lookup_field = 'pk'
+        
+  
+  
+  
   
         
 class SchemeOfWorkView(generics.ListCreateAPIView):

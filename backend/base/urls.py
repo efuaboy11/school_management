@@ -156,6 +156,23 @@ urlpatterns = [
 
     # ---------------------- End -------------------------- #
     
+    
+    # TeacherEvaluationFeatures
+    path('teacher-evaluation-features/', views.TeacherEvaluationFeatureListCreateView.as_view()),
+    path('teacher-evaluation-features/<int:pk>/', views.TeacherEvaluationFeatureRetrieveUpdateDestroyView.as_view()),
+
+    # SubjectWeeklyScore
+    path('subject-weekly-scores/', views.SubjectWeeklyScoreListCreateView.as_view()),
+    path('subject-weekly-scores/<int:pk>/', views.SubjectWeeklyScoreRetrieveUpdateDestroyView.as_view()),
+
+    # SubjectFeatureScore
+    path('subject-feature-scores/', views.SubjectFeatureScoreListCreateView.as_view()),
+    path('subject-feature-scores/<int:pk>/', views.SubjectFeatureScoreRetrieveUpdateDestroyView.as_view()),
+
+    # StudentEvaluation
+    path('student-evaluations/', views.StudentEvaluationListCreateView.as_view()),
+    path('student-evaluations/<uuid:pk>/', views.StudentEvaluationRetrieveUpdateDestroyView.as_view()),
+    
     #scheme of work
     path('scheme-of-work/', views.SchemeOfWorkView.as_view(), name='scheme_of_work' ),
     path('scheme-of-work/<str:pk>/', views.SchemeOfWorkRetrieveUpdateDestroy.as_view(), name='indiviual_scheme_of_work' ),

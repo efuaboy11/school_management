@@ -494,6 +494,7 @@ class _CartScreenState extends ConsumerState<CartScreen> {
         title: Text('My cart', style: TextStyle(fontSize: 18)),
         actions: [
           InkWell(
+            onTap: () => context.pushReplacement('/student/home'),
             child: CustomContainer(
               child: Icon(Icons.logout),
             ),

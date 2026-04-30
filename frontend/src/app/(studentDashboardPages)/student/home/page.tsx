@@ -9,6 +9,60 @@ import React, { useContext, useEffect, useState } from 'react'
 import AuthContext from '@/context/AuthContext'
 
 const StudentHome = () => {
+  const generateCalendar = (year:number, month:number) =>{
+    // month is 0-11 (0=Jan)
+    const firstDay = new Date(year, month, 1);
+    const lastDay = new Date(year, month + 1, 0);
+
+    const days = [];
+
+    // find day of week first date lands on
+    const startDay = firstDay.getDay(); // 0 (Sun) - 6 (Sat)
+
+    // Add empty slots before first day
+    for (let i = 0; i < startDay; i++) {
+      days.push(null);
+    }
+
+    // Add actual days
+    for (let d = 1; d <= lastDay.getDate(); d++) {
+      days.push(new Date(year, month, d));
+    }
+
+    return days;
+  }
+
+
+    const today = new Date();
+  const [year, setYear] = useState(today.getFullYear());
+  const [month, setMonth] = useState(today.getMonth());
+
+  const days = generateCalendar(year, month);
+  const monthNames = [
+    "January","February","March","April","May","June",
+    "July","August","September","October","November","December"
+  ];
+
+  const nextMonth = () => {
+    setMonth(prev => {
+      if (prev === 11) {
+        setYear(y => y + 1);
+        return 0;
+      }
+      return prev + 1;
+    });
+  };
+
+  const prevMonth = () => {
+    setMonth(prev => {
+      if (prev === 0) {
+        setYear(y => y - 1);
+        return 11;
+      }
+      return prev - 1;
+    });
+  };
+
 
   // const [timeofDay, setTimeOfDay] = useState('')
 
@@ -782,6 +836,40 @@ const StudentHome = () => {
                   </div>
                 </div>
               </div>
+
+
+              <div style={{ width: "350px" }}>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
+        <button onClick={prevMonth}>←</button>
+        <h2>{monthNames[month]} {year}</h2>
+        <button onClick={nextMonth}>→</button>
+      </div>
+
+      <div style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(7, 1fr)",
+        gap: "5px"
+      }}>
+        {["Sun","Mon","Tue","Wed","Thu","Fri","Sat"].map(d => (
+          <div key={d} style={{ fontWeight: "bold" }}>{d}</div>
+        ))}
+
+        {days.map((day, index) => (
+          <div
+            key={index}
+            style={{
+              height: "40px",
+              background: day ? "#f0f0f0" : "transparent",
+              textAlign: "center",
+              lineHeight: "40px",
+              borderRadius: "5px",
+            }}
+          >
+            {day ? day.getDate() : ""}
+          </div>
+        ))}
+      </div>
+    </div>
 
 
 
