@@ -37,6 +37,7 @@ class StorageQuotaView(generics.RetrieveUpdateAPIView):
 def endpoints(request):
     data = [
         "users/",
+        "teacher-evaluation-features/",
     ]
     return Response(data)
 
