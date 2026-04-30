@@ -444,7 +444,7 @@ class TeacherEvaluationFeatures(models.Model):
         Staff, on_delete=models.CASCADE,
         limit_choices_to={'role': 'teacher'},
         null=True, blank=True,
-        related_name='student_evaluations'
+        related_name='evaluation_features'
     )
     
     feature_name = models.CharField(
