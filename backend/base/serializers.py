@@ -990,7 +990,13 @@ class StudentEvaluationSerializer(serializers.ModelSerializer):
         return instance
     
     
-    
+ 
+class ValidateStudentEvaluationParamtersSerializer(serializers.Serializer):
+    student = serializers.CharField()
+    student_class = serializers.CharField()
+    term = serializers.CharField()
+    session = serializers.CharField()
+    week_number = serializers.CharField()
     
     
 

@@ -172,6 +172,7 @@ urlpatterns = [
     # StudentEvaluation
     path('student-evaluations/', views.StudentEvaluationListCreateView.as_view()),
     path('student-evaluations/<uuid:pk>/', views.StudentEvaluationRetrieveUpdateDestroyView.as_view()),
+    path('validate-student-evaluations/', views.ValidateStudentEvaluationParametersView.as_view()),
     
     #scheme of work
     path('scheme-of-work/', views.SchemeOfWorkView.as_view(), name='scheme_of_work' ),

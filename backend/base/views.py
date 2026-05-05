@@ -1740,7 +1740,47 @@ class StudentEvaluationRetrieveUpdateDestroyView(generics.RetrieveUpdateDestroyA
         return Response(serializer.data)
     
     lookup_field = 'pk'
-        
+    
+    
+class ValidateStudentEvaluationParametersView(generics.GenericAPIView):
+    permission_classes = [IsAdminOrTeacher]
+    serializer_class = ValidateStudentEvaluationParamtersSerializer
+
+    def post(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data)
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        data = serializer.validated_data
+
+        # 1. Check student exists
+        try:
+            student = Student.objects.get(id=data['student'])
+        except Student.DoesNotExist:
+            return Response(
+                {"error": "Student not found."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        # 2. Check evaluation doesn't already exist
+        already_exists = StudentEvaluation.objects.filter(
+            student=student,
+            student_class=data['student_class'],
+            term=data['term'],
+            session=data['session'],
+            week_number=data['week_number']
+        ).exists()  # 👈 use .exists() instead of .get() inside try/except
+
+        if already_exists:
+            return Response(
+                {"error": "Student evaluation already exists for this week."},
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
+        return Response(
+            {"success": "Details verified."},
+            status=status.HTTP_200_OK
+        )        
   
   
   
